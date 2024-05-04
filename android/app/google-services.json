@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "116067404693",
+    "project_id": "ahinsa-aggregator",
+    "storage_bucket": "ahinsa-aggregator.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:116067404693:android:35698b78d4fa9cd3f6c49c",
+        "android_client_info": {
+          "package_name": "com.ahinsaaggregator.customer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIi-Wjyn2iEjhj8BEGccXt8ts2P9zK_Gk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:116067404693:android:f9a26c49bd520204f6c49c",
+        "android_client_info": {
+          "package_name": "com.ahinsaaggregator.vendor"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIi-Wjyn2iEjhj8BEGccXt8ts2P9zK_Gk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

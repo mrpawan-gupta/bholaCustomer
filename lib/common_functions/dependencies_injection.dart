@@ -1,0 +1,54 @@
+import "package:customer/main.dart";
+import "package:customer/services/app_analytics_service.dart";
+import "package:customer/services/app_dev_info_service.dart";
+import "package:customer/services/app_fcm_service.dart";
+import "package:customer/services/app_firestore_user_db.dart";
+import "package:customer/services/app_internet_connection_checker_service.dart";
+import "package:customer/services/app_location_service.dart";
+import "package:customer/services/app_nav_service.dart";
+import "package:customer/services/app_perm_service.dart";
+import "package:customer/services/app_pkg_info_service.dart";
+import "package:customer/services/app_remote_config.dart";
+import "package:customer/services/app_storage_service.dart";
+import "package:customer/utils/app_logger.dart";
+import "package:customer/utils/app_orientations.dart";
+import "package:firebase_messaging/firebase_messaging.dart";
+import "package:get/get.dart";
+
+void injectDependencies() {
+  Get
+    ..put(AppStorageService())
+    ..put(AppNavService())
+    ..put(AppAnalyticsService())
+    ..put(AppFCMService())
+    ..put(AppNetCheckService())
+    ..put(AppPermService())
+    ..put(AppLocationService())
+    ..put(AppPkgInfoService())
+    ..put(AppDevInfoService())
+    ..put(AppRemoteConfig())
+    ..put(AppFirestoreUserDB());
+  return;
+}
+
+Future<void> initDependencies() async {
+  await AppOrientations().initAppOrientations();
+
+  await AppStorageService().init();
+
+  await AppFCMService().setupInteractedMessage();
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+
+  final String fcmToken = await AppFCMService().instance.getToken() ?? "";
+  AppLogger().info(message: "fcmToken: $fcmToken");
+
+  RemoteMessage? initialMessage;
+  initialMessage = await AppFCMService().instance.getInitialMessage();
+
+  if (initialMessage != null) {
+    final String data = initialMessage.data.toString();
+    await AppFCMService().onTapTerminated(data);
+  } else {}
+
+  return Future<void>.value();
+}
