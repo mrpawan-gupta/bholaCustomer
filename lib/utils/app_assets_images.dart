@@ -19,4 +19,8 @@ class AppAssetsImages {
   static const String cattle = "assets/image/cattle.webp";
   static const String banner2 = "assets/image/banner2.jpeg";
   static const String wheat = "assets/image/wheat.jpeg";
+  static const String back = "assets/image/back.png";
+  static const String product = "assets/image/product.png";
+  static const String blackright = "assets/image/blackright.png";
+  static const String Home = "assets/image/Home.png";
 }

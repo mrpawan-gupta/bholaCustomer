@@ -1,6 +1,7 @@
 import "package:customer/controllers/home_screen_controllers/home_screen_controllers.dart";
 import "package:customer/screens/home_screen/search.dart";
 import "package:customer/screens/product_card/product_card.dart";
+import "package:customer/screens/product_details/ProductDetails.dart";
 import "package:customer/utils/app_assets_images.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
@@ -91,7 +92,8 @@ class HomeScreen extends GetView<HomeScreenController> {
                             onTap: () async {
                               await Navigator.of(context, rootNavigator: true)
                                   .pushReplacement(MaterialPageRoute(
-                                  builder: (BuildContext context) => ProductDetailPage(),),);
+                                  builder: (BuildContext context) =>
+                                   ProductDetailPage(),),);
 
                             },
                             child: GridTile(
