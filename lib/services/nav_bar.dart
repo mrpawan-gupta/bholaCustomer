@@ -3,6 +3,9 @@ import "package:customer/utils/app_assets_images.dart";
 import "package:flutter/material.dart";
 import "package:persistent_bottom_nav_bar/persistent_tab_view.dart";
 
+import "../screens/booking_slot/book_slot.dart";
+import "../screens/booking_slot/selected_slot.dart";
+
 // ----------------------------------------- Provided Style ----------------------------------------- //
 
 class ProvidedStylesExample extends StatefulWidget {
@@ -26,8 +29,8 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
   List<Widget> _buildScreens() => <Widget>[
         const HomeScreen(),
         Container(),
-    //     BookSlot(),
-    //     SelectedSlot(),
+        BookSlot(),
+        SelectedSlot(),
     // ProductLivePendingOrder(),
       ];
 
@@ -39,7 +42,7 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
           inactiveColorPrimary: Colors.grey,
         ),
         PersistentBottomNavBarItem(
-          icon: Image.asset("assets/image/primary.png"),
+          icon: Image.asset(AppAssetsImages.primary),
           title: "Search",
           activeColorPrimary: Colors.teal,
           inactiveColorPrimary: Colors.grey,
@@ -52,7 +55,7 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
           ),
         ),
         PersistentBottomNavBarItem(
-          icon: Image.asset("assets/image/tractor 1.png"),
+          icon: Image.asset(AppAssetsImages.tractor_1),
           title: "Add",
           activeColorPrimary: Colors.blueAccent,
           inactiveColorPrimary: Colors.grey,
@@ -65,7 +68,7 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
           ),
         ),
         PersistentBottomNavBarItem(
-          icon: Image.asset("assets/image/whatsapp.png"),
+          icon: Image.asset(AppAssetsImages.whatsapp),
           title: "Messages",
           activeColorPrimary: Colors.deepOrange,
           inactiveColorPrimary: Colors.grey,
@@ -78,7 +81,7 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
           ),
         ),
         PersistentBottomNavBarItem(
-          icon: Image.asset("assets/image/bag.png"),
+          icon: Image.asset(AppAssetsImages.bag),
           title: "Settings",
           activeColorPrimary: Colors.indigo,
           inactiveColorPrimary: Colors.grey,
@@ -181,7 +184,7 @@ class CustomNavBarWidget extends StatelessWidget {
           height: kBottomNavigationBarHeight,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: items.map((final item) {
+            children: items.map((final PersistentBottomNavBarItem item) {
               final int index = items.indexOf(item);
               return Flexible(
                 child: GestureDetector(

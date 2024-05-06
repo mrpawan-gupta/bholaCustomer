@@ -76,7 +76,7 @@ class Cart extends GetView<CartController> {
                   decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey),
                       borderRadius: BorderRadius.circular(10),
-                      color: Colors.green.shade100),
+                      color: Colors.green.shade100,),
                   height: 100,
                   width: MediaQuery.sizeOf(context).width,
                   child: Padding(
@@ -105,7 +105,7 @@ class Cart extends GetView<CartController> {
                               children: <Widget>[
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
+                                  children: <Widget>[
                                     TextWidget(
                                       text: "Tractor",
                                       color: Colors.green,
@@ -149,9 +149,10 @@ class Cart extends GetView<CartController> {
                                     Icons.remove,
                                     color: Colors.white,
                                     size: 16,
-                                  )),
+                                  ),),
                               Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 3),
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 3,),
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 3, vertical: 2,),
                                 decoration: BoxDecoration(
@@ -201,7 +202,7 @@ class Cart extends GetView<CartController> {
                               width: 90,
                               height: 100,
                               child: Image.asset(AppAssetsImages.tractor,
-                                  fit: BoxFit.fitHeight),
+                                  fit: BoxFit.fitHeight,),
                             ),
                           ),
                           const SizedBox(
@@ -210,7 +211,7 @@ class Cart extends GetView<CartController> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
+                            children: <Widget>[
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
@@ -239,7 +240,7 @@ class Cart extends GetView<CartController> {
                                 size: 14,
                                 fontWeight: FontWeight.w600,
                                 isLineThrough: false,
-                              )
+                              ),
                             ],
                           ),
                         ],
@@ -250,14 +251,14 @@ class Cart extends GetView<CartController> {
                             borderRadius: BorderRadius.circular(5),
                             color: Colors.green,),
                         child: Row(
-                          children: [
+                          children: <Widget>[
                             InkWell(
                                 onTap: () {},
                                 child: const Icon(
                                   Icons.remove,
                                   color: Colors.white,
                                   size: 16,
-                                )),
+                                ),),
                             Container(
                               margin: const EdgeInsets.symmetric(horizontal: 3),
                               padding: const EdgeInsets.symmetric(
@@ -338,7 +339,7 @@ class Cart extends GetView<CartController> {
                         Icons.edit_calendar_rounded,
                         color: Colors.green,
                         size: 30,
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -362,7 +363,7 @@ class Cart extends GetView<CartController> {
                       Image.asset(
                         AppAssetsImages.blackright,
                         height: 25,
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -473,7 +474,7 @@ class Cart extends GetView<CartController> {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
+                children: <Widget>[
                   TextWidget(
                     text: "Order Total",
                     color: Colors.black,
