@@ -1,27 +1,17 @@
+import "package:customer/screens/booking_slot/book_slot.dart";
+import "package:customer/screens/booking_slot/selected_slot.dart";
 import "package:customer/screens/home_screen/home_screen.dart";
+import "package:customer/screens/order/product_live_order.dart";
 import "package:customer/utils/app_assets_images.dart";
 import "package:flutter/material.dart";
+import "package:get/get_state_manager/src/rx_flutter/rx_disposable.dart";
 import "package:persistent_bottom_nav_bar/persistent_tab_view.dart";
 
-import "../screens/booking_slot/book_slot.dart";
-import "../screens/booking_slot/selected_slot.dart";
-
-// ----------------------------------------- Provided Style ----------------------------------------- //
-
-class ProvidedStylesExample extends StatefulWidget {
-  const ProvidedStylesExample({super.key});
-
-  @override
-  _ProvidedStylesExampleState createState() => _ProvidedStylesExampleState();
-}
-
-class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
+class ProvidedStylesExample extends GetxService {
   late PersistentTabController _controller;
   late bool _hideNavBar;
 
-  @override
   void initState() {
-    super.initState();
     _controller = PersistentTabController();
     _hideNavBar = false;
   }
@@ -30,11 +20,12 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
         const HomeScreen(),
         Container(),
         BookSlot(),
-        SelectedSlot(),
-    // ProductLivePendingOrder(),
+        const SelectedSlot(),
+    const ProductLivePendingOrder(),
       ];
 
-  List<PersistentBottomNavBarItem> _navBarsItems() => [
+  List<PersistentBottomNavBarItem> _navBarsItems() =>
+      <PersistentBottomNavBarItem>[
         PersistentBottomNavBarItem(
           icon: Image.asset(AppAssetsImages.Home),
           title: "Home",
@@ -48,9 +39,9 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
           inactiveColorPrimary: Colors.grey,
           routeAndNavigatorSettings: RouteAndNavigatorSettings(
             initialRoute: "/",
-            routes: {
-              "/first": (final context) => Container(),
-              "/second": (final context) => Container(),
+            routes: <String, WidgetBuilder>{
+              "/first": (final BuildContext context) => Container(),
+              "/second": (final BuildContext context) => Container(),
             },
           ),
         ),
@@ -61,9 +52,9 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
           inactiveColorPrimary: Colors.grey,
           routeAndNavigatorSettings: RouteAndNavigatorSettings(
             initialRoute: "/",
-            routes: {
-              "/first": (final context) => Container(),
-              "/second": (final context) => Container(),
+            routes: <String, WidgetBuilder>{
+              "/first": (final BuildContext context) => Container(),
+              "/second": (final BuildContext context) => Container(),
             },
           ),
         ),
@@ -74,9 +65,9 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
           inactiveColorPrimary: Colors.grey,
           routeAndNavigatorSettings: RouteAndNavigatorSettings(
             initialRoute: "/",
-            routes: {
-              "/first": (final context) => Container(),
-              "/second": (final context) => Container(),
+            routes: <String, WidgetBuilder>{
+              "/first": (final BuildContext context) => Container(),
+              "/second": (final BuildContext context) => Container(),
             },
           ),
         ),
@@ -87,15 +78,14 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
           inactiveColorPrimary: Colors.grey,
           routeAndNavigatorSettings: RouteAndNavigatorSettings(
             initialRoute: "/",
-            routes: {
-              "/first": (final context) => Container(),
-              "/second": (final context) => Container(),
+            routes: <String, WidgetBuilder>{
+              "/first": (final BuildContext context) => Container(),
+              "/second": (final BuildContext context) => Container(),
             },
           ),
         ),
       ];
 
-  @override
   Widget build(final BuildContext context) => Scaffold(
         body: PersistentTabView(
           context,
@@ -127,9 +117,8 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
 
 class CustomNavBarWidget extends StatelessWidget {
   const CustomNavBarWidget(
-    this.items, {
-    required this.selectedIndex,
-    required this.onItemSelected,
+    this.items, {required this.selectedIndex,
+        required this.onItemSelected, super.key,
   });
 
   final int selectedIndex;
@@ -137,7 +126,7 @@ class CustomNavBarWidget extends StatelessWidget {
   final ValueChanged<int> onItemSelected;
 
   Widget _buildItem(
-          final PersistentBottomNavBarItem item, final bool isSelected) =>
+          final PersistentBottomNavBarItem item, final bool isSelected,) =>
       Container(
         alignment: Alignment.center,
         height: kBottomNavigationBarHeight,
@@ -151,7 +140,8 @@ class CustomNavBarWidget extends StatelessWidget {
                     size: 26,
                     color: isSelected
                         ? (item.activeColorSecondary ?? item.activeColorPrimary)
-                        : item.inactiveColorPrimary ?? item.activeColorPrimary),
+                        : item.inactiveColorPrimary ??
+                        item.activeColorPrimary,),
                 child: isSelected ? item.icon : item.inactiveIcon ?? item.icon,
               ),
             ),
@@ -168,10 +158,10 @@ class CustomNavBarWidget extends StatelessWidget {
                               item.activeColorPrimary)
                           : item.inactiveColorPrimary,
                       fontWeight: FontWeight.w400,
-                      fontSize: 12),
-                )),
+                      fontSize: 12,),
+                ),),
               ),
-            )
+            ),
           ],
         ),
       );
