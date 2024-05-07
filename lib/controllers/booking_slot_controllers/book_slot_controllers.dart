@@ -3,27 +3,30 @@ import "package:get/get.dart";
 class BookSlotController extends GetxController {
 
   Rx<DateTime> selectedDate = Rx<DateTime>(DateTime.now());
-  RxString dropDownValue = RxString("");
+  RxString dropDownValue = "".obs;
   RxInt value = RxInt(-1);
-  RxDouble sliderSel = RxDouble(10.0);
+  RxDouble sliderSel = 10.0.obs;
 
-  // Method to update the selected date
   void updateSelectedDate(DateTime date) {
-    selectedDate.value = date;
+    selectedDate(date);
   }
 
   void updateDropDownValue(String val) {
-    dropDownValue.value = val;
+    dropDownValue(val);
   }
 
-  // Method to update the selected value
-  void updateValue(int? val) {
-    value.value = val ?? -1;
+
+  void updateValue(val) {
+    if (val is bool && !val) {
+      value(-1);
+    } else {
+      value(val ?? -1);
+    }
   }
 
-  // Method to update the selected slider value
+
   void updateSliderValue(double value) {
-    sliderSel.value = value;
+    sliderSel(value);
   }
 
 }

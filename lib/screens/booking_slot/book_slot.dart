@@ -11,10 +11,7 @@ import "package:syncfusion_flutter_sliders/sliders.dart";
 
 
 class BookSlot extends GetView<BookSlotController> {
-   BookSlot({super.key});
-
-  @override
-  final BookSlotController controller = Get.put(BookSlotController());
+   const BookSlot({super.key});
 
 
   selectDate(BuildContext context) async {
@@ -181,7 +178,9 @@ class BookSlot extends GetView<BookSlotController> {
                             },
                           ).toList(),
                           onChanged: (String? val) {
-                            controller.dropDownValue.value;
+                            if(val != null) {
+                              controller.updateDropDownValue(val);
+                            }
                           },
                         ),
                       ),
@@ -229,7 +228,7 @@ class BookSlot extends GetView<BookSlotController> {
                     label: const Text("Afternoon"),
                     selected: controller.value.value == 1,
                     onSelected: (bool selected) {
-                      controller.updateValue(selected ? 1 : null);
+                      controller.updateValue(selected ? 1 : false);
                     },
                   ),
                   const SizedBox(
@@ -242,7 +241,7 @@ class BookSlot extends GetView<BookSlotController> {
                     label: const Text("Evening"),
                     selected: controller.value.value == 2,
                     onSelected: (bool selected) {
-                      controller.updateValue(selected ? 2 : null);
+                      controller.updateValue(selected ? 2 : false);
                     },
                   ),
                   const SizedBox(
@@ -255,7 +254,7 @@ class BookSlot extends GetView<BookSlotController> {
                     label: const Text("Night"),
                     selected: controller.value.value == 3,
                     onSelected: (bool selected) {
-                      controller.updateValue(selected ? 3 : null);
+                      controller.updateValue(selected ? 3 : false);
                     },
                   ),
                 ],
@@ -319,7 +318,9 @@ class BookSlot extends GetView<BookSlotController> {
                         },
                       ).toList(),
                       onChanged: (String? val) {
-                        controller.updateDropDownValue(val!);
+                        if(val != null) {
+                          controller.updateDropDownValue(val);
+                        }
                       },
                     ),
                   ),
@@ -376,18 +377,17 @@ class BookSlot extends GetView<BookSlotController> {
                   width: MediaQuery.sizeOf(context).width / 1.3,
                   child: SfSlider(
                     activeColor: Colors.green,
-                    min: 0.0,
                     max: 20.0,
                     value: controller.sliderSel.value,
                     interval: 5,
                     stepSize: 1,
-
-                    showTicks: false,
                     showLabels: true,
                     enableTooltip: true,
                     minorTicksPerInterval: 5,
                     onChanged: (value) {
-                      controller.updateSliderValue(value);
+                      if(value != null) {
+                        controller.updateSliderValue(value);
+                      }
                     },
                   ),
                 ),

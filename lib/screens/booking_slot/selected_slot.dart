@@ -115,7 +115,9 @@ class SelectedSlot extends GetView<SelectedSlotController> {
                       groupValue: controller.selectedOption.value,
                       activeColor: Colors.green,
                       onChanged: (int? value) {
-                        controller.setSelectedOption(value!);
+                        if(value != null) {
+                          controller.setSelectedOption(value);
+                        }
                       },
                     ),
                   ],
@@ -194,7 +196,9 @@ class SelectedSlot extends GetView<SelectedSlotController> {
                       groupValue: controller.selectedOption.value,
                       activeColor: Colors.green,
                       onChanged: (int? value) {
-                        controller.setSelectedOption(value!);
+                        if(value != null) {
+                          controller.setSelectedOption(value);
+                        }
                       },
                     ),
                   ],
@@ -273,7 +277,9 @@ class SelectedSlot extends GetView<SelectedSlotController> {
                       groupValue: controller.selectedOption.value,
                       activeColor: Colors.green,
                       onChanged: (int? value) {
-                        controller.setSelectedOption(value!);
+                        if(value != null) {
+                          controller.setSelectedOption(value);
+                        }
                       },
                     ),
                   ],
@@ -352,7 +358,9 @@ class SelectedSlot extends GetView<SelectedSlotController> {
                       groupValue: controller.selectedOption.value,
                       activeColor: Colors.green,
                       onChanged: (int? value) {
-                        controller.setSelectedOption(value!);
+                        if(value != null) {
+                          controller.setSelectedOption(value);
+                        }
                       },
                     ),
                   ],
