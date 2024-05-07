@@ -87,6 +87,23 @@ class EnLanguage {
         "wheat also provides substantial amounts of a number of"
         " components which are essential or beneficial for "
         "health, notabl, and phytochemicals.",
+    AppLanguageKeys().strAdd: "Add to Cart",
+    AppLanguageKeys().strPrice: "Price",
+    AppLanguageKeys().strRatings: "Ratings & Review",
+    AppLanguageKeys().strHighlight1: "Highlight 1",
+    AppLanguageKeys().strHightlightDescription: "Hightlight description",
+    AppLanguageKeys().strCrop: "Crop",
+    AppLanguageKeys().strSlot: "Slot",
+    AppLanguageKeys().strLivePending: "Live/Pending Order",
+    AppLanguageKeys().strAshutoshPatil: "Ashutosh Patil",
+    AppLanguageKeys().strAddress: "Nashik, Maharashtra",
+    AppLanguageKeys().strLocation: "Nashik",
+    AppLanguageKeys().strlocation2: "Dhule",
+    AppLanguageKeys().strProgress: "Work In Progress",
+    AppLanguageKeys().strName: "Name",
+    AppLanguageKeys().strAddress1: "Address",
+    AppLanguageKeys().strContact: "Contact",
+    AppLanguageKeys().strBillAmount: "Bill/Amount",
   };
 
 }

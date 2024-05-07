@@ -75,4 +75,22 @@ class AppLanguageKeys {
   final String strHighlights = "strHighlights";
   final String strKrishnaAgarwal = "strKrishnaAgarwal";
   final String strText2 = "strText2";
+  final String strAdd = "strAdd";
+  final String strPrice = "strPrice";
+  final String strRatings = "strRatings";
+  final String strHighlight1 = "strHighlight1";
+  final String strHightlightDescription = "strHightlightDescription";
+  final String strCrop = "strCrop";
+  final String strSlot = "strSlot";
+  final String strLivePending = "strLivePending";
+  final String strAshutoshPatil = "strAshutoshPatil";
+  final String strMahindra = "strMahindra";
+  final String strAddress = "strAddress";
+  final String strLocation = "strLocation";
+  final String strlocation2 = "strlocation2";
+  final String strProgress = "strProgress";
+  final String strName = "strName";
+  final String strAddress1 = "strAddress1";
+  final String strContact = "strContact";
+  final String strBillAmount = "strBillAmount";
 }

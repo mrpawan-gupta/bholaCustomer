@@ -24,8 +24,7 @@ class SelectedSlot extends GetView<SelectedSlotController> {
         centerTitle: true,
         titleSpacing: 0,
         title: TextWidget(
-          text: "${AppLanguageKeys().strQuote.tr}, "
-              "Quote",
+          text: AppLanguageKeys().strQuote.tr,
           color: Colors.black,
           size: 25,
           fontWeight: FontWeight.bold,
@@ -39,8 +38,7 @@ class SelectedSlot extends GetView<SelectedSlotController> {
             Align(
               alignment: Alignment.topLeft,
               child: TextWidget(
-                text: "${AppLanguageKeys().strSelect_Slot.tr}, "
-                    "Select Slot",
+                text: AppLanguageKeys().strSelect_Slot.tr,
                 color: Colors.black,
                 size: 20,
                 fontWeight: FontWeight.bold,
@@ -83,8 +81,7 @@ class SelectedSlot extends GetView<SelectedSlotController> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             TextWidget(
-                              text: "${AppLanguageKeys().strMorning.tr}, "
-                                  "Morning",
+                              text: AppLanguageKeys().strMorning.tr,
                               color: Colors.black,
                               size: 16,
                               fontWeight: FontWeight.bold,
@@ -96,8 +93,7 @@ class SelectedSlot extends GetView<SelectedSlotController> {
                             Row(
                               children: <Widget>[
                                 TextWidget(
-                                  text: "${AppLanguageKeys().strRent.tr}, "
-                                      "Rent will be",
+                                  text: AppLanguageKeys().strRent.tr,
                                   color: Colors.black,
                                   size: 14,
                                   fontWeight: FontWeight.w400,
@@ -166,8 +162,7 @@ class SelectedSlot extends GetView<SelectedSlotController> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             TextWidget(
-                              text: "${AppLanguageKeys().strAfternoon.tr}, "
-                                  "Afternoon",
+                              text: AppLanguageKeys().strAfternoon.tr,
                               color: Colors.black,
                               size: 16,
                               fontWeight: FontWeight.bold,
@@ -179,8 +174,7 @@ class SelectedSlot extends GetView<SelectedSlotController> {
                             Row(
                               children: <Widget>[
                                 TextWidget(
-                                  text: "${AppLanguageKeys().strRent.tr}, "
-                                      "Rent will be",
+                                  text: AppLanguageKeys().strRent.tr,
                                   color: Colors.black,
                                   size: 14,
                                   fontWeight: FontWeight.w400,
@@ -249,8 +243,7 @@ class SelectedSlot extends GetView<SelectedSlotController> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             TextWidget(
-                              text: "${AppLanguageKeys().strEvening.tr}, "
-                                  "Evening",
+                              text: AppLanguageKeys().strEvening.tr,
                               color: Colors.black,
                               size: 16,
                               fontWeight: FontWeight.bold,
@@ -262,8 +255,7 @@ class SelectedSlot extends GetView<SelectedSlotController> {
                             Row(
                               children: <Widget>[
                                 TextWidget(
-                                  text: "${AppLanguageKeys().strRent.tr}, "
-                                      "Rent will be",
+                                  text: AppLanguageKeys().strRent.tr,
                                   color: Colors.black,
                                   size: 14,
                                   fontWeight: FontWeight.w400,
@@ -332,8 +324,7 @@ class SelectedSlot extends GetView<SelectedSlotController> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             TextWidget(
-                              text: "${AppLanguageKeys().strNight.tr}, "
-                                  "Night",
+                              text: AppLanguageKeys().strNight.tr,
                               color: Colors.black,
                               size: 16,
                               fontWeight: FontWeight.bold,
@@ -345,8 +336,7 @@ class SelectedSlot extends GetView<SelectedSlotController> {
                             Row(
                               children: <Widget>[
                                 TextWidget(
-                                  text: "${AppLanguageKeys().strRent.tr}, "
-                                      "Rent will be",
+                                  text: AppLanguageKeys().strRent.tr,
                                   color: Colors.black,
                                   size: 14,
                                   fontWeight: FontWeight.w400,
@@ -396,8 +386,7 @@ class SelectedSlot extends GetView<SelectedSlotController> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text("${AppLanguageKeys().strBook_Service.tr}, "
-                  "Book Service".toUpperCase(),
+                      Text(AppLanguageKeys().strBook_Service.tr.toUpperCase(),
                           style: const TextStyle(
                               fontSize: 15, fontWeight: FontWeight.bold,),),
                       const SizedBox(

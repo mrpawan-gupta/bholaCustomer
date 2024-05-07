@@ -10,8 +10,8 @@ import "package:get/get.dart";
 import "package:get/get_state_manager/src/simple/get_view.dart";
 
 
-class ProductDetailPage extends GetView<ProductDetailPageController> {
-  const ProductDetailPage({super.key});
+class ProductDetailScreen extends GetView<ProductDetailController> {
+  const ProductDetailScreen({super.key});
 
 
   @override
@@ -133,7 +133,7 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                                     color: Colors.grey.shade400,
                                     child: Image.asset(
                                         AppAssetsImages.product,
-                                        fit: BoxFit.cover),
+                                        fit: BoxFit.cover,),
                                   ),
                                 ),
                               ),
@@ -161,7 +161,7 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                 height: 8,
               ),
               TextWidget(
-                text: "${AppLanguageKeys().strAmul.tr}, Amul Cattle Feed",
+                text: AppLanguageKeys().strAmul.tr,
                 color: Colors.black,
                 size: 22,
                 fontWeight: FontWeight.bold,
@@ -180,7 +180,7 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                     width: 20,
                   ),
                   TextWidget(
-                    text: "${AppLanguageKeys().strMRP.tr}, MRP",
+                    text: AppLanguageKeys().strMRP.tr,
                     color: Colors.grey,
                     size: 17,
                     fontWeight: FontWeight.w600,
@@ -231,14 +231,7 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    "${AppLanguageKeys().
-                    strText1.tr}, In addition to being a major source of starch "
-                        "and energy,"
-                        " wheat also provides substantial amounts of a number"
-                        " of components which are essential or beneficial for "
-                        "health, notably protein, vitamins "
-                        "(notably B vitamins), dietary fiber, "
-                        "and phytochemicals.",
+                    AppLanguageKeys().strText1.tr,
                       maxLines: controller.descTextShowFlag ? 8 : 2,
                       textAlign: TextAlign.start,),
                   const SizedBox(
@@ -253,7 +246,7 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                         if (controller.descTextShowFlag)  Row(
                           children: <Widget>[
                             Text(
-                              "${AppLanguageKeys().strReadLess.tr}, Read Less",
+                              AppLanguageKeys().strReadLess.tr,
                               style: const TextStyle(
                                   color: Colors.green,
                                   fontWeight: FontWeight.w600),
@@ -270,7 +263,7 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                         ) else  Row(
                           children: <Widget>[
                             Text(
-                              "${AppLanguageKeys().strReadMore.tr}, Read More",
+                              AppLanguageKeys().strReadMore.tr,
                               style: const TextStyle(
                                   color: Colors.green,
                                   fontWeight: FontWeight.w600,),
@@ -294,8 +287,7 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                 height: 8,
               ),
               TextWidget(
-                text: "${AppLanguageKeys().strDeliveryAddress.tr}"
-                    ", Delivery Address",
+                text: AppLanguageKeys().strDeliveryAddress.tr,
                 color: Colors.black,
                 size: 19,
                 fontWeight: FontWeight.bold,
@@ -319,8 +311,7 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           TextWidget(
-                            text: "${AppLanguageKeys().strRohan.tr}"
-                                ", Rohan Patil",
+                            text: AppLanguageKeys().strRohan.tr,
                             color: Colors.black,
                             size: 16,
                             fontWeight: FontWeight.bold,
@@ -329,9 +320,7 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                           SizedBox(
                             width: MediaQuery.sizeOf(context).width / 1.4,
                             child:  Text(
-                              "${AppLanguageKeys().strText.tr},"
-                                  "Apollo Hospital Nashik, Plot No 1, Nashik, "
-                                  "Maharashtra 422003, India",
+                              AppLanguageKeys().strText.tr,
                               style: const TextStyle(
                                 color: Colors.grey,
                                 fontSize: 16,
@@ -415,16 +404,14 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TextWidget(
-                    text: "${AppLanguageKeys().strSuggested.tr}"
-                        ", Suggested For You",
+                    text: AppLanguageKeys().strSuggested.tr,
                     color: Colors.black,
                     size: 19,
                     fontWeight: FontWeight.bold,
                     isLineThrough: false,
                   ),
                   TextWidget(
-                    text: "${AppLanguageKeys().strSeeAll.tr}"
-                        ", See All",
+                    text: AppLanguageKeys().strSeeAll.tr,
                     color: Colors.black,
                     size: 15,
                     fontWeight: FontWeight.bold,
@@ -462,8 +449,7 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                 height: 20,
               ),
               TextWidget(
-                text: "${AppLanguageKeys().strHighlights.tr}"
-                    ", Highlights",
+                text: AppLanguageKeys().strHighlights.tr,
                 color: Colors.black,
                 size: 19,
                 fontWeight: FontWeight.bold,
@@ -475,23 +461,27 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
               Column(
                 children: <Widget>[
                   ConversationList(
-                      name: "Highlight 1",
-                      messageText: "Hightlight description",
+                      name: AppLanguageKeys().strHighlight1.tr,
+                      messageText: AppLanguageKeys().
+                      strHightlightDescription.tr,
                       imageUrl: AppAssetsImages.banner2,
-                      isMessageRead: false),
+                      isMessageRead: false,),
                   ConversationList(
-                      name: "Highlight 1",
-                      messageText: "Hightlight description",
+                      name: AppLanguageKeys().strHighlight1.tr,
+                      messageText: AppLanguageKeys().
+                      strHightlightDescription.tr,
                       imageUrl: AppAssetsImages.banner2,
-                      isMessageRead: false),
+                      isMessageRead: false,),
                   ConversationList(
-                      name: "Highlight 1",
-                      messageText: "Hightlight description",
+                      name: AppLanguageKeys().strHighlight1.tr,
+                      messageText: AppLanguageKeys().
+                      strHightlightDescription.tr,
                       imageUrl: AppAssetsImages.banner2,
-                      isMessageRead: false),
+                      isMessageRead: false,),
                   ConversationList(
-                      name: "Highlight 1",
-                      messageText: "Hightlight description",
+                      name: AppLanguageKeys().strHighlight1.tr,
+                      messageText: AppLanguageKeys().
+                      strHightlightDescription.tr,
                       imageUrl: AppAssetsImages.banner2,
                       isMessageRead: false,),
                 ],
@@ -503,7 +493,7 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   TextWidget(
-                    text: "Ratings & Review",
+                    text: AppLanguageKeys().strRatings.tr,
                     color: Colors.black,
                     size: 19,
                     fontWeight: FontWeight.bold,
@@ -778,8 +768,7 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                     leading: const CircleAvatar(
                       backgroundColor: Color(0xff764abc),
                     ),
-                    title: Text("${AppLanguageKeys().strKrishnaAgarwal.tr}"
-                        ", Krishna Agarwal",),
+                    title: Text(AppLanguageKeys().strKrishnaAgarwal.tr,),
                     subtitle: const Row(
                       children: <Widget>[
                         Icon(
@@ -816,27 +805,23 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                     trailing: const Icon(Icons.more_vert),
                   ),
                   Text(
-                    "${AppLanguageKeys().strText2.tr}"
-                        ", In addition to being a major source of starch and energy, "
-                        "wheat also provides substantial amounts of a number of"
-                        " components which are essential or beneficial for "
-                        "health, notabl, and phytochemicals.",
+                    AppLanguageKeys().strText2.tr,
                   ),
                 ],
               ),
               const SizedBox(height: 10,),
               const Divider(),
               const SizedBox(height: 5,),
-              const Column(
+               Column(
                 children: <Widget>[
-                  ListTile(
+                   ListTile(
                     contentPadding: EdgeInsets.zero,
-                    leading: CircleAvatar(
+                    leading: const CircleAvatar(
                       backgroundColor: Color(0xff764abc),
                     ),
-                    title: Text("Krishna Agarwal"),
-                    subtitle: Row(
-                      children: [
+                    title: Text(AppLanguageKeys().strKrishnaAgarwal.tr),
+                    subtitle: const Row(
+                      children: <Widget>[
                         Icon(
                           Icons.star,
                           color: Colors.orange,
@@ -871,10 +856,7 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                     trailing: Icon(Icons.more_vert),
                   ),
                   Text(
-                    "In addition to being a major source of starch and energy, "
-                        "wheat also provides substantial amounts of a number of"
-                        " components which are essential or beneficial for "
-                        "health, notabl, and phytochemicals.",
+                      AppLanguageKeys().strText2.tr,
                   ),
                 ],
               ),
@@ -888,7 +870,7 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       TextWidget(
-                        text: "Price",
+                        text: AppLanguageKeys().strPrice.tr,
                         color: Colors.black,
                         size: 15,
                         fontWeight: FontWeight.w500,
@@ -929,7 +911,7 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text(
-                                "Add to Cart".toUpperCase(),
+                            AppLanguageKeys().strAdd.tr.toUpperCase(),
                                 style: const TextStyle(fontSize: 15,
                                     fontWeight: FontWeight.bold,),
                             ),
