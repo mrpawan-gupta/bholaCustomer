@@ -3,8 +3,10 @@ import "package:customer/screens/product_details/cart.dart";
 import "package:customer/screens/widgets/ConversationListWidgets.dart";
 import "package:customer/screens/widgets/textWidgets.dart";
 import "package:customer/utils/app_assets_images.dart";
+import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
+import "package:get/get.dart";
 import "package:get/get_state_manager/src/simple/get_view.dart";
 
 
@@ -159,7 +161,7 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                 height: 8,
               ),
               TextWidget(
-                text: "Amul Cattle Feed",
+                text: "${AppLanguageKeys().strAmul.tr}, Amul Cattle Feed",
                 color: Colors.black,
                 size: 22,
                 fontWeight: FontWeight.bold,
@@ -178,7 +180,7 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                     width: 20,
                   ),
                   TextWidget(
-                    text: "MRP",
+                    text: "${AppLanguageKeys().strMRP.tr}, MRP",
                     color: Colors.grey,
                     size: 17,
                     fontWeight: FontWeight.w600,
@@ -229,12 +231,14 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                      "In addition to being a major source of starch and energy,"
-                          " wheat also provides substantial amounts of a number"
-                          " of components which are essential or beneficial for "
-                          "health, notably protein, vitamins "
-                          "(notably B vitamins), dietary fiber, "
-                          "and phytochemicals.",
+                    "${AppLanguageKeys().
+                    strText1.tr}, In addition to being a major source of starch "
+                        "and energy,"
+                        " wheat also provides substantial amounts of a number"
+                        " of components which are essential or beneficial for "
+                        "health, notably protein, vitamins "
+                        "(notably B vitamins), dietary fiber, "
+                        "and phytochemicals.",
                       maxLines: controller.descTextShowFlag ? 8 : 2,
                       textAlign: TextAlign.start,),
                   const SizedBox(
@@ -246,35 +250,35 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                     },
                     child: Row(
                       children: <Widget>[
-                        if (controller.descTextShowFlag) const Row(
+                        if (controller.descTextShowFlag)  Row(
                           children: <Widget>[
                             Text(
-                              "Read Less",
-                              style: TextStyle(
+                              "${AppLanguageKeys().strReadLess.tr}, Read Less",
+                              style: const TextStyle(
                                   color: Colors.green,
                                   fontWeight: FontWeight.w600),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 3,
                             ),
-                            Icon(
+                            const Icon(
                               Icons.arrow_drop_down_sharp,
                               color: Colors.green,
                               size: 30,
                             ),
                           ],
-                        ) else const Row(
+                        ) else  Row(
                           children: <Widget>[
                             Text(
-                              "Read More",
-                              style: TextStyle(
+                              "${AppLanguageKeys().strReadMore.tr}, Read More",
+                              style: const TextStyle(
                                   color: Colors.green,
                                   fontWeight: FontWeight.w600,),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 3,
                             ),
-                            Icon(
+                            const Icon(
                               Icons.arrow_drop_down_sharp,
                               color: Colors.green,
                               size: 30,
@@ -290,7 +294,8 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                 height: 8,
               ),
               TextWidget(
-                text: "Delivery Address",
+                text: "${AppLanguageKeys().strDeliveryAddress.tr}"
+                    ", Delivery Address",
                 color: Colors.black,
                 size: 19,
                 fontWeight: FontWeight.bold,
@@ -314,7 +319,8 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           TextWidget(
-                            text: "Rohan Patil",
+                            text: "${AppLanguageKeys().strRohan.tr}"
+                                ", Rohan Patil",
                             color: Colors.black,
                             size: 16,
                             fontWeight: FontWeight.bold,
@@ -322,10 +328,11 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                           ),
                           SizedBox(
                             width: MediaQuery.sizeOf(context).width / 1.4,
-                            child: const Text(
-                              "Apollo Hospital Nashik, Plot No 1, Nashik,"
-                                  " Maharashtra 422003, India",
-                              style: TextStyle(
+                            child:  Text(
+                              "${AppLanguageKeys().strText.tr},"
+                                  "Apollo Hospital Nashik, Plot No 1, Nashik, "
+                                  "Maharashtra 422003, India",
+                              style: const TextStyle(
                                 color: Colors.grey,
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -408,14 +415,16 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TextWidget(
-                    text: "Suggested For You",
+                    text: "${AppLanguageKeys().strSuggested.tr}"
+                        ", Suggested For You",
                     color: Colors.black,
                     size: 19,
                     fontWeight: FontWeight.bold,
                     isLineThrough: false,
                   ),
                   TextWidget(
-                    text: "See All",
+                    text: "${AppLanguageKeys().strSeeAll.tr}"
+                        ", See All",
                     color: Colors.black,
                     size: 15,
                     fontWeight: FontWeight.bold,
@@ -453,7 +462,8 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                 height: 20,
               ),
               TextWidget(
-                text: "Highlights",
+                text: "${AppLanguageKeys().strHighlights.tr}"
+                    ", Highlights",
                 color: Colors.black,
                 size: 19,
                 fontWeight: FontWeight.bold,
@@ -761,15 +771,16 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                   ),
                 ),
               ),
-              const Column(
+               Column(
                 children: <Widget>[
                   ListTile(
                     contentPadding: EdgeInsets.zero,
-                    leading: CircleAvatar(
+                    leading: const CircleAvatar(
                       backgroundColor: Color(0xff764abc),
                     ),
-                    title: Text("Krishna Agarwal"),
-                    subtitle: Row(
+                    title: Text("${AppLanguageKeys().strKrishnaAgarwal.tr}"
+                        ", Krishna Agarwal",),
+                    subtitle: const Row(
                       children: <Widget>[
                         Icon(
                           Icons.star,
@@ -802,10 +813,11 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                         Text("2 mins ago"),
                       ],
                     ),
-                    trailing: Icon(Icons.more_vert),
+                    trailing: const Icon(Icons.more_vert),
                   ),
                   Text(
-                    "In addition to being a major source of starch and energy, "
+                    "${AppLanguageKeys().strText2.tr}"
+                        ", In addition to being a major source of starch and energy, "
                         "wheat also provides substantial amounts of a number of"
                         " components which are essential or beneficial for "
                         "health, notabl, and phytochemicals.",

@@ -2,8 +2,10 @@ import "package:customer/controllers/product_detail_page_controllers/cart_contro
 import "package:customer/screens/widgets/Checkout.dart";
 import "package:customer/screens/widgets/textWidgets.dart";
 import "package:customer/utils/app_assets_images.dart";
+import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
+import "package:get/get.dart";
 import "package:get/get_state_manager/src/simple/get_view.dart";
 
 
@@ -14,24 +16,24 @@ class Cart extends GetView<CartController> {
   Widget slideLeftBackground() {
     return Container(
       color: Colors.red,
-      child: const Align(
+      child:  Align(
         alignment: Alignment.centerRight,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-            Icon(
+            const Icon(
               Icons.delete,
               color: Colors.white,
             ),
             Text(
-              " Delete",
-              style: TextStyle(
+              "${AppLanguageKeys().strDelete.tr}, Delete",
+              style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w700,
               ),
               textAlign: TextAlign.right,
             ),
-            SizedBox(
+            const SizedBox(
               width: 20,
             ),
           ],
@@ -52,7 +54,7 @@ class Cart extends GetView<CartController> {
         centerTitle: true,
         titleSpacing: 0,
         title: TextWidget(
-          text: "Shopping Bag",
+          text: "${AppLanguageKeys().strShoppingBag.tr}, Shopping Bag",
           color: Colors.black,
           size: 25,
           fontWeight: FontWeight.bold,
@@ -107,7 +109,8 @@ class Cart extends GetView<CartController> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     TextWidget(
-                                      text: "Tractor",
+                                      text: "${AppLanguageKeys().strTractor.tr}"
+                                          ", Tractor",
                                       color: Colors.green,
                                       size: 16,
                                       fontWeight: FontWeight.bold,
@@ -117,7 +120,8 @@ class Cart extends GetView<CartController> {
                                       height: 5,
                                     ),
                                     TextWidget(
-                                      text: "Farm Tool",
+                                      text: "${AppLanguageKeys().strFarmTool.tr}"
+                                          ", Farm Tool",
                                       color: Colors.black,
                                       size: 14,
                                       fontWeight: FontWeight.w400,
@@ -216,7 +220,8 @@ class Cart extends GetView<CartController> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   TextWidget(
-                                    text: "Tractor",
+                                    text: "${AppLanguageKeys().strTractor.tr}"
+                                        ", Tractor",
                                     color: Colors.green,
                                     size: 16,
                                     fontWeight: FontWeight.bold,
@@ -226,7 +231,8 @@ class Cart extends GetView<CartController> {
                                     height: 5,
                                   ),
                                   TextWidget(
-                                    text: "Farm Tool",
+                                    text: "${AppLanguageKeys().strFarmTool.tr}"
+                                        ", Farm Tool",
                                     color: Colors.black,
                                     size: 14,
                                     fontWeight: FontWeight.w400,
@@ -290,7 +296,8 @@ class Cart extends GetView<CartController> {
                 height: 15,
               ),
               TextWidget(
-                text: "Delivery Address",
+                text: "${AppLanguageKeys().strDeliveryAddress.tr}"
+                    ", Delivery Address",
                 color: Colors.black,
                 size: 19,
                 fontWeight: FontWeight.bold,
@@ -314,7 +321,8 @@ class Cart extends GetView<CartController> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           TextWidget(
-                            text: "Rohan Patil",
+                            text: "${AppLanguageKeys().strRohan.tr}"
+                                ", Rohan Patil",
                             color: Colors.black,
                             size: 16,
                             fontWeight: FontWeight.bold,
@@ -322,10 +330,11 @@ class Cart extends GetView<CartController> {
                           ),
                           SizedBox(
                             width: MediaQuery.sizeOf(context).width / 1.4,
-                            child: const Text(
-                              "Apollo Hospital Nashik, Plot No 1, Nashik, "
+                            child:  Text(
+                              "${AppLanguageKeys().strText.tr},"
+                                  "Apollo Hospital Nashik, Plot No 1, Nashik, "
                                   "Maharashtra 422003, India",
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.grey,
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -359,7 +368,8 @@ class Cart extends GetView<CartController> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      const Text("Apply Coupon Code"),
+                       Text("${AppLanguageKeys().strCoupon.tr},"
+                          "Apply Coupon Code",),
                       Image.asset(
                         AppAssetsImages.blackright,
                         height: 25,
@@ -380,7 +390,8 @@ class Cart extends GetView<CartController> {
                 height: 20,
               ),
               TextWidget(
-                text: "Order Payment Details",
+                text: "${AppLanguageKeys().strDetails.tr},"
+                    "Order Payment Details",
                 color: Colors.black,
                 size: 19,
                 fontWeight: FontWeight.bold,
@@ -396,7 +407,8 @@ class Cart extends GetView<CartController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       TextWidget(
-                        text: "Order Amount",
+                        text: "${AppLanguageKeys().strOrderAmount.tr},"
+                            "Order Amount",
                         color: Colors.black,
                         size: 15,
                         fontWeight: FontWeight.w500,
@@ -406,14 +418,16 @@ class Cart extends GetView<CartController> {
                       Row(
                         children: <Widget>[
                           TextWidget(
-                            text: "Convenience",
+                            text: "${AppLanguageKeys().strConvenience.tr},"
+                                "Convenience",
                             color: Colors.black,
                             size: 15,
                             fontWeight: FontWeight.w500,
                             isLineThrough: false,
                           ),
                           TextWidget(
-                            text: "     Know More",
+                            text: "${AppLanguageKeys().strKnow.tr},"
+                                "Know More",
                             color: Colors.green,
                             size: 13,
                             fontWeight: FontWeight.w500,
@@ -423,7 +437,8 @@ class Cart extends GetView<CartController> {
                       ),
                       const SizedBox(height: 6,),
                       TextWidget(
-                        text: "Delivery Fee",
+                        text: "${AppLanguageKeys().strDelivery.tr},"
+                            "Delivery Fee",
                         color: Colors.black,
                         size: 15,
                         fontWeight: FontWeight.w500,
@@ -443,7 +458,8 @@ class Cart extends GetView<CartController> {
                       ),
                       const SizedBox(height: 6,),
                       TextWidget(
-                        text: "Apply Coupon",
+                        text: "${AppLanguageKeys().strApply.tr},"
+                            "Apply Coupon",
                         color: Colors.green,
                         size: 15,
                         fontWeight: FontWeight.w500,
@@ -451,7 +467,8 @@ class Cart extends GetView<CartController> {
                       ),
                       const SizedBox(height: 6,),
                       TextWidget(
-                        text: "Free",
+                        text: "${AppLanguageKeys().strFree.tr},"
+                            "Free",
                         color: Colors.green,
                         size: 15,
                         fontWeight: FontWeight.w500,
@@ -476,7 +493,8 @@ class Cart extends GetView<CartController> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   TextWidget(
-                    text: "Order Total",
+                    text: "${AppLanguageKeys().strOrder.tr},"
+                        "Order Total",
                     color: Colors.black,
                     size: 16,
                     fontWeight: FontWeight.bold,
@@ -506,7 +524,8 @@ class Cart extends GetView<CartController> {
                         isLineThrough: false,
                       ),
                       TextWidget(
-                        text: "View Details",
+                        text: "${AppLanguageKeys().strView.tr},"
+                            "View Details",
                         color: Colors.black,
                         size: 12,
                         fontWeight: FontWeight.bold,
@@ -534,7 +553,8 @@ class Cart extends GetView<CartController> {
                               builder: (BuildContext context) =>
                               const Checkout(),),);
                         },
-                        child: Text("Proceed T0 Payment".toUpperCase(),
+                        child: Text("${AppLanguageKeys().strProceed.tr},"
+                            " Proceed T0 Payment".toUpperCase(),
                             style: const TextStyle(
                                 fontSize: 15, fontWeight: FontWeight.bold,),),),
                   ),

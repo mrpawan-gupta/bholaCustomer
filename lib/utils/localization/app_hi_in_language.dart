@@ -10,5 +10,6 @@ class HiLanguage {
 
   Map<String, String> appHiINLanguage = <String, String>{
     AppLanguageKeys().strHelloWorld: "हैलो वर्ल्ड",
+    AppLanguageKeys().strBhola: "bhola",
   };
 }

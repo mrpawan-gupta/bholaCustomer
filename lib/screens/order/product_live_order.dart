@@ -68,11 +68,11 @@ class ProductLivePendingOrder extends GetView<ProductLiveOrderController> {
                           ),
                         ),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
