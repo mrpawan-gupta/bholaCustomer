@@ -1,13 +1,14 @@
 import "package:customer/controllers/product_detail_page_controllers/product_detail_page_controllers.dart";
-import "package:customer/screens/product_details/cart.dart";
 import "package:customer/screens/widgets/ConversationListWidgets.dart";
 import "package:customer/screens/widgets/textWidgets.dart";
+import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_assets_images.dart";
+import "package:customer/utils/app_colors.dart";
+import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
-import "package:get/get_state_manager/src/simple/get_view.dart";
 
 
 class ProductDetailScreen extends GetView<ProductDetailController> {
@@ -29,7 +30,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                   Container(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: Colors.grey.shade400,),
+                        color: AppColors().appGreyColor,),
                     height: 440,
                     width: MediaQuery.sizeOf(context).width,
                   ),
@@ -41,7 +42,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                         width: 30,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(7),
-                            color: Colors.white,),
+                            color: AppColors().appWhiteColor,),
                         child: const Icon(
                           CupertinoIcons.back,
                           size: 20,
@@ -53,7 +54,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                       child: Image.asset(
                         AppAssetsImages.back,
                         height: 50,
-                        color: Colors.black87,
+                        color: AppColors().appBlackColor,
                       ),),
                   Positioned(
                       top: 15,
@@ -76,7 +77,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                         width: MediaQuery.sizeOf(context).width / 1.2,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            color: Colors.white,),
+                            color: AppColors().appWhiteColor,),
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(6, 2, 6, 2),
                           child: Row(
@@ -86,8 +87,22 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                                 borderRadius: BorderRadius.circular(12),
                                 // Image border
                                 child: SizedBox.fromSize(
-                                  size: const Size.fromRadius(30), // Image radius
-                                  child: Container(
+                                  size: const Size.fromRadius(30),
+                                  child: ColoredBox(
+                                    color: AppColors().appGreyColor,
+                                    child: Image.asset(
+                                        AppAssetsImages.product,
+                                        fit: BoxFit.cover,),
+                                  ),
+                                ),
+                              ),
+
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                // Image border
+                                child: SizedBox.fromSize(
+                                  size: const Size.fromRadius(30),
+                                  child: ColoredBox(
                                     color: Colors.grey.shade400,
                                     child: Image.asset(
                                         AppAssetsImages.product,
@@ -100,8 +115,22 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                                 borderRadius: BorderRadius.circular(12),
                                 // Image border
                                 child: SizedBox.fromSize(
-                                  size: const Size.fromRadius(30), // Image radius
-                                  child: Container(
+                                  size: const Size.fromRadius(30),
+                                  child: ColoredBox(
+                                    color: AppColors().appGreyColor,
+                                    child: Image.asset(
+                                        AppAssetsImages.product,
+                                        fit: BoxFit.cover,),
+                                  ),
+                                ),
+                              ),
+
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                // Image border
+                                child: SizedBox.fromSize(
+                                  size: const Size.fromRadius(30),
+                                  child: ColoredBox(
                                     color: Colors.grey.shade400,
                                     child: Image.asset(
                                         AppAssetsImages.product,
@@ -114,47 +143,19 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                                 borderRadius: BorderRadius.circular(12),
                                 // Image border
                                 child: SizedBox.fromSize(
-                                  size: const Size.fromRadius(30), // Image radius
-                                  child: Container(
-                                    color: Colors.grey.shade400,
+                                  size: const Size.fromRadius(30),
+                                  child: ColoredBox(
+                                    color: AppColors().appGreyColor,
                                     child: Image.asset(
                                         AppAssetsImages.product,
                                         fit: BoxFit.cover,),
                                   ),
                                 ),
                               ),
-
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(12),
-                                // Image border
-                                child: SizedBox.fromSize(
-                                  size: const Size.fromRadius(30), // Image radius
-                                  child: Container(
-                                    color: Colors.grey.shade400,
-                                    child: Image.asset(
-                                        AppAssetsImages.product,
-                                        fit: BoxFit.cover,),
-                                  ),
-                                ),
-                              ),
-
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(12),
-                                // Image border
-                                child: SizedBox.fromSize(
-                                  size: const Size.fromRadius(30), // Image radius
-                                  child: Container(
-                                    color: Colors.grey.shade400,
-                                    child: Image.asset(
-                                        AppAssetsImages.product,
-                                        fit: BoxFit.cover,),
-                                  ),
-                                ),
-                              )
                             ],
                           ),
                         ),
-                      )),
+                      ),),
                 ],
               ),
               const SizedBox(
@@ -162,16 +163,16 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
               ),
               TextWidget(
                 text: AppLanguageKeys().strAmul.tr,
-                color: Colors.black,
+                color: AppColors().appBlackColor,
                 size: 22,
                 fontWeight: FontWeight.bold,
                 isLineThrough: false,
               ),
               Row(
-                children: [
+                children: <Widget>[
                   TextWidget(
                     text: "₹199",
-                    color: Colors.black,
+                    color: AppColors().appBlackColor,
                     size: 18,
                     fontWeight: FontWeight.bold,
                     isLineThrough: false,
@@ -191,7 +192,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                   ),
                   TextWidget(
                     text: "₹599",
-                    color: Colors.grey,
+                    color: AppColors().appGreyColor,
                     size: 17,
                     fontWeight: FontWeight.w600,
                     isLineThrough: true,
@@ -201,7 +202,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                   ),
                   TextWidget(
                     text: "(45 % Off)",
-                    color: Colors.orange,
+                    color: AppColors().appOrangeColor,
                     size: 17,
                     fontWeight: FontWeight.bold,
                     isLineThrough: false,
@@ -213,14 +214,14 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
               ),
               Row(
                 children: <Widget>[
-                  const Icon(
+                   Icon(
                     Icons.star,
-                    color: Colors.orange,
+                    color: AppColors().appOrangeColor,
                     size: 15,
                   ),
                   TextWidget(
                     text: "4.5 (355 Reviews)",
-                    color: Colors.grey,
+                    color: AppColors().appGreyColor,
                     size: 14,
                     fontWeight: FontWeight.w500,
                     isLineThrough: false,
@@ -247,16 +248,16 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                           children: <Widget>[
                             Text(
                               AppLanguageKeys().strReadLess.tr,
-                              style: const TextStyle(
-                                  color: Colors.green,
-                                  fontWeight: FontWeight.w600),
+                              style:  TextStyle(
+                                  color: AppColors().appPrimaryColor,
+                                  fontWeight: FontWeight.w600,),
                             ),
                             const SizedBox(
                               width: 3,
                             ),
-                            const Icon(
+                             Icon(
                               Icons.arrow_drop_down_sharp,
-                              color: Colors.green,
+                              color: AppColors().appPrimaryColor,
                               size: 30,
                             ),
                           ],
@@ -264,16 +265,16 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                           children: <Widget>[
                             Text(
                               AppLanguageKeys().strReadMore.tr,
-                              style: const TextStyle(
-                                  color: Colors.green,
+                              style:  TextStyle(
+                                  color: AppColors().appPrimaryColor,
                                   fontWeight: FontWeight.w600,),
                             ),
                             const SizedBox(
                               width: 3,
                             ),
-                            const Icon(
+                             Icon(
                               Icons.arrow_drop_down_sharp,
-                              color: Colors.green,
+                              color: AppColors().appPrimaryColor,
                               size: 30,
                             ),
                           ],
@@ -288,7 +289,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
               ),
               TextWidget(
                 text: AppLanguageKeys().strDeliveryAddress.tr,
-                color: Colors.black,
+                color: AppColors().appBlackColor,
                 size: 19,
                 fontWeight: FontWeight.bold,
                 isLineThrough: false,
@@ -299,7 +300,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
               Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
-                    color: Colors.grey.shade200,),
+                    color: AppColors().appGreyColor,),
                 height: 100,
                 width: MediaQuery.sizeOf(context).width,
                 child: Padding(
@@ -312,7 +313,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                         children: <Widget>[
                           TextWidget(
                             text: AppLanguageKeys().strRohan.tr,
-                            color: Colors.black,
+                            color:AppColors().appBlackColor,
                             size: 16,
                             fontWeight: FontWeight.bold,
                             isLineThrough: false,
@@ -331,11 +332,11 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                           ),
                         ],
                       ),
-                      const Icon(
+                       Icon(
                         Icons.edit_calendar_rounded,
-                        color: Colors.green,
+                        color: AppColors().appPrimaryColor,
                         size: 30,
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -346,7 +347,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
               Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
-                      color: Colors.grey.shade200,),
+                      color: AppColors().appGreyColor,),
                   height: 75,
                   width: MediaQuery.sizeOf(context).width,
                   child: Padding(
@@ -368,14 +369,14 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                               children: <Widget>[
                                 TextWidget(
                                   text: "Free Delivery   | ",
-                                  color: Colors.green,
+                                  color: AppColors().appPrimaryColor,
                                   size: 16,
                                   fontWeight: FontWeight.bold,
                                   isLineThrough: false,
                                 ),
                                 TextWidget(
                                   text: "    Delivery By",
-                                  color: Colors.black,
+                                  color: AppColors().appBlackColor,
                                   size: 16,
                                   fontWeight: FontWeight.w600,
                                   isLineThrough: false,
@@ -387,7 +388,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                             ),
                             TextWidget(
                               text: "6th April 2024",
-                              color: Colors.black,
+                              color: AppColors().appBlackColor,
                               size: 14,
                               fontWeight: FontWeight.w600,
                               isLineThrough: false,
@@ -402,17 +403,17 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
+                children: <Widget>[
                   TextWidget(
                     text: AppLanguageKeys().strSuggested.tr,
-                    color: Colors.black,
+                    color: AppColors().appBlackColor,
                     size: 19,
                     fontWeight: FontWeight.bold,
                     isLineThrough: false,
                   ),
                   TextWidget(
                     text: AppLanguageKeys().strSeeAll.tr,
-                    color: Colors.black,
+                    color: AppColors().appBlackColor,
                     size: 15,
                     fontWeight: FontWeight.bold,
                     isLineThrough: false,
@@ -450,7 +451,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
               ),
               TextWidget(
                 text: AppLanguageKeys().strHighlights.tr,
-                color: Colors.black,
+                color: AppColors().appBlackColor,
                 size: 19,
                 fontWeight: FontWeight.bold,
                 isLineThrough: false,
@@ -494,16 +495,16 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                 children: <Widget>[
                   TextWidget(
                     text: AppLanguageKeys().strRatings.tr,
-                    color: Colors.black,
+                    color: AppColors().appBlackColor,
                     size: 19,
                     fontWeight: FontWeight.bold,
                     isLineThrough: false,
                   ),
-                  const Icon(
+                   Icon(
                     Icons.edit_calendar_rounded,
-                    color: Colors.green,
+                    color: AppColors().appPrimaryColor,
                     size: 30,
-                  )
+                  ),
                 ],
               ),
               const SizedBox(
@@ -512,7 +513,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
               Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
-                    color: Colors.grey.shade200,),
+                    color: AppColors().appGreyColor,),
                 height: 160,
                 width: MediaQuery.sizeOf(context).width,
                 child: Padding(
@@ -527,7 +528,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                             children: <Widget>[
                               TextWidget(
                                 text: "5",
-                                color: Colors.black,
+                                color: AppColors().appBlackColor,
                                 size: 15,
                                 fontWeight: FontWeight.bold,
                                 isLineThrough: false,
@@ -542,16 +543,16 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                               const SizedBox(
                                 width: 8,
                               ),
-                              const SizedBox(
+                               SizedBox(
                                 width: 150,
                                 height: 10,
                                 child: ClipRRect(
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
+                                  const BorderRadius.all(Radius.circular(10)),
                                   child: LinearProgressIndicator(
                                     value: 1,
                                     valueColor: AlwaysStoppedAnimation<Color>(
-                                        Colors.green,),
+                                      AppColors().appPrimaryColor,),
                                     backgroundColor: Color(0xffD6D6D6),
                                   ),
                                 ),
@@ -565,7 +566,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                             children: <Widget>[
                               TextWidget(
                                 text: "4",
-                                color: Colors.black,
+                                color: AppColors().appBlackColor,
                                 size: 15,
                                 fontWeight: FontWeight.bold,
                                 isLineThrough: false,
@@ -580,7 +581,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                               const SizedBox(
                                 width: 8,
                               ),
-                              const SizedBox(
+                               SizedBox(
                                 width: 130,
                                 height: 10,
                                 child: ClipRRect(
@@ -589,7 +590,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                                   child: LinearProgressIndicator(
                                     value: 1,
                                     valueColor: AlwaysStoppedAnimation<Color>(
-                                        Colors.green,),
+                                      AppColors().appPrimaryColor,),
                                     backgroundColor: Color(0xffD6D6D6),
                                   ),
                                 ),
@@ -603,7 +604,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                             children: <Widget>[
                               TextWidget(
                                 text: "3",
-                                color: Colors.black,
+                                color: AppColors().appBlackColor,
                                 size: 15,
                                 fontWeight: FontWeight.bold,
                                 isLineThrough: false,
@@ -618,7 +619,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                               const SizedBox(
                                 width: 8,
                               ),
-                              const SizedBox(
+                               SizedBox(
                                 width: 100,
                                 height: 10,
                                 child: ClipRRect(
@@ -627,7 +628,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                                   child: LinearProgressIndicator(
                                     value: 1,
                                     valueColor: AlwaysStoppedAnimation<Color>(
-                                        Colors.green,),
+                                        AppColors().appPrimaryColor,),
                                     backgroundColor: Color(0xffD6D6D6),
                                   ),
                                 ),
@@ -641,7 +642,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                             children: <Widget>[
                               TextWidget(
                                 text: "2",
-                                color: Colors.black,
+                                color: AppColors().appBlackColor,
                                 size: 15,
                                 fontWeight: FontWeight.bold,
                                 isLineThrough: false,
@@ -656,7 +657,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                               const SizedBox(
                                 width: 8,
                               ),
-                              const SizedBox(
+                               SizedBox(
                                 width: 70,
                                 height: 10,
                                 child: ClipRRect(
@@ -665,7 +666,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                                   child: LinearProgressIndicator(
                                     value: 1,
                                     valueColor: AlwaysStoppedAnimation<Color>(
-                                        Colors.green,),
+                                      AppColors().appPrimaryColor,),
                                     backgroundColor: Color(0xffD6D6D6),
                                   ),
                                 ),
@@ -679,7 +680,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                             children: <Widget>[
                               TextWidget(
                                 text: "1",
-                                color: Colors.black,
+                                color: AppColors().appBlackColor,
                                 size: 15,
                                 fontWeight: FontWeight.bold,
                                 isLineThrough: false,
@@ -694,7 +695,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                               const SizedBox(
                                 width: 8,
                               ),
-                              const SizedBox(
+                               SizedBox(
                                 width: 50,
                                 height: 10,
                                 child: ClipRRect(
@@ -703,11 +704,11 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                                   child: LinearProgressIndicator(
                                     value: 1,
                                     valueColor: AlwaysStoppedAnimation<Color>(
-                                        Colors.green,),
+                                      AppColors().appPrimaryColor,),
                                     backgroundColor: Color(0xffD6D6D6),
                                   ),
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         ],
@@ -718,45 +719,45 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                           children: <Widget>[
                             TextWidget(
                               text: "4.0",
-                              color: Colors.black,
+                              color: AppColors().appBlackColor,
                               size: 30,
                               fontWeight: FontWeight.bold,
                               isLineThrough: false,
                             ),
-                            const Row(
+                             Row(
                               children: <Widget>[
                                 Icon(
                                   Icons.star,
-                                  color: Colors.orange,
+                                  color: AppColors().appOrangeColor,
                                 ),
                                 Icon(
                                   Icons.star,
-                                  color: Colors.orange,
+                                  color: AppColors().appOrangeColor,
                                 ),
                                 Icon(
                                   Icons.star,
-                                  color: Colors.orange,
+                                  color: AppColors().appOrangeColor,
                                 ),
-                                Icon(
+                                 Icon(
                                   Icons.star,
-                                  color: Colors.grey,
+                                  color: AppColors().appGreyColor,
                                 ),
-                                Icon(
+                                 Icon(
                                   Icons.star,
-                                  color: Colors.grey,
+                                  color: AppColors().appGreyColor,
                                 ),
                               ],
                             ),
                             TextWidget(
                               text: "52 Reviews",
-                              color: Colors.black,
+                              color: AppColors().appBlackColor,
                               size: 17,
                               fontWeight: FontWeight.w500,
                               isLineThrough: false,
                             ),
                           ],
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -769,37 +770,37 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                       backgroundColor: Color(0xff764abc),
                     ),
                     title: Text(AppLanguageKeys().strKrishnaAgarwal.tr,),
-                    subtitle: const Row(
+                    subtitle:  Row(
                       children: <Widget>[
                         Icon(
                           Icons.star,
-                          color: Colors.orange,
+                          color: AppColors().appOrangeColor,
                           size: 20,
                         ),
                         Icon(
                           Icons.star,
-                          color: Colors.orange,
+                          color: AppColors().appOrangeColor,
                           size: 20,
                         ),
                         Icon(
                           Icons.star,
-                          color: Colors.orange,
+                          color: AppColors().appOrangeColor,
                           size: 20,
                         ),
-                        Icon(
+                         Icon(
                           Icons.star,
-                          color: Colors.grey,
+                          color: AppColors().appGreyColor,
                           size: 20,
                         ),
-                        Icon(
+                         Icon(
                           Icons.star,
-                          color: Colors.grey,
+                          color: AppColors().appGreyColor,
                           size: 20,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 15,
                         ),
-                        Text("2 mins ago"),
+                        const Text("2 mins ago"),
                       ],
                     ),
                     trailing: const Icon(Icons.more_vert),
@@ -820,40 +821,40 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                       backgroundColor: Color(0xff764abc),
                     ),
                     title: Text(AppLanguageKeys().strKrishnaAgarwal.tr),
-                    subtitle: const Row(
+                    subtitle:  Row(
                       children: <Widget>[
                         Icon(
                           Icons.star,
-                          color: Colors.orange,
+                          color: AppColors().appOrangeColor,
                           size: 20,
                         ),
                         Icon(
                           Icons.star,
-                          color: Colors.orange,
+                          color: AppColors().appOrangeColor,
                           size: 20,
                         ),
                         Icon(
                           Icons.star,
-                          color: Colors.orange,
+                          color: AppColors().appOrangeColor,
                           size: 20,
                         ),
                         Icon(
                           Icons.star,
-                          color: Colors.grey,
+                          color: AppColors().appGreyColor,
                           size: 20,
                         ),
                         Icon(
                           Icons.star,
-                          color: Colors.grey,
+                          color: AppColors().appGreyColor,
                           size: 20,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 15,
                         ),
-                        Text("2 mins ago"),
+                        const Text("2 mins ago"),
                       ],
                     ),
-                    trailing: Icon(Icons.more_vert),
+                    trailing: const Icon(Icons.more_vert),
                   ),
                   Text(
                       AppLanguageKeys().strText2.tr,
@@ -871,14 +872,14 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                     children: <Widget>[
                       TextWidget(
                         text: AppLanguageKeys().strPrice.tr,
-                        color: Colors.black,
+                        color: AppColors().appBlackColor,
                         size: 15,
                         fontWeight: FontWeight.w500,
                         isLineThrough: false,
                       ),
                       TextWidget(
                         text: "₹199",
-                        color: Colors.green,
+                        color: AppColors().appPrimaryColor,
                         size: 20,
                         fontWeight: FontWeight.bold,
                         isLineThrough: false,
@@ -890,22 +891,24 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                     child: ElevatedButton(
                         style: ButtonStyle(
                             foregroundColor:
-                            MaterialStateProperty.all<Color>(Colors.white),
+                            MaterialStateProperty.all<Color>(
+                                AppColors().appWhiteColor,),
                             backgroundColor:
-                            MaterialStateProperty.all<Color>(Colors.green),
+                            MaterialStateProperty.all<Color>(AppColors().appPrimaryColor,),
                             shape:
                             MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10),
-                                    side: const BorderSide(color: Colors.green),
+                                    side:  BorderSide(
+                                      color: AppColors().appPrimaryColor,),
                                 ),
                             ),
                         ),
                         onPressed: () async {
-                          await Navigator.of(context, rootNavigator: true)
-                              .pushReplacement(MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                              const Cart(),),);
+                          await AppNavService().pushNamed(
+                            destination: AppRoutes().cartScreen,
+                            arguments: <String, dynamic>{},
+                          );
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,

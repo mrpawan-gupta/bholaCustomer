@@ -9,8 +9,8 @@ import "package:checkout_screen_ui/ui_components/pay_button.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 
-class Checkout extends StatelessWidget {
-  const Checkout({super.key});
+class CheckoutScreen extends StatelessWidget {
+  const CheckoutScreen({super.key});
 
   /// REQUIRED: (If you are using native pay option)
   ///

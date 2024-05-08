@@ -1,16 +1,16 @@
 import "package:customer/controllers/booking_slot_controllers/selected_slot_controllers.dart";
 import "package:customer/screens/widgets/textWidgets.dart";
 import "package:customer/utils/app_assets_images.dart";
+import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
-import "package:get/get_state_manager/src/simple/get_view.dart";
 
 
 
-class SelectedSlot extends GetView<SelectedSlotController> {
-  const SelectedSlot({super.key});
+class SelectedSlotScreen extends GetView<SelectedSlotController> {
+  const SelectedSlotScreen({super.key});
 
 
   @override
@@ -25,7 +25,7 @@ class SelectedSlot extends GetView<SelectedSlotController> {
         titleSpacing: 0,
         title: TextWidget(
           text: AppLanguageKeys().strQuote.tr,
-          color: Colors.black,
+          color: AppColors().appBlackColor,
           size: 25,
           fontWeight: FontWeight.bold,
           isLineThrough: false,
@@ -39,7 +39,7 @@ class SelectedSlot extends GetView<SelectedSlotController> {
               alignment: Alignment.topLeft,
               child: TextWidget(
                 text: AppLanguageKeys().strSelect_Slot.tr,
-                color: Colors.black,
+                color: AppColors().appBlackColor,
                 size: 20,
                 fontWeight: FontWeight.bold,
                 isLineThrough: false,
@@ -50,11 +50,11 @@ class SelectedSlot extends GetView<SelectedSlotController> {
             ),
             Container(
               decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
+                  border: Border.all(color: AppColors().appGreyColor,),
                   borderRadius: BorderRadius.circular(10),
                   color: controller.selectedOption.value == 1
                       ? Colors.green.shade100
-                      : Colors.grey.shade200,),
+                      : AppColors().appGreyColor,),
               height: 80,
               width: MediaQuery.sizeOf(context).width,
               child: Padding(
@@ -82,7 +82,7 @@ class SelectedSlot extends GetView<SelectedSlotController> {
                           children: <Widget>[
                             TextWidget(
                               text: AppLanguageKeys().strMorning.tr,
-                              color: Colors.black,
+                              color: AppColors().appBlackColor,
                               size: 16,
                               fontWeight: FontWeight.bold,
                               isLineThrough: false,
@@ -94,14 +94,14 @@ class SelectedSlot extends GetView<SelectedSlotController> {
                               children: <Widget>[
                                 TextWidget(
                                   text: AppLanguageKeys().strRent.tr,
-                                  color: Colors.black,
+                                  color: AppColors().appBlackColor,
                                   size: 14,
                                   fontWeight: FontWeight.w400,
                                   isLineThrough: false,
                                 ),
                                 TextWidget(
                                   text: "Rs.1000",
-                                  color: Colors.black,
+                                  color: AppColors().appBlackColor,
                                   size: 14,
                                   fontWeight: FontWeight.w600,
                                   isLineThrough: false,
@@ -115,7 +115,7 @@ class SelectedSlot extends GetView<SelectedSlotController> {
                     Radio<int>(
                       value: 1,
                       groupValue: controller.selectedOption.value,
-                      activeColor: Colors.green,
+                      activeColor: AppColors().appPrimaryColor,
                       onChanged: (int? value) {
                         if(value != null) {
                           controller.setSelectedOption(value);
@@ -131,11 +131,11 @@ class SelectedSlot extends GetView<SelectedSlotController> {
             ),
             Container(
               decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
+                  border: Border.all(color: AppColors().appGreyColor,),
                   borderRadius: BorderRadius.circular(10),
                   color: controller.selectedOption.value == 2
                       ? Colors.green.shade100
-                      : Colors.grey.shade200,),
+                      : AppColors().appGreyColor,),
               height: 80,
               width: MediaQuery.sizeOf(context).width,
               child: Padding(
@@ -163,7 +163,7 @@ class SelectedSlot extends GetView<SelectedSlotController> {
                           children: <Widget>[
                             TextWidget(
                               text: AppLanguageKeys().strAfternoon.tr,
-                              color: Colors.black,
+                              color: AppColors().appBlackColor,
                               size: 16,
                               fontWeight: FontWeight.bold,
                               isLineThrough: false,
@@ -175,14 +175,14 @@ class SelectedSlot extends GetView<SelectedSlotController> {
                               children: <Widget>[
                                 TextWidget(
                                   text: AppLanguageKeys().strRent.tr,
-                                  color: Colors.black,
+                                  color: AppColors().appBlackColor,
                                   size: 14,
                                   fontWeight: FontWeight.w400,
                                   isLineThrough: false,
                                 ),
                                 TextWidget(
                                   text: "Rs.2000",
-                                  color: Colors.black,
+                                  color: AppColors().appBlackColor,
                                   size: 14,
                                   fontWeight: FontWeight.w600,
                                   isLineThrough: false,
@@ -196,7 +196,7 @@ class SelectedSlot extends GetView<SelectedSlotController> {
                     Radio<int>(
                       value: 2,
                       groupValue: controller.selectedOption.value,
-                      activeColor: Colors.green,
+                      activeColor: AppColors().appPrimaryColor,
                       onChanged: (int? value) {
                         if(value != null) {
                           controller.setSelectedOption(value);
@@ -212,11 +212,11 @@ class SelectedSlot extends GetView<SelectedSlotController> {
             ),
             Container(
               decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
+                  border: Border.all(color: AppColors().appGreyColor,),
                   borderRadius: BorderRadius.circular(10),
                   color: controller.selectedOption.value == 3
                       ? Colors.green.shade100
-                      : Colors.grey.shade200,),
+                      :AppColors().appGreyColor,),
               height: 80,
               width: MediaQuery.sizeOf(context).width,
               child: Padding(
@@ -234,7 +234,7 @@ class SelectedSlot extends GetView<SelectedSlotController> {
                             width: 50,
                             color: controller.selectedOption.value == 3
                                 ? Colors.green.shade900
-                                : Colors.grey.shade900,
+                                : AppColors().appGreyColor,
                         ),
                         const SizedBox(
                           width: 12,
@@ -244,7 +244,7 @@ class SelectedSlot extends GetView<SelectedSlotController> {
                           children: <Widget>[
                             TextWidget(
                               text: AppLanguageKeys().strEvening.tr,
-                              color: Colors.black,
+                              color: AppColors().appBlackColor,
                               size: 16,
                               fontWeight: FontWeight.bold,
                               isLineThrough: false,
@@ -256,14 +256,14 @@ class SelectedSlot extends GetView<SelectedSlotController> {
                               children: <Widget>[
                                 TextWidget(
                                   text: AppLanguageKeys().strRent.tr,
-                                  color: Colors.black,
+                                  color: AppColors().appBlackColor,
                                   size: 14,
                                   fontWeight: FontWeight.w400,
                                   isLineThrough: false,
                                 ),
                                 TextWidget(
                                   text: "Rs.3000",
-                                  color: Colors.black,
+                                  color: AppColors().appBlackColor,
                                   size: 14,
                                   fontWeight: FontWeight.w600,
                                   isLineThrough: false,
@@ -277,7 +277,7 @@ class SelectedSlot extends GetView<SelectedSlotController> {
                     Radio<int>(
                       value: 3,
                       groupValue: controller.selectedOption.value,
-                      activeColor: Colors.green,
+                      activeColor: AppColors().appPrimaryColor,
                       onChanged: (int? value) {
                         if(value != null) {
                           controller.setSelectedOption(value);
@@ -293,11 +293,11 @@ class SelectedSlot extends GetView<SelectedSlotController> {
             ),
             Container(
               decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
+                  border: Border.all(color: AppColors().appGreyColor,),
                   borderRadius: BorderRadius.circular(10),
                   color: controller.selectedOption.value == 4
                       ? Colors.green.shade100
-                      : Colors.grey.shade200,),
+                      : AppColors().appGreyColor,),
               height: 80,
               width: MediaQuery.sizeOf(context).width,
               child: Padding(
@@ -315,7 +315,7 @@ class SelectedSlot extends GetView<SelectedSlotController> {
                             width: 50,
                             color: controller.selectedOption.value == 4
                                 ? Colors.green.shade900
-                                : Colors.grey.shade900,
+                                : AppColors().appGreyColor,
                         ),
                         const SizedBox(
                           width: 12,
@@ -325,7 +325,7 @@ class SelectedSlot extends GetView<SelectedSlotController> {
                           children: <Widget>[
                             TextWidget(
                               text: AppLanguageKeys().strNight.tr,
-                              color: Colors.black,
+                              color: AppColors().appBlackColor,
                               size: 16,
                               fontWeight: FontWeight.bold,
                               isLineThrough: false,
@@ -337,14 +337,14 @@ class SelectedSlot extends GetView<SelectedSlotController> {
                               children: <Widget>[
                                 TextWidget(
                                   text: AppLanguageKeys().strRent.tr,
-                                  color: Colors.black,
+                                  color: AppColors().appBlackColor,
                                   size: 14,
                                   fontWeight: FontWeight.w400,
                                   isLineThrough: false,
                                 ),
                                 TextWidget(
                                   text: "Rs.1000",
-                                  color: Colors.black,
+                                  color: AppColors().appBlackColor,
                                   size: 14,
                                   fontWeight: FontWeight.w600,
                                   isLineThrough: false,
@@ -358,7 +358,7 @@ class SelectedSlot extends GetView<SelectedSlotController> {
                     Radio<int>(
                       value: 4,
                       groupValue: controller.selectedOption.value,
-                      activeColor: Colors.green,
+                      activeColor: AppColors().appPrimaryColor,
                       onChanged: (int? value) {
                         if(value != null) {
                           controller.setSelectedOption(value);
@@ -375,13 +375,16 @@ class SelectedSlot extends GetView<SelectedSlotController> {
               child: ElevatedButton(
                   style: ButtonStyle(
                       foregroundColor:
-                      MaterialStateProperty.all<Color>(Colors.white),
+                      MaterialStateProperty.all<Color>(
+                        AppColors().appWhiteColor,),
                       backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.green),
+                      MaterialStateProperty.all<Color>(
+                        AppColors().appPrimaryColor,),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
-                              side: const BorderSide(color: Colors.green),),),),
+                              side:  BorderSide(
+                                color: AppColors().appPrimaryColor,),),),),
                   onPressed: () {},
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,

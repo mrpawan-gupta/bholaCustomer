@@ -1,7 +1,9 @@
 import "package:customer/controllers/product_detail_page_controllers/cart_controllers.dart";
-import "package:customer/screens/widgets/Checkout.dart";
 import "package:customer/screens/widgets/textWidgets.dart";
+import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_assets_images.dart";
+import "package:customer/utils/app_colors.dart";
+import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
@@ -9,25 +11,25 @@ import "package:get/get.dart";
 
 
 
-class Cart extends GetView<CartController> {
-  const Cart({super.key});
+class CartScreen extends GetView<CartController> {
+  const CartScreen({super.key});
 
   Widget slideLeftBackground() {
-    return Container(
+    return ColoredBox(
       color: Colors.red,
       child:  Align(
         alignment: Alignment.centerRight,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-            const Icon(
+             Icon(
               Icons.delete,
-              color: Colors.white,
+              color: AppColors().appWhiteColor,
             ),
             Text(
               AppLanguageKeys().strDelete.tr,
-              style: const TextStyle(
-                color: Colors.white,
+              style:  TextStyle(
+                color: AppColors().appWhiteColor,
                 fontWeight: FontWeight.w700,
               ),
               textAlign: TextAlign.right,
@@ -54,7 +56,7 @@ class Cart extends GetView<CartController> {
         titleSpacing: 0,
         title: TextWidget(
           text: AppLanguageKeys().strShoppingBag.tr,
-          color: Colors.black,
+          color: AppColors().appBlackColor,
           size: 25,
           fontWeight: FontWeight.bold,
           isLineThrough: false,
@@ -75,9 +77,9 @@ class Cart extends GetView<CartController> {
                 key: UniqueKey(),
                 child: Container(
                   decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
+                      border: Border.all(color: AppColors().appGreyColor,),
                       borderRadius: BorderRadius.circular(10),
-                      color: Colors.green.shade100,),
+                      color: AppColors().appPrimaryColor,),
                   height: 100,
                   width: MediaQuery.sizeOf(context).width,
                   child: Padding(
@@ -109,7 +111,7 @@ class Cart extends GetView<CartController> {
                                   children: <Widget>[
                                     TextWidget(
                                       text: AppLanguageKeys().strTractor.tr,
-                                      color: Colors.green,
+                                      color: AppColors().appPrimaryColor,
                                       size: 16,
                                       fontWeight: FontWeight.bold,
                                       isLineThrough: false,
@@ -119,7 +121,7 @@ class Cart extends GetView<CartController> {
                                     ),
                                     TextWidget(
                                       text: AppLanguageKeys().strFarmTool.tr,
-                                      color: Colors.black,
+                                      color: AppColors().appBlackColor,
                                       size: 14,
                                       fontWeight: FontWeight.w400,
                                       isLineThrough: false,
@@ -128,7 +130,7 @@ class Cart extends GetView<CartController> {
                                 ),
                                 TextWidget(
                                   text: "₹1000",
-                                  color: Colors.black,
+                                  color: AppColors().appBlackColor,
                                   size: 14,
                                   fontWeight: FontWeight.w600,
                                   isLineThrough: false,
@@ -141,14 +143,14 @@ class Cart extends GetView<CartController> {
                           padding: const EdgeInsets.all(3),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(5),
-                              color: Colors.green,),
+                              color: AppColors().appPrimaryColor,),
                           child: Row(
                             children: <Widget>[
                               InkWell(
                                   onTap: () {},
-                                  child: const Icon(
+                                  child:  Icon(
                                     Icons.remove,
-                                    color: Colors.white,
+                                    color: AppColors().appWhiteColor,
                                     size: 16,
                                   ),),
                               Container(
@@ -158,18 +160,19 @@ class Cart extends GetView<CartController> {
                                     horizontal: 3, vertical: 2,),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(3),
-                                    color: Colors.white,),
-                                child: const Text(
+                                    color: AppColors().appWhiteColor,),
+                                child:  Text(
                                   "3",
                                   style:
-                                  TextStyle(color: Colors.black, fontSize: 22),
+                                  TextStyle(color: AppColors().appBlackColor,
+                                      fontSize: 22,),
                                 ),
                               ),
                               InkWell(
                                   onTap: () {},
-                                  child: const Icon(
+                                  child:  Icon(
                                     Icons.add,
-                                    color: Colors.white,
+                                    color: AppColors().appWhiteColor,
                                     size: 16,
                                   ),),
                             ],
@@ -185,7 +188,7 @@ class Cart extends GetView<CartController> {
               ),
               Container(
                 decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
+                    border: Border.all(color: AppColors().appGreyColor,),
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.green.shade100,),
                 height: 100,
@@ -218,7 +221,7 @@ class Cart extends GetView<CartController> {
                                 children: <Widget>[
                                   TextWidget(
                                     text: AppLanguageKeys().strTractor.tr,
-                                    color: Colors.green,
+                                    color: AppColors().appPrimaryColor,
                                     size: 16,
                                     fontWeight: FontWeight.bold,
                                     isLineThrough: false,
@@ -228,7 +231,7 @@ class Cart extends GetView<CartController> {
                                   ),
                                   TextWidget(
                                     text: AppLanguageKeys().strFarmTool.tr,
-                                    color: Colors.black,
+                                    color: AppColors().appBlackColor,
                                     size: 14,
                                     fontWeight: FontWeight.w400,
                                     isLineThrough: false,
@@ -237,7 +240,7 @@ class Cart extends GetView<CartController> {
                               ),
                               TextWidget(
                                 text: "₹1000",
-                                color: Colors.black,
+                                color: AppColors().appBlackColor,
                                 size: 14,
                                 fontWeight: FontWeight.w600,
                                 isLineThrough: false,
@@ -250,14 +253,14 @@ class Cart extends GetView<CartController> {
                         padding: const EdgeInsets.all(3),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5),
-                            color: Colors.green,),
+                            color: AppColors().appPrimaryColor,),
                         child: Row(
                           children: <Widget>[
                             InkWell(
                                 onTap: () {},
-                                child: const Icon(
+                                child:  Icon(
                                   Icons.remove,
-                                  color: Colors.white,
+                                  color: AppColors().appWhiteColor,
                                   size: 16,
                                 ),),
                             Container(
@@ -266,18 +269,19 @@ class Cart extends GetView<CartController> {
                                   horizontal: 3, vertical: 2,),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(3),
-                                  color: Colors.white,),
-                              child: const Text(
+                                  color: AppColors().appWhiteColor,),
+                              child:  Text(
                                 "3",
                                 style:
-                                TextStyle(color: Colors.black, fontSize: 22),
+                                TextStyle(color: AppColors().appBlackColor,
+                                    fontSize: 22,),
                               ),
                             ),
                             InkWell(
                                 onTap: () {},
-                                child: const Icon(
+                                child:  Icon(
                                   Icons.add,
-                                  color: Colors.white,
+                                  color: AppColors().appWhiteColor,
                                   size: 16,
                                 ),),
                           ],
@@ -292,7 +296,7 @@ class Cart extends GetView<CartController> {
               ),
               TextWidget(
                 text: AppLanguageKeys().strDeliveryAddress.tr,
-                color: Colors.black,
+                color: AppColors().appBlackColor,
                 size: 19,
                 fontWeight: FontWeight.bold,
                 isLineThrough: false,
@@ -303,7 +307,7 @@ class Cart extends GetView<CartController> {
               Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
-                    color: Colors.grey.shade200,),
+                    color: AppColors().appGreyColor,),
                 height: 100,
                 width: MediaQuery.sizeOf(context).width,
                 child: Padding(
@@ -316,7 +320,7 @@ class Cart extends GetView<CartController> {
                         children: <Widget>[
                           TextWidget(
                             text: AppLanguageKeys().strRohan.tr,
-                            color: Colors.black,
+                            color: AppColors().appBlackColor,
                             size: 16,
                             fontWeight: FontWeight.bold,
                             isLineThrough: false,
@@ -335,9 +339,9 @@ class Cart extends GetView<CartController> {
                           ),
                         ],
                       ),
-                      const Icon(
+                       Icon(
                         Icons.edit_calendar_rounded,
-                        color: Colors.green,
+                        color: AppColors().appPrimaryColor,
                         size: 30,
                       ),
                     ],
@@ -349,9 +353,9 @@ class Cart extends GetView<CartController> {
               ),
               Container(
                 decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
+                    border: Border.all(color: AppColors().appGreyColor,),
                     borderRadius: BorderRadius.circular(12),
-                    color: Colors.transparent,),
+                    color: AppColors().appTransparentColor,),
                 height: 40,
                 width: MediaQuery.sizeOf(context).width,
                 child: Padding(
@@ -381,7 +385,7 @@ class Cart extends GetView<CartController> {
               ),
               TextWidget(
                 text: AppLanguageKeys().strDetails.tr,
-                color: Colors.black,
+                color: AppColors().appBlackColor,
                 size: 19,
                 fontWeight: FontWeight.bold,
                 isLineThrough: false,
@@ -397,7 +401,7 @@ class Cart extends GetView<CartController> {
                     children: <Widget>[
                       TextWidget(
                         text: AppLanguageKeys().strOrderAmount.tr,
-                        color: Colors.black,
+                        color: AppColors().appBlackColor,
                         size: 15,
                         fontWeight: FontWeight.w500,
                         isLineThrough: false,
@@ -407,14 +411,14 @@ class Cart extends GetView<CartController> {
                         children: <Widget>[
                           TextWidget(
                             text: AppLanguageKeys().strConvenience.tr,
-                            color: Colors.black,
+                            color: AppColors().appBlackColor,
                             size: 15,
                             fontWeight: FontWeight.w500,
                             isLineThrough: false,
                           ),
                           TextWidget(
                             text: AppLanguageKeys().strKnow.tr,
-                            color: Colors.green,
+                            color: AppColors().appPrimaryColor,
                             size: 13,
                             fontWeight: FontWeight.w500,
                             isLineThrough: false,
@@ -424,7 +428,7 @@ class Cart extends GetView<CartController> {
                       const SizedBox(height: 6,),
                       TextWidget(
                         text: AppLanguageKeys().strDelivery.tr,
-                        color: Colors.black,
+                        color: AppColors().appBlackColor,
                         size: 15,
                         fontWeight: FontWeight.w500,
                         isLineThrough: false,
@@ -436,7 +440,7 @@ class Cart extends GetView<CartController> {
                     children: <Widget>[
                       TextWidget(
                         text: "₹ 7000",
-                        color: Colors.black,
+                        color: AppColors().appBlackColor,
                         size: 15,
                         fontWeight: FontWeight.w500,
                         isLineThrough: false,
@@ -444,7 +448,7 @@ class Cart extends GetView<CartController> {
                       const SizedBox(height: 6,),
                       TextWidget(
                         text: AppLanguageKeys().strApply.tr,
-                        color: Colors.green,
+                        color: AppColors().appPrimaryColor,
                         size: 15,
                         fontWeight: FontWeight.w500,
                         isLineThrough: false,
@@ -452,7 +456,7 @@ class Cart extends GetView<CartController> {
                       const SizedBox(height: 6,),
                       TextWidget(
                         text: AppLanguageKeys().strFree.tr,
-                        color: Colors.green,
+                        color: AppColors().appPrimaryColor,
                         size: 15,
                         fontWeight: FontWeight.w500,
                         isLineThrough: false,
@@ -477,13 +481,13 @@ class Cart extends GetView<CartController> {
                 children: <Widget>[
                   TextWidget(
                     text: AppLanguageKeys().strOrder.tr,
-                    color: Colors.black,
+                    color: AppColors().appBlackColor,
                     size: 16,
                     fontWeight: FontWeight.bold,
                     isLineThrough: false,
                   ),TextWidget(
                     text: "₹ 7000",
-                    color: Colors.black,
+                    color: AppColors().appBlackColor,
                     size: 16,
                     fontWeight: FontWeight.bold,
                     isLineThrough: false,
@@ -500,14 +504,14 @@ class Cart extends GetView<CartController> {
                     children: <Widget>[
                       TextWidget(
                         text: "₹ 7000",
-                        color: Colors.black,
+                        color: AppColors().appBlackColor,
                         size: 16,
                         fontWeight: FontWeight.bold,
                         isLineThrough: false,
                       ),
                       TextWidget(
                         text: AppLanguageKeys().strView.tr,
-                        color: Colors.black,
+                        color: AppColors().appBlackColor,
                         size: 12,
                         fontWeight: FontWeight.bold,
                         isLineThrough: false,
@@ -519,20 +523,23 @@ class Cart extends GetView<CartController> {
                     child: ElevatedButton(
                         style: ButtonStyle(
                             foregroundColor:
-                            MaterialStateProperty.all<Color>(Colors.white),
+                            MaterialStateProperty.all<Color>(
+                              AppColors().appWhiteColor,),
                             backgroundColor:
-                            MaterialStateProperty.all<Color>(Colors.green),
+                            MaterialStateProperty.all<Color>(
+                              AppColors().appPrimaryColor,),
                             shape:
                             MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10),
-                                    side: const BorderSide(
-                                      color: Colors.green,),),),),
+                                    side:  BorderSide(
+                                      color: AppColors().appPrimaryColor,),),
+                            ),),
                         onPressed: () async {
-                          await Navigator.of(context, rootNavigator: true)
-                              .pushReplacement(MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                              const Checkout(),),);
+                          await AppNavService().pushNamed(
+                            destination: AppRoutes().checkoutScreen,
+                            arguments: <String, dynamic>{},
+                          );
                         },
                         child: Text(AppLanguageKeys().strProceed.tr
                             .toUpperCase(),

@@ -3,6 +3,7 @@ import "package:customer/screens/booking_slot/selected_slot.dart";
 import "package:customer/screens/home_screen/home_screen.dart";
 import "package:customer/screens/order/product_live_order.dart";
 import "package:customer/utils/app_assets_images.dart";
+import "package:customer/utils/app_colors.dart";
 import "package:flutter/material.dart";
 import "package:get/get_state_manager/src/rx_flutter/rx_disposable.dart";
 import "package:persistent_bottom_nav_bar/persistent_tab_view.dart";
@@ -19,8 +20,8 @@ class ProvidedStylesExample extends GetxService {
   List<Widget> _buildScreens() => <Widget>[
         const HomeScreen(),
         Container(),
-        BookSlot(),
-        const SelectedSlot(),
+        const BookSlot(),
+        const SelectedSlotScreen(),
     const ProductLivePendingOrder(),
       ];
 
@@ -29,14 +30,14 @@ class ProvidedStylesExample extends GetxService {
         PersistentBottomNavBarItem(
           icon: Image.asset(AppAssetsImages.Home),
           title: "Home",
-          activeColorPrimary: Colors.white,
-          inactiveColorPrimary: Colors.grey,
+          activeColorPrimary: AppColors().appWhiteColor,
+          inactiveColorPrimary: AppColors().appGreyColor,
         ),
         PersistentBottomNavBarItem(
           icon: Image.asset(AppAssetsImages.primary),
           title: "Search",
           activeColorPrimary: Colors.teal,
-          inactiveColorPrimary: Colors.grey,
+          inactiveColorPrimary: AppColors().appGreyColor,
           routeAndNavigatorSettings: RouteAndNavigatorSettings(
             initialRoute: "/",
             routes: <String, WidgetBuilder>{
@@ -49,7 +50,7 @@ class ProvidedStylesExample extends GetxService {
           icon: Image.asset(AppAssetsImages.tractor_1),
           title: "Add",
           activeColorPrimary: Colors.blueAccent,
-          inactiveColorPrimary: Colors.grey,
+          inactiveColorPrimary: AppColors().appGreyColor,
           routeAndNavigatorSettings: RouteAndNavigatorSettings(
             initialRoute: "/",
             routes: <String, WidgetBuilder>{
@@ -62,7 +63,7 @@ class ProvidedStylesExample extends GetxService {
           icon: Image.asset(AppAssetsImages.whatsapp),
           title: "Messages",
           activeColorPrimary: Colors.deepOrange,
-          inactiveColorPrimary: Colors.grey,
+          inactiveColorPrimary: AppColors().appGreyColor,
           routeAndNavigatorSettings: RouteAndNavigatorSettings(
             initialRoute: "/",
             routes: <String, WidgetBuilder>{
@@ -75,7 +76,7 @@ class ProvidedStylesExample extends GetxService {
           icon: Image.asset(AppAssetsImages.bag),
           title: "Settings",
           activeColorPrimary: Colors.indigo,
-          inactiveColorPrimary: Colors.grey,
+          inactiveColorPrimary: AppColors().appGreyColor,
           routeAndNavigatorSettings: RouteAndNavigatorSettings(
             initialRoute: "/",
             routes: <String, WidgetBuilder>{
@@ -97,7 +98,7 @@ class ProvidedStylesExample extends GetxService {
               ? 0.0
               : kBottomNavigationBarHeight,
           bottomScreenMargin: 0,
-          backgroundColor: Colors.grey.shade300,
+          backgroundColor: AppColors().appGreyColor,
           hideNavigationBar: _hideNavBar,
           decoration: const NavBarDecoration(colorBehindNavBar: Colors.indigo),
           itemAnimationProperties: const ItemAnimationProperties(
@@ -167,8 +168,8 @@ class CustomNavBarWidget extends StatelessWidget {
       );
 
   @override
-  Widget build(final BuildContext context) => Container(
-        color: Colors.white,
+  Widget build(final BuildContext context) => ColoredBox(
+        color: AppColors().appWhiteColor,
         child: SizedBox(
           width: double.infinity,
           height: kBottomNavigationBarHeight,

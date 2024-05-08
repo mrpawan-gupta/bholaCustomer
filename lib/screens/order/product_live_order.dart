@@ -1,11 +1,11 @@
 import "package:customer/controllers/order_controllers/product_live_order_controllers.dart";
 import "package:customer/screens/widgets/textWidgets.dart";
 import "package:customer/utils/app_assets_images.dart";
+import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
-import "package:get/get_state_manager/src/simple/get_view.dart";
 
 
 class ProductLivePendingOrder extends GetView<ProductLiveOrderController> {
@@ -23,7 +23,7 @@ class ProductLivePendingOrder extends GetView<ProductLiveOrderController> {
         titleSpacing: 0,
         title: TextWidget(
           text: AppLanguageKeys().strLivePending.tr,
-          color: Colors.black,
+          color: AppColors().appBlackColor,
           size: 22,
           fontWeight: FontWeight.bold,
           isLineThrough: false,
@@ -44,7 +44,7 @@ class ProductLivePendingOrder extends GetView<ProductLiveOrderController> {
                       productName: AppLanguageKeys().strMahindra.tr,
                       address: AppLanguageKeys().strAddress.tr,
                       contact: "8855816942",
-                      billAmount: "599" + "/-",
+                      billAmount: "599" "/-",
                       date1: "24/01/2024",
                       location1: AppLanguageKeys().strLocation.tr,
                       date2: "26/01/2024",
@@ -65,7 +65,8 @@ class ProductLivePendingOrder extends GetView<ProductLiveOrderController> {
                             ),
                             child:  Text(
                               AppLanguageKeys().strProgress.tr,
-                              style: const TextStyle(color: Colors.white),
+                              style:  TextStyle(
+                                color: AppColors().appWhiteColor,),
                             ),
                           ),
                         ),
@@ -105,8 +106,9 @@ class ProductLivePendingOrder extends GetView<ProductLiveOrderController> {
         const SizedBox(height: 4),
         Text(
           productName,
-          style: const TextStyle(
-              fontSize: 18, color: Colors.black, fontWeight: FontWeight.w500,),
+          style:  TextStyle(
+              fontSize: 18, color: AppColors().appBlackColor,
+            fontWeight: FontWeight.w500,),
         ),
         const SizedBox(height: 10),
         // Name
@@ -114,7 +116,7 @@ class ProductLivePendingOrder extends GetView<ProductLiveOrderController> {
           title: AppLanguageKeys().strName.tr,
           value: userName,
           titleColor: const Color(0xFF7A52F4),
-          valueColor: Colors.black,
+          valueColor: AppColors().appBlackColor,
         ),
         const SizedBox(height: 8),
         // Address
@@ -122,7 +124,7 @@ class ProductLivePendingOrder extends GetView<ProductLiveOrderController> {
           title: AppLanguageKeys().strAddress1.tr,
           value: address,
           titleColor: const Color(0xFF7A52F4),
-          valueColor: Colors.black,
+          valueColor: AppColors().appBlackColor,
         ),
         const SizedBox(height: 8),
         // Contact
@@ -130,7 +132,7 @@ class ProductLivePendingOrder extends GetView<ProductLiveOrderController> {
           title: AppLanguageKeys().strContact.tr,
           value: contact,
           titleColor: const Color(0xFF7A52F4),
-          valueColor: Colors.black,
+          valueColor: AppColors().appBlackColor,
         ),
         const SizedBox(height: 8),
         // Bill/Amount
@@ -138,16 +140,16 @@ class ProductLivePendingOrder extends GetView<ProductLiveOrderController> {
           title: AppLanguageKeys().strBillAmount.tr,
           value: billAmount,
           titleColor: const Color(0xFF7A52F4),
-          valueColor: Colors.black,
+          valueColor: AppColors().appBlackColor,
         ),
         const SizedBox(height: 10),
         // Divider
         Row(
-          children: [
+          children: <Widget>[
             Expanded(
               child: Container(
                 height: 1,
-                color: Colors.grey,
+                color: AppColors().appGreyColor,
               ),
             ),
           ],
@@ -160,7 +162,7 @@ class ProductLivePendingOrder extends GetView<ProductLiveOrderController> {
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                children: <Widget>[
                   Text(
                     date1,
                     style: const TextStyle(
@@ -170,9 +172,9 @@ class ProductLivePendingOrder extends GetView<ProductLiveOrderController> {
                   ),
                   Text(
                     location1,
-                    style: const TextStyle(
+                    style:  TextStyle(
                       fontSize: 16,
-                      color: Colors.black,
+                      color: AppColors().appBlackColor,
                     ),
                   ),
                 ],
@@ -196,9 +198,9 @@ class ProductLivePendingOrder extends GetView<ProductLiveOrderController> {
                   ),
                   Text(
                     location2,
-                    style: const TextStyle(
+                    style:  TextStyle(
                       fontSize: 16,
-                      color: Colors.black,
+                      color: AppColors().appBlackColor,
                     ),
                   ),
                 ],
@@ -220,7 +222,7 @@ class ProductLivePendingOrder extends GetView<ProductLiveOrderController> {
   }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
+      children: <Widget>[
         Text(
           "$title ",
           style: TextStyle(
