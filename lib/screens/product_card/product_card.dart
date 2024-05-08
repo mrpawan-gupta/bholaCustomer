@@ -1,5 +1,6 @@
 import "dart:ui";
 import "package:customer/controllers/product_card_controllers/product_card_controllers.dart";
+import "package:customer/utils/app_colors.dart";
 import "package:flutter/material.dart";
 import "package:get/get_state_manager/src/simple/get_view.dart";
 
@@ -21,7 +22,7 @@ class ProductCard extends GetView<ProductCardController> {
       width: width,
       height: height,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors().appWhiteColor,
         boxShadow: const <BoxShadow>[
           BoxShadow(
             blurRadius: 2,
@@ -30,7 +31,7 @@ class ProductCard extends GetView<ProductCardController> {
               0.0,
               1,
             ),
-          )
+          ),
         ],
         borderRadius: BorderRadius.circular(12),
       ),
@@ -69,7 +70,7 @@ class ProductCard extends GetView<ProductCardController> {
                         padding: const EdgeInsets.all(8),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
+                          children: <Widget>[
                             Row(
                               mainAxisAlignment:
                               MainAxisAlignment.spaceBetween,

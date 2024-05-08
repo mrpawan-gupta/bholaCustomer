@@ -1,9 +1,9 @@
 import "package:customer/controllers/product_detail_page_controllers/product_detail_page_controllers.dart";
 import "package:get/get.dart";
 
-class ProductDetailPageBinding extends Bindings {
+class ProductDetailBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(ProductDetailPageController.new);
+    Get.lazyPut(ProductDetailController.new);
   }
 }

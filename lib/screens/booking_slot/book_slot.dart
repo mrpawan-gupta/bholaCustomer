@@ -1,8 +1,11 @@
 import "package:customer/controllers/booking_slot_controllers/book_slot_controllers.dart";
-import "package:customer/screens/booking_slot/selected_slot.dart";
 import "package:customer/screens/home_screen/search.dart";
 import "package:customer/screens/widgets/textWidgets.dart";
+import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_assets_images.dart";
+import "package:customer/utils/app_colors.dart";
+import "package:customer/utils/app_routes.dart";
+import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
@@ -11,10 +14,7 @@ import "package:syncfusion_flutter_sliders/sliders.dart";
 
 
 class BookSlot extends GetView<BookSlotController> {
-   BookSlot({super.key});
-
-  @override
-  final BookSlotController controller = Get.put(BookSlotController());
+   const BookSlot({super.key});
 
 
   selectDate(BuildContext context) async {
@@ -32,17 +32,17 @@ class BookSlot extends GetView<BookSlotController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors().appWhiteColor,
       appBar: AppBar(
         titleSpacing: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors().appWhiteColor,
         elevation: 0,
         centerTitle: true,
-        title: const Text(
-          "Bhola",
-          style: TextStyle(
+        title:  Text(
+          AppLanguageKeys().strBhola.tr,
+          style:  TextStyle(
               fontWeight: FontWeight.bold,
-              color: Colors.orange,
+              color: AppColors().appOrangeColor,
               fontSize: 30,
               fontStyle: FontStyle.italic,),
         ),
@@ -75,7 +75,7 @@ class BookSlot extends GetView<BookSlotController> {
         child: Column(
           children: <Widget>[
             SearchTab(
-              text: "Farm Location",
+              text: AppLanguageKeys().strFarm_Location.tr,
             ),
             const SizedBox(
               height: 18,
@@ -87,8 +87,8 @@ class BookSlot extends GetView<BookSlotController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     TextWidget(
-                      text: "Schedule",
-                      color: Colors.black,
+                      text: AppLanguageKeys().strSchedule.tr,
+                      color: AppColors().appBlackColor,
                       size: 19,
                       fontWeight: FontWeight.bold,
                       isLineThrough: false,
@@ -107,20 +107,20 @@ class BookSlot extends GetView<BookSlotController> {
                           ),
                           border: Border.all(
                             width: 3,
-                            color: Colors.green,
+                            color: AppColors().appPrimaryColor,
                           ),
                         ),
-                        child: const Padding(
-                          padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                        child:  Padding(
+                          padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Text(
-                                "Please Select a Date",
+                                AppLanguageKeys().strSelect1.tr,
                               ),
-                              Icon(
+                               Icon(
                                 Icons.date_range,
-                                color: Colors.green,
+                                color: AppColors().appPrimaryColor,
                               ),
                             ],
                           ),
@@ -133,8 +133,8 @@ class BookSlot extends GetView<BookSlotController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     TextWidget(
-                      text: "Crop",
-                      color: Colors.black,
+                      text: AppLanguageKeys().strCrop.tr,
+                      color: AppColors().appBlackColor,
                       size: 19,
                       fontWeight: FontWeight.bold,
                       isLineThrough: false,
@@ -151,27 +151,29 @@ class BookSlot extends GetView<BookSlotController> {
                         ),
                         border: Border.all(
                           width: 3,
-                          color: Colors.green,
+                          color: AppColors().appPrimaryColor,
                         ),
                       ),
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
                         child: DropdownButton(
-                          icon: const Icon(
+                          icon:  Icon(
                             // Add this
                             Icons.arrow_drop_down, // Add this
-                            color: Colors.green, // Add this
+                            color: AppColors().appPrimaryColor, // Add this
                           ),
                           underline: Container(),
                           hint: controller.dropDownValue.value == ""
-                              ? const Text("Please Select a Crop")
+                              ?  Text(AppLanguageKeys().strSelect.tr,)
                               : Text(
                             controller.dropDownValue.value,
-                            style: const TextStyle(color: Colors.green),
+                            style:  TextStyle(
+                              color: AppColors().appPrimaryColor,),
                           ),
                           isExpanded: true,
                           iconSize: 30.0,
-                          style: const TextStyle(color: Colors.green),
+                          style:  TextStyle(
+                            color: AppColors().appPrimaryColor,),
                           items: <String>["One", "Two", "Three"].map(
                                 (String val) {
                               return DropdownMenuItem<String>(
@@ -181,7 +183,9 @@ class BookSlot extends GetView<BookSlotController> {
                             },
                           ).toList(),
                           onChanged: (String? val) {
-                            controller.dropDownValue.value;
+                            if(val != null) {
+                              controller.updateDropDownValue(val);
+                            }
                           },
                         ),
                       ),
@@ -196,8 +200,8 @@ class BookSlot extends GetView<BookSlotController> {
             Align(
               alignment: Alignment.topLeft,
               child: TextWidget(
-                text: "Slot",
-                color: Colors.black,
+                text: AppLanguageKeys().strSlot.tr,
+                color: AppColors().appBlackColor,
                 size: 19,
                 fontWeight: FontWeight.bold,
                 isLineThrough: false,
@@ -211,9 +215,9 @@ class BookSlot extends GetView<BookSlotController> {
                 children: <Widget>[
                   ChoiceChip(
                     pressElevation: 0.0,
-                    selectedColor: Colors.green,
+                    selectedColor: AppColors().appPrimaryColor,
                     backgroundColor: Colors.green[100],
-                    label: const Text("Morning"),
+                    label:  Text(AppLanguageKeys().strMorning.tr),
                     selected: controller.value.value == 0,
                     onSelected: (bool selected) {
                       controller.updateValue(selected ? 0 : -1);
@@ -224,12 +228,12 @@ class BookSlot extends GetView<BookSlotController> {
                   ),
                   ChoiceChip(
                     pressElevation: 0.0,
-                    selectedColor: Colors.green,
+                    selectedColor: AppColors().appPrimaryColor,
                     backgroundColor: Colors.green[100],
-                    label: const Text("Afternoon"),
+                    label:  Text(AppLanguageKeys().strAfternoon.tr,),
                     selected: controller.value.value == 1,
                     onSelected: (bool selected) {
-                      controller.updateValue(selected ? 1 : null);
+                      controller.updateValue(selected ? 1 : false);
                     },
                   ),
                   const SizedBox(
@@ -237,12 +241,12 @@ class BookSlot extends GetView<BookSlotController> {
                   ),
                   ChoiceChip(
                     pressElevation: 0.0,
-                    selectedColor: Colors.green,
+                    selectedColor: AppColors().appPrimaryColor,
                     backgroundColor: Colors.green[100],
-                    label: const Text("Evening"),
+                    label:  Text(AppLanguageKeys().strEvening.tr,),
                     selected: controller.value.value == 2,
                     onSelected: (bool selected) {
-                      controller.updateValue(selected ? 2 : null);
+                      controller.updateValue(selected ? 2 : false);
                     },
                   ),
                   const SizedBox(
@@ -250,12 +254,12 @@ class BookSlot extends GetView<BookSlotController> {
                   ),
                   ChoiceChip(
                     pressElevation: 0.0,
-                    selectedColor: Colors.green,
+                    selectedColor: AppColors().appPrimaryColor,
                     backgroundColor: Colors.green[100],
-                    label: const Text("Night"),
+                    label:  Text(AppLanguageKeys().strNight.tr,),
                     selected: controller.value.value == 3,
                     onSelected: (bool selected) {
-                      controller.updateValue(selected ? 3 : null);
+                      controller.updateValue(selected ? 3 : false);
                     },
                   ),
                 ],
@@ -267,8 +271,8 @@ class BookSlot extends GetView<BookSlotController> {
             Align(
               alignment: Alignment.topLeft,
               child: TextWidget(
-                text: "Service",
-                color: Colors.black,
+                text: AppLanguageKeys().strService.tr,
+                color: AppColors().appBlackColor,
                 size: 19,
                 fontWeight: FontWeight.bold,
                 isLineThrough: false,
@@ -289,27 +293,28 @@ class BookSlot extends GetView<BookSlotController> {
                     ),
                     border: Border.all(
                       width: 3,
-                      color: Colors.green,
+                      color: AppColors().appPrimaryColor,
                     ),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
                     child: DropdownButton(
-                      icon: const Icon(
+                      icon:  Icon(
                         // Add this
                         Icons.arrow_drop_down, // Add this
-                        color: Colors.green, // Add this
+                        color: AppColors().appPrimaryColor, // Add this
                       ),
                       underline: Container(),
                       hint: controller.dropDownValue.value == ""
-                          ? const Text("Please Select a Crop")
+                          ?  Text(AppLanguageKeys().strSelect.tr,)
                           : Text(
                         controller.dropDownValue.value,
-                        style: const TextStyle(color: Colors.green),
+                        style:  TextStyle(
+                          color: AppColors().appPrimaryColor,),
                       ),
                       isExpanded: true,
                       iconSize: 30.0,
-                      style: const TextStyle(color: Colors.green),
+                      style:  TextStyle(color: AppColors().appPrimaryColor,),
                       items: <String>["One", "Two", "Three"].map(
                             (String val) {
                           return DropdownMenuItem<String>(
@@ -319,7 +324,9 @@ class BookSlot extends GetView<BookSlotController> {
                         },
                       ).toList(),
                       onChanged: (String? val) {
-                        controller.updateDropDownValue(val!);
+                        if(val != null) {
+                          controller.updateDropDownValue(val);
+                        }
                       },
                     ),
                   ),
@@ -333,12 +340,12 @@ class BookSlot extends GetView<BookSlotController> {
                       ),
                       border: Border.all(
                         width: 3,
-                        color: Colors.green,
+                        color: AppColors().appPrimaryColor,
                       ),
                     ),
-                    child: const Icon(
+                    child:  Icon(
                       Icons.add,
-                      color: Colors.green,
+                      color: AppColors().appPrimaryColor,
                       size: 40,
                     ),),
               ],
@@ -348,10 +355,10 @@ class BookSlot extends GetView<BookSlotController> {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+              children: <Widget>[
                 TextWidget(
-                  text: "Farm Area",
-                  color: Colors.black,
+                  text: AppLanguageKeys().strFarm_Area.tr,
+                  color: AppColors().appBlackColor,
                   size: 19,
                   fontWeight: FontWeight.bold,
                   isLineThrough: false,
@@ -359,10 +366,11 @@ class BookSlot extends GetView<BookSlotController> {
                 Container(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
-                        color: Colors.grey.shade400,),
+                        color: AppColors().appGreyColor,),
                     height: 30,
                     width: 70,
-                    child: const Center(child: Text("15 Acer")),),
+                    child:  Center(child: Text(AppLanguageKeys().
+                    str15_Acer.tr,),),),
               ],
             ),
             const SizedBox(
@@ -375,19 +383,18 @@ class BookSlot extends GetView<BookSlotController> {
                 SizedBox(
                   width: MediaQuery.sizeOf(context).width / 1.3,
                   child: SfSlider(
-                    activeColor: Colors.green,
-                    min: 0.0,
+                    activeColor: AppColors().appPrimaryColor,
                     max: 20.0,
                     value: controller.sliderSel.value,
                     interval: 5,
                     stepSize: 1,
-
-                    showTicks: false,
                     showLabels: true,
                     enableTooltip: true,
                     minorTicksPerInterval: 5,
                     onChanged: (value) {
-                      controller.updateSliderValue(value);
+                      if(value != null) {
+                        controller.updateSliderValue(value);
+                      }
                     },
                   ),
                 ),
@@ -400,14 +407,14 @@ class BookSlot extends GetView<BookSlotController> {
                       ),
                       border: Border.all(
                         width: 3,
-                        color: Colors.green,
+                        color: AppColors().appPrimaryColor,
                       ),
                     ),
-                    child: const Center(
+                    child:  Center(
                         child: Text("10",
                             style: TextStyle(
                                 fontSize: 18,
-                                color: Colors.green,
+                                color: AppColors().appPrimaryColor,
                                 fontWeight: FontWeight.w600,),),),),
               ],
             ),
@@ -417,24 +424,26 @@ class BookSlot extends GetView<BookSlotController> {
               child: ElevatedButton(
                   style: ButtonStyle(
                       foregroundColor:
-                      MaterialStateProperty.all<Color>(Colors.white),
+                      MaterialStateProperty.all<Color>(AppColors().appWhiteColor,),
                       backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.green),
+                      MaterialStateProperty.all<Color>(AppColors().appPrimaryColor,),
                       shape:
                       MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
-                              side: const BorderSide(color: Colors.green),),),),
+                              side:  BorderSide(
+                                color: AppColors().appPrimaryColor,),),),),
                   onPressed: () async {
-                    await Navigator.of(context, rootNavigator: true)
-                        .pushReplacement(MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                        const SelectedSlot(),),);
+                    await AppNavService().pushNamed(
+                      destination: AppRoutes().selectedSlotScreen,
+                      arguments: <String, dynamic>{},
+                    );
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text("GET OUOTE".toUpperCase(),
+                      Text( AppLanguageKeys().strGET_OUOTE.tr
+                          .toUpperCase(),
                           style: const TextStyle(
                               fontSize: 15, fontWeight: FontWeight.bold,),),
                       const SizedBox(

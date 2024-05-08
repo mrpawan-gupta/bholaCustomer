@@ -1,3 +1,4 @@
+import "package:customer/utils/app_colors.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:flutter/scheduler.dart";
@@ -43,24 +44,24 @@ class AppOrientations {
         final Brightness platformBrightness = pd.platformBrightness;
         systemUiOverlayStyle = platformBrightness == Brightness.dark
             ? SystemUiOverlayStyle.light.copyWith(
-                statusBarColor: Colors.transparent,
-                systemNavigationBarColor: Colors.transparent,
+                statusBarColor: AppColors().appTransparentColor,
+                systemNavigationBarColor: AppColors().appTransparentColor,
               )
             : SystemUiOverlayStyle.dark.copyWith(
-                statusBarColor: Colors.transparent,
-                systemNavigationBarColor: Colors.transparent,
+                statusBarColor: AppColors().appTransparentColor,
+                systemNavigationBarColor: AppColors().appTransparentColor,
               );
         break;
       case ThemeMode.light:
         systemUiOverlayStyle = SystemUiOverlayStyle.dark.copyWith(
-          statusBarColor: Colors.transparent,
-          systemNavigationBarColor: Colors.transparent,
+          statusBarColor: AppColors().appTransparentColor,
+          systemNavigationBarColor: AppColors().appTransparentColor,
         );
         break;
       case ThemeMode.dark:
         systemUiOverlayStyle = SystemUiOverlayStyle.light.copyWith(
-          statusBarColor: Colors.transparent,
-          systemNavigationBarColor: Colors.transparent,
+          statusBarColor: AppColors().appTransparentColor,
+          systemNavigationBarColor: AppColors().appTransparentColor,
         );
         break;
     }

@@ -1,12 +1,14 @@
 import "package:customer/controllers/home_screen_controllers/home_screen_controllers.dart";
 import "package:customer/screens/home_screen/search.dart";
 import "package:customer/screens/product_card/product_card.dart";
-import "package:customer/screens/product_details/ProductDetails.dart";
+import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_assets_images.dart";
+import "package:customer/utils/app_colors.dart";
+import "package:customer/utils/app_routes.dart";
+import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
-import "package:get/get_state_manager/src/simple/get_state.dart";
-import "package:get/get_state_manager/src/simple/get_view.dart";
+import "package:get/get.dart";
 
 
 
@@ -19,17 +21,17 @@ class HomeScreen extends GetView<HomeScreenController> {
       init: HomeScreenController(),
       builder: (HomeScreenController controller) {
         return Scaffold(
-          backgroundColor: Colors.white,
+          backgroundColor: AppColors().appWhiteColor,
           appBar: AppBar(
             titleSpacing: 0,
-            backgroundColor: Colors.white,
+            backgroundColor: AppColors().appWhiteColor,
             elevation: 0,
             centerTitle: true,
-            title: const Text(
-              "Bhola",
-              style: TextStyle(
+            title:  Text(
+              AppLanguageKeys().strBhola.tr,
+              style:  TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Colors.orange,
+                  color: AppColors().appOrangeColor,
                   fontSize: 30,
                   fontStyle: FontStyle.italic,),
             ),
@@ -64,17 +66,17 @@ class HomeScreen extends GetView<HomeScreenController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   SearchTab(
-                    text: "Search here....",
+                    text: AppLanguageKeys().strSearch.tr,
                   ),
                   const SizedBox(
                     height: 10,
                   ),
-                  const Text(
+                   Text(
                     "Service",
                     style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w500,
-                        color: Colors.black,),
+                        color: AppColors().appBlackColor,),
                   ),
                   const SizedBox(
                     height: 5,
@@ -85,27 +87,26 @@ class HomeScreen extends GetView<HomeScreenController> {
                       Container(
                         width: 110,
                         height: 110,
-                        color: Colors.transparent,
+                        color: AppColors().appTransparentColor,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(12),
                           child: InkWell(
                             onTap: () async {
-                              await Navigator.of(context, rootNavigator: true)
-                                  .pushReplacement(MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                   ProductDetailPage(),),);
-
+                              await AppNavService().pushNamed(
+                                destination: AppRoutes().productDetailScreen,
+                                arguments: <String, dynamic>{},
+                              );
                             },
                             child: GridTile(
                               footer: Container(
                                 alignment: Alignment.center,
                                 padding: const EdgeInsets.all(8),
                                 //color: Colors.blue.withOpacity(.5),
-                                child: const Text(
-                                  "Tractor",
-                                  style: TextStyle(
+                                child:  Text(
+                                  AppLanguageKeys().strTractor.tr,
+                                  style:  TextStyle(
                                     fontWeight: FontWeight.w500,
-                                    color: Colors.white,
+                                    color: AppColors().appWhiteColor,
                                     fontSize: 16,
                                   ),
                                 ),
@@ -123,7 +124,7 @@ class HomeScreen extends GetView<HomeScreenController> {
                       Container(
                         width: 110,
                         height: 110,
-                        color: Colors.transparent,
+                        color: AppColors().appTransparentColor,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(12),
                           child: InkWell(
@@ -132,11 +133,11 @@ class HomeScreen extends GetView<HomeScreenController> {
                               footer: Container(
                                 alignment: Alignment.center,
                                 padding: const EdgeInsets.all(8),
-                                child: const Text(
-                                  "Drone",
-                                  style: TextStyle(
+                                child:  Text(
+                                  AppLanguageKeys().strDrone.tr,
+                                  style:  TextStyle(
                                     fontWeight: FontWeight.w500,
-                                    color: Colors.white,
+                                    color: AppColors().appWhiteColor,
                                     fontSize: 16,
                                   ),
                                 ),
@@ -154,7 +155,7 @@ class HomeScreen extends GetView<HomeScreenController> {
                       Container(
                         width: 110,
                         height: 110,
-                        color: Colors.transparent,
+                        color: AppColors().appTransparentColor,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(12),
                           child: InkWell(
@@ -163,11 +164,11 @@ class HomeScreen extends GetView<HomeScreenController> {
                               footer: Container(
                                 alignment: Alignment.center,
                                 padding: const EdgeInsets.all(8),
-                                child: const Text(
-                                  "JCB",
-                                  style: TextStyle(
+                                child:  Text(
+                                  AppLanguageKeys().strJCB.tr,
+                                  style:  TextStyle(
                                     fontWeight: FontWeight.w500,
-                                    color: Colors.white,
+                                    color: AppColors().appWhiteColor,
                                     fontSize: 16,
                                   ),
                                 ),
@@ -196,7 +197,7 @@ class HomeScreen extends GetView<HomeScreenController> {
                           bottomRight: Radius.circular(20),
                           topLeft: Radius.circular(20),
                           topRight: Radius.circular(20),),
-                      child: Container(
+                      child: ColoredBox(
                         color: Colors.green.withOpacity(0.8),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -206,27 +207,30 @@ class HomeScreen extends GetView<HomeScreenController> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  const Row(
+                                   Row(
                                     children: <Widget>[
-                                      Icon(
+                                       Icon(
                                         CupertinoIcons.location_solid,
-                                        color: Colors.white,
+                                        color: AppColors().appWhiteColor,
                                         size: 15,
                                       ),
                                       Text(
-                                        "Nashik, India",
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 11,),
+                                        AppLanguageKeys().
+                                        strNashik_India.tr,
+                                        style:  TextStyle(
+                                            color: AppColors().appWhiteColor,
+                                          fontSize: 11,),
                                       ),
                                     ],
                                   ),
-                                  const Padding(
+                                   Padding(
                                     padding:
-                                    EdgeInsets.fromLTRB(16, 0, 0, 0),
+                                    const EdgeInsets.fromLTRB(16, 0, 0, 0),
                                     child: Text(
-                                      "Friday",
-                                      style: TextStyle(
-                                          fontSize: 11, color: Colors.white,),
+                                      AppLanguageKeys().strFriday.tr,
+                                      style:  TextStyle(
+                                          fontSize: 11,
+                                        color: AppColors().appWhiteColor,),
                                     ),
                                   ),
                                   Padding(
@@ -234,11 +238,11 @@ class HomeScreen extends GetView<HomeScreenController> {
                                     const EdgeInsets.fromLTRB(16, 0, 0, 0),
                                     child: Row(
                                       children: <Widget>[
-                                        const Text(
-                                          "26°",
-                                          style: TextStyle(
+                                         Text(
+                                          AppLanguageKeys().strDegree.tr,
+                                          style:  TextStyle(
                                               fontSize: 20,
-                                              color: Colors.white,
+                                              color: AppColors().appWhiteColor,
                                               fontWeight: FontWeight.bold,),
                                         ),
                                         Image.asset(
@@ -256,15 +260,16 @@ class HomeScreen extends GetView<HomeScreenController> {
                               ),
                               Column(
                                 children: <Widget>[
-                                  const Text(
-                                    "SAT",
-                                    style: TextStyle(
-                                        color: Colors.white,
+                                   Text(
+                                    AppLanguageKeys().strSAT.tr,
+                                    style:  TextStyle(
+                                        color: AppColors().appWhiteColor,
                                         fontWeight: FontWeight.w600,),
                                   ),
-                                  const Text(
-                                    "29°",
-                                    style: TextStyle(color: Colors.white),
+                                   Text(
+                                    AppLanguageKeys().strDegree1.tr,
+                                    style:  TextStyle(
+                                      color: AppColors().appWhiteColor,),
                                   ),
                                   Image.asset(
                                     AppAssetsImages.sunny_2d,
@@ -277,16 +282,17 @@ class HomeScreen extends GetView<HomeScreenController> {
                                 width: 10,
                               ),
                               Column(
-                                children: [
-                                  const Text(
-                                    "SUN",
-                                    style: TextStyle(
-                                        color: Colors.white,
+                                children: <Widget>[
+                                   Text(
+                                    AppLanguageKeys().strSUN.tr,
+                                    style:  TextStyle(
+                                        color: AppColors().appWhiteColor,
                                         fontWeight: FontWeight.w600,),
                                   ),
-                                  const Text(
-                                    "23°",
-                                    style: TextStyle(color: Colors.white),
+                                   Text(
+                                    AppLanguageKeys().strDegree2.tr,
+                                    style:  TextStyle(
+                                      color: AppColors().appWhiteColor,),
                                   ),
                                   Image.asset(
                                     AppAssetsImages.thunder_2d,
@@ -300,15 +306,16 @@ class HomeScreen extends GetView<HomeScreenController> {
                               ),
                               Column(
                                 children: <Widget>[
-                                  const Text(
-                                    "MON",
-                                    style: TextStyle(
-                                        color: Colors.white,
+                                   Text(
+                                    AppLanguageKeys().strMON.tr,
+                                    style:  TextStyle(
+                                        color: AppColors().appWhiteColor,
                                         fontWeight: FontWeight.w600,),
                                   ),
-                                  const Text(
-                                    "25°",
-                                    style: TextStyle(color: Colors.white),
+                                   Text(
+                                    AppLanguageKeys().strDegree3.tr,
+                                    style:  TextStyle(
+                                      color: AppColors().appWhiteColor,),
                                   ),
                                   Image.asset(
                                     AppAssetsImages.sunny_2d,
@@ -321,16 +328,17 @@ class HomeScreen extends GetView<HomeScreenController> {
                                 width: 10,
                               ),
                               Column(
-                                children: [
-                                  const Text(
-                                    "TUE",
-                                    style: TextStyle(
-                                        color: Colors.white,
+                                children: <Widget>[
+                                   Text(
+                                    AppLanguageKeys().strTUE.tr,
+                                    style:  TextStyle(
+                                        color: AppColors().appWhiteColor,
                                         fontWeight: FontWeight.w600,),
                                   ),
-                                  const Text(
-                                    "25°",
-                                    style: TextStyle(color: Colors.white),
+                                   Text(
+                                    AppLanguageKeys().strDegree3.tr,
+                                    style:  TextStyle(
+                                      color: AppColors().appWhiteColor,),
                                   ),
                                   Image.asset(
                                     AppAssetsImages.rainy_2d,
@@ -344,15 +352,16 @@ class HomeScreen extends GetView<HomeScreenController> {
                               ),
                               Column(
                                 children: <Widget>[
-                                  const Text(
-                                    "WED",
-                                    style: TextStyle(
-                                        color: Colors.white,
+                                   Text(
+                                    AppLanguageKeys().strWED.tr,
+                                    style:  TextStyle(
+                                        color: AppColors().appWhiteColor,
                                         fontWeight: FontWeight.w600,),
                                   ),
-                                  const Text(
-                                    "29°",
-                                    style: TextStyle(color: Colors.white),
+                                   Text(
+                                    AppLanguageKeys().strDegree3.tr,
+                                    style:  TextStyle(
+                                      color: AppColors().appWhiteColor,),
                                   ),
                                   Image.asset(
                                     AppAssetsImages.sunny_2d,
@@ -365,16 +374,17 @@ class HomeScreen extends GetView<HomeScreenController> {
                                 width: 10,
                               ),
                               Column(
-                                children: [
-                                  const Text(
-                                    "THU",
-                                    style: TextStyle(
-                                        color: Colors.white,
+                                children: <Widget>[
+                                   Text(
+                                    AppLanguageKeys().strTHU.tr,
+                                    style:  TextStyle(
+                                        color: AppColors().appWhiteColor,
                                         fontWeight: FontWeight.w600,),
                                   ),
-                                  const Text(
-                                    "28°",
-                                    style: TextStyle(color: Colors.white),
+                                   Text(
+                                    AppLanguageKeys().strDegree5.tr,
+                                    style:  TextStyle(
+                                      color: AppColors().appWhiteColor,),
                                   ),
                                   Image.asset(
                                     AppAssetsImages.thunder_2d,
@@ -392,23 +402,23 @@ class HomeScreen extends GetView<HomeScreenController> {
                   const SizedBox(
                     height: 10,
                   ),
-                  const Text(
-                    "Product",
-                    style: TextStyle(
+                   Text(
+                    AppLanguageKeys().strProduct.tr,
+                    style:  TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w500,
-                        color: Colors.black,),
+                        color: AppColors().appBlackColor,),
                   ),
                   const SizedBox(
                     height: 5,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    children: <Widget>[
                       Container(
                         width: 110,
                         height: 110,
-                        color: Colors.transparent,
+                        color: AppColors().appTransparentColor,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(12),
                           child: InkWell(
@@ -417,11 +427,11 @@ class HomeScreen extends GetView<HomeScreenController> {
                               footer: Container(
                                 alignment: Alignment.center,
                                 padding: const EdgeInsets.fromLTRB(8, 10, 8, 5),
-                                child: const Text(
-                                  "Cattle Feed",
-                                  style: TextStyle(
+                                child:  Text(
+                                  AppLanguageKeys().strCattle_Feed.tr,
+                                  style:  TextStyle(
                                     fontWeight: FontWeight.w500,
-                                    color: Colors.white,
+                                    color: AppColors().appWhiteColor,
                                     fontSize: 16,
                                   ),
                                 ),
@@ -439,7 +449,7 @@ class HomeScreen extends GetView<HomeScreenController> {
                       Container(
                         width: 110,
                         height: 110,
-                        color: Colors.transparent,
+                        color: AppColors().appTransparentColor,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(12),
                           child: InkWell(
@@ -449,11 +459,11 @@ class HomeScreen extends GetView<HomeScreenController> {
                                 alignment: Alignment.center,
                                 padding: const EdgeInsets.fromLTRB(8, 10, 8, 5),
                                 //color: Colors.blue.withOpacity(.5),
-                                child: const Text(
-                                  "Nursery",
-                                  style: TextStyle(
+                                child:  Text(
+                                  AppLanguageKeys().strNursery.tr,
+                                  style:  TextStyle(
                                     fontWeight: FontWeight.w500,
-                                    color: Colors.white,
+                                    color: AppColors().appWhiteColor,
                                     fontSize: 16,
                                   ),
                                 ),
@@ -471,7 +481,7 @@ class HomeScreen extends GetView<HomeScreenController> {
                       Container(
                         width: 110,
                         height: 110,
-                        color: Colors.transparent,
+                        color: AppColors().appTransparentColor,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(12),
                           child: InkWell(
@@ -480,11 +490,11 @@ class HomeScreen extends GetView<HomeScreenController> {
                               footer: Container(
                                 alignment: Alignment.center,
                                 padding: const EdgeInsets.fromLTRB(8, 10, 8, 5),
-                                child: const Text(
-                                  "Fertilizer",
-                                  style: TextStyle(
+                                child:  Text(
+                                  AppLanguageKeys().strFertilizer.tr,
+                                  style:  TextStyle(
                                     fontWeight: FontWeight.w500,
-                                    color: Colors.white,
+                                    color: AppColors().appWhiteColor,
                                     fontSize: 16,
                                   ),
                                 ),
@@ -515,31 +525,31 @@ class HomeScreen extends GetView<HomeScreenController> {
                   const SizedBox(
                     height: 14,
                   ),
-                  const Row(
+                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(
-                        "Cattle Feed",
-                        style: TextStyle(
+                        AppLanguageKeys().strCattle_Feed.tr,
+                        style:  TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
-                            color: Colors.black,),
+                            color: AppColors().appBlackColor,),
                       ),
-                      Row(
-                        children: [
+                       Row(
+                        children: <Widget>[
                           Text(
-                            "View All",
-                            style: TextStyle(
+                            AppLanguageKeys().strView_All.tr,
+                            style:  TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
-                                color: Colors.green,),
+                                color: AppColors().appPrimaryColor,),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 2,
                           ),
-                          Icon(
+                           Icon(
                             Icons.arrow_forward_ios,
-                            color: Colors.green,
+                            color: AppColors().appPrimaryColor,
                             size: 12,
                           ),
                         ],
@@ -555,7 +565,7 @@ class HomeScreen extends GetView<HomeScreenController> {
                         height: 150,
                         width: 150,
                         price: "500",
-                        productName: "Bajra",
+                        productName: AppLanguageKeys().strBajra.tr,
                         productImage: AppAssetsImages.wheat,
                       ),
                       const SizedBox(
@@ -565,7 +575,7 @@ class HomeScreen extends GetView<HomeScreenController> {
                         height: 150,
                         width: 150,
                         price: "500",
-                        productName: "Bajra",
+                        productName: AppLanguageKeys().strBajra.tr,
                         productImage: AppAssetsImages.tractor,
                       ),
                     ],
@@ -573,31 +583,31 @@ class HomeScreen extends GetView<HomeScreenController> {
                   const SizedBox(
                     height: 14,
                   ),
-                  const Row(
+                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    children: <Widget>[
                       Text(
-                        "Fertilizer",
-                        style: TextStyle(
+                        AppLanguageKeys().strFertilizer.tr,
+                        style:  TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
-                            color: Colors.black,),
+                            color: AppColors().appBlackColor,),
                       ),
                       Row(
-                        children: [
+                        children: <Widget>[
                           Text(
-                            "View All",
-                            style: TextStyle(
+                            AppLanguageKeys().strView_All.tr,
+                            style:  TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
-                                color: Colors.green,),
+                                color: AppColors().appPrimaryColor,),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 2,
                           ),
-                          Icon(
+                           Icon(
                             Icons.arrow_forward_ios,
-                            color: Colors.green,
+                            color: AppColors().appPrimaryColor,
                             size: 12,
                           ),
                         ],
@@ -613,7 +623,7 @@ class HomeScreen extends GetView<HomeScreenController> {
                         height: 150,
                         width: 150,
                         price: "500",
-                        productName: "Bajra",
+                        productName: AppLanguageKeys().strBajra.tr,
                         productImage: AppAssetsImages.wheat,
                       ),
                       const SizedBox(
@@ -623,7 +633,7 @@ class HomeScreen extends GetView<HomeScreenController> {
                         height: 150,
                         width: 150,
                         price: "500",
-                        productName: "Bajra",
+                        productName: AppLanguageKeys().strBajra.tr,
                         productImage: AppAssetsImages.tractor,
                       ),
                     ],

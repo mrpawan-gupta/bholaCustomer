@@ -1,15 +1,18 @@
 import "package:customer/controllers/product_detail_page_controllers/product_detail_page_controllers.dart";
-import "package:customer/screens/product_details/cart.dart";
 import "package:customer/screens/widgets/ConversationListWidgets.dart";
 import "package:customer/screens/widgets/textWidgets.dart";
+import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_assets_images.dart";
+import "package:customer/utils/app_colors.dart";
+import "package:customer/utils/app_routes.dart";
+import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
-import "package:get/get_state_manager/src/simple/get_view.dart";
+import "package:get/get.dart";
 
 
-class ProductDetailPage extends GetView<ProductDetailPageController> {
-  const ProductDetailPage({super.key});
+class ProductDetailScreen extends GetView<ProductDetailController> {
+  const ProductDetailScreen({super.key});
 
 
   @override
@@ -27,7 +30,7 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                   Container(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: Colors.grey.shade400,),
+                        color: AppColors().appGreyColor,),
                     height: 440,
                     width: MediaQuery.sizeOf(context).width,
                   ),
@@ -39,7 +42,7 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                         width: 30,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(7),
-                            color: Colors.white,),
+                            color: AppColors().appWhiteColor,),
                         child: const Icon(
                           CupertinoIcons.back,
                           size: 20,
@@ -51,7 +54,7 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                       child: Image.asset(
                         AppAssetsImages.back,
                         height: 50,
-                        color: Colors.black87,
+                        color: AppColors().appBlackColor,
                       ),),
                   Positioned(
                       top: 15,
@@ -74,7 +77,7 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                         width: MediaQuery.sizeOf(context).width / 1.2,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            color: Colors.white,),
+                            color: AppColors().appWhiteColor,),
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(6, 2, 6, 2),
                           child: Row(
@@ -84,8 +87,22 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                                 borderRadius: BorderRadius.circular(12),
                                 // Image border
                                 child: SizedBox.fromSize(
-                                  size: const Size.fromRadius(30), // Image radius
-                                  child: Container(
+                                  size: const Size.fromRadius(30),
+                                  child: ColoredBox(
+                                    color: AppColors().appGreyColor,
+                                    child: Image.asset(
+                                        AppAssetsImages.product,
+                                        fit: BoxFit.cover,),
+                                  ),
+                                ),
+                              ),
+
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                // Image border
+                                child: SizedBox.fromSize(
+                                  size: const Size.fromRadius(30),
+                                  child: ColoredBox(
                                     color: Colors.grey.shade400,
                                     child: Image.asset(
                                         AppAssetsImages.product,
@@ -98,8 +115,22 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                                 borderRadius: BorderRadius.circular(12),
                                 // Image border
                                 child: SizedBox.fromSize(
-                                  size: const Size.fromRadius(30), // Image radius
-                                  child: Container(
+                                  size: const Size.fromRadius(30),
+                                  child: ColoredBox(
+                                    color: AppColors().appGreyColor,
+                                    child: Image.asset(
+                                        AppAssetsImages.product,
+                                        fit: BoxFit.cover,),
+                                  ),
+                                ),
+                              ),
+
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                // Image border
+                                child: SizedBox.fromSize(
+                                  size: const Size.fromRadius(30),
+                                  child: ColoredBox(
                                     color: Colors.grey.shade400,
                                     child: Image.asset(
                                         AppAssetsImages.product,
@@ -112,64 +143,36 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                                 borderRadius: BorderRadius.circular(12),
                                 // Image border
                                 child: SizedBox.fromSize(
-                                  size: const Size.fromRadius(30), // Image radius
-                                  child: Container(
-                                    color: Colors.grey.shade400,
+                                  size: const Size.fromRadius(30),
+                                  child: ColoredBox(
+                                    color: AppColors().appGreyColor,
                                     child: Image.asset(
                                         AppAssetsImages.product,
                                         fit: BoxFit.cover,),
                                   ),
                                 ),
                               ),
-
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(12),
-                                // Image border
-                                child: SizedBox.fromSize(
-                                  size: const Size.fromRadius(30), // Image radius
-                                  child: Container(
-                                    color: Colors.grey.shade400,
-                                    child: Image.asset(
-                                        AppAssetsImages.product,
-                                        fit: BoxFit.cover),
-                                  ),
-                                ),
-                              ),
-
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(12),
-                                // Image border
-                                child: SizedBox.fromSize(
-                                  size: const Size.fromRadius(30), // Image radius
-                                  child: Container(
-                                    color: Colors.grey.shade400,
-                                    child: Image.asset(
-                                        AppAssetsImages.product,
-                                        fit: BoxFit.cover,),
-                                  ),
-                                ),
-                              )
                             ],
                           ),
                         ),
-                      )),
+                      ),),
                 ],
               ),
               const SizedBox(
                 height: 8,
               ),
               TextWidget(
-                text: "Amul Cattle Feed",
-                color: Colors.black,
+                text: AppLanguageKeys().strAmul.tr,
+                color: AppColors().appBlackColor,
                 size: 22,
                 fontWeight: FontWeight.bold,
                 isLineThrough: false,
               ),
               Row(
-                children: [
+                children: <Widget>[
                   TextWidget(
                     text: "₹199",
-                    color: Colors.black,
+                    color: AppColors().appBlackColor,
                     size: 18,
                     fontWeight: FontWeight.bold,
                     isLineThrough: false,
@@ -178,8 +181,8 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                     width: 20,
                   ),
                   TextWidget(
-                    text: "MRP",
-                    color: Colors.grey,
+                    text: AppLanguageKeys().strMRP.tr,
+                    color: AppColors().appGreyColor,
                     size: 17,
                     fontWeight: FontWeight.w600,
                     isLineThrough: false,
@@ -189,7 +192,7 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                   ),
                   TextWidget(
                     text: "₹599",
-                    color: Colors.grey,
+                    color: AppColors().appGreyColor,
                     size: 17,
                     fontWeight: FontWeight.w600,
                     isLineThrough: true,
@@ -199,7 +202,7 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                   ),
                   TextWidget(
                     text: "(45 % Off)",
-                    color: Colors.orange,
+                    color: AppColors().appOrangeColor,
                     size: 17,
                     fontWeight: FontWeight.bold,
                     isLineThrough: false,
@@ -211,14 +214,14 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
               ),
               Row(
                 children: <Widget>[
-                  const Icon(
+                   Icon(
                     Icons.star,
-                    color: Colors.orange,
+                    color: AppColors().appOrangeColor,
                     size: 15,
                   ),
                   TextWidget(
                     text: "4.5 (355 Reviews)",
-                    color: Colors.grey,
+                    color: AppColors().appGreyColor,
                     size: 14,
                     fontWeight: FontWeight.w500,
                     isLineThrough: false,
@@ -229,12 +232,7 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                      "In addition to being a major source of starch and energy,"
-                          " wheat also provides substantial amounts of a number"
-                          " of components which are essential or beneficial for "
-                          "health, notably protein, vitamins "
-                          "(notably B vitamins), dietary fiber, "
-                          "and phytochemicals.",
+                    AppLanguageKeys().strText1.tr,
                       maxLines: controller.descTextShowFlag ? 8 : 2,
                       textAlign: TextAlign.start,),
                   const SizedBox(
@@ -246,37 +244,37 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                     },
                     child: Row(
                       children: <Widget>[
-                        if (controller.descTextShowFlag) const Row(
+                        if (controller.descTextShowFlag)  Row(
                           children: <Widget>[
                             Text(
-                              "Read Less",
-                              style: TextStyle(
-                                  color: Colors.green,
-                                  fontWeight: FontWeight.w600),
+                              AppLanguageKeys().strReadLess.tr,
+                              style:  TextStyle(
+                                  color: AppColors().appPrimaryColor,
+                                  fontWeight: FontWeight.w600,),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 3,
                             ),
-                            Icon(
+                             Icon(
                               Icons.arrow_drop_down_sharp,
-                              color: Colors.green,
+                              color: AppColors().appPrimaryColor,
                               size: 30,
                             ),
                           ],
-                        ) else const Row(
+                        ) else  Row(
                           children: <Widget>[
                             Text(
-                              "Read More",
-                              style: TextStyle(
-                                  color: Colors.green,
+                              AppLanguageKeys().strReadMore.tr,
+                              style:  TextStyle(
+                                  color: AppColors().appPrimaryColor,
                                   fontWeight: FontWeight.w600,),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 3,
                             ),
-                            Icon(
+                             Icon(
                               Icons.arrow_drop_down_sharp,
-                              color: Colors.green,
+                              color: AppColors().appPrimaryColor,
                               size: 30,
                             ),
                           ],
@@ -290,8 +288,8 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                 height: 8,
               ),
               TextWidget(
-                text: "Delivery Address",
-                color: Colors.black,
+                text: AppLanguageKeys().strDeliveryAddress.tr,
+                color: AppColors().appBlackColor,
                 size: 19,
                 fontWeight: FontWeight.bold,
                 isLineThrough: false,
@@ -302,7 +300,7 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
               Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
-                    color: Colors.grey.shade200,),
+                    color: AppColors().appGreyColor,),
                 height: 100,
                 width: MediaQuery.sizeOf(context).width,
                 child: Padding(
@@ -314,19 +312,18 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           TextWidget(
-                            text: "Rohan Patil",
-                            color: Colors.black,
+                            text: AppLanguageKeys().strRohan.tr,
+                            color:AppColors().appBlackColor,
                             size: 16,
                             fontWeight: FontWeight.bold,
                             isLineThrough: false,
                           ),
                           SizedBox(
                             width: MediaQuery.sizeOf(context).width / 1.4,
-                            child: const Text(
-                              "Apollo Hospital Nashik, Plot No 1, Nashik,"
-                                  " Maharashtra 422003, India",
-                              style: TextStyle(
-                                color: Colors.grey,
+                            child:  Text(
+                              AppLanguageKeys().strText.tr,
+                              style:  TextStyle(
+                                color: AppColors().appGreyColor,
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -335,11 +332,11 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                           ),
                         ],
                       ),
-                      const Icon(
+                       Icon(
                         Icons.edit_calendar_rounded,
-                        color: Colors.green,
+                        color: AppColors().appPrimaryColor,
                         size: 30,
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -350,7 +347,7 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
               Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
-                      color: Colors.grey.shade200,),
+                      color: AppColors().appGreyColor,),
                   height: 75,
                   width: MediaQuery.sizeOf(context).width,
                   child: Padding(
@@ -372,14 +369,14 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                               children: <Widget>[
                                 TextWidget(
                                   text: "Free Delivery   | ",
-                                  color: Colors.green,
+                                  color: AppColors().appPrimaryColor,
                                   size: 16,
                                   fontWeight: FontWeight.bold,
                                   isLineThrough: false,
                                 ),
                                 TextWidget(
                                   text: "    Delivery By",
-                                  color: Colors.black,
+                                  color: AppColors().appBlackColor,
                                   size: 16,
                                   fontWeight: FontWeight.w600,
                                   isLineThrough: false,
@@ -391,7 +388,7 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                             ),
                             TextWidget(
                               text: "6th April 2024",
-                              color: Colors.black,
+                              color: AppColors().appBlackColor,
                               size: 14,
                               fontWeight: FontWeight.w600,
                               isLineThrough: false,
@@ -406,17 +403,17 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
+                children: <Widget>[
                   TextWidget(
-                    text: "Suggested For You",
-                    color: Colors.black,
+                    text: AppLanguageKeys().strSuggested.tr,
+                    color: AppColors().appBlackColor,
                     size: 19,
                     fontWeight: FontWeight.bold,
                     isLineThrough: false,
                   ),
                   TextWidget(
-                    text: "See All",
-                    color: Colors.black,
+                    text: AppLanguageKeys().strSeeAll.tr,
+                    color: AppColors().appBlackColor,
                     size: 15,
                     fontWeight: FontWeight.bold,
                     isLineThrough: false,
@@ -453,8 +450,8 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                 height: 20,
               ),
               TextWidget(
-                text: "Highlights",
-                color: Colors.black,
+                text: AppLanguageKeys().strHighlights.tr,
+                color: AppColors().appBlackColor,
                 size: 19,
                 fontWeight: FontWeight.bold,
                 isLineThrough: false,
@@ -465,23 +462,27 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
               Column(
                 children: <Widget>[
                   ConversationList(
-                      name: "Highlight 1",
-                      messageText: "Hightlight description",
+                      name: AppLanguageKeys().strHighlight1.tr,
+                      messageText: AppLanguageKeys().
+                      strHightlightDescription.tr,
                       imageUrl: AppAssetsImages.banner2,
-                      isMessageRead: false),
+                      isMessageRead: false,),
                   ConversationList(
-                      name: "Highlight 1",
-                      messageText: "Hightlight description",
+                      name: AppLanguageKeys().strHighlight1.tr,
+                      messageText: AppLanguageKeys().
+                      strHightlightDescription.tr,
                       imageUrl: AppAssetsImages.banner2,
-                      isMessageRead: false),
+                      isMessageRead: false,),
                   ConversationList(
-                      name: "Highlight 1",
-                      messageText: "Hightlight description",
+                      name: AppLanguageKeys().strHighlight1.tr,
+                      messageText: AppLanguageKeys().
+                      strHightlightDescription.tr,
                       imageUrl: AppAssetsImages.banner2,
-                      isMessageRead: false),
+                      isMessageRead: false,),
                   ConversationList(
-                      name: "Highlight 1",
-                      messageText: "Hightlight description",
+                      name: AppLanguageKeys().strHighlight1.tr,
+                      messageText: AppLanguageKeys().
+                      strHightlightDescription.tr,
                       imageUrl: AppAssetsImages.banner2,
                       isMessageRead: false,),
                 ],
@@ -493,17 +494,17 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   TextWidget(
-                    text: "Ratings & Review",
-                    color: Colors.black,
+                    text: AppLanguageKeys().strRatings.tr,
+                    color: AppColors().appBlackColor,
                     size: 19,
                     fontWeight: FontWeight.bold,
                     isLineThrough: false,
                   ),
-                  const Icon(
+                   Icon(
                     Icons.edit_calendar_rounded,
-                    color: Colors.green,
+                    color: AppColors().appPrimaryColor,
                     size: 30,
-                  )
+                  ),
                 ],
               ),
               const SizedBox(
@@ -512,7 +513,7 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
               Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
-                    color: Colors.grey.shade200,),
+                    color: AppColors().appGreyColor,),
                 height: 160,
                 width: MediaQuery.sizeOf(context).width,
                 child: Padding(
@@ -527,7 +528,7 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                             children: <Widget>[
                               TextWidget(
                                 text: "5",
-                                color: Colors.black,
+                                color: AppColors().appBlackColor,
                                 size: 15,
                                 fontWeight: FontWeight.bold,
                                 isLineThrough: false,
@@ -535,23 +536,23 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                               const SizedBox(
                                 width: 5,
                               ),
-                              const Icon(
+                               Icon(
                                 Icons.star,
-                                color: Colors.yellow,
+                                color:AppColors().appYellowColor,
                               ),
                               const SizedBox(
                                 width: 8,
                               ),
-                              const SizedBox(
+                               SizedBox(
                                 width: 150,
                                 height: 10,
                                 child: ClipRRect(
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
+                                  const BorderRadius.all(Radius.circular(10)),
                                   child: LinearProgressIndicator(
                                     value: 1,
                                     valueColor: AlwaysStoppedAnimation<Color>(
-                                        Colors.green,),
+                                      AppColors().appPrimaryColor,),
                                     backgroundColor: Color(0xffD6D6D6),
                                   ),
                                 ),
@@ -565,7 +566,7 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                             children: <Widget>[
                               TextWidget(
                                 text: "4",
-                                color: Colors.black,
+                                color: AppColors().appBlackColor,
                                 size: 15,
                                 fontWeight: FontWeight.bold,
                                 isLineThrough: false,
@@ -573,14 +574,14 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                               const SizedBox(
                                 width: 5,
                               ),
-                              const Icon(
+                               Icon(
                                 Icons.star,
-                                color: Colors.yellow,
+                                color: AppColors().appYellowColor,
                               ),
                               const SizedBox(
                                 width: 8,
                               ),
-                              const SizedBox(
+                               SizedBox(
                                 width: 130,
                                 height: 10,
                                 child: ClipRRect(
@@ -589,7 +590,7 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                                   child: LinearProgressIndicator(
                                     value: 1,
                                     valueColor: AlwaysStoppedAnimation<Color>(
-                                        Colors.green,),
+                                      AppColors().appPrimaryColor,),
                                     backgroundColor: Color(0xffD6D6D6),
                                   ),
                                 ),
@@ -603,7 +604,7 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                             children: <Widget>[
                               TextWidget(
                                 text: "3",
-                                color: Colors.black,
+                                color: AppColors().appBlackColor,
                                 size: 15,
                                 fontWeight: FontWeight.bold,
                                 isLineThrough: false,
@@ -611,14 +612,14 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                               const SizedBox(
                                 width: 5,
                               ),
-                              const Icon(
+                               Icon(
                                 Icons.star,
-                                color: Colors.yellow,
+                                color: AppColors().appYellowColor,
                               ),
                               const SizedBox(
                                 width: 8,
                               ),
-                              const SizedBox(
+                               SizedBox(
                                 width: 100,
                                 height: 10,
                                 child: ClipRRect(
@@ -627,7 +628,7 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                                   child: LinearProgressIndicator(
                                     value: 1,
                                     valueColor: AlwaysStoppedAnimation<Color>(
-                                        Colors.green,),
+                                        AppColors().appPrimaryColor,),
                                     backgroundColor: Color(0xffD6D6D6),
                                   ),
                                 ),
@@ -641,7 +642,7 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                             children: <Widget>[
                               TextWidget(
                                 text: "2",
-                                color: Colors.black,
+                                color: AppColors().appBlackColor,
                                 size: 15,
                                 fontWeight: FontWeight.bold,
                                 isLineThrough: false,
@@ -649,14 +650,14 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                               const SizedBox(
                                 width: 5,
                               ),
-                              const Icon(
+                               Icon(
                                 Icons.star,
-                                color: Colors.yellow,
+                                color: AppColors().appYellowColor,
                               ),
                               const SizedBox(
                                 width: 8,
                               ),
-                              const SizedBox(
+                               SizedBox(
                                 width: 70,
                                 height: 10,
                                 child: ClipRRect(
@@ -665,7 +666,7 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                                   child: LinearProgressIndicator(
                                     value: 1,
                                     valueColor: AlwaysStoppedAnimation<Color>(
-                                        Colors.green,),
+                                      AppColors().appPrimaryColor,),
                                     backgroundColor: Color(0xffD6D6D6),
                                   ),
                                 ),
@@ -679,7 +680,7 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                             children: <Widget>[
                               TextWidget(
                                 text: "1",
-                                color: Colors.black,
+                                color: AppColors().appBlackColor,
                                 size: 15,
                                 fontWeight: FontWeight.bold,
                                 isLineThrough: false,
@@ -687,14 +688,14 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                               const SizedBox(
                                 width: 5,
                               ),
-                              const Icon(
+                               Icon(
                                 Icons.star,
-                                color: Colors.yellow,
+                                color: AppColors().appYellowColor,
                               ),
                               const SizedBox(
                                 width: 8,
                               ),
-                              const SizedBox(
+                               SizedBox(
                                 width: 50,
                                 height: 10,
                                 child: ClipRRect(
@@ -703,11 +704,11 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                                   child: LinearProgressIndicator(
                                     value: 1,
                                     valueColor: AlwaysStoppedAnimation<Color>(
-                                        Colors.green,),
+                                      AppColors().appPrimaryColor,),
                                     backgroundColor: Color(0xffD6D6D6),
                                   ),
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         ],
@@ -718,151 +719,145 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                           children: <Widget>[
                             TextWidget(
                               text: "4.0",
-                              color: Colors.black,
+                              color: AppColors().appBlackColor,
                               size: 30,
                               fontWeight: FontWeight.bold,
                               isLineThrough: false,
                             ),
-                            const Row(
+                             Row(
                               children: <Widget>[
                                 Icon(
                                   Icons.star,
-                                  color: Colors.orange,
+                                  color: AppColors().appOrangeColor,
                                 ),
                                 Icon(
                                   Icons.star,
-                                  color: Colors.orange,
+                                  color: AppColors().appOrangeColor,
                                 ),
                                 Icon(
                                   Icons.star,
-                                  color: Colors.orange,
+                                  color: AppColors().appOrangeColor,
                                 ),
-                                Icon(
+                                 Icon(
                                   Icons.star,
-                                  color: Colors.grey,
+                                  color: AppColors().appGreyColor,
                                 ),
-                                Icon(
+                                 Icon(
                                   Icons.star,
-                                  color: Colors.grey,
+                                  color: AppColors().appGreyColor,
                                 ),
                               ],
                             ),
                             TextWidget(
                               text: "52 Reviews",
-                              color: Colors.black,
+                              color: AppColors().appBlackColor,
                               size: 17,
                               fontWeight: FontWeight.w500,
                               isLineThrough: false,
                             ),
                           ],
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
               ),
-              const Column(
+               Column(
                 children: <Widget>[
                   ListTile(
                     contentPadding: EdgeInsets.zero,
-                    leading: CircleAvatar(
+                    leading: const CircleAvatar(
                       backgroundColor: Color(0xff764abc),
                     ),
-                    title: Text("Krishna Agarwal"),
-                    subtitle: Row(
+                    title: Text(AppLanguageKeys().strKrishnaAgarwal.tr,),
+                    subtitle:  Row(
                       children: <Widget>[
                         Icon(
                           Icons.star,
-                          color: Colors.orange,
+                          color: AppColors().appOrangeColor,
                           size: 20,
                         ),
                         Icon(
                           Icons.star,
-                          color: Colors.orange,
+                          color: AppColors().appOrangeColor,
                           size: 20,
                         ),
                         Icon(
                           Icons.star,
-                          color: Colors.orange,
+                          color: AppColors().appOrangeColor,
                           size: 20,
                         ),
-                        Icon(
+                         Icon(
                           Icons.star,
-                          color: Colors.grey,
+                          color: AppColors().appGreyColor,
                           size: 20,
                         ),
-                        Icon(
+                         Icon(
                           Icons.star,
-                          color: Colors.grey,
+                          color: AppColors().appGreyColor,
                           size: 20,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 15,
                         ),
-                        Text("2 mins ago"),
+                        const Text("2 mins ago"),
                       ],
                     ),
-                    trailing: Icon(Icons.more_vert),
+                    trailing: const Icon(Icons.more_vert),
                   ),
                   Text(
-                    "In addition to being a major source of starch and energy, "
-                        "wheat also provides substantial amounts of a number of"
-                        " components which are essential or beneficial for "
-                        "health, notabl, and phytochemicals.",
+                    AppLanguageKeys().strText2.tr,
                   ),
                 ],
               ),
               const SizedBox(height: 10,),
               const Divider(),
               const SizedBox(height: 5,),
-              const Column(
+               Column(
                 children: <Widget>[
-                  ListTile(
+                   ListTile(
                     contentPadding: EdgeInsets.zero,
-                    leading: CircleAvatar(
+                    leading: const CircleAvatar(
                       backgroundColor: Color(0xff764abc),
                     ),
-                    title: Text("Krishna Agarwal"),
-                    subtitle: Row(
-                      children: [
+                    title: Text(AppLanguageKeys().strKrishnaAgarwal.tr),
+                    subtitle:  Row(
+                      children: <Widget>[
                         Icon(
                           Icons.star,
-                          color: Colors.orange,
+                          color: AppColors().appOrangeColor,
                           size: 20,
                         ),
                         Icon(
                           Icons.star,
-                          color: Colors.orange,
+                          color: AppColors().appOrangeColor,
                           size: 20,
                         ),
                         Icon(
                           Icons.star,
-                          color: Colors.orange,
+                          color: AppColors().appOrangeColor,
                           size: 20,
                         ),
                         Icon(
                           Icons.star,
-                          color: Colors.grey,
+                          color: AppColors().appGreyColor,
                           size: 20,
                         ),
                         Icon(
                           Icons.star,
-                          color: Colors.grey,
+                          color: AppColors().appGreyColor,
                           size: 20,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 15,
                         ),
-                        Text("2 mins ago"),
+                        const Text("2 mins ago"),
                       ],
                     ),
-                    trailing: Icon(Icons.more_vert),
+                    trailing: const Icon(Icons.more_vert),
                   ),
                   Text(
-                    "In addition to being a major source of starch and energy, "
-                        "wheat also provides substantial amounts of a number of"
-                        " components which are essential or beneficial for "
-                        "health, notabl, and phytochemicals.",
+                      AppLanguageKeys().strText2.tr,
                   ),
                 ],
               ),
@@ -876,15 +871,15 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       TextWidget(
-                        text: "Price",
-                        color: Colors.black,
+                        text: AppLanguageKeys().strPrice.tr,
+                        color: AppColors().appBlackColor,
                         size: 15,
                         fontWeight: FontWeight.w500,
                         isLineThrough: false,
                       ),
                       TextWidget(
                         text: "₹199",
-                        color: Colors.green,
+                        color: AppColors().appPrimaryColor,
                         size: 20,
                         fontWeight: FontWeight.bold,
                         isLineThrough: false,
@@ -896,28 +891,30 @@ class ProductDetailPage extends GetView<ProductDetailPageController> {
                     child: ElevatedButton(
                         style: ButtonStyle(
                             foregroundColor:
-                            MaterialStateProperty.all<Color>(Colors.white),
+                            MaterialStateProperty.all<Color>(
+                                AppColors().appWhiteColor,),
                             backgroundColor:
-                            MaterialStateProperty.all<Color>(Colors.green),
+                            MaterialStateProperty.all<Color>(AppColors().appPrimaryColor,),
                             shape:
                             MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10),
-                                    side: const BorderSide(color: Colors.green),
+                                    side:  BorderSide(
+                                      color: AppColors().appPrimaryColor,),
                                 ),
                             ),
                         ),
                         onPressed: () async {
-                          await Navigator.of(context, rootNavigator: true)
-                              .pushReplacement(MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                              const Cart(),),);
+                          await AppNavService().pushNamed(
+                            destination: AppRoutes().cartScreen,
+                            arguments: <String, dynamic>{},
+                          );
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text(
-                                "Add to Cart".toUpperCase(),
+                            AppLanguageKeys().strAdd.tr.toUpperCase(),
                                 style: const TextStyle(fontSize: 15,
                                     fontWeight: FontWeight.bold,),
                             ),

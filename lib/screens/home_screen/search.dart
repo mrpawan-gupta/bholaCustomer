@@ -1,3 +1,4 @@
+import "package:customer/utils/app_colors.dart";
 import "package:flutter/material.dart";
 import "package:get/get_state_manager/src/simple/get_view.dart";
 
@@ -12,7 +13,7 @@ class SearchTab extends GetView<SearchController> {
       width: double.infinity,
       height: 50,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors().appWhiteColor,
         boxShadow:  const <BoxShadow>[
           BoxShadow(
             blurRadius: 3,
@@ -25,16 +26,16 @@ class SearchTab extends GetView<SearchController> {
         ],
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: Colors.white,
+          color: AppColors().appWhiteColor,
         ),
       ),
       child: Padding(
         padding: const EdgeInsetsDirectional.fromSTEB(12, 0, 8, 0),
         child: Row(
           children: <Widget>[
-            const Icon(
+             Icon(
               Icons.search_rounded,
-              color: Colors.black,
+              color: AppColors().appBlackColor,
               size: 24,
             ),
             Expanded(
@@ -43,8 +44,6 @@ class SearchTab extends GetView<SearchController> {
                 child: SizedBox(
                   width: 200,
                   child: TextFormField(
-                    autofocus: false,
-                    obscureText: false,
                     decoration: InputDecoration(
                       labelText: text,
                       enabledBorder: InputBorder.none,
@@ -52,13 +51,12 @@ class SearchTab extends GetView<SearchController> {
                       errorBorder: InputBorder.none,
                       focusedErrorBorder: InputBorder.none,
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor: AppColors().appWhiteColor,
                     ),
                     style: const TextStyle(
                       fontFamily: "Inter",
                       letterSpacing: 0,
                     ),
-                    minLines: null,
                   ),
                 ),
               ),

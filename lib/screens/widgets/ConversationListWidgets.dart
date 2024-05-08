@@ -1,3 +1,4 @@
+import "package:customer/utils/app_colors.dart";
 import "package:flutter/material.dart";
 
 class ConversationList extends StatefulWidget{
@@ -26,20 +27,20 @@ class _ConversationListState extends State<ConversationList> {
                 children: <Widget>[
                   CircleAvatar(
                     backgroundImage: AssetImage(widget.imageUrl),
-                    backgroundColor: Colors.grey,
+                    backgroundColor: AppColors().appGreyColor,
                     maxRadius: 30,
                   ),
                   const SizedBox(width: 16,),
                   Expanded(
                     child: Container(
-                      color: Colors.transparent,
+                      color: AppColors().appTransparentColor,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(widget.name, style: const TextStyle(fontSize: 16),),
                           const SizedBox(height: 6,),
                           Text(widget.messageText,style: TextStyle(fontSize: 13,
-                              color: Colors.grey.shade600,
+                              color: AppColors().appGreyColor,
                               fontWeight: widget.isMessageRead?
                               FontWeight.bold:FontWeight.normal,),),
                         ],
