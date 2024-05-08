@@ -31,4 +31,8 @@ class AppAssetsImages {
   static const String afternoon = "assets/image/afternoon.png";
   static const String evening = "assets/image/evening.png";
   static const String night = "assets/image/night.png";
+  static const String bholaLogo = "assets/image/bholaLogo.png";
+  static const String onboard1 = "assets/image/onboard1.png";
+  static const String onboard2 = "assets/image/onboard2.png";
+  static const String onboard3 = "assets/image/onboard3.png";
 }

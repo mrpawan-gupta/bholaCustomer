@@ -93,4 +93,10 @@ class AppLanguageKeys {
   final String strAddress1 = "strAddress1";
   final String strContact = "strContact";
   final String strBillAmount = "strBillAmount";
+  final String strCONTINUE = "strCONTINUE";
+  final String strProceeding = "strProceeding";
+  final String strCondition = "strCondition";
+  final String strAnd = "strAnd";
+  final String strPrivacyPolicy = "strPrivacyPolicy";
+  final String strBuild = "strBuild";
 }

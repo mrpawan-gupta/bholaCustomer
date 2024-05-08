@@ -104,6 +104,12 @@ class EnLanguage {
     AppLanguageKeys().strAddress1: "Address",
     AppLanguageKeys().strContact: "Contact",
     AppLanguageKeys().strBillAmount: "Bill/Amount",
+    AppLanguageKeys().strCONTINUE: "CONTINUE",
+    AppLanguageKeys().strProceeding: "By proceeding, you agree to the ",
+    AppLanguageKeys().strCondition: "Terms & Conditions",
+    AppLanguageKeys().strAnd: " and ",
+    AppLanguageKeys().strPrivacyPolicy: "Privacy Policy",
+    AppLanguageKeys().strBuild: "Build for Bhola Family",
   };
 
 }

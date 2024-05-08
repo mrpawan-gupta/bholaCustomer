@@ -11,6 +11,7 @@ import "package:customer/bindings/product_deatils_bindings/cart_bindings.dart";
 import "package:customer/bindings/product_deatils_bindings/product_detail_page_bindings.dart";
 import "package:customer/bindings/sample_bindings/firebase_sample_binding.dart";
 import "package:customer/bindings/settings_bindings/change_language_binding.dart";
+import "package:customer/bindings/splash_screen_binding/onboard_screen_binding.dart";
 import "package:customer/screens/account_screen.dart";
 import "package:customer/screens/booking_slot/selected_slot.dart";
 import "package:customer/screens/main_navigation_screen.dart";
@@ -23,6 +24,7 @@ import "package:customer/screens/product_details/ProductDetails.dart";
 import "package:customer/screens/product_details/cart.dart";
 import "package:customer/screens/sample_screens/firebase_sample_screen.dart";
 import "package:customer/screens/settings_screens/change_language_screen.dart";
+import "package:customer/screens/splash_screen/onBoardScreen.dart";
 import "package:customer/screens/widgets/Checkout.dart";
 import "package:get/get.dart";
 
@@ -47,6 +49,7 @@ class AppRoutes {
   final String checkoutScreen = "/checkoutScreen";      // This screen is independent, you can use "/" in this.
   final String cartScreen = "/cartScreen";      // This screen is independent, you can use "/" in this.
   final String selectedSlotScreen = "/selectedSlotScreen";      // This screen is independent, you can use "/" in this.
+  final String onBoardScreen = "/onBoardScreen";      // This screen is independent, you can use "/" in this.
 
   List<GetPage<dynamic>> getPages() {
     final GetPage<dynamic> mainNavigationRoute = GetPage<dynamic>(
@@ -114,6 +117,11 @@ class AppRoutes {
       page: SelectedSlotScreen.new,
       binding: SelectedSlotBinding(),
     );
+    final GetPage<dynamic> onBoardRoute = GetPage<dynamic>(
+      name: onBoardScreen,
+      page: OnBoardScreen.new,
+      binding: OnBoardBinding(),
+    );
     
     return <GetPage<dynamic>>[
       mainNavigationRoute,
@@ -129,6 +137,7 @@ class AppRoutes {
       checkoutRoute,
       cartRoute,
       selectedSlotRoute,
+      onBoardRoute,
     ];
   }
 }

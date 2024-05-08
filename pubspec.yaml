@@ -40,6 +40,7 @@ dependencies:
   persistent_bottom_nav_bar: ^5.0.2
   checkout_screen_ui: ^1.0.1
   syncfusion_flutter_sliders: ^25.1.39
+  telephony: ^0.2.0
 
 dev_dependencies:
   flutter_lints: ^3.0.0

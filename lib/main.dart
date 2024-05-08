@@ -2,6 +2,7 @@ import "dart:async";
 
 import "package:customer/common_functions/dependencies_injection.dart";
 import "package:customer/firebase_options.dart";
+import "package:customer/screens/splash_screen/splash_screen.dart";
 import "package:customer/services/app_analytics_service.dart";
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/services/app_storage_service.dart";
@@ -65,6 +66,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: "Ahinsa Aggregator Customer App",
+      home: const SplashScreen(),
       theme: themeData(brightness: Brightness.light),
       darkTheme: themeData(brightness: Brightness.light),
       getPages: AppRoutes().getPages(),
