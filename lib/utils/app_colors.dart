@@ -14,4 +14,6 @@ class AppColors {
   final Color appGreyColor = Colors.grey;
   final Color appOrangeColor = Colors.orange;
   final Color appBlackColor = Colors.black;
+  final Color appYellowColor = Colors.yellow;
+  final Color appRedColor = Colors.red;
 }

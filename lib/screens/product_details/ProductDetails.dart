@@ -182,7 +182,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                   ),
                   TextWidget(
                     text: AppLanguageKeys().strMRP.tr,
-                    color: Colors.grey,
+                    color: AppColors().appGreyColor,
                     size: 17,
                     fontWeight: FontWeight.w600,
                     isLineThrough: false,
@@ -322,8 +322,8 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                             width: MediaQuery.sizeOf(context).width / 1.4,
                             child:  Text(
                               AppLanguageKeys().strText.tr,
-                              style: const TextStyle(
-                                color: Colors.grey,
+                              style:  TextStyle(
+                                color: AppColors().appGreyColor,
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -536,9 +536,9 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                               const SizedBox(
                                 width: 5,
                               ),
-                              const Icon(
+                               Icon(
                                 Icons.star,
-                                color: Colors.yellow,
+                                color:AppColors().appYellowColor,
                               ),
                               const SizedBox(
                                 width: 8,
@@ -574,9 +574,9 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                               const SizedBox(
                                 width: 5,
                               ),
-                              const Icon(
+                               Icon(
                                 Icons.star,
-                                color: Colors.yellow,
+                                color: AppColors().appYellowColor,
                               ),
                               const SizedBox(
                                 width: 8,
@@ -612,9 +612,9 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                               const SizedBox(
                                 width: 5,
                               ),
-                              const Icon(
+                               Icon(
                                 Icons.star,
-                                color: Colors.yellow,
+                                color: AppColors().appYellowColor,
                               ),
                               const SizedBox(
                                 width: 8,
@@ -650,9 +650,9 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                               const SizedBox(
                                 width: 5,
                               ),
-                              const Icon(
+                               Icon(
                                 Icons.star,
-                                color: Colors.yellow,
+                                color: AppColors().appYellowColor,
                               ),
                               const SizedBox(
                                 width: 8,
@@ -688,9 +688,9 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                               const SizedBox(
                                 width: 5,
                               ),
-                              const Icon(
+                               Icon(
                                 Icons.star,
-                                color: Colors.yellow,
+                                color: AppColors().appYellowColor,
                               ),
                               const SizedBox(
                                 width: 8,

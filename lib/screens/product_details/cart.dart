@@ -16,7 +16,7 @@ class CartScreen extends GetView<CartController> {
 
   Widget slideLeftBackground() {
     return ColoredBox(
-      color: Colors.red,
+      color: AppColors().appRedColor,
       child:  Align(
         alignment: Alignment.centerRight,
         child: Row(
@@ -329,8 +329,8 @@ class CartScreen extends GetView<CartController> {
                             width: MediaQuery.sizeOf(context).width / 1.4,
                             child:  Text(
                               AppLanguageKeys().strText.tr,
-                              style: const TextStyle(
-                                color: Colors.grey,
+                              style:  TextStyle(
+                                color: AppColors().appGreyColor,
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
