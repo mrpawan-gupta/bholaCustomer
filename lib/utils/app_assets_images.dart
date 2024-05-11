@@ -7,4 +7,5 @@ class AppAssetsImages {
   static final AppAssetsImages _singleton = AppAssetsImages._internal();
 
   final String iconFlutter = "assets/images/icon_flutter.png";
+  final String splash = "assets/images/splash.png";
 }
