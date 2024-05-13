@@ -1,5 +1,7 @@
 import "dart:convert";
 
+import "package:customer/models/get_user_by_id.dart";
+import "package:customer/models/verify_otp.dart";
 import "package:customer/utils/app_logger.dart";
 import "package:customer/utils/localization/app_translations.dart";
 import "package:flutter/widgets.dart";
@@ -18,6 +20,8 @@ class AppStorageService extends GetxService {
 
   final String userDataKey = "userDataKey";
   final String userLangKey = "userLangKey";
+  final String userAuthKey = "userAuthKey";
+  final String userInfoKey = "userInfoKey";
 
   Future<void> init() async {
     final bool hasInitialized = await GetStorage.init();
@@ -54,6 +58,46 @@ class AppStorageService extends GetxService {
 
   Locale getUserLangFromStorage() {
     return AppTranslations().underscoreStringToLocale(locale: getUserLang());
+  }
+
+  Future<void> setUserAuth(VerifyOTPModelData userAuth) async {
+    final String value = json.encode(userAuth);
+    await box.write(userAuthKey, value);
+    await box.save();
+    return Future<void>.value();
+  }
+
+  Map<String, dynamic> getUserAuth() {
+    final String value = box.read(userAuthKey) ?? "";
+    return value.isEmpty ? <String, dynamic>{} : json.decode(value);
+  }
+
+  VerifyOTPModelData getUserAuthModel() {
+    final Map<String, dynamic> value = getUserAuth();
+    final VerifyOTPModelData data = value.isEmpty
+        ? VerifyOTPModelData()
+        : VerifyOTPModelData.fromJson(value);
+    return data;
+  }
+
+  Future<void> setUserInfo(GetUserByIdData userInfo) async {
+    final String value = json.encode(userInfo);
+    await box.write(userInfoKey, value);
+    await box.save();
+    return Future<void>.value();
+  }
+
+  Map<String, dynamic> getUserInfo() {
+    final String value = box.read(userInfoKey) ?? "";
+    return value.isEmpty ? <String, dynamic>{} : json.decode(value);
+  }
+
+  GetUserByIdData getUserInfoModel() {
+    final Map<String, dynamic> value = getUserInfo();
+    final GetUserByIdData data = value.isEmpty 
+        ? GetUserByIdData() 
+        : GetUserByIdData.fromJson(value);
+    return data;
   }
 
   Future<void> erase() async {

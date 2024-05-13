@@ -27,9 +27,9 @@ class AppAnalyticsService extends GetxService {
     required dynamic args,
   }) async {
     try {
-      await FirebaseAnalytics.instance.logScreenView(
+      await analytics.logScreenView(
         screenName: current,
-        parameters: args,
+        parameters: args ?? <String, dynamic>{},
       );
       AppLogger().info(message: "logScreenView:: screen: $current args: $args");
     } on Exception catch (error, stackTrace) {

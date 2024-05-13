@@ -1,23 +1,23 @@
 import "dart:async";
 
 import "package:get/get_state_manager/src/simple/get_controllers.dart";
-import "package:telephony/telephony.dart";
+// import "package:telephony/telephony.dart";
 
 class OnBoardScreenController extends GetxController {
   int _currentPage = 0;
   late Timer _timer;
-  final Telephony telephony = Telephony.instance;
+  // final Telephony telephony = Telephony.instance;
 
   int get currentPage => _currentPage;
 
   @override
   void onInit() {
     super.onInit();
-    telephony.listenIncomingSms(
-      onNewMessage: (SmsMessage message) {
-      },
-      listenInBackground: false,
-    );
+    // telephony.listenIncomingSms(
+    //   onNewMessage: (SmsMessage message) {
+    //   },
+    //   listenInBackground: false,
+    // );
     startTimer();
   }
 

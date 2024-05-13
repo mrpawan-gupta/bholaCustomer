@@ -14,6 +14,7 @@ class AppLoader {
 
   Widget globalLoaderOverlay({required Widget child}) {
     return GlobalLoaderOverlay(
+      closeOnBackButton: true,
       useDefaultLoading: false,
       overlayWidgetBuilder: (Object? progress) {
         return SpinKitCircle(color: AppColors().appPrimaryColor);

@@ -10,6 +10,6 @@ class AppFonts {
   static final AppFonts _singleton = AppFonts._internal();
 
   TextTheme getTextTheme() {
-    return GoogleFonts.ralewayTextTheme();
+    return GoogleFonts.interTextTheme();
   }
 }

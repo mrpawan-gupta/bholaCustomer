@@ -1,6 +1,11 @@
 import "package:customer/bindings/account_binding.dart";
 import "package:customer/bindings/booking_slot_bindings/selected_slot_bindings.dart";
 import "package:customer/bindings/checkoutBinding.dart";
+import "package:customer/bindings/login_screen_bindings/language_selection_binding.dart";
+import "package:customer/bindings/login_screen_bindings/notification_screen_binding.dart";
+import "package:customer/bindings/login_screen_bindings/otp_screen_binding.dart";
+import "package:customer/bindings/login_screen_bindings/phone_number_screen_binding.dart";
+import "package:customer/bindings/login_screen_bindings/splash_screen_binding.dart";
 import "package:customer/bindings/main_navigation_binding.dart";
 import "package:customer/bindings/outer_main_bindings/help_binding.dart";
 import "package:customer/bindings/outer_main_bindings/home_binding.dart";
@@ -13,6 +18,11 @@ import "package:customer/bindings/sample_bindings/firebase_sample_binding.dart";
 import "package:customer/bindings/settings_bindings/change_language_binding.dart";
 import "package:customer/bindings/splash_screen_binding/onboard_screen_binding.dart";
 import "package:customer/screens/account_screen.dart";
+import "package:customer/screens/login_screen/language_selection.dart";
+import "package:customer/screens/login_screen/notification_screen.dart";
+import "package:customer/screens/login_screen/otp_screen.dart";
+import "package:customer/screens/login_screen/phone_number_screen.dart";
+import "package:customer/screens/login_screen/splash_screen.dart";
 import "package:customer/screens/booking_slot/selected_slot.dart";
 import "package:customer/screens/main_navigation_screen.dart";
 import "package:customer/screens/outer_main_screens/help_screen.dart";
@@ -36,22 +46,54 @@ class AppRoutes {
   AppRoutes._internal();
   static final AppRoutes _singleton = AppRoutes._internal();
 
-  final String mainNavigationScreen = "/";                          // This screen is independent, you can use "/" in this.
-  final String homeScreen = "/homeScreen";                          // This screen is attached to mainNavigationScreen, do not use "/" in this.
-  final String portfolioScreen = "/portfolioScreen";                // This screen is attached to mainNavigationScreen, do not use "/" in this.
-  final String newOrderScreen = "/newOrderScreen";                  // This screen is attached to mainNavigationScreen, do not use "/" in this.
-  final String helpScreen = "/helpScreen";                          // This screen is attached to mainNavigationScreen, do not use "/" in this.
-  final String orderHistoryScreen = "/orderHistoryScreen";          // This screen is attached to mainNavigationScreen, do not use "/" in this.
-  final String accountScreen = "/accountScreen";                    // This screen is independent, you can use "/" in this.
-  final String changeLanguageScreen = "/changeLanguageScreen";      // This screen is independent, you can use "/" in this.
-  final String firebaseSampleScreen = "/firebaseSampleScreen";      // This screen is independent, you can use "/" in this.
-  final String productDetailScreen = "/productDetailScreen";      // This screen is independent, you can use "/" in this.
-  final String checkoutScreen = "/checkoutScreen";      // This screen is independent, you can use "/" in this.
-  final String cartScreen = "/cartScreen";      // This screen is independent, you can use "/" in this.
-  final String selectedSlotScreen = "/selectedSlotScreen";      // This screen is independent, you can use "/" in this.
-  final String onBoardScreen = "/onBoardScreen";      // This screen is independent, you can use "/" in this.
+  final String splashScreen = "/";
+  final String languageSelectionScreen = "/languageSelection";
+  final String notificationScreen = "/notificationScreen";
+  final String phoneNoScreen = "/phoneNoScreen";
+  final String otpScreen = "/otpScreen";
+
+  final String mainNavigationScreen = "/mainNavigationScreen";
+  final String homeScreen = "/homeScreen";
+  final String portfolioScreen = "/portfolioScreen";
+  final String newOrderScreen = "/newOrderScreen";
+  final String helpScreen = "/helpScreen";
+  final String orderHistoryScreen = "/orderHistoryScreen";
+  final String accountScreen = "/accountScreen";
+  final String changeLanguageScreen = "/changeLanguageScreen";
+  final String firebaseSampleScreen = "/firebaseSampleScreen";
+  final String productDetailScreen = "/productDetailScreen";
+  final String checkoutScreen = "/checkoutScreen";
+  final String cartScreen = "/cartScreen";
+  final String selectedSlotScreen = "/selectedSlotScreen";
+  final String onBoardScreen = "/onBoardScreen";
 
   List<GetPage<dynamic>> getPages() {
+    final GetPage<dynamic> splashScreenRoute = GetPage<dynamic>(
+      name: splashScreen,
+      page: SplashScreen.new,
+      binding: SplashScreenBinding(),
+    );
+    final GetPage<dynamic> languageSelectionRoute = GetPage<dynamic>(
+      name: languageSelectionScreen,
+      page: LanguageSelectionPage.new,
+      binding: LanguageSelectionBinding(),
+    );
+    final GetPage<dynamic> notificationScreenRoute = GetPage<dynamic>(
+      name: notificationScreen,
+      page: NotificationScreen.new,
+      binding: NotificationScreenBinding(),
+    );
+    final GetPage<dynamic> phoneNumberScreenRoute = GetPage<dynamic>(
+      name: phoneNoScreen,
+      page: PhoneNumberScreen.new,
+      binding: PhoneNumberScreenBinding(),
+    );
+    final GetPage<dynamic> otpScreenRoute = GetPage<dynamic>(
+      name: otpScreen,
+      page: OTPScreen.new,
+      binding: OTPScreenBinding(),
+    );
+
     final GetPage<dynamic> mainNavigationRoute = GetPage<dynamic>(
       name: mainNavigationScreen,
       page: MainNavigationScreen.new,
@@ -122,8 +164,13 @@ class AppRoutes {
       page: OnBoardScreen.new,
       binding: OnBoardBinding(),
     );
-    
+
     return <GetPage<dynamic>>[
+      splashScreenRoute,
+      languageSelectionRoute,
+      notificationScreenRoute,
+      phoneNumberScreenRoute,
+      otpScreenRoute,
       mainNavigationRoute,
       homeRoute,
       portfolioRoute,

@@ -54,6 +54,39 @@ class AppFirestoreUserDB extends GetxService {
     return Future<void>.value();
   }
 
+  Future<void> updateOrSetUser({
+    required String id,
+    required Map<String, dynamic> data,
+    required Function(String message) successCallback,
+    required Function(String message) failureCallback,
+  }) async {
+    try {
+      final DocumentReference<dynamic> result = collectionRef.doc(id);
+      final DocumentSnapshot<dynamic> docs = await result.get();
+      docs.exists
+          ? await updateUser(
+              id: id,
+              data: data,
+              successCallback: successCallback,
+              failureCallback: failureCallback,
+            )
+          : await setUser(
+              id: id,
+              data: data,
+              successCallback: successCallback,
+              failureCallback: failureCallback,
+            );
+    } on Exception catch (error, stackTrace) {
+      AppLogger().error(
+        message: "Exception caught",
+        error: error,
+        stackTrace: stackTrace,
+      );
+      failureCallback("User not updated or set.");
+    } finally {}
+    return Future<void>.value();
+  }
+
   Future<void> updateUser({
     required String id,
     required Map<String, dynamic> data,
@@ -72,6 +105,28 @@ class AppFirestoreUserDB extends GetxService {
         stackTrace: stackTrace,
       );
       failureCallback("User not updated.");
+    } finally {}
+    return Future<void>.value();
+  }
+
+  Future<void> setUser({
+    required String id,
+    required Map<String, dynamic> data,
+    required Function(String message) successCallback,
+    required Function(String message) failureCallback,
+  }) async {
+    try {
+      final DocumentReference<dynamic> result = collectionRef.doc(id);
+        await result.set(data);
+      AppLogger().info(message: "setUser():: result.id:: ${result.id}");
+      successCallback("User Set successfully.");
+    } on Exception catch (error, stackTrace) {
+      AppLogger().error(
+        message: "Exception caught",
+        error: error,
+        stackTrace: stackTrace,
+      );
+      failureCallback("User not set.");
     } finally {}
     return Future<void>.value();
   }

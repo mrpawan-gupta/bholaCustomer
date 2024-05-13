@@ -1,5 +1,4 @@
-import "package:customer/controllers/booking_slot_controllers/book_slot_controllers.dart";
-import "package:customer/controllers/checkoutControllers.dart";
+import "package:customer/controllers/checkout_controllers.dart";
 import "package:get/get.dart";
 
 class CheckoutBinding extends Bindings {
