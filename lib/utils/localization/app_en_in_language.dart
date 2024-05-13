@@ -125,7 +125,7 @@ class EnLanguage {
     AppLanguageKeys().strEnterYourPhoneNumber: "Enter your phone number",
     AppLanguageKeys().strAConfirmationCode:
         "A confirmation code will be sent to your number to connect with the app.",
-    AppLanguageKeys().strEnter4Digits: "Enter 4 digit code we have sent you on",
+    AppLanguageKeys().strEnter6Digits: "Enter 4 digit code we have sent you on",
     AppLanguageKeys().strResend: "Resend",
     AppLanguageKeys().strTermsAndConditions: "Terms & Conditions",
     AppLanguageKeys().strTheseTermsAndConditions:

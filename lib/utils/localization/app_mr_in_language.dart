@@ -24,7 +24,7 @@ class MrLanguage {
     AppLanguageKeys().strEnterYourPhoneNumber: "तुमचा फोन नंबर एंटर करा",
     AppLanguageKeys().strAConfirmationCode:
         "ॲपशी कनेक्ट होण्यासाठी तुमच्या नंबरवर एक पुष्टीकरण कोड पाठवला जाईल.",
-    AppLanguageKeys().strEnter4Digits:
+    AppLanguageKeys().strEnter6Digits:
         "आम्ही तुम्हाला पाठवलेला 4 अंकी कोड एंटर करा",
     AppLanguageKeys().strResend: "पुन्हा पाठवा",
     AppLanguageKeys().strTermsAndConditions: "अटी व शर्ती",
