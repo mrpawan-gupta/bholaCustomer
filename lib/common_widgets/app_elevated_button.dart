@@ -1,5 +1,7 @@
 import "dart:async";
 
+import "package:customer/common_widgets/app_maybe_marquee.dart";
+import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_constants.dart";
 import "package:flutter/material.dart";
 
@@ -35,6 +37,7 @@ class _AppElevatedButtonState extends State<AppElevatedButton> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
+      height: 60,
       width: double.infinity,
       child: StreamBuilder<bool>(
         stream: _controller.stream,
@@ -43,6 +46,7 @@ class _AppElevatedButtonState extends State<AppElevatedButton> {
             style: ElevatedButton.styleFrom(
               elevation: AppConstants().elevation,
               padding: EdgeInsets.zero,
+              backgroundColor: AppColors().appPrimaryColor,
             ),
             onPressed: snapshot.hasData && snapshot.data == false
                 ? () async {
@@ -53,11 +57,21 @@ class _AppElevatedButtonState extends State<AppElevatedButton> {
                   }
                 : null,
             child: snapshot.hasData && snapshot.data == false
-                ? Text(widget.text)
+                ? MaybeMarqueeText(
+                    text: widget.text,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors().appWhiteColor,
+                    ),
+                    alignment: Alignment.center,
+                  )
                 : const SizedBox(
                     height: 20,
                     width: 20,
-                    child: CircularProgressIndicator(strokeWidth: 2),
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                    ),
                   ),
           );
         },

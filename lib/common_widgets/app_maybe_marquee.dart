@@ -21,19 +21,19 @@ class MaybeMarqueeText extends StatelessWidget {
         builder: (BuildContext context, BoxConstraints constraints) {
           return _overflowing(context: context, maxWidth: constraints.maxWidth)
               ? Marquee(
-                  text: text,
-                  style: style,
-                  blankSpace: constraints.maxWidth / 3,
-                  pauseAfterRound: const Duration(seconds: 3),
-                )
+            text: text,
+            style: style,
+            blankSpace: constraints.maxWidth / 3,
+            pauseAfterRound: const Duration(seconds: 3),
+          )
               : Align(
-                  alignment: alignment,
-                  child: Text(
-                    text,
-                    style: style,
-                    textAlign: TextAlign.center,
-                  ),
-                );
+            alignment: alignment,
+            child: Text(
+              text,
+              style: style,
+              textAlign: TextAlign.center,
+            ),
+          );
         },
       ),
     );
@@ -62,3 +62,4 @@ class MaybeMarqueeText extends StatelessWidget {
     return result;
   }
 }
+

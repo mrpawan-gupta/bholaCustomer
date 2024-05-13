@@ -6,8 +6,8 @@ class AppAssetsImages {
   AppAssetsImages._internal();
   static final AppAssetsImages _singleton = AppAssetsImages._internal();
 
-  final String iconFlutter = "assets/images/icon_flutter.png";
-  final String splash = "assets/images/splash.png";
+  final String iconFlutter = "assets/image/icon_flutter.png";
+  final String splash = "assets/image/splash.png";
   static const String menu = "assets/image/menu.png";
   static const String cart = "assets/image/cart.png";
   static const String notification = "assets/image/notification.png";
@@ -36,4 +36,5 @@ class AppAssetsImages {
   static const String onboard1 = "assets/image/onboard1.png";
   static const String onboard2 = "assets/image/onboard2.png";
   static const String onboard3 = "assets/image/onboard3.png";
+   final String flag = "assets/image/flag.jpg";
 }

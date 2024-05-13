@@ -47,19 +47,19 @@ class _AppIconButtonState extends State<AppIconButton> {
             ),
             onPressed: snapshot.hasData && snapshot.data == false
                 ? () async {
-                    unfocusFunction();
-                    _controller.add(true);
-                    await widget.onPressed();
-                    _controller.add(false);
-                  }
+              unfocusFunction();
+              _controller.add(true);
+              await widget.onPressed();
+              _controller.add(false);
+            }
                 : null,
             icon: snapshot.hasData && snapshot.data == false
                 ? Icon(widget.iconData, color: AppColors().appPrimaryColor)
                 : const SizedBox(
-                    height: 20,
-                    width: 20,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  ),
+              height: 20,
+              width: 20,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            ),
           );
         },
       ),
