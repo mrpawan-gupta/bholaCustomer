@@ -164,7 +164,7 @@ class OTPScreen extends GetView<OTPScreenController> {
                             );
                     },
                   ),
-                  SizedBox(height: Get.height / 8),
+                  SizedBox(height: Get.height / 16),
                   AppElevatedButton(
                     text: AppLanguageKeys().strContinue.tr,
                     onPressed: () async {

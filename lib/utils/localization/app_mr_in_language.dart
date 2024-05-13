@@ -25,7 +25,7 @@ class MrLanguage {
     AppLanguageKeys().strAConfirmationCode:
         "ॲपशी कनेक्ट होण्यासाठी तुमच्या नंबरवर एक पुष्टीकरण कोड पाठवला जाईल.",
     AppLanguageKeys().strEnter6Digits:
-        "आम्ही तुम्हाला पाठवलेला 4 अंकी कोड एंटर करा",
+        "आम्ही तुम्हाला पाठवलेला 6 अंकी कोड एंटर करा",
     AppLanguageKeys().strResend: "पुन्हा पाठवा",
     AppLanguageKeys().strTermsAndConditions: "अटी व शर्ती",
     AppLanguageKeys().strTheseTermsAndConditions:
@@ -34,5 +34,17 @@ class MrLanguage {
     AppLanguageKeys().strTapToExpand: "विस्तृत करण्यासाठी टॅप करा",
     AppLanguageKeys().strAgreeTermsAndConditions: "मी नियम आणि अटींशी सहमत आहे",
     AppLanguageKeys().strAgreePrivacyPolicy: "मी गोपनीयता धोरणाशी सहमत आहे",
+    AppLanguageKeys().strNext: "पुढे",
+    AppLanguageKeys().strFillInYourProfile: "तुमचे प्रोफाइल भरा",
+    AppLanguageKeys().strFirstName: "पहिले नाव",
+    AppLanguageKeys().strLastName: "आडनाव",
+    AppLanguageKeys().strEmail: "ईमेल",
+    AppLanguageKeys().strOptional: "ऐच्छिक",
+    AppLanguageKeys().strFewStepsMore: "आणखी काही पावले",
+    AppLanguageKeys().strAadharCardNo: "आधार कार्ड क्र",
+    AppLanguageKeys().strPanCardNo: "पॅन कार्ड क्र",
+    AppLanguageKeys().strActionPerform: "कृती करा",
+    AppLanguageKeys().strCamera: "कॅमेरा",
+    AppLanguageKeys().strPhotoLibrary: "फोटो लायब्ररी",
   };
 }

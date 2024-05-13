@@ -11,23 +11,32 @@ class AppLanguageKeys {
   final String strChooseYourLanguage = "strChooseYourLanguage";
   final String strContinue = "strContinue";
   final String strBySigning = "strBySigning";
-
   final String strTurnOnNotifications = "strTurnOnNotifications";
   final String strDontMissOut = "strDontMissOut";
   final String strOkay = "strOkay";
-
   final String strEnterYourPhoneNumber = "strEnterYourPhoneNumber";
   final String strAConfirmationCode = "strAConfirmationCode";
-
   final String strEnter6Digits = "strEnter6Digits";
   final String strResend = "strResend";
-
   final String strTermsAndConditions = "strTermsAndConditions";
   final String strTheseTermsAndConditions = "strTheseTermsAndConditions";
   final String strVendorAgreement = "strVendorAgreement";
   final String strTapToExpand = "strTapToExpand";
   final String strAgreeTermsAndConditions = "strAgreeTermsAndConditions";
   final String strAgreePrivacyPolicy = "strAgreePrivacyPolicy";
+  final String strNext = "strNext";
+  final String strFillInYourProfile = "strFillInYourProfile";
+  final String strFirstName = "strFirstName";
+  final String strLastName = "strLastName";
+  final String strEmail = "strEmail";
+  final String strOptional = "strOptional";
+  final String strFewStepsMore = "strFewStepsMore";
+  final String strAadharCardNo = "strAadharCardNo";
+  final String strPanCardNo = "strPanCardNo";
+  final String strActionPerform = "strActionPerform";
+  final String strCamera = "strCamera";
+  final String strPhotoLibrary = "strPhotoLibrary";
+
   final String strAmuldhan = "strAmuldhan";
   final String str50Kg = "str50Kg";
   final String strSave = "Save";
@@ -170,7 +179,6 @@ class AppLanguageKeys {
   final String strAddress1 = "strAddress1";
   final String strContact = "strContact";
   final String strBillAmount = "strBillAmount";
-  final String strCONTINUE = "strCONTINUE";
   final String strProceeding = "strProceeding";
   final String strCondition = "strCondition";
   final String strAnd = "strAnd";

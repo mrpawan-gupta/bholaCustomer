@@ -25,7 +25,6 @@ class AppNetCheckService extends GetxService {
     subscription = instance.onStatusChange.listen(
       (InternetConnectionStatus event) {
         final bool hasConnection = event == InternetConnectionStatus.connected;
-
         if (isInitial) {
           isInitial = false;
         } else {
@@ -33,10 +32,12 @@ class AppNetCheckService extends GetxService {
               ? AppSnackbar().snackbarSuccess(
                   title: "Connectivity Update",
                   message: "Data connection is available.",
+                  inMaterialBanner: true,
                 )
               : AppSnackbar().snackbarWarning(
                   title: "Connectivity Update",
                   message: "You are disconnected from the internet.",
+                  inMaterialBanner: true,
                 );
         }
       },

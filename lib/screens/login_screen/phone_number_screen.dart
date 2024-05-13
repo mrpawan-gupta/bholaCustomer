@@ -139,7 +139,7 @@ class PhoneNumberScreen extends GetView<PhoneNumberScreenController> {
                       ),
                     ),
                   ),
-                  SizedBox(height: Get.height / 6),
+                  SizedBox(height: Get.height / 8),
                   AppElevatedButton(
                     text: AppLanguageKeys().strContinue.tr,
                     onPressed: () async {

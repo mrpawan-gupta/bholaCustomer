@@ -81,7 +81,7 @@ class NotificationScreen extends GetView<NotificationScreenController> {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: Get.height / 6),
+                  SizedBox(height: Get.height / 16),
                   AppElevatedButton(
                     text: AppLanguageKeys().strOkay.tr,
                     onPressed: () async {

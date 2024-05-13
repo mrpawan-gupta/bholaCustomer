@@ -11,7 +11,41 @@ class HiLanguage {
   static final HiLanguage _singleton = HiLanguage._internal();
 
   Map<String, String> appHiINLanguage = <String, String>{
-    AppLanguageKeys().strHelloWorld: "Hello World",
+    AppLanguageKeys().strHelloWorld: "HelloWorld",
+    AppLanguageKeys().strWelcomeToBhola: "भोला में आपका स्वागत है",
+    AppLanguageKeys().strChooseYourLanguage: "अपनी भाषा चुनें",
+    AppLanguageKeys().strContinue: "जारी रखें",
+    AppLanguageKeys().strBySigning:
+        "साइन अप करके, मैं नियम और शर्तों और गोपनीयता नीति से सहमत हूं।",
+    AppLanguageKeys().strTurnOnNotifications: "सूचनाएं और स्थान चालू करें",
+    AppLanguageKeys().strDontMissOut:
+        "महत्वपूर्ण संदेशों, सूचनाओं और अन्य खाता गतिविधियों से न चूकें।",
+    AppLanguageKeys().strOkay: "ठीक है",
+    AppLanguageKeys().strEnterYourPhoneNumber: "अपना फोन नंबर डालें",
+    AppLanguageKeys().strAConfirmationCode:
+        "ऐप से जुड़ने के लिए आपके नंबर पर एक पुष्टिकरण कोड भेजा जाएगा।",
+    AppLanguageKeys().strEnter6Digits: "Enter 6 digit code we have sent you on",
+    AppLanguageKeys().strResend: "पुन: भेजें",
+    AppLanguageKeys().strTermsAndConditions: "नियम एवं शर्तें",
+    AppLanguageKeys().strTheseTermsAndConditions:
+        "ये नियम और शर्तें वेबसाइट.कॉम पर स्थित कंपनी नाम की वेबसाइट के उपयोग के लिए नियमों और विनियमों को रेखांकित करती हैं।\n\nइस वेबसाइट तक पहुंचने पर हम मानते हैं कि आप इन नियमों और शर्तों को स्वीकार करते हैं। यदि आप इस पृष्ठ पर बताए गए सभी नियमों और शर्तों को मानने से सहमत नहीं हैं तो वेबसाइट नाम का उपयोग जारी न रखें।",
+    AppLanguageKeys().strVendorAgreement: "विक्रेता समझौता",
+    AppLanguageKeys().strTapToExpand: "विस्तार करने के लिए टैप करें",
+    AppLanguageKeys().strAgreeTermsAndConditions: "नियमों और शर्तों पर सहमत",
+    AppLanguageKeys().strAgreePrivacyPolicy: "मैं निजता नीति से सहमत हूं",
+    AppLanguageKeys().strNext: "अगला",
+    AppLanguageKeys().strFillInYourProfile: "अपना प्रोफ़ाइल भरें",
+    AppLanguageKeys().strFirstName: "पहला नाम",
+    AppLanguageKeys().strLastName: "उपनाम",
+    AppLanguageKeys().strEmail: "ईमेल",
+    AppLanguageKeys().strOptional: "वैकल्पिक",
+    AppLanguageKeys().strFewStepsMore: "कुछ कदम और",
+    AppLanguageKeys().strAadharCardNo: "आधार कार्ड नं",
+    AppLanguageKeys().strPanCardNo: "पैन कार्ड नं",
+    AppLanguageKeys().strActionPerform: "क्रिया प्रदर्शन",
+    AppLanguageKeys().strCamera: "कैमरा",
+    AppLanguageKeys().strPhotoLibrary: "चित्र पुस्तकालय",
+    
     AppLanguageKeys().strBhola: "Bhola",
     AppLanguageKeys().strSearch: "Search here....",
     AppLanguageKeys().strTractor: "Tractor",

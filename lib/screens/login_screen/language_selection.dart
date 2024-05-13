@@ -44,7 +44,7 @@ class LanguageSelectionPage extends GetView<LanguageSelectionController> {
                     ),
                     alignment: Alignment.center,
                   ),
-                  SizedBox(height: Get.height / 16),
+                  SizedBox(height: Get.height / 24),
                   MaybeMarqueeText(
                     text: AppLanguageKeys().strChooseYourLanguage.tr,
                     style: const TextStyle(
@@ -109,7 +109,7 @@ class LanguageSelectionPage extends GetView<LanguageSelectionController> {
                       );
                     },
                   ),
-                  SizedBox(height: Get.height / 16),
+                  SizedBox(height: Get.height / 24),
                   AppElevatedButton(
                     text: AppLanguageKeys().strContinue.tr,
                     onPressed: () async {
