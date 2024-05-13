@@ -55,7 +55,8 @@ class AppDevInfoService extends GetxService {
             <String, dynamic>{
               "device": <String, Object>{
                 "OS": "Android",
-                "version": android?.version ?? "",
+                "version": android?.version.baseOS ?? "",
+                "sdkInt": android?.version.sdkInt ?? 0,
                 "model": android?.model ?? "",
                 "brand": android?.brand ?? "",
                 "device": android?.device ?? "",
@@ -90,5 +91,9 @@ class AppDevInfoService extends GetxService {
       }
     } else {}
     return Future<void>.value();
+  }
+
+  bool isPhysicalDevice() {
+    return android?.isPhysicalDevice ?? false;
   }
 }

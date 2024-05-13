@@ -2,6 +2,9 @@ import "package:customer/bindings/account_binding.dart";
 import "package:customer/bindings/booking_slot_bindings/selected_slot_bindings.dart";
 import "package:customer/bindings/checkoutBinding.dart";
 import "package:customer/bindings/login_screen_bindings/language_selection_binding.dart";
+import "package:customer/bindings/login_screen_bindings/notification_screen_binding.dart";
+import "package:customer/bindings/login_screen_bindings/otp_screen_binding.dart";
+import "package:customer/bindings/login_screen_bindings/phone_number_screen_binding.dart";
 import "package:customer/bindings/login_screen_bindings/splash_screen_binding.dart";
 import "package:customer/bindings/main_navigation_binding.dart";
 import "package:customer/bindings/outer_main_bindings/help_binding.dart";
@@ -16,6 +19,9 @@ import "package:customer/bindings/settings_bindings/change_language_binding.dart
 import "package:customer/bindings/splash_screen_binding/onboard_screen_binding.dart";
 import "package:customer/screens/account_screen.dart";
 import "package:customer/screens/login_screen/language_selection.dart";
+import "package:customer/screens/login_screen/notification_screen.dart";
+import "package:customer/screens/login_screen/otp_screen.dart";
+import "package:customer/screens/login_screen/phone_number_screen.dart";
 import "package:customer/screens/login_screen/splash_screen.dart";
 import "package:customer/screens/booking_slot/selected_slot.dart";
 import "package:customer/screens/main_navigation_screen.dart";
@@ -42,6 +48,10 @@ class AppRoutes {
 
   final String splashScreen = "/";
   final String languageSelectionScreen = "/languageSelection";
+  final String notificationScreen = "/notificationScreen";
+  final String phoneNoScreen = "/phoneNoScreen";
+  final String otpScreen = "/otpScreen";
+
   final String mainNavigationScreen = "/mainNavigationScreen";
   final String homeScreen = "/homeScreen";
   final String portfolioScreen = "/portfolioScreen";
@@ -68,6 +78,22 @@ class AppRoutes {
       page: LanguageSelectionPage.new,
       binding: LanguageSelectionBinding(),
     );
+    final GetPage<dynamic> notificationScreenRoute = GetPage<dynamic>(
+      name: notificationScreen,
+      page: NotificationScreen.new,
+      binding: NotificationScreenBinding(),
+    );
+    final GetPage<dynamic> phoneNumberScreenRoute = GetPage<dynamic>(
+      name: phoneNoScreen,
+      page: PhoneNumberScreen.new,
+      binding: PhoneNumberScreenBinding(),
+    );
+    final GetPage<dynamic> otpScreenRoute = GetPage<dynamic>(
+      name: otpScreen,
+      page: OTPScreen.new,
+      binding: OTPScreenBinding(),
+    );
+
     final GetPage<dynamic> mainNavigationRoute = GetPage<dynamic>(
       name: mainNavigationScreen,
       page: MainNavigationScreen.new,
@@ -142,6 +168,9 @@ class AppRoutes {
     return <GetPage<dynamic>>[
       splashScreenRoute,
       languageSelectionRoute,
+      notificationScreenRoute,
+      phoneNumberScreenRoute,
+      otpScreenRoute,
       mainNavigationRoute,
       homeRoute,
       portfolioRoute,

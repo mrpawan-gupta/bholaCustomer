@@ -8,6 +8,7 @@ import "package:customer/utils/app_logger.dart";
 import "package:customer/utils/app_pretty_print_json.dart";
 import "package:customer/utils/app_session.dart";
 import "package:customer/utils/localization/app_translations.dart";
+import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 
@@ -34,30 +35,35 @@ class AppAPIService extends GetConnect {
   AppAPIService._internal();
   static final AppAPIService _singleton = AppAPIService._internal();
 
-  final String baseURL =
-      "http://ec2-3-6-38-211.ap-south-1.compute.amazonaws.com";
+  final String baseURL = "http://dev.bhola.org.in";
   final String middleware = "api";
 
   final String contentTypeApplicationJson = "application/json";
   final String contentTypeMultiPartFormData = "multipart/form-data";
 
-  @override
-  void onInit() {
-    super.onInit();
-
-    baseUrl = baseURL;
-    timeout = const Duration(seconds: 30);
-    maxAuthRetries = 3;
-  }
-
   Map<String, String> getHeaders() {
     final String auth = AppStorageService().getUserAuthModel().token ?? "";
+
     final Locale locale = AppStorageService().getUserLangFromStorage();
     final String actLng = AppTranslations().localeToDashString(locale: locale);
+
     return <String, String>{
       "Authorization": "Bearer $auth",
       "Accept-Language": actLng,
     };
+  }
+
+  Map<String, dynamic> getValidQuery(Map<String, dynamic> query) {
+    final Map<String, dynamic> parsedQuery =
+        !mapEquals(query, <String, dynamic>{})
+            ? query.map(
+                // ignore: avoid_annotating_with_dynamic
+                (String key, dynamic value) {
+                  return MapEntry<String, dynamic>(key, value.toString());
+                },
+              )
+            : <String, dynamic>{};
+    return parsedQuery;
   }
 
   Future<void> functionGet({
@@ -72,7 +78,9 @@ class AppAPIService extends GetConnect {
     bool isForFileUpload = false,
     FormData? formData,
   }) async {
-    final String fullURL = "$baseURL/${types.name}/$middleware/$version/$endPoint/";
+    final String fullURL =
+        "$baseURL/${types.name}/$middleware/$version/$endPoint/";
+
     formData = formData ?? FormData(<String, dynamic>{});
 
     await preAPICallProcedure(
@@ -91,7 +99,7 @@ class AppAPIService extends GetConnect {
             endPoint: endPoint,
             fullURL: fullURL,
             headers: headers,
-            query: query,
+            query: getValidQuery(query),
             body: body,
             formData: formData!,
           );
@@ -102,7 +110,7 @@ class AppAPIService extends GetConnect {
                 ? contentTypeApplicationJson
                 : contentTypeMultiPartFormData,
             headers: headers,
-            query: query,
+            query: getValidQuery(query),
           );
           await postAPICallProcedure(
             response: response,
@@ -138,7 +146,9 @@ class AppAPIService extends GetConnect {
     bool isForFileUpload = false,
     FormData? formData,
   }) async {
-    final String fullURL = "$baseURL/${types.name}/$middleware/$version/$endPoint/";
+    final String fullURL =
+        "$baseURL/${types.name}/$middleware/$version/$endPoint/";
+
     formData = formData ?? FormData(<String, dynamic>{});
 
     await preAPICallProcedure(
@@ -157,7 +167,7 @@ class AppAPIService extends GetConnect {
             endPoint: endPoint,
             fullURL: fullURL,
             headers: headers,
-            query: query,
+            query: getValidQuery(query),
             body: body,
             formData: formData!,
           );
@@ -169,7 +179,7 @@ class AppAPIService extends GetConnect {
                 ? contentTypeApplicationJson
                 : contentTypeMultiPartFormData,
             headers: headers,
-            query: query,
+            query: getValidQuery(query),
           );
           await postAPICallProcedure(
             response: response,
@@ -205,7 +215,9 @@ class AppAPIService extends GetConnect {
     bool isForFileUpload = false,
     FormData? formData,
   }) async {
-    final String fullURL = "$baseURL/${types.name}/$middleware/$version/$endPoint/";
+    final String fullURL =
+        "$baseURL/${types.name}/$middleware/$version/$endPoint/";
+
     formData = formData ?? FormData(<String, dynamic>{});
 
     await preAPICallProcedure(
@@ -224,7 +236,7 @@ class AppAPIService extends GetConnect {
             endPoint: endPoint,
             fullURL: fullURL,
             headers: headers,
-            query: query,
+            query: getValidQuery(query),
             body: body,
             formData: formData!,
           );
@@ -236,7 +248,7 @@ class AppAPIService extends GetConnect {
                 ? contentTypeApplicationJson
                 : contentTypeMultiPartFormData,
             headers: headers,
-            query: query,
+            query: getValidQuery(query),
           );
           await postAPICallProcedure(
             response: response,
@@ -272,7 +284,9 @@ class AppAPIService extends GetConnect {
     bool isForFileUpload = false,
     FormData? formData,
   }) async {
-    final String fullURL = "$baseURL/${types.name}/$middleware/$version/$endPoint/";
+    final String fullURL =
+        "$baseURL/${types.name}/$middleware/$version/$endPoint/";
+
     formData = formData ?? FormData(<String, dynamic>{});
 
     await preAPICallProcedure(
@@ -291,7 +305,7 @@ class AppAPIService extends GetConnect {
             endPoint: endPoint,
             fullURL: fullURL,
             headers: headers,
-            query: query,
+            query: getValidQuery(query),
             body: body,
             formData: formData!,
           );
@@ -303,7 +317,7 @@ class AppAPIService extends GetConnect {
                 ? contentTypeApplicationJson
                 : contentTypeMultiPartFormData,
             headers: headers,
-            query: query,
+            query: getValidQuery(query),
           );
           await postAPICallProcedure(
             response: response,
@@ -339,7 +353,9 @@ class AppAPIService extends GetConnect {
     bool isForFileUpload = false,
     FormData? formData,
   }) async {
-    final String fullURL = "$baseURL/${types.name}/$middleware/$version/$endPoint/";
+    final String fullURL =
+        "$baseURL/${types.name}/$middleware/$version/$endPoint/";
+
     formData = formData ?? FormData(<String, dynamic>{});
 
     await preAPICallProcedure(
@@ -358,7 +374,7 @@ class AppAPIService extends GetConnect {
             endPoint: endPoint,
             fullURL: fullURL,
             headers: headers,
-            query: query,
+            query: getValidQuery(query),
             body: body,
             formData: formData!,
           );
@@ -369,7 +385,7 @@ class AppAPIService extends GetConnect {
                 ? contentTypeApplicationJson
                 : contentTypeMultiPartFormData,
             headers: headers,
-            query: query,
+            query: getValidQuery(query),
           );
           await postAPICallProcedure(
             response: response,
@@ -426,6 +442,7 @@ class AppAPIService extends GetConnect {
     final String pretyHeaders = AppPrettyPrintJSON().prettyPrint(headers);
     final String pretyQuery = AppPrettyPrintJSON().prettyPrint(query);
     final String pretBody = AppPrettyPrintJSON().prettyPrint(body);
+
     log("endPoint: $endPoint");
     log("fullURL: $fullURL");
     log("headers: $pretyHeaders");

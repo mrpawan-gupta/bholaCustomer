@@ -1,6 +1,7 @@
 import "dart:async";
 
 import "package:customer/services/app_nav_service.dart";
+import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/app_session.dart";
 import "package:get/get.dart";
 
@@ -16,9 +17,9 @@ class SplashScreenController extends GetxController {
     await Future<void>.delayed(const Duration(seconds: 3));
 
     AppSession().isUserLoggedIn()
-        ? AppSession().performSignIn()
+        ? await AppSession().performSignIn()
         : await AppNavService().pushNamedAndRemoveUntil(
-            destination: AppSession().initialRoute(),
+            destination: AppRoutes().languageSelectionScreen,
             arguments: <String, dynamic>{},
           );
     return Future<void>.value();
