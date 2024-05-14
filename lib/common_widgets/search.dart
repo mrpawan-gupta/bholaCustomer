@@ -4,8 +4,8 @@ import "package:get/get_state_manager/src/simple/get_view.dart";
 
 
 class SearchTab extends GetView<SearchController> {
-  SearchTab({required this.text, super.key});
-  String text;
+  const SearchTab({required this.text, super.key});
+  final String text;
 
   @override
   Widget build(BuildContext context) {
