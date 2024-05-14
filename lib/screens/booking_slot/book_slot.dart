@@ -1,5 +1,5 @@
+import "package:customer/common_widgets/search.dart";
 import "package:customer/controllers/booking_slot_controllers/book_slot_controllers.dart";
-import "package:customer/screens/home_screen/search.dart";
 import "package:customer/screens/widgets/textWidgets.dart";
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_assets_images.dart";

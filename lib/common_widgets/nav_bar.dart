@@ -1,7 +1,7 @@
 import "package:customer/screens/booking_slot/book_slot.dart";
 import "package:customer/screens/booking_slot/selected_slot.dart";
-import "package:customer/screens/home_screen/home_screen.dart";
 import "package:customer/screens/order/product_live_order.dart";
+import "package:customer/screens/outer_main_screens/home_screen.dart";
 import "package:customer/utils/app_assets_images.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:flutter/material.dart";
