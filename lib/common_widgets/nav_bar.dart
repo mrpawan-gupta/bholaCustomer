@@ -1,6 +1,6 @@
-import "package:customer/screens/booking_slot/book_slot.dart";
-import "package:customer/screens/booking_slot/selected_slot.dart";
 import "package:customer/screens/order/product_live_order.dart";
+import "package:customer/screens/outer_main_screens/booking_slot_screens/book_slot_screen.dart";
+import "package:customer/screens/outer_main_screens/booking_slot_screens/selected_slot_screen.dart";
 import "package:customer/screens/outer_main_screens/home_screen.dart";
 import "package:customer/utils/app_assets_images.dart";
 import "package:customer/utils/app_colors.dart";
@@ -20,7 +20,7 @@ class ProvidedStylesExample extends GetxService {
   List<Widget> _buildScreens() => <Widget>[
         const HomeScreen(),
         Container(),
-        const BookSlot(),
+        const BookSlotScreen(),
         const SelectedSlotScreen(),
     const ProductLivePendingOrder(),
       ];

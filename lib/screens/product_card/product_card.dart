@@ -6,15 +6,15 @@ import "package:get/get_state_manager/src/simple/get_view.dart";
 
 class ProductCard extends GetView<ProductCardController> {
 
-  ProductCard(
+  const ProductCard(
       {required this.productName, required this.productImage,
         required this.height,
         required this.width, required this.price, super.key,});
-  String productName;
-  String productImage;
-  String price;
-  double height;
-  double width;
+  final String productName;
+  final String productImage;
+  final String price;
+  final double height;
+  final double width;
 
   @override
   Widget build(BuildContext context) {

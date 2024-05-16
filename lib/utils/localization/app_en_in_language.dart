@@ -216,5 +216,7 @@ class EnLanguage {
     AppLanguageKeys().strHelloDharam: " Hello, Dharam!",
     AppLanguageKeys().strFeaturedService: "Featured Service",
     AppLanguageKeys().strRecentlyAddedProduct: "Recently Added Product",
+    AppLanguageKeys().strStartTime: "Start Time",
+    AppLanguageKeys().strEndTime: "End Time",
   };
 }

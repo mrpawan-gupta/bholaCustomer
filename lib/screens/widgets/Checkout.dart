@@ -4,7 +4,6 @@ import "package:checkout_screen_ui/checkout_page/checkout_page.dart";
 import "package:checkout_screen_ui/models/card_form_results.dart";
 import "package:checkout_screen_ui/models/checkout_result.dart";
 import "package:checkout_screen_ui/models/price_item.dart";
-import "package:checkout_screen_ui/ui_components/footer.dart";
 import "package:checkout_screen_ui/ui_components/pay_button.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
@@ -110,13 +109,6 @@ class CheckoutScreen extends StatelessWidget {
     /// expected on the same page as the form that the user is filling out. You
     /// can make this any type of widget you want, but we have created a prebuilt
     /// [CheckoutPageFooter] widget that just needs the corresponding links
-    const CheckoutPageFooter _footer = CheckoutPageFooter(
-      // These are example url links only. Use your own links in live code
-      privacyLink: "https://[Credit Processor].com/privacy",
-      termsLink: "https://[Credit Processor].com/payment-terms/legal",
-      note: "Powered By [Credit Processor]",
-      noteLink: "https://[Credit Processor].com/",
-    );
 
     /// OPTIONAL: A function for the back button
     ///

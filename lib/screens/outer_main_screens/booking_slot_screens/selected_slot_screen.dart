@@ -1,4 +1,4 @@
-import "package:customer/controllers/booking_slot_controllers/selected_slot_controllers.dart";
+import "package:customer/controllers/outer_main_controllers/booking_slot_controllers/selected_slot_controllers.dart";
 import "package:customer/screens/widgets/textWidgets.dart";
 import "package:customer/utils/app_assets_images.dart";
 import "package:customer/utils/app_colors.dart";
@@ -50,11 +50,11 @@ class SelectedSlotScreen extends GetView<SelectedSlotController> {
             ),
             Container(
               decoration: BoxDecoration(
-                  border: Border.all(color: AppColors().appGreyColor,),
-                  borderRadius: BorderRadius.circular(10),
-                  color: controller.selectedOption.value == 1
-                      ? Colors.green.shade100
-                      : AppColors().appGreyColor,),
+                border: Border.all(color: AppColors().appGreyColor,),
+                borderRadius: BorderRadius.circular(10),
+                color: controller.selectedOption.value == 1
+                    ? Colors.green.shade100
+                    : AppColors().appGreyColor,),
               height: 80,
               width: MediaQuery.sizeOf(context).width,
               child: Padding(
@@ -67,13 +67,13 @@ class SelectedSlotScreen extends GetView<SelectedSlotController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Image.asset(
-                            AppAssetsImages.morning,
-                            height: 50,
-                            width: 50,
-                            color: controller.selectedOption.value == 1
-                                ? Colors.green.shade900
-                                : Colors.grey.shade900
-                        ,),
+                          AppAssetsImages.morning,
+                          height: 50,
+                          width: 50,
+                          color: controller.selectedOption.value == 1
+                              ? Colors.green.shade900
+                              : Colors.grey.shade900
+                          ,),
                         const SizedBox(
                           width: 12,
                         ),
@@ -131,11 +131,11 @@ class SelectedSlotScreen extends GetView<SelectedSlotController> {
             ),
             Container(
               decoration: BoxDecoration(
-                  border: Border.all(color: AppColors().appGreyColor,),
-                  borderRadius: BorderRadius.circular(10),
-                  color: controller.selectedOption.value == 2
-                      ? Colors.green.shade100
-                      : AppColors().appGreyColor,),
+                border: Border.all(color: AppColors().appGreyColor,),
+                borderRadius: BorderRadius.circular(10),
+                color: controller.selectedOption.value == 2
+                    ? Colors.green.shade100
+                    : AppColors().appGreyColor,),
               height: 80,
               width: MediaQuery.sizeOf(context).width,
               child: Padding(
@@ -148,12 +148,12 @@ class SelectedSlotScreen extends GetView<SelectedSlotController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Image.asset(
-                            AppAssetsImages.afternoon,
-                            height: 50,
-                            width: 50,
-                            color: controller.selectedOption.value == 2
-                                ? Colors.green.shade900
-                                : Colors.grey.shade900,
+                          AppAssetsImages.afternoon,
+                          height: 50,
+                          width: 50,
+                          color: controller.selectedOption.value == 2
+                              ? Colors.green.shade900
+                              : Colors.grey.shade900,
                         ),
                         const SizedBox(
                           width: 12,
@@ -212,11 +212,11 @@ class SelectedSlotScreen extends GetView<SelectedSlotController> {
             ),
             Container(
               decoration: BoxDecoration(
-                  border: Border.all(color: AppColors().appGreyColor,),
-                  borderRadius: BorderRadius.circular(10),
-                  color: controller.selectedOption.value == 3
-                      ? Colors.green.shade100
-                      :AppColors().appGreyColor,),
+                border: Border.all(color: AppColors().appGreyColor,),
+                borderRadius: BorderRadius.circular(10),
+                color: controller.selectedOption.value == 3
+                    ? Colors.green.shade100
+                    :AppColors().appGreyColor,),
               height: 80,
               width: MediaQuery.sizeOf(context).width,
               child: Padding(
@@ -229,12 +229,12 @@ class SelectedSlotScreen extends GetView<SelectedSlotController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Image.asset(
-                           AppAssetsImages.evening,
-                            height: 50,
-                            width: 50,
-                            color: controller.selectedOption.value == 3
-                                ? Colors.green.shade900
-                                : AppColors().appGreyColor,
+                          AppAssetsImages.evening,
+                          height: 50,
+                          width: 50,
+                          color: controller.selectedOption.value == 3
+                              ? Colors.green.shade900
+                              : AppColors().appGreyColor,
                         ),
                         const SizedBox(
                           width: 12,
@@ -293,11 +293,11 @@ class SelectedSlotScreen extends GetView<SelectedSlotController> {
             ),
             Container(
               decoration: BoxDecoration(
-                  border: Border.all(color: AppColors().appGreyColor,),
-                  borderRadius: BorderRadius.circular(10),
-                  color: controller.selectedOption.value == 4
-                      ? Colors.green.shade100
-                      : AppColors().appGreyColor,),
+                border: Border.all(color: AppColors().appGreyColor,),
+                borderRadius: BorderRadius.circular(10),
+                color: controller.selectedOption.value == 4
+                    ? Colors.green.shade100
+                    : AppColors().appGreyColor,),
               height: 80,
               width: MediaQuery.sizeOf(context).width,
               child: Padding(
@@ -310,12 +310,12 @@ class SelectedSlotScreen extends GetView<SelectedSlotController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Image.asset(
-                            AppAssetsImages.night,
-                            height: 50,
-                            width: 50,
-                            color: controller.selectedOption.value == 4
-                                ? Colors.green.shade900
-                                : AppColors().appGreyColor,
+                          AppAssetsImages.night,
+                          height: 50,
+                          width: 50,
+                          color: controller.selectedOption.value == 4
+                              ? Colors.green.shade900
+                              : AppColors().appGreyColor,
                         ),
                         const SizedBox(
                           width: 12,
@@ -373,34 +373,34 @@ class SelectedSlotScreen extends GetView<SelectedSlotController> {
             SizedBox(
               width: MediaQuery.sizeOf(context).width / 2,
               child: ElevatedButton(
-                  style: ButtonStyle(
-                      foregroundColor:
-                      MaterialStateProperty.all<Color>(
-                        AppColors().appWhiteColor,),
-                      backgroundColor:
-                      MaterialStateProperty.all<Color>(
-                        AppColors().appPrimaryColor,),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              side:  BorderSide(
-                                color: AppColors().appPrimaryColor,),),),),
-                  onPressed: () {},
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(AppLanguageKeys().strBook_Service.tr.toUpperCase(),
-                          style: const TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold,),),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      const Icon(
-                        CupertinoIcons.arrow_right,
-                        size: 22,
-                      ),
-                    ],
-                  ),),
+                style: ButtonStyle(
+                  foregroundColor:
+                  MaterialStateProperty.all<Color>(
+                    AppColors().appWhiteColor,),
+                  backgroundColor:
+                  MaterialStateProperty.all<Color>(
+                    AppColors().appPrimaryColor,),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      side:  BorderSide(
+                        color: AppColors().appPrimaryColor,),),),),
+                onPressed: () {},
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(AppLanguageKeys().strBook_Service.tr.toUpperCase(),
+                      style: const TextStyle(
+                        fontSize: 15, fontWeight: FontWeight.bold,),),
+                    const SizedBox(
+                      width: 15,
+                    ),
+                    const Icon(
+                      CupertinoIcons.arrow_right,
+                      size: 22,
+                    ),
+                  ],
+                ),),
             ),
           ],
         ),

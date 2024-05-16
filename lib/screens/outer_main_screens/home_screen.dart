@@ -21,9 +21,10 @@ class HomeScreen extends GetView<HomeController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            SearchTab(
-              text: AppLanguageKeys().strSearch.tr,
-            ),
+            // SearchTab(
+            //   mapController: ,
+            //   text: AppLanguageKeys().strSearch.tr,
+            // ),
             const SizedBox(
               height: 10,
             ),
@@ -49,7 +50,7 @@ class HomeScreen extends GetView<HomeController> {
                     child: InkWell(
                       onTap: () async {
                         await AppNavService().pushNamed(
-                          destination: AppRoutes().productDetailScreen,
+                          destination: AppRoutes().bookingSlot,
                           arguments: <String, dynamic>{},
                         );
                       },

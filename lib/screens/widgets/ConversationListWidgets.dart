@@ -2,12 +2,12 @@ import "package:customer/utils/app_colors.dart";
 import "package:flutter/material.dart";
 
 class ConversationList extends StatefulWidget{
-  ConversationList({super.key, required this.name,required this.messageText,
+  const ConversationList({super.key, required this.name,required this.messageText,
     required this.imageUrl,required this.isMessageRead});
-  String name;
-  String messageText;
-  String imageUrl;
-  bool isMessageRead;
+  final String name;
+ final String messageText;
+ final String imageUrl;
+ final bool isMessageRead;
   @override
   _ConversationListState createState() => _ConversationListState();
 }

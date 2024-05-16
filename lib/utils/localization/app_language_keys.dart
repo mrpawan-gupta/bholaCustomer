@@ -184,4 +184,6 @@ class AppLanguageKeys {
   final String strAnd = "strAnd";
   final String strPrivacyPolicy = "strPrivacyPolicy";
   final String strBuild = "strBuild";
+  final String strStartTime = "strStartTime";
+  final String strEndTime = "strEndTime";
 }
