@@ -1,5 +1,9 @@
+import "dart:async";
+
 import "package:customer/models/address_model.dart";
+import "package:customer/models/booking_quote_model.dart";
 import "package:customer/services/app_api_service.dart";
+import "package:customer/utils/app_snackbar.dart";
 import "package:geocoding/geocoding.dart";
 import "package:get/get.dart";
 
@@ -23,9 +27,6 @@ class BookSlotController extends GetxController {
     selectedDate(date);
   }
 
-  void updatePinInput(int PinNo) {
-    rxPinCode(PinNo);
-  }
 
   void updateDropDownValue(String val) {
     dropDownValue(val);
@@ -80,6 +81,47 @@ class BookSlotController extends GetxController {
       failureCallback: failureCallback,
     );
     return Future<void>.value();
+  }
+
+
+  Future<List<BookingQuoteModelData>> createBookingAPICall({
+    required String scheduleDate,
+    required String approxStartTime,
+    required String approxEndTime,
+    required String crop,
+    required String deliveryAddress,
+    required List<Map<String, dynamic>> services,
+    required Function(Map<String, dynamic> json) successCallback,
+    required Function(Map<String, dynamic> json) failureCallback,
+  }) async {
+    final Completer<List<BookingQuoteModelData>> completer =
+    Completer<List<BookingQuoteModelData>>();
+    await AppAPIService().functionPost(
+      types: Types.rental,
+      endPoint: "booking",
+      body: <String, dynamic>{
+        "scheduleDate": scheduleDate,
+        "approxStartTime": approxStartTime,
+        "approxEndTime": approxEndTime,
+        "crop": crop,
+        "deliveryAddress": deliveryAddress,
+        "services": services,
+      },
+      successCallback: (Map<String, dynamic> json) async {
+         BookingQuoteModel bookModel = BookingQuoteModel();
+        bookModel = BookingQuoteModel.fromJson(json);
+
+         completer.complete(bookModel.data ?? <BookingQuoteModelData>[]);
+
+        successCallback(json);
+      },
+      failureCallback: (Map<String, dynamic> json) {
+        AppSnackbar().snackbarFailure(title: "", message: json["message"]);
+
+        completer.complete(<BookingQuoteModelData>[]);
+      },
+    );
+    return completer.future;
   }
 
 }

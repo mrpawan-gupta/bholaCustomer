@@ -18,6 +18,11 @@ import "package:syncfusion_flutter_sliders/sliders.dart";
 class BookSlotScreen extends GetView<BookSlotController> {
   const BookSlotScreen({super.key});
 
+  static const  List<String> _suggestions =
+  ['Afeganistan', 'Albania', 'Algeria', 'Australia', 'Brazil', 'German', 'Madagascar', 'Mozambique', 'Portugal', 'Zambia'];
+  static String searchValue = "";
+
+
 
   selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -74,188 +79,36 @@ class BookSlotScreen extends GetView<BookSlotController> {
           ),
         ],
       ),
-      body: Expanded(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 5, 16, 80),
-          child: Column(
-            children: <Widget>[
-              SearchTab(
-                text: AppLanguageKeys().strFarm_Location.tr,
-                onPressed: (double v1,double v2, List<Placemark>v3) async {
-                  final String result = await addAddressAPICall(v1,v2,v3);
-                  print("result---$result");
-                  AppNavService().pop(result);
-                },
-              ),
-              const SizedBox(
-                height: 18,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      TextWidget(
-                        text: AppLanguageKeys().strSchedule.tr,
-                        color: AppColors().appBlackColor,
-                        size: 19,
-                        fontWeight: FontWeight.bold,
-                        isLineThrough: false,
-                      ),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      GestureDetector(
-                        onTap: () => selectDate(context),
-                        child: Container(
-                          height: 50,
-                          width: MediaQuery.sizeOf(context).width / 2.2,
-                          decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                            border: Border.all(
-                              width: 3,
-                              color: AppColors().appPrimaryColor,
-                            ),
-                          ),
-                          child:  Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text(
-                                  AppLanguageKeys().strSelect1.tr,
-                                ),
-                                Icon(
-                                  Icons.date_range,
-                                  color: AppColors().appPrimaryColor,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      TextWidget(
-                        text: AppLanguageKeys().strCrop.tr,
-                        color: AppColors().appBlackColor,
-                        size: 19,
-                        fontWeight: FontWeight.bold,
-                        isLineThrough: false,
-                      ),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      Container(
-                        height: 50,
-                        width: MediaQuery.sizeOf(context).width / 2.2,
-                        decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(10),
-                          ),
-                          border: Border.all(
-                            width: 3,
-                            color: AppColors().appPrimaryColor,
-                          ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                          child: DropdownButton(
-                            icon:  Icon(
-                              // Add this
-                              Icons.arrow_drop_down, // Add this
-                              color: AppColors().appPrimaryColor, // Add this
-                            ),
-                            underline: Container(),
-                            hint: controller.dropDownValue.value == ""
-                                ?  Text(AppLanguageKeys().strSelect.tr,)
-                                : Text(
-                              controller.dropDownValue.value,
-                              style:  TextStyle(
-                                color: AppColors().appPrimaryColor,),
-                            ),
-                            isExpanded: true,
-                            iconSize: 30.0,
-                            style:  TextStyle(
-                              color: AppColors().appPrimaryColor,),
-                            items: <String>["One", "Two", "Three"].map(
-                                  (String val) {
-                                return DropdownMenuItem<String>(
-                                  value: val,
-                                  child: Text(val),
-                                );
-                              },
-                            ).toList(),
-                            onChanged: (String? val) {
-                              if(val != null) {
-                                controller.updateDropDownValue(val);
-                              }
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 18,
-              ),
-              Align(
-                alignment: Alignment.topLeft,
-                child: TextWidget(
-                  text: AppLanguageKeys().strSlot.tr,
-                  color: AppColors().appBlackColor,
-                  size: 19,
-                  fontWeight: FontWeight.bold,
-                  isLineThrough: false,
-                ),
-              ),
-              SizedBox(
-                height: 60,
-                child: ListView(
-                  shrinkWrap: false,
-                  scrollDirection: Axis.horizontal,
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 5, 16, 80),
+        child: Column(
+          children: <Widget>[
+            SearchTab(
+              text: AppLanguageKeys().strFarm_Location.tr,
+              onPressed: (double v1,double v2, List<Placemark>v3) async {
+                final String result = await addAddressAPICall(v1,v2,v3);
+                print("result---$result");
+                AppNavService().pop(result);
+              },
+            ),
+            const SizedBox(
+              height: 18,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    GestureDetector(
-                      onTap: () => selectDate(context),
-                      child: Container(
-                        height: 50,
-                        width: MediaQuery.sizeOf(context).width / 2.2,
-                        decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(10),
-                          ),
-                          border: Border.all(
-                            width: 3,
-                            color: AppColors().appPrimaryColor,
-                          ),
-                        ),
-                        child:  Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                AppLanguageKeys().strStartTime.tr,
-                              ),
-                              Icon(
-                                Icons.lock_clock,
-                                color: AppColors().appPrimaryColor,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                    TextWidget(
+                      text: AppLanguageKeys().strSchedule.tr,
+                      color: AppColors().appBlackColor,
+                      size: 19,
+                      fontWeight: FontWeight.bold,
+                      isLineThrough: false,
                     ),
                     const SizedBox(
-                      width: 5,
+                      height: 8,
                     ),
                     GestureDetector(
                       onTap: () => selectDate(context),
@@ -277,10 +130,10 @@ class BookSlotScreen extends GetView<BookSlotController> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Text(
-                                AppLanguageKeys().strEndTime.tr,
+                                AppLanguageKeys().strSelect1.tr,
                               ),
                               Icon(
-                                Icons.lock_clock,
+                                Icons.date_range,
                                 color: AppColors().appPrimaryColor,
                               ),
                             ],
@@ -290,200 +143,362 @@ class BookSlotScreen extends GetView<BookSlotController> {
                     ),
                   ],
                 ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    TextWidget(
+                      text: AppLanguageKeys().strCrop.tr,
+                      color: AppColors().appBlackColor,
+                      size: 19,
+                      fontWeight: FontWeight.bold,
+                      isLineThrough: false,
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Container(
+                      height: 50,
+                      width: MediaQuery.sizeOf(context).width / 2.2,
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                        border: Border.all(
+                          width: 3,
+                          color: AppColors().appPrimaryColor,
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                        child: DropdownButton(
+                          icon:  Icon(
+                            // Add this
+                            Icons.arrow_drop_down, // Add this
+                            color: AppColors().appPrimaryColor, // Add this
+                          ),
+                          underline: Container(),
+                          hint: controller.dropDownValue.value == ""
+                              ?  Text(AppLanguageKeys().strSelect.tr,)
+                              : Text(
+                            controller.dropDownValue.value,
+                            style:  TextStyle(
+                              color: AppColors().appPrimaryColor,),
+                          ),
+                          isExpanded: true,
+                          iconSize: 30.0,
+                          style:  TextStyle(
+                            color: AppColors().appPrimaryColor,),
+                          items: <String>["One", "Two", "Three"].map(
+                                (String val) {
+                              return DropdownMenuItem<String>(
+                                value: val,
+                                child: Text(val),
+                              );
+                            },
+                          ).toList(),
+                          onChanged: (String? val) {
+                            if(val != null) {
+                              controller.updateDropDownValue(val);
+                            }
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 18,
+            ),
+            Align(
+              alignment: Alignment.topLeft,
+              child: TextWidget(
+                text: AppLanguageKeys().strSlot.tr,
+                color: AppColors().appBlackColor,
+                size: 19,
+                fontWeight: FontWeight.bold,
+                isLineThrough: false,
               ),
-              const SizedBox(
-                height: 15,
+            ),
+            SizedBox(
+              height: 60,
+              child: ListView(
+                shrinkWrap: false,
+                scrollDirection: Axis.horizontal,
+                children: <Widget>[
+                  GestureDetector(
+                    onTap: () => selectDate(context),
+                    child: Container(
+                      height: 50,
+                      width: MediaQuery.sizeOf(context).width / 2.2,
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                        border: Border.all(
+                          width: 3,
+                          color: AppColors().appPrimaryColor,
+                        ),
+                      ),
+                      child:  Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              AppLanguageKeys().strStartTime.tr,
+                            ),
+                            Icon(
+                              Icons.lock_clock,
+                              color: AppColors().appPrimaryColor,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  GestureDetector(
+                    onTap: () => selectDate(context),
+                    child: Container(
+                      height: 50,
+                      width: MediaQuery.sizeOf(context).width / 2.2,
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                        border: Border.all(
+                          width: 3,
+                          color: AppColors().appPrimaryColor,
+                        ),
+                      ),
+                      child:  Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              AppLanguageKeys().strEndTime.tr,
+                            ),
+                            Icon(
+                              Icons.lock_clock,
+                              color: AppColors().appPrimaryColor,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              Align(
-                alignment: Alignment.topLeft,
-                child: TextWidget(
-                  text: AppLanguageKeys().strService.tr,
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            Align(
+              alignment: Alignment.topLeft,
+              child: TextWidget(
+                text: AppLanguageKeys().strService.tr,
+                color: AppColors().appBlackColor,
+                size: 19,
+                fontWeight: FontWeight.bold,
+                isLineThrough: false,
+              ),
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Container(
+                  height: 50,
+                  width: MediaQuery.sizeOf(context).width / 1.3,
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                    border: Border.all(
+                      width: 3,
+                      color: AppColors().appPrimaryColor,
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                    child: DropdownButton(
+                      icon:  Icon(
+                        Icons.arrow_drop_down, // Add this
+                        color: AppColors().appPrimaryColor, // Add this
+                      ),
+                      underline: Container(),
+                      hint: controller.dropDownValue.value == ""
+                          ?  Text(AppLanguageKeys().strSelect.tr,)
+                          : Text(
+                        controller.dropDownValue.value,
+                        style:  TextStyle(
+                          color: AppColors().appPrimaryColor,),
+                      ),
+                      isExpanded: true,
+                      iconSize: 30.0,
+                      style:  TextStyle(color: AppColors().appPrimaryColor,),
+                      items: <String>["One", "Two", "Three"].map(
+                            (String val) {
+                          return DropdownMenuItem<String>(
+                            value: val,
+                            child: Text(val),
+                          );
+                        },
+                      ).toList(),
+                      onChanged: (String? val) {
+                        if(val != null) {
+                          controller.updateDropDownValue(val);
+                        }
+                      },
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 50,
+                  width: 55,
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                    border: Border.all(
+                      width: 3,
+                      color: AppColors().appPrimaryColor,
+                    ),
+                  ),
+                  child:  Icon(
+                    Icons.add,
+                    color: AppColors().appPrimaryColor,
+                    size: 40,
+                  ),),
+              ],
+            ),
+            const SizedBox(
+              height: 22,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                TextWidget(
+                  text: AppLanguageKeys().strFarm_Area.tr,
                   color: AppColors().appBlackColor,
                   size: 19,
                   fontWeight: FontWeight.bold,
                   isLineThrough: false,
                 ),
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
-                    height: 50,
-                    width: MediaQuery.sizeOf(context).width / 1.3,
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(10),
-                      ),
-                      border: Border.all(
-                        width: 3,
-                        color: AppColors().appPrimaryColor,
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                      child: DropdownButton(
-                        icon:  Icon(
-                          // Add this
-                          Icons.arrow_drop_down, // Add this
-                          color: AppColors().appPrimaryColor, // Add this
-                        ),
-                        underline: Container(),
-                        hint: controller.dropDownValue.value == ""
-                            ?  Text(AppLanguageKeys().strSelect.tr,)
-                            : Text(
-                          controller.dropDownValue.value,
-                          style:  TextStyle(
-                            color: AppColors().appPrimaryColor,),
-                        ),
-                        isExpanded: true,
-                        iconSize: 30.0,
-                        style:  TextStyle(color: AppColors().appPrimaryColor,),
-                        items: <String>["One", "Two", "Three"].map(
-                              (String val) {
-                            return DropdownMenuItem<String>(
-                              value: val,
-                              child: Text(val),
-                            );
-                          },
-                        ).toList(),
-                        onChanged: (String? val) {
-                          if(val != null) {
-                            controller.updateDropDownValue(val);
-                          }
-                        },
-                      ),
-                    ),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: AppColors().appGreyColor,),
+                  height: 30,
+                  width: 70,
+                  child:  Center(child: Text(AppLanguageKeys().
+                  str15_Acer.tr,),),),
+              ],
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                SizedBox(
+                  width: MediaQuery.sizeOf(context).width / 1.3,
+                  child: SfSlider(
+                    activeColor: AppColors().appPrimaryColor,
+                    max: 20.0,
+                    value: controller.sliderSel.value,
+                    interval: 5,
+                    stepSize: 1,
+                    showLabels: true,
+                    enableTooltip: true,
+                    minorTicksPerInterval: 5,
+                    onChanged: (value) {
+                      if(value != null) {
+                        controller.updateSliderValue(value);
+                      }
+                    },
                   ),
-                  Container(
-                    height: 50,
-                    width: 55,
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(10),
-                      ),
-                      border: Border.all(
-                        width: 3,
-                        color: AppColors().appPrimaryColor,
-                      ),
+                ),
+                Container(
+                  height: 50,
+                  width: 55,
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(10),
                     ),
-                    child:  Icon(
-                      Icons.add,
+                    border: Border.all(
+                      width: 3,
                       color: AppColors().appPrimaryColor,
-                      size: 40,
-                    ),),
-                ],
-              ),
-              const SizedBox(
-                height: 22,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  TextWidget(
-                    text: AppLanguageKeys().strFarm_Area.tr,
-                    color: AppColors().appBlackColor,
-                    size: 19,
-                    fontWeight: FontWeight.bold,
-                    isLineThrough: false,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: AppColors().appGreyColor,),
-                    height: 30,
-                    width: 70,
-                    child:  Center(child: Text(AppLanguageKeys().
-                    str15_Acer.tr,),),),
-                ],
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  SizedBox(
-                    width: MediaQuery.sizeOf(context).width / 1.3,
-                    child: SfSlider(
-                      activeColor: AppColors().appPrimaryColor,
-                      max: 20.0,
-                      value: controller.sliderSel.value,
-                      interval: 5,
-                      stepSize: 1,
-                      showLabels: true,
-                      enableTooltip: true,
-                      minorTicksPerInterval: 5,
-                      onChanged: (value) {
-                        if(value != null) {
-                          controller.updateSliderValue(value);
-                        }
-                      },
                     ),
                   ),
-                  Container(
-                    height: 50,
-                    width: 55,
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(10),
-                      ),
-                      border: Border.all(
-                        width: 3,
+                  child:  Center(
+                    child: Text("10",
+                      style: TextStyle(
+                        fontSize: 18,
                         color: AppColors().appPrimaryColor,
-                      ),
+                        fontWeight: FontWeight.w600,),),),),
+              ],
+            ),
+            const Spacer(),
+            SizedBox(
+              width: MediaQuery.sizeOf(context).width / 2,
+              child: ElevatedButton(
+                style: ButtonStyle(
+                  foregroundColor:
+                  MaterialStateProperty.all<Color>(AppColors().appWhiteColor,),
+                  backgroundColor:
+                  MaterialStateProperty.all<Color>(AppColors().appPrimaryColor,),
+                  shape:
+                  MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      side:  BorderSide(
+                        color: AppColors().appPrimaryColor,),),),),
+                onPressed: () async {
+                  const String scheduleDate = "";
+                  const String approxStartTime = "";
+                  const String approxEndTime = "";
+                  const String crop = "";
+                  const String deliveryAddress = "";
+                  final List<Map<String, dynamic>> services = [];
+                  await createBookingAPICall(
+                      scheduleDate: scheduleDate,
+                      approxStartTime: approxStartTime,
+                      approxEndTime: approxEndTime,
+                      crop: crop,
+                      deliveryAddress: deliveryAddress,
+                      services: services,);
+                  await AppNavService().pushNamed(
+                    destination: AppRoutes().selectedSlotScreen,
+                    arguments: <String, dynamic>{},
+                  );
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text( AppLanguageKeys().strGET_OUOTE.tr
+                        .toUpperCase(),
+                      style: const TextStyle(
+                        fontSize: 15, fontWeight: FontWeight.bold,),),
+                    const SizedBox(
+                      width: 15,
                     ),
-                    child:  Center(
-                      child: Text("10",
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: AppColors().appPrimaryColor,
-                          fontWeight: FontWeight.w600,),),),),
-                ],
-              ),
-              const Spacer(),
-              SizedBox(
-                width: MediaQuery.sizeOf(context).width / 2,
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    foregroundColor:
-                    MaterialStateProperty.all<Color>(AppColors().appWhiteColor,),
-                    backgroundColor:
-                    MaterialStateProperty.all<Color>(AppColors().appPrimaryColor,),
-                    shape:
-                    MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        side:  BorderSide(
-                          color: AppColors().appPrimaryColor,),),),),
-                  onPressed: () async {
-                    await AppNavService().pushNamed(
-                      destination: AppRoutes().selectedSlotScreen,
-                      arguments: <String, dynamic>{},
-                    );
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text( AppLanguageKeys().strGET_OUOTE.tr
-                          .toUpperCase(),
-                        style: const TextStyle(
-                          fontSize: 15, fontWeight: FontWeight.bold,),),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      const Icon(
-                        CupertinoIcons.arrow_right,
-                        size: 22,
-                      ),
-                    ],
-                  ),),
-              ),
-            ],
-          ),
+                    const Icon(
+                      CupertinoIcons.arrow_right,
+                      size: 22,
+                    ),
+                  ],
+                ),),
+            ),
+          ],
         ),
       ),
     );
@@ -512,5 +527,42 @@ class BookSlotScreen extends GetView<BookSlotController> {
     );
     return completer.future;
   }
+
+  Future<String> createBookingAPICall({
+    required String scheduleDate,
+    required String approxStartTime,
+    required String approxEndTime,
+    required String crop,
+    required String deliveryAddress,
+    required List<Map<String, dynamic>> services,
+  }) async {
+    final Completer<String> completer = Completer<String>();
+
+    await controller.createBookingAPICall(
+      scheduleDate: scheduleDate,
+      approxStartTime: approxStartTime,
+      approxEndTime: approxEndTime,
+      crop: crop,
+      deliveryAddress: deliveryAddress,
+      services: services,
+      successCallback: (Map<String, dynamic> json) async {
+        AppSnackbar().snackbarSuccess(
+          title: "",
+          message: json["message"],
+        );
+        completer.complete(json["message"]);
+      },
+      failureCallback: (Map<String, dynamic> json) {
+        AppSnackbar().snackbarFailure(
+          title: "",
+          message: json["message"],
+        );
+        completer.complete(json["message"]);
+      },
+    );
+
+    return completer.future;
+  }
+
 
 }

@@ -64,24 +64,19 @@ class SearchTab extends GetView<SearchController> {
                 padding: const EdgeInsetsDirectional.fromSTEB(4, 0, 0, 0),
                 child: SizedBox(
                   width: 200,
-                  child: GestureDetector(
-                    onTap: () async {
-                      await _openDropDown(context);
-                    },
-                    child: TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: "Enter location",
-                        enabledBorder: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                        errorBorder: InputBorder.none,
-                        focusedErrorBorder: InputBorder.none,
-                        filled: true,
-                        fillColor: Colors.white,
-                      ),
-                      style: const TextStyle(
-                        fontFamily: "Inter",
-                        letterSpacing: 0,
-                      ),
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: "Enter location",
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      errorBorder: InputBorder.none,
+                      focusedErrorBorder: InputBorder.none,
+                      filled: true,
+                      fillColor: Colors.white,
+                    ),
+                    style: const TextStyle(
+                      fontFamily: "Inter",
+                      letterSpacing: 0,
                     ),
                   ),
                 ),
@@ -90,45 +85,6 @@ class SearchTab extends GetView<SearchController> {
           ],
         ),
       ),
-    );
-  }
-
-  Future<void> _openDropDown(BuildContext context) async {
-    String? _selectedLocation;
-    await showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Select a location'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                GestureDetector(
-                  onTap: () {
-                    _selectedLocation = 'Location 1';
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Location 1'),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    _selectedLocation = 'Location 2';
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Location 2'),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    _selectedLocation = 'Location 3';
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Location 3'),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
     );
   }
 
