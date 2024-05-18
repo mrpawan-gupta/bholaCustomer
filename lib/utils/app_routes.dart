@@ -1,5 +1,4 @@
 import "package:customer/bindings/account_binding.dart";
-import "package:customer/bindings/checkoutBinding.dart";
 import "package:customer/bindings/login_screen_bindings/language_selection_binding.dart";
 import "package:customer/bindings/login_screen_bindings/notification_screen_binding.dart";
 import "package:customer/bindings/login_screen_bindings/otp_screen_binding.dart";
@@ -14,9 +13,7 @@ import "package:customer/bindings/outer_main_bindings/order_history_binding.dart
 import "package:customer/bindings/outer_main_bindings/portfolio_binding.dart";
 import "package:customer/bindings/product_deatils_bindings/cart_bindings.dart";
 import "package:customer/bindings/product_deatils_bindings/product_detail_page_bindings.dart";
-import "package:customer/bindings/sample_bindings/firebase_sample_binding.dart";
 import "package:customer/bindings/settings_bindings/change_language_binding.dart";
-import "package:customer/bindings/splash_screen_binding/onboard_screen_binding.dart";
 import "package:customer/screens/account_screen.dart";
 import "package:customer/screens/login_screen/language_selection.dart";
 import "package:customer/screens/login_screen/notification_screen.dart";
@@ -30,14 +27,10 @@ import "package:customer/screens/outer_main_screens/help_screen.dart";
 import "package:customer/screens/outer_main_screens/home_screen.dart";
 import "package:customer/screens/outer_main_screens/order_history_screen.dart";
 import "package:customer/screens/outer_main_screens/portfolio_screen.dart";
-import "package:customer/screens/product_details/ProductDetails.dart";
 import "package:customer/screens/product_details/cart.dart";
-import "package:customer/screens/sample_screens/firebase_sample_screen.dart";
+import "package:customer/screens/product_details/product_details.dart";
 import "package:customer/screens/settings_screens/change_language_screen.dart";
-import "package:customer/screens/splash_screen/onBoardScreen.dart";
-import "package:customer/screens/widgets/Checkout.dart";
 import "package:get/get.dart";
-import "package:google_maps_flutter/google_maps_flutter.dart";
 
 class AppRoutes {
   factory AppRoutes() {
@@ -61,12 +54,9 @@ class AppRoutes {
   final String orderHistoryScreen = "/orderHistoryScreen";
   final String accountScreen = "/accountScreen";
   final String changeLanguageScreen = "/changeLanguageScreen";
-  final String firebaseSampleScreen = "/firebaseSampleScreen";
   final String productDetailScreen = "/productDetailScreen";
-  final String checkoutScreen = "/checkoutScreen";
   final String cartScreen = "/cartScreen";
   final String selectedSlotScreen = "/selectedSlotScreen";
-  final String onBoardScreen = "/onBoardScreen";
   final String bookingSlot = "/bookingSlot";
 
   List<GetPage<dynamic>> getPages() {
@@ -131,21 +121,12 @@ class AppRoutes {
       page: ChangeLanguageScreen.new,
       binding: ChangeLanguageBinding(),
     );
-    final GetPage<dynamic> firebaseSampleRoute = GetPage<dynamic>(
-      name: firebaseSampleScreen,
-      page: FirebaseSampleScreen.new,
-      binding: FirebaseSampleBinding(),
-    );
     final GetPage<dynamic> productDetailRoute = GetPage<dynamic>(
       name: productDetailScreen,
       page: ProductDetailScreen.new,
       binding: ProductDetailBinding(),
     );
-    final GetPage<dynamic> checkoutRoute = GetPage<dynamic>(
-      name: checkoutScreen,
-      page: CheckoutScreen.new,
-      binding: CheckoutBinding(),
-    );
+
     final GetPage<dynamic> cartRoute = GetPage<dynamic>(
       name: cartScreen,
       page: CartScreen.new,
@@ -155,11 +136,6 @@ class AppRoutes {
       name: selectedSlotScreen,
       page: SelectedSlotScreen.new,
       binding: SelectedSlotBinding(),
-    );
-    final GetPage<dynamic> onBoardRoute = GetPage<dynamic>(
-      name: onBoardScreen,
-      page: OnBoardScreen.new,
-      binding: OnBoardBinding(),
     );
     final GetPage<dynamic> bookingSlotRoute = GetPage<dynamic>(
       name: bookingSlot,
@@ -180,12 +156,9 @@ class AppRoutes {
       orderHistoryRoute,
       accountRoute,
       changeLanguageRoute,
-      firebaseSampleRoute,
       productDetailRoute,
-      checkoutRoute,
       cartRoute,
       selectedSlotRoute,
-      onBoardRoute,
       bookingSlotRoute,
     ];
   }

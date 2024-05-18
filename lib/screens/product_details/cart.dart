@@ -1,15 +1,11 @@
 import "package:customer/controllers/product_detail_page_controllers/cart_controllers.dart";
-import "package:customer/screens/widgets/textWidgets.dart";
-import "package:customer/services/app_nav_service.dart";
+import "package:customer/screens/widgets/text_widgets.dart";
 import "package:customer/utils/app_assets_images.dart";
 import "package:customer/utils/app_colors.dart";
-import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
-
-
 
 class CartScreen extends GetView<CartController> {
   const CartScreen({super.key});
@@ -17,18 +13,18 @@ class CartScreen extends GetView<CartController> {
   Widget slideLeftBackground() {
     return ColoredBox(
       color: AppColors().appRedColor,
-      child:  Align(
+      child: Align(
         alignment: Alignment.centerRight,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-             Icon(
+            Icon(
               Icons.delete,
               color: AppColors().appWhiteColor,
             ),
             Text(
               AppLanguageKeys().strDelete.tr,
-              style:  TextStyle(
+              style: TextStyle(
                 color: AppColors().appWhiteColor,
                 fontWeight: FontWeight.w700,
               ),
@@ -77,9 +73,12 @@ class CartScreen extends GetView<CartController> {
                 key: UniqueKey(),
                 child: Container(
                   decoration: BoxDecoration(
-                      border: Border.all(color: AppColors().appGreyColor,),
-                      borderRadius: BorderRadius.circular(10),
-                      color: AppColors().appPrimaryColor,),
+                    border: Border.all(
+                      color: AppColors().appGreyColor,
+                    ),
+                    borderRadius: BorderRadius.circular(10),
+                    color: AppColors().appPrimaryColor,
+                  ),
                   height: 100,
                   width: MediaQuery.sizeOf(context).width,
                   child: Padding(
@@ -95,8 +94,10 @@ class CartScreen extends GetView<CartController> {
                               child: SizedBox(
                                 width: 90,
                                 height: 100,
-                                child: Image.asset(AppAssetsImages.tractor,
-                                    fit: BoxFit.fitHeight,),
+                                child: Image.asset(
+                                  AppAssetsImages.tractor,
+                                  fit: BoxFit.fitHeight,
+                                ),
                               ),
                             ),
                             const SizedBox(
@@ -142,39 +143,47 @@ class CartScreen extends GetView<CartController> {
                         Container(
                           padding: const EdgeInsets.all(3),
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: AppColors().appPrimaryColor,),
+                            borderRadius: BorderRadius.circular(5),
+                            color: AppColors().appPrimaryColor,
+                          ),
                           child: Row(
                             children: <Widget>[
                               InkWell(
-                                  onTap: () {},
-                                  child:  Icon(
-                                    Icons.remove,
-                                    color: AppColors().appWhiteColor,
-                                    size: 16,
-                                  ),),
+                                onTap: () {},
+                                child: Icon(
+                                  Icons.remove,
+                                  color: AppColors().appWhiteColor,
+                                  size: 16,
+                                ),
+                              ),
                               Container(
                                 margin: const EdgeInsets.symmetric(
-                                    horizontal: 3,),
+                                  horizontal: 3,
+                                ),
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 3, vertical: 2,),
+                                  horizontal: 3,
+                                  vertical: 2,
+                                ),
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(3),
-                                    color: AppColors().appWhiteColor,),
-                                child:  Text(
+                                  borderRadius: BorderRadius.circular(3),
+                                  color: AppColors().appWhiteColor,
+                                ),
+                                child: Text(
                                   "3",
-                                  style:
-                                  TextStyle(color: AppColors().appBlackColor,
-                                      fontSize: 22,),
+                                  style: TextStyle(
+                                    color: AppColors().appBlackColor,
+                                    fontSize: 22,
+                                  ),
                                 ),
                               ),
                               InkWell(
-                                  onTap: () {},
-                                  child:  Icon(
-                                    Icons.add,
-                                    color: AppColors().appWhiteColor,
-                                    size: 16,
-                                  ),),
+                                onTap: () {},
+                                child: Icon(
+                                  Icons.add,
+                                  color: AppColors().appWhiteColor,
+                                  size: 16,
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -188,9 +197,12 @@ class CartScreen extends GetView<CartController> {
               ),
               Container(
                 decoration: BoxDecoration(
-                    border: Border.all(color: AppColors().appGreyColor,),
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.green.shade100,),
+                  border: Border.all(
+                    color: AppColors().appGreyColor,
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.green.shade100,
+                ),
                 height: 100,
                 width: MediaQuery.sizeOf(context).width,
                 child: Padding(
@@ -205,8 +217,10 @@ class CartScreen extends GetView<CartController> {
                             child: SizedBox(
                               width: 90,
                               height: 100,
-                              child: Image.asset(AppAssetsImages.tractor,
-                                  fit: BoxFit.fitHeight,),
+                              child: Image.asset(
+                                AppAssetsImages.tractor,
+                                fit: BoxFit.fitHeight,
+                              ),
                             ),
                           ),
                           const SizedBox(
@@ -252,38 +266,45 @@ class CartScreen extends GetView<CartController> {
                       Container(
                         padding: const EdgeInsets.all(3),
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: AppColors().appPrimaryColor,),
+                          borderRadius: BorderRadius.circular(5),
+                          color: AppColors().appPrimaryColor,
+                        ),
                         child: Row(
                           children: <Widget>[
                             InkWell(
-                                onTap: () {},
-                                child:  Icon(
-                                  Icons.remove,
-                                  color: AppColors().appWhiteColor,
-                                  size: 16,
-                                ),),
+                              onTap: () {},
+                              child: Icon(
+                                Icons.remove,
+                                color: AppColors().appWhiteColor,
+                                size: 16,
+                              ),
+                            ),
                             Container(
                               margin: const EdgeInsets.symmetric(horizontal: 3),
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 3, vertical: 2,),
+                                horizontal: 3,
+                                vertical: 2,
+                              ),
                               decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(3),
-                                  color: AppColors().appWhiteColor,),
-                              child:  Text(
+                                borderRadius: BorderRadius.circular(3),
+                                color: AppColors().appWhiteColor,
+                              ),
+                              child: Text(
                                 "3",
-                                style:
-                                TextStyle(color: AppColors().appBlackColor,
-                                    fontSize: 22,),
+                                style: TextStyle(
+                                  color: AppColors().appBlackColor,
+                                  fontSize: 22,
+                                ),
                               ),
                             ),
                             InkWell(
-                                onTap: () {},
-                                child:  Icon(
-                                  Icons.add,
-                                  color: AppColors().appWhiteColor,
-                                  size: 16,
-                                ),),
+                              onTap: () {},
+                              child: Icon(
+                                Icons.add,
+                                color: AppColors().appWhiteColor,
+                                size: 16,
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -306,8 +327,9 @@ class CartScreen extends GetView<CartController> {
               ),
               Container(
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: AppColors().appGreyColor,),
+                  borderRadius: BorderRadius.circular(12),
+                  color: AppColors().appGreyColor,
+                ),
                 height: 100,
                 width: MediaQuery.sizeOf(context).width,
                 child: Padding(
@@ -327,9 +349,9 @@ class CartScreen extends GetView<CartController> {
                           ),
                           SizedBox(
                             width: MediaQuery.sizeOf(context).width / 1.4,
-                            child:  Text(
+                            child: Text(
                               AppLanguageKeys().strText.tr,
-                              style:  TextStyle(
+                              style: TextStyle(
                                 color: AppColors().appGreyColor,
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -339,7 +361,7 @@ class CartScreen extends GetView<CartController> {
                           ),
                         ],
                       ),
-                       Icon(
+                      Icon(
                         Icons.edit_calendar_rounded,
                         color: AppColors().appPrimaryColor,
                         size: 30,
@@ -353,9 +375,12 @@ class CartScreen extends GetView<CartController> {
               ),
               Container(
                 decoration: BoxDecoration(
-                    border: Border.all(color: AppColors().appGreyColor,),
-                    borderRadius: BorderRadius.circular(12),
-                    color: AppColors().appTransparentColor,),
+                  border: Border.all(
+                    color: AppColors().appGreyColor,
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                  color: AppColors().appTransparentColor,
+                ),
                 height: 40,
                 width: MediaQuery.sizeOf(context).width,
                 child: Padding(
@@ -363,7 +388,9 @@ class CartScreen extends GetView<CartController> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                       Text(AppLanguageKeys().strCoupon.tr,),
+                      Text(
+                        AppLanguageKeys().strCoupon.tr,
+                      ),
                       Image.asset(
                         AppAssetsImages.blackright,
                         height: 25,
@@ -377,8 +404,9 @@ class CartScreen extends GetView<CartController> {
               ),
               Center(
                 child: SizedBox(
-                    width: MediaQuery.sizeOf(context).width / 1.2,
-                    child: const Divider(),),
+                  width: MediaQuery.sizeOf(context).width / 1.2,
+                  child: const Divider(),
+                ),
               ),
               const SizedBox(
                 height: 20,
@@ -406,7 +434,9 @@ class CartScreen extends GetView<CartController> {
                         fontWeight: FontWeight.w500,
                         isLineThrough: false,
                       ),
-                      const SizedBox(height: 6,),
+                      const SizedBox(
+                        height: 6,
+                      ),
                       Row(
                         children: <Widget>[
                           TextWidget(
@@ -425,7 +455,9 @@ class CartScreen extends GetView<CartController> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 6,),
+                      const SizedBox(
+                        height: 6,
+                      ),
                       TextWidget(
                         text: AppLanguageKeys().strDelivery.tr,
                         color: AppColors().appBlackColor,
@@ -445,7 +477,9 @@ class CartScreen extends GetView<CartController> {
                         fontWeight: FontWeight.w500,
                         isLineThrough: false,
                       ),
-                      const SizedBox(height: 6,),
+                      const SizedBox(
+                        height: 6,
+                      ),
                       TextWidget(
                         text: AppLanguageKeys().strApply.tr,
                         color: AppColors().appPrimaryColor,
@@ -453,7 +487,9 @@ class CartScreen extends GetView<CartController> {
                         fontWeight: FontWeight.w500,
                         isLineThrough: false,
                       ),
-                      const SizedBox(height: 6,),
+                      const SizedBox(
+                        height: 6,
+                      ),
                       TextWidget(
                         text: AppLanguageKeys().strFree.tr,
                         color: AppColors().appPrimaryColor,
@@ -470,8 +506,9 @@ class CartScreen extends GetView<CartController> {
               ),
               Center(
                 child: SizedBox(
-                    width: MediaQuery.sizeOf(context).width / 1.2,
-                    child: const Divider(),),
+                  width: MediaQuery.sizeOf(context).width / 1.2,
+                  child: const Divider(),
+                ),
               ),
               const SizedBox(
                 height: 20,
@@ -485,7 +522,8 @@ class CartScreen extends GetView<CartController> {
                     size: 16,
                     fontWeight: FontWeight.bold,
                     isLineThrough: false,
-                  ),TextWidget(
+                  ),
+                  TextWidget(
                     text: "₹ 7000",
                     color: AppColors().appBlackColor,
                     size: 16,
@@ -521,30 +559,32 @@ class CartScreen extends GetView<CartController> {
                   SizedBox(
                     width: MediaQuery.sizeOf(context).width / 1.8,
                     child: ElevatedButton(
-                        style: ButtonStyle(
-                            foregroundColor:
-                            MaterialStateProperty.all<Color>(
-                              AppColors().appWhiteColor,),
-                            backgroundColor:
-                            MaterialStateProperty.all<Color>(
-                              AppColors().appPrimaryColor,),
-                            shape:
+                      style: ButtonStyle(
+                        foregroundColor: MaterialStateProperty.all<Color>(
+                          AppColors().appWhiteColor,
+                        ),
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                          AppColors().appPrimaryColor,
+                        ),
+                        shape:
                             MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    side:  BorderSide(
-                                      color: AppColors().appPrimaryColor,),),
-                            ),),
-                        onPressed: () async {
-                          await AppNavService().pushNamed(
-                            destination: AppRoutes().checkoutScreen,
-                            arguments: <String, dynamic>{},
-                          );
-                        },
-                        child: Text(AppLanguageKeys().strProceed.tr
-                            .toUpperCase(),
-                            style: const TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold,),),),
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            side: BorderSide(
+                              color: AppColors().appPrimaryColor,
+                            ),
+                          ),
+                        ),
+                      ),
+                      onPressed: () async {},
+                      child: Text(
+                        AppLanguageKeys().strProceed.tr.toUpperCase(),
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),

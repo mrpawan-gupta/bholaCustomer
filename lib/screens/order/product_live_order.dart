@@ -1,5 +1,5 @@
 import "package:customer/controllers/order_controllers/product_live_order_controllers.dart";
-import "package:customer/screens/widgets/textWidgets.dart";
+import "package:customer/screens/widgets/text_widgets.dart";
 import "package:customer/utils/app_assets_images.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/localization/app_language_keys.dart";

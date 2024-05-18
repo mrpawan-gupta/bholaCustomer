@@ -1,13 +1,15 @@
-import 'dart:async';
+import "dart:async";
 
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:dropdown_search/dropdown_search.dart';
-import 'package:customer/services/app_nav_service.dart';
-import 'package:customer/utils/app_routes.dart';
-import 'package:customer/utils/app_snackbar.dart';
-import 'package:customer/utils/app_colors.dart';
-import 'package:customer/controllers/outer_main_controllers/booking_slot_controllers/book_slot_controllers.dart';
+import "package:customer/controllers/outer_main_controllers/booking_slot_controllers/book_slot_controllers.dart";
+import "package:customer/services/app_nav_service.dart";
+import "package:customer/temp/lib/easy_search_bar.dart";
+import "package:customer/utils/app_colors.dart";
+import "package:customer/utils/app_routes.dart";
+import "package:customer/utils/app_snackbar.dart";
+import "package:dropdown_search/dropdown_search.dart";
+
+import "package:flutter/material.dart";
+import "package:get/get.dart";
 
 class BookSlotScreen extends GetView<BookSlotController> {
   const BookSlotScreen({super.key});
@@ -17,13 +19,26 @@ class BookSlotScreen extends GetView<BookSlotController> {
     return Scaffold(
       backgroundColor: AppColors().appWhiteColor,
       appBar: AppBar(
-        title: const Text('Booking Window'),
+        title: const Text("Booking Window"),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: <Widget>[
+            SizedBox(
+              height: kToolbarHeight,
+              child: EasySearchBar(
+
+                title: const Text("Search by street or city name"),
+                backgroundColor: AppColors().appWhiteColor,
+                onSearch: (String value) {},
+                asyncSuggestions: (String value) async {
+                  return controller.fetchSuggestions(value);
+                },
+                openOverlayOnSearch: true,
+              ),
+            ),
             _buildLocationField(),
             const SizedBox(height: 16.0),
             _buildDateCropFields(context),
@@ -42,7 +57,8 @@ class BookSlotScreen extends GetView<BookSlotController> {
                   const String approxEndTime = "";
                   const String crop = "";
                   const String deliveryAddress = "";
-                  final List<Map<String, dynamic>> services = [];
+                  final List<Map<String, dynamic>> services =
+                      <Map<String, dynamic>>[];
                   await createBookingAPICall(
                     scheduleDate: scheduleDate,
                     approxStartTime: approxStartTime,
@@ -59,7 +75,8 @@ class BookSlotScreen extends GetView<BookSlotController> {
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.white,
                   backgroundColor: Colors.green,
-                  padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -68,7 +85,7 @@ class BookSlotScreen extends GetView<BookSlotController> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                child: const Text('Get Quote'),
+                child: const Text("Get Quote"),
               ),
             ),
           ],
@@ -79,17 +96,17 @@ class BookSlotScreen extends GetView<BookSlotController> {
 
   Widget _buildLocationField() {
     return DropdownSearch<String>(
-      items: ['Farm A', 'Lonavala farm', 'Farm C'],
+      items: const <String>["Farm A", "Lonavala farm", "Farm C"],
       // dropdownSearchDecoration: const InputDecoration(
       //   labelText: 'Farm Location',
       //   hintText: 'Enter farm location',
       //   prefixIcon: Icon(Icons.search),
       //   border: OutlineInputBorder(),
       // ),
-      onChanged: (value) {
+      onChanged: (String? value) {
         // Handle location selection
       },
-      popupProps: PopupProps.menu(
+      popupProps: const PopupProps<String>.menu(
         showSearchBox: true,
       ),
     );
@@ -97,20 +114,20 @@ class BookSlotScreen extends GetView<BookSlotController> {
 
   Widget _buildDateCropFields(BuildContext context) {
     return Row(
-      children: [
+      children: <Widget>[
         Expanded(
           child: GestureDetector(
-            onTap: () => selectDate(context),
+            onTap: () async => selectDate(context),
             child: AbsorbPointer(
               child: TextField(
                 decoration: const InputDecoration(
-                  labelText: 'Schedule',
-                  hintText: 'Please Select a Date',
+                  labelText: "Schedule",
+                  hintText: "Please Select a Date",
                   prefixIcon: Icon(Icons.calendar_today),
                   border: OutlineInputBorder(),
                 ),
                 controller: TextEditingController(
-                  text: controller.selectedDate.value.toString().split(' ')[0],
+                  text: controller.selectedDate.value.toString().split(" ")[0],
                 ),
               ),
             ),
@@ -120,17 +137,17 @@ class BookSlotScreen extends GetView<BookSlotController> {
         Expanded(
           child: DropdownButtonFormField<String>(
             decoration: const InputDecoration(
-              labelText: 'Crop',
-              hintText: 'Please Select a Crop',
+              labelText: "Crop",
+              hintText: "Please Select a Crop",
               border: OutlineInputBorder(),
             ),
-            items: ['Crop 1', 'Crop 2', 'Crop 3'].map((String crop) {
+            items: <String>["Crop 1", "Crop 2", "Crop 3"].map((String crop) {
               return DropdownMenuItem<String>(
                 value: crop,
                 child: Text(crop),
               );
             }).toList(),
-            onChanged: (newValue) {
+            onChanged: (String? newValue) {
               // Handle crop selection
             },
           ),
@@ -141,12 +158,12 @@ class BookSlotScreen extends GetView<BookSlotController> {
 
   Widget _buildTimeSlotFields() {
     return Row(
-      children: [
+      children: <Widget>[
         Expanded(
           child: TextField(
             decoration: const InputDecoration(
-              labelText: 'Start Time',
-              hintText: 'Start Time',
+              labelText: "Start Time",
+              hintText: "Start Time",
               prefixIcon: Icon(Icons.access_time),
               border: OutlineInputBorder(),
             ),
@@ -159,8 +176,8 @@ class BookSlotScreen extends GetView<BookSlotController> {
         Expanded(
           child: TextField(
             decoration: const InputDecoration(
-              labelText: 'End Time',
-              hintText: 'End Time',
+              labelText: "End Time",
+              hintText: "End Time",
               prefixIcon: Icon(Icons.access_time),
               border: OutlineInputBorder(),
             ),
@@ -176,17 +193,18 @@ class BookSlotScreen extends GetView<BookSlotController> {
   Widget _buildServiceField() {
     return DropdownButtonFormField<String>(
       decoration: const InputDecoration(
-        labelText: 'Service',
-        hintText: 'Please Select a Service',
+        labelText: "Service",
+        hintText: "Please Select a Service",
         border: OutlineInputBorder(),
       ),
-      items: ['Service 1', 'Service 2', 'Service 3'].map((String service) {
+      items:
+          <String>["Service 1", "Service 2", "Service 3"].map((String service) {
         return DropdownMenuItem<String>(
           value: service,
           child: Text(service),
         );
       }).toList(),
-      onChanged: (newValue) {
+      onChanged: (String? newValue) {
         // Handle service selection
       },
     );
@@ -195,28 +213,27 @@ class BookSlotScreen extends GetView<BookSlotController> {
   Widget _buildFarmAreaSlider() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         const Text(
-          'Farm Area',
+          "Farm Area",
           style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
         ),
         Obx(() => Slider(
-          value: controller.sliderSel.value,
-          min: 0,
-          max: 20,
-          divisions: 20,
-          label: '${controller.sliderSel.value.toInt()} Acer',
-          onChanged: (double value) {
-            controller.updateSliderValue(value);
-          },
-        )),
+              value: controller.sliderSel.value,
+              max: 20,
+              divisions: 20,
+              label: "${controller.sliderSel.value.toInt()} Acer",
+              onChanged: (double value) {
+                controller.updateSliderValue(value);
+              },
+            ),),
         const SizedBox(height: 8.0),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: List.generate(5, (index) {
-              return Text('${index * 5}');
+            children: List<Widget>.generate(5, (int index) {
+              return Text("${index * 5}");
             }),
           ),
         ),
@@ -260,7 +277,7 @@ class BookSlotScreen extends GetView<BookSlotController> {
     return completer.future;
   }
 
-  void selectDate(BuildContext context) async {
+  Future<void> selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: controller.selectedDate.value,

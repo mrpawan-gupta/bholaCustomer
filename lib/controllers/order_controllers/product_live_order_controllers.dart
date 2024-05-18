@@ -1,5 +1,3 @@
 import "package:get/get.dart";
 
-class ProductLiveOrderController extends GetxController {
-
-}
+class ProductLiveOrderController extends GetxController {}

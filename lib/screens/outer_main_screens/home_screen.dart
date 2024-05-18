@@ -1,4 +1,3 @@
-import "package:customer/common_widgets/search.dart";
 import "package:customer/controllers/outer_main_controllers/home_controller.dart";
 import "package:customer/screens/product_card/product_card.dart";
 import "package:customer/services/app_nav_service.dart";
@@ -33,7 +32,8 @@ class HomeScreen extends GetView<HomeController> {
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
-                color: AppColors().appBlackColor,),
+                color: AppColors().appBlackColor,
+              ),
             ),
             const SizedBox(
               height: 5,
@@ -59,9 +59,9 @@ class HomeScreen extends GetView<HomeController> {
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(8),
                           //color: Colors.blue.withOpacity(.5),
-                          child:  Text(
+                          child: Text(
                             AppLanguageKeys().strTractor.tr,
-                            style:  TextStyle(
+                            style: TextStyle(
                               fontWeight: FontWeight.w500,
                               color: AppColors().appWhiteColor,
                               fontSize: 16,
@@ -90,9 +90,9 @@ class HomeScreen extends GetView<HomeController> {
                         footer: Container(
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(8),
-                          child:  Text(
+                          child: Text(
                             AppLanguageKeys().strDrone.tr,
-                            style:  TextStyle(
+                            style: TextStyle(
                               fontWeight: FontWeight.w500,
                               color: AppColors().appWhiteColor,
                               fontSize: 16,
@@ -121,9 +121,9 @@ class HomeScreen extends GetView<HomeController> {
                         footer: Container(
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(8),
-                          child:  Text(
+                          child: Text(
                             AppLanguageKeys().strJCB.tr,
-                            style:  TextStyle(
+                            style: TextStyle(
                               fontWeight: FontWeight.w500,
                               color: AppColors().appWhiteColor,
                               fontSize: 16,
@@ -153,7 +153,8 @@ class HomeScreen extends GetView<HomeController> {
                   bottomLeft: Radius.circular(20),
                   bottomRight: Radius.circular(20),
                   topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),),
+                  topRight: Radius.circular(20),
+                ),
                 child: ColoredBox(
                   color: Colors.green.withOpacity(0.8),
                   child: Padding(
@@ -172,35 +173,35 @@ class HomeScreen extends GetView<HomeController> {
                                   size: 15,
                                 ),
                                 Text(
-                                  AppLanguageKeys().
-                                  strNashik_India.tr,
-                                  style:  TextStyle(
+                                  AppLanguageKeys().strNashikIndia.tr,
+                                  style: TextStyle(
                                     color: AppColors().appWhiteColor,
-                                    fontSize: 11,),
+                                    fontSize: 11,
+                                  ),
                                 ),
                               ],
                             ),
                             Padding(
-                              padding:
-                              const EdgeInsets.fromLTRB(16, 0, 0, 0),
+                              padding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
                               child: Text(
                                 AppLanguageKeys().strFriday.tr,
-                                style:  TextStyle(
+                                style: TextStyle(
                                   fontSize: 11,
-                                  color: AppColors().appWhiteColor,),
+                                  color: AppColors().appWhiteColor,
+                                ),
                               ),
                             ),
                             Padding(
-                              padding:
-                              const EdgeInsets.fromLTRB(16, 0, 0, 0),
+                              padding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
                               child: Row(
                                 children: <Widget>[
                                   Text(
                                     AppLanguageKeys().strDegree.tr,
-                                    style:  TextStyle(
+                                    style: TextStyle(
                                       fontSize: 20,
                                       color: AppColors().appWhiteColor,
-                                      fontWeight: FontWeight.bold,),
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                   Image.asset(
                                     AppAssetsImages.rainy_2d,
@@ -219,14 +220,16 @@ class HomeScreen extends GetView<HomeController> {
                           children: <Widget>[
                             Text(
                               AppLanguageKeys().strSAT.tr,
-                              style:  TextStyle(
+                              style: TextStyle(
                                 color: AppColors().appWhiteColor,
-                                fontWeight: FontWeight.w600,),
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                             Text(
                               AppLanguageKeys().strDegree1.tr,
-                              style:  TextStyle(
-                                color: AppColors().appWhiteColor,),
+                              style: TextStyle(
+                                color: AppColors().appWhiteColor,
+                              ),
                             ),
                             Image.asset(
                               AppAssetsImages.sunny_2d,
@@ -242,14 +245,16 @@ class HomeScreen extends GetView<HomeController> {
                           children: <Widget>[
                             Text(
                               AppLanguageKeys().strSUN.tr,
-                              style:  TextStyle(
+                              style: TextStyle(
                                 color: AppColors().appWhiteColor,
-                                fontWeight: FontWeight.w600,),
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                             Text(
                               AppLanguageKeys().strDegree2.tr,
-                              style:  TextStyle(
-                                color: AppColors().appWhiteColor,),
+                              style: TextStyle(
+                                color: AppColors().appWhiteColor,
+                              ),
                             ),
                             Image.asset(
                               AppAssetsImages.thunder_2d,
@@ -265,14 +270,16 @@ class HomeScreen extends GetView<HomeController> {
                           children: <Widget>[
                             Text(
                               AppLanguageKeys().strMON.tr,
-                              style:  TextStyle(
+                              style: TextStyle(
                                 color: AppColors().appWhiteColor,
-                                fontWeight: FontWeight.w600,),
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                             Text(
                               AppLanguageKeys().strDegree3.tr,
-                              style:  TextStyle(
-                                color: AppColors().appWhiteColor,),
+                              style: TextStyle(
+                                color: AppColors().appWhiteColor,
+                              ),
                             ),
                             Image.asset(
                               AppAssetsImages.sunny_2d,
@@ -288,14 +295,16 @@ class HomeScreen extends GetView<HomeController> {
                           children: <Widget>[
                             Text(
                               AppLanguageKeys().strTUE.tr,
-                              style:  TextStyle(
+                              style: TextStyle(
                                 color: AppColors().appWhiteColor,
-                                fontWeight: FontWeight.w600,),
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                             Text(
                               AppLanguageKeys().strDegree3.tr,
-                              style:  TextStyle(
-                                color: AppColors().appWhiteColor,),
+                              style: TextStyle(
+                                color: AppColors().appWhiteColor,
+                              ),
                             ),
                             Image.asset(
                               AppAssetsImages.rainy_2d,
@@ -311,14 +320,16 @@ class HomeScreen extends GetView<HomeController> {
                           children: <Widget>[
                             Text(
                               AppLanguageKeys().strWED.tr,
-                              style:  TextStyle(
+                              style: TextStyle(
                                 color: AppColors().appWhiteColor,
-                                fontWeight: FontWeight.w600,),
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                             Text(
                               AppLanguageKeys().strDegree3.tr,
-                              style:  TextStyle(
-                                color: AppColors().appWhiteColor,),
+                              style: TextStyle(
+                                color: AppColors().appWhiteColor,
+                              ),
                             ),
                             Image.asset(
                               AppAssetsImages.sunny_2d,
@@ -334,14 +345,16 @@ class HomeScreen extends GetView<HomeController> {
                           children: <Widget>[
                             Text(
                               AppLanguageKeys().strTHU.tr,
-                              style:  TextStyle(
+                              style: TextStyle(
                                 color: AppColors().appWhiteColor,
-                                fontWeight: FontWeight.w600,),
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                             Text(
                               AppLanguageKeys().strDegree5.tr,
-                              style:  TextStyle(
-                                color: AppColors().appWhiteColor,),
+                              style: TextStyle(
+                                color: AppColors().appWhiteColor,
+                              ),
                             ),
                             Image.asset(
                               AppAssetsImages.thunder_2d,
@@ -361,10 +374,11 @@ class HomeScreen extends GetView<HomeController> {
             ),
             Text(
               AppLanguageKeys().strProduct.tr,
-              style:  TextStyle(
+              style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
-                color: AppColors().appBlackColor,),
+                color: AppColors().appBlackColor,
+              ),
             ),
             const SizedBox(
               height: 5,
@@ -384,9 +398,9 @@ class HomeScreen extends GetView<HomeController> {
                         footer: Container(
                           alignment: Alignment.center,
                           padding: const EdgeInsets.fromLTRB(8, 10, 8, 5),
-                          child:  Text(
-                            AppLanguageKeys().strCattle_Feed.tr,
-                            style:  TextStyle(
+                          child: Text(
+                            AppLanguageKeys().strCattleFeed.tr,
+                            style: TextStyle(
                               fontWeight: FontWeight.w500,
                               color: AppColors().appWhiteColor,
                               fontSize: 16,
@@ -416,9 +430,9 @@ class HomeScreen extends GetView<HomeController> {
                           alignment: Alignment.center,
                           padding: const EdgeInsets.fromLTRB(8, 10, 8, 5),
                           //color: Colors.blue.withOpacity(.5),
-                          child:  Text(
+                          child: Text(
                             AppLanguageKeys().strNursery.tr,
-                            style:  TextStyle(
+                            style: TextStyle(
                               fontWeight: FontWeight.w500,
                               color: AppColors().appWhiteColor,
                               fontSize: 16,
@@ -447,9 +461,9 @@ class HomeScreen extends GetView<HomeController> {
                         footer: Container(
                           alignment: Alignment.center,
                           padding: const EdgeInsets.fromLTRB(8, 10, 8, 5),
-                          child:  Text(
+                          child: Text(
                             AppLanguageKeys().strFertilizer.tr,
-                            style:  TextStyle(
+                            style: TextStyle(
                               fontWeight: FontWeight.w500,
                               color: AppColors().appWhiteColor,
                               fontSize: 16,
@@ -476,7 +490,8 @@ class HomeScreen extends GetView<HomeController> {
                 bottomLeft: Radius.circular(10),
                 bottomRight: Radius.circular(10),
                 topLeft: Radius.circular(10),
-                topRight: Radius.circular(10),),
+                topRight: Radius.circular(10),
+              ),
               child: Image.asset(AppAssetsImages.banner2),
             ),
             const SizedBox(
@@ -486,20 +501,22 @@ class HomeScreen extends GetView<HomeController> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  AppLanguageKeys().strCattle_Feed.tr,
-                  style:  TextStyle(
+                  AppLanguageKeys().strCattleFeed.tr,
+                  style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
-                    color: AppColors().appBlackColor,),
+                    color: AppColors().appBlackColor,
+                  ),
                 ),
                 Row(
                   children: <Widget>[
                     Text(
-                      AppLanguageKeys().strView_All.tr,
-                      style:  TextStyle(
+                      AppLanguageKeys().strViewAll.tr,
+                      style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
-                        color: AppColors().appPrimaryColor,),
+                        color: AppColors().appPrimaryColor,
+                      ),
                     ),
                     const SizedBox(
                       width: 2,
@@ -545,19 +562,21 @@ class HomeScreen extends GetView<HomeController> {
               children: <Widget>[
                 Text(
                   AppLanguageKeys().strFertilizer.tr,
-                  style:  TextStyle(
+                  style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
-                    color: AppColors().appBlackColor,),
+                    color: AppColors().appBlackColor,
+                  ),
                 ),
                 Row(
                   children: <Widget>[
                     Text(
-                      AppLanguageKeys().strView_All.tr,
-                      style:  TextStyle(
+                      AppLanguageKeys().strViewAll.tr,
+                      style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
-                        color: AppColors().appPrimaryColor,),
+                        color: AppColors().appPrimaryColor,
+                      ),
                     ),
                     const SizedBox(
                       width: 2,

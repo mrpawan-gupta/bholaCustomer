@@ -22,13 +22,13 @@ class ProvidedStylesExample extends GetxService {
         Container(),
         const BookSlotScreen(),
         const SelectedSlotScreen(),
-    const ProductLivePendingOrder(),
+        const ProductLivePendingOrder(),
       ];
 
   List<PersistentBottomNavBarItem> _navBarsItems() =>
       <PersistentBottomNavBarItem>[
         PersistentBottomNavBarItem(
-          icon: Image.asset(AppAssetsImages.Home),
+          icon: Image.asset(AppAssetsImages.home),
           title: "Home",
           activeColorPrimary: AppColors().appWhiteColor,
           inactiveColorPrimary: AppColors().appGreyColor,
@@ -118,8 +118,10 @@ class ProvidedStylesExample extends GetxService {
 
 class CustomNavBarWidget extends StatelessWidget {
   const CustomNavBarWidget(
-    this.items, {required this.selectedIndex,
-        required this.onItemSelected, super.key,
+    this.items, {
+    required this.selectedIndex,
+    required this.onItemSelected,
+    super.key,
   });
 
   final int selectedIndex;
@@ -127,7 +129,9 @@ class CustomNavBarWidget extends StatelessWidget {
   final ValueChanged<int> onItemSelected;
 
   Widget _buildItem(
-          final PersistentBottomNavBarItem item, final bool isSelected,) =>
+    final PersistentBottomNavBarItem item,
+    final bool isSelected,
+  ) =>
       Container(
         alignment: Alignment.center,
         height: kBottomNavigationBarHeight,
@@ -138,11 +142,11 @@ class CustomNavBarWidget extends StatelessWidget {
             Flexible(
               child: IconTheme(
                 data: IconThemeData(
-                    size: 26,
-                    color: isSelected
-                        ? (item.activeColorSecondary ?? item.activeColorPrimary)
-                        : item.inactiveColorPrimary ??
-                        item.activeColorPrimary,),
+                  size: 26,
+                  color: isSelected
+                      ? (item.activeColorSecondary ?? item.activeColorPrimary)
+                      : item.inactiveColorPrimary ?? item.activeColorPrimary,
+                ),
                 child: isSelected ? item.icon : item.inactiveIcon ?? item.icon,
               ),
             ),
@@ -151,16 +155,18 @@ class CustomNavBarWidget extends StatelessWidget {
               child: Material(
                 type: MaterialType.transparency,
                 child: FittedBox(
-                    child: Text(
-                  "Item",
-                  style: TextStyle(
+                  child: Text(
+                    "Item",
+                    style: TextStyle(
                       color: isSelected
                           ? (item.activeColorSecondary ??
                               item.activeColorPrimary)
                           : item.inactiveColorPrimary,
                       fontWeight: FontWeight.w400,
-                      fontSize: 12,),
-                ),),
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
               ),
             ),
           ],

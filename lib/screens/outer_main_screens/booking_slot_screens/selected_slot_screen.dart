@@ -1,5 +1,5 @@
 import "package:customer/controllers/outer_main_controllers/booking_slot_controllers/selected_slot_controllers.dart";
-import "package:customer/screens/widgets/textWidgets.dart";
+import "package:customer/screens/widgets/text_widgets.dart";
 import "package:customer/utils/app_assets_images.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/localization/app_language_keys.dart";
@@ -7,11 +7,8 @@ import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 
-
-
 class SelectedSlotScreen extends GetView<SelectedSlotController> {
   const SelectedSlotScreen({super.key});
-
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +35,7 @@ class SelectedSlotScreen extends GetView<SelectedSlotController> {
             Align(
               alignment: Alignment.topLeft,
               child: TextWidget(
-                text: AppLanguageKeys().strSelect_Slot.tr,
+                text: AppLanguageKeys().strSelectSlot.tr,
                 color: AppColors().appBlackColor,
                 size: 20,
                 fontWeight: FontWeight.bold,
@@ -50,11 +47,14 @@ class SelectedSlotScreen extends GetView<SelectedSlotController> {
             ),
             Container(
               decoration: BoxDecoration(
-                border: Border.all(color: AppColors().appGreyColor,),
+                border: Border.all(
+                  color: AppColors().appGreyColor,
+                ),
                 borderRadius: BorderRadius.circular(10),
                 color: controller.selectedOption.value == 1
                     ? Colors.green.shade100
-                    : AppColors().appGreyColor,),
+                    : AppColors().appGreyColor,
+              ),
               height: 80,
               width: MediaQuery.sizeOf(context).width,
               child: Padding(
@@ -72,8 +72,8 @@ class SelectedSlotScreen extends GetView<SelectedSlotController> {
                           width: 50,
                           color: controller.selectedOption.value == 1
                               ? Colors.green.shade900
-                              : Colors.grey.shade900
-                          ,),
+                              : Colors.grey.shade900,
+                        ),
                         const SizedBox(
                           width: 12,
                         ),
@@ -117,7 +117,7 @@ class SelectedSlotScreen extends GetView<SelectedSlotController> {
                       groupValue: controller.selectedOption.value,
                       activeColor: AppColors().appPrimaryColor,
                       onChanged: (int? value) {
-                        if(value != null) {
+                        if (value != null) {
                           controller.setSelectedOption(value);
                         }
                       },
@@ -131,11 +131,14 @@ class SelectedSlotScreen extends GetView<SelectedSlotController> {
             ),
             Container(
               decoration: BoxDecoration(
-                border: Border.all(color: AppColors().appGreyColor,),
+                border: Border.all(
+                  color: AppColors().appGreyColor,
+                ),
                 borderRadius: BorderRadius.circular(10),
                 color: controller.selectedOption.value == 2
                     ? Colors.green.shade100
-                    : AppColors().appGreyColor,),
+                    : AppColors().appGreyColor,
+              ),
               height: 80,
               width: MediaQuery.sizeOf(context).width,
               child: Padding(
@@ -198,7 +201,7 @@ class SelectedSlotScreen extends GetView<SelectedSlotController> {
                       groupValue: controller.selectedOption.value,
                       activeColor: AppColors().appPrimaryColor,
                       onChanged: (int? value) {
-                        if(value != null) {
+                        if (value != null) {
                           controller.setSelectedOption(value);
                         }
                       },
@@ -212,11 +215,14 @@ class SelectedSlotScreen extends GetView<SelectedSlotController> {
             ),
             Container(
               decoration: BoxDecoration(
-                border: Border.all(color: AppColors().appGreyColor,),
+                border: Border.all(
+                  color: AppColors().appGreyColor,
+                ),
                 borderRadius: BorderRadius.circular(10),
                 color: controller.selectedOption.value == 3
                     ? Colors.green.shade100
-                    :AppColors().appGreyColor,),
+                    : AppColors().appGreyColor,
+              ),
               height: 80,
               width: MediaQuery.sizeOf(context).width,
               child: Padding(
@@ -279,7 +285,7 @@ class SelectedSlotScreen extends GetView<SelectedSlotController> {
                       groupValue: controller.selectedOption.value,
                       activeColor: AppColors().appPrimaryColor,
                       onChanged: (int? value) {
-                        if(value != null) {
+                        if (value != null) {
                           controller.setSelectedOption(value);
                         }
                       },
@@ -293,11 +299,14 @@ class SelectedSlotScreen extends GetView<SelectedSlotController> {
             ),
             Container(
               decoration: BoxDecoration(
-                border: Border.all(color: AppColors().appGreyColor,),
+                border: Border.all(
+                  color: AppColors().appGreyColor,
+                ),
                 borderRadius: BorderRadius.circular(10),
                 color: controller.selectedOption.value == 4
                     ? Colors.green.shade100
-                    : AppColors().appGreyColor,),
+                    : AppColors().appGreyColor,
+              ),
               height: 80,
               width: MediaQuery.sizeOf(context).width,
               child: Padding(
@@ -360,7 +369,7 @@ class SelectedSlotScreen extends GetView<SelectedSlotController> {
                       groupValue: controller.selectedOption.value,
                       activeColor: AppColors().appPrimaryColor,
                       onChanged: (int? value) {
-                        if(value != null) {
+                        if (value != null) {
                           controller.setSelectedOption(value);
                         }
                       },
@@ -374,24 +383,32 @@ class SelectedSlotScreen extends GetView<SelectedSlotController> {
               width: MediaQuery.sizeOf(context).width / 2,
               child: ElevatedButton(
                 style: ButtonStyle(
-                  foregroundColor:
-                  MaterialStateProperty.all<Color>(
-                    AppColors().appWhiteColor,),
-                  backgroundColor:
-                  MaterialStateProperty.all<Color>(
-                    AppColors().appPrimaryColor,),
+                  foregroundColor: MaterialStateProperty.all<Color>(
+                    AppColors().appWhiteColor,
+                  ),
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                    AppColors().appPrimaryColor,
+                  ),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
-                      side:  BorderSide(
-                        color: AppColors().appPrimaryColor,),),),),
+                      side: BorderSide(
+                        color: AppColors().appPrimaryColor,
+                      ),
+                    ),
+                  ),
+                ),
                 onPressed: () {},
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text(AppLanguageKeys().strBook_Service.tr.toUpperCase(),
+                    Text(
+                      AppLanguageKeys().strBookService.tr.toUpperCase(),
                       style: const TextStyle(
-                        fontSize: 15, fontWeight: FontWeight.bold,),),
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     const SizedBox(
                       width: 15,
                     ),
@@ -400,7 +417,8 @@ class SelectedSlotScreen extends GetView<SelectedSlotController> {
                       size: 22,
                     ),
                   ],
-                ),),
+                ),
+              ),
             ),
           ],
         ),

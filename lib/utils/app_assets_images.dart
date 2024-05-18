@@ -23,7 +23,7 @@ class AppAssetsImages {
   static const String back = "assets/image/back.png";
   static const String product = "assets/image/product.png";
   static const String blackright = "assets/image/blackright.png";
-  static const String Home = "assets/image/Home.png";
+  static const String home = "assets/image/Home.png";
   static const String primary = "assets/image/primary.png";
   static const String tractor_1 = "assets/image/tractor_1.png";
   static const String whatsapp = "assets/image/whatsapp.png";
@@ -36,5 +36,5 @@ class AppAssetsImages {
   static const String onboard1 = "assets/image/onboard1.png";
   static const String onboard2 = "assets/image/onboard2.png";
   static const String onboard3 = "assets/image/onboard3.png";
-   final String flag = "assets/image/flag.jpg";
+  final String flag = "assets/image/flag.jpg";
 }

@@ -8,8 +8,7 @@ import "package:geocoding/geocoding.dart";
 import "package:get/get.dart";
 
 class BookSlotController extends GetxController {
-
-  final RxInt rxPinCode =  0.obs;
+  final RxInt rxPinCode = 0.obs;
   final RxString rxStreet = "".obs;
   final RxString rxCity = "".obs;
   final RxString rxCountry = "".obs;
@@ -23,34 +22,31 @@ class BookSlotController extends GetxController {
   RxInt value = RxInt(-1);
   RxDouble sliderSel = 10.0.obs;
 
+  RxList<AddressModelData> addressList = <AddressModelData>[].obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+
+    unawaited(getAllAddressesAPICall());
+  }
+
   void updateSelectedDate(DateTime date) {
     selectedDate(date);
   }
-
 
   void updateDropDownValue(String val) {
     dropDownValue(val);
   }
 
-
-  void updateValue(val) {
-    if (val is bool && !val) {
-      value(-1);
-    } else {
-      value(val ?? -1);
-    }
-  }
-
-
   void updateSliderValue(double value) {
     sliderSel(value);
   }
 
-  void updateAddressData( value) {
+  void updateAddressData(AddressModelData value) {
     addressData(value);
     return;
   }
-
 
   Future<void> addAddressAPICall({
     required Function(Map<String, dynamic> json) successCallback,
@@ -70,19 +66,11 @@ class BookSlotController extends GetxController {
         "latitude": lat.toString().trim(),
         "longitude": long.toString().trim(),
       },
-      successCallback: (Map<String, dynamic> json) async {
-        AddressModel addAddressModel = AddressModel();
-        addAddressModel = AddressModel.fromJson(json);
-
-        updateAddressData(addAddressModel.data ?? AddressModelData());
-
-        successCallback(json);
-      },
+      successCallback: (Map<String, dynamic> json) async {},
       failureCallback: failureCallback,
     );
     return Future<void>.value();
   }
-
 
   Future<List<BookingQuoteModelData>> createBookingAPICall({
     required String scheduleDate,
@@ -95,7 +83,7 @@ class BookSlotController extends GetxController {
     required Function(Map<String, dynamic> json) failureCallback,
   }) async {
     final Completer<List<BookingQuoteModelData>> completer =
-    Completer<List<BookingQuoteModelData>>();
+        Completer<List<BookingQuoteModelData>>();
     await AppAPIService().functionPost(
       types: Types.rental,
       endPoint: "booking",
@@ -108,10 +96,10 @@ class BookSlotController extends GetxController {
         "services": services,
       },
       successCallback: (Map<String, dynamic> json) async {
-         BookingQuoteModel bookModel = BookingQuoteModel();
+        BookingQuoteModel bookModel = BookingQuoteModel();
         bookModel = BookingQuoteModel.fromJson(json);
 
-         completer.complete(bookModel.data ?? <BookingQuoteModelData>[]);
+        completer.complete(bookModel.data ?? <BookingQuoteModelData>[]);
 
         successCallback(json);
       },
@@ -124,4 +112,41 @@ class BookSlotController extends GetxController {
     return completer.future;
   }
 
+  Future<void> getAllAddressesAPICall() async {
+    await AppAPIService().functionGet(
+      types: Types.oauth,
+      endPoint: "address",
+      successCallback: (Map<String, dynamic> json) {
+        AppSnackbar().snackbarSuccess(title: "", message: json["message"]);
+
+        AddressModel model = AddressModel();
+        model = AddressModel.fromJson(json);
+
+        addressList.addAll(model.data ?? <AddressModelData>[]);
+      },
+      failureCallback: (Map<String, dynamic> json) {
+        AppSnackbar().snackbarFailure(title: "", message: json["message"]);
+      },
+    );
+    return Future<void>.value();
+  }
+
+  Future<List<String>> fetchSuggestions(String searchValue) async {
+    final List<String> listSuggestions = <String>[];
+
+    for (final AddressModelData element in addressList) {
+      final bool condition1 = (element.city ?? "")
+          .toLowerCase()
+          .contains(searchValue.toLowerCase());
+      final bool condition2 = (element.street ?? "")
+          .toLowerCase()
+          .contains(searchValue.toLowerCase());
+
+      if (condition1 || condition2) {
+        listSuggestions.add("${element.street ?? ""} ${element.city ?? ""} ");
+      }
+    }
+
+    return Future<List<String>>.value(listSuggestions);
+  }
 }

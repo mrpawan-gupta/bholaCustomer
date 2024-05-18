@@ -63,6 +63,7 @@ class AppAPIService extends GetConnect {
                 },
               )
             : <String, dynamic>{};
+
     return parsedQuery;
   }
 
@@ -72,7 +73,9 @@ class AppAPIService extends GetConnect {
     required Function(Map<String, dynamic> json) successCallback,
     required Function(Map<String, dynamic> json) failureCallback,
     Map<String, dynamic> query = const <String, dynamic>{},
-    Map<String, dynamic> body = const <String, dynamic>{},
+
+    // ignore: avoid_annotating_with_dynamic
+    dynamic body,
     String version = "v1",
     bool needLoader = true,
     bool isForFileUpload = false,
@@ -140,7 +143,9 @@ class AppAPIService extends GetConnect {
     required Function(Map<String, dynamic> json) successCallback,
     required Function(Map<String, dynamic> json) failureCallback,
     Map<String, dynamic> query = const <String, dynamic>{},
-    Map<String, dynamic> body = const <String, dynamic>{},
+
+    // ignore: avoid_annotating_with_dynamic
+    dynamic body,
     String version = "v1",
     bool needLoader = true,
     bool isForFileUpload = false,
@@ -209,7 +214,9 @@ class AppAPIService extends GetConnect {
     required Function(Map<String, dynamic> json) successCallback,
     required Function(Map<String, dynamic> json) failureCallback,
     Map<String, dynamic> query = const <String, dynamic>{},
-    Map<String, dynamic> body = const <String, dynamic>{},
+
+    // ignore: avoid_annotating_with_dynamic
+    dynamic body,
     String version = "v1",
     bool needLoader = true,
     bool isForFileUpload = false,
@@ -278,7 +285,9 @@ class AppAPIService extends GetConnect {
     required Function(Map<String, dynamic> json) successCallback,
     required Function(Map<String, dynamic> json) failureCallback,
     Map<String, dynamic> query = const <String, dynamic>{},
-    Map<String, dynamic> body = const <String, dynamic>{},
+
+    // ignore: avoid_annotating_with_dynamic
+    dynamic body,
     String version = "v1",
     bool needLoader = true,
     bool isForFileUpload = false,
@@ -347,7 +356,9 @@ class AppAPIService extends GetConnect {
     required Function(Map<String, dynamic> json) successCallback,
     required Function(Map<String, dynamic> json) failureCallback,
     Map<String, dynamic> query = const <String, dynamic>{},
-    Map<String, dynamic> body = const <String, dynamic>{},
+
+    // ignore: avoid_annotating_with_dynamic
+    dynamic body,
     String version = "v1",
     bool needLoader = true,
     bool isForFileUpload = false,
@@ -436,19 +447,23 @@ class AppAPIService extends GetConnect {
     required String fullURL,
     required Map<String, dynamic> headers,
     required Map<String, dynamic> query,
-    required Map<String, dynamic> body,
+
+    // ignore: avoid_annotating_with_dynamic
+    required dynamic body,
     required FormData formData,
   }) {
     final String pretyHeaders = AppPrettyPrintJSON().prettyPrint(headers);
-    final String pretyQuery = AppPrettyPrintJSON().prettyPrint(query);
-    final String pretBody = AppPrettyPrintJSON().prettyPrint(body);
+    AppPrettyPrintJSON().prettyPrint(query);
+    // final String pretBody = body is Map<String, dynamic>
+    //     ? AppPrettyPrintJSON().prettyPrint(body)
+    //     : body ?? "";
 
     log("endPoint: $endPoint");
     log("fullURL: $fullURL");
     log("headers: $pretyHeaders");
-    log("query: $pretyQuery");
-    log("body: $pretBody");
-    log("formData: ${formData.fields}");
+    // log("query: $pretyQuery");
+    // log("body: $pretBody");
+    // log("formData: ${formData.fields}");
     return;
   }
 
