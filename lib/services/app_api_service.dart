@@ -12,12 +12,12 @@ import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 
-/* 
+/*
   Sample:
 
   await AppAPIService().functionGet(
     endPoint: "users/1",
-    query: <String, dynamic>{}, 
+    query: <String, dynamic>{},
     body: <String, dynamic>{},
     successCallback: (Map<String, dynamic> json) {},
     failureCallback: (Map<String, dynamic> json) {},
@@ -55,15 +55,14 @@ class AppAPIService extends GetConnect {
 
   Map<String, dynamic> getValidQuery(Map<String, dynamic> query) {
     final Map<String, dynamic> parsedQuery =
-        !mapEquals(query, <String, dynamic>{})
-            ? query.map(
-                // ignore: avoid_annotating_with_dynamic
-                (String key, dynamic value) {
-                  return MapEntry<String, dynamic>(key, value.toString());
-                },
-              )
-            : <String, dynamic>{};
-
+    !mapEquals(query, <String, dynamic>{})
+        ? query.map(
+      // ignore: avoid_annotating_with_dynamic
+          (String key, dynamic value) {
+        return MapEntry<String, dynamic>(key, value.toString());
+      },
+    )
+        : <String, dynamic>{};
     return parsedQuery;
   }
 
@@ -73,9 +72,7 @@ class AppAPIService extends GetConnect {
     required Function(Map<String, dynamic> json) successCallback,
     required Function(Map<String, dynamic> json) failureCallback,
     Map<String, dynamic> query = const <String, dynamic>{},
-
-    // ignore: avoid_annotating_with_dynamic
-    dynamic body,
+    Map<String, dynamic> body = const <String, dynamic>{},
     String version = "v1",
     bool needLoader = true,
     bool isForFileUpload = false,
@@ -143,9 +140,7 @@ class AppAPIService extends GetConnect {
     required Function(Map<String, dynamic> json) successCallback,
     required Function(Map<String, dynamic> json) failureCallback,
     Map<String, dynamic> query = const <String, dynamic>{},
-
-    // ignore: avoid_annotating_with_dynamic
-    dynamic body,
+    Map<String, dynamic> body = const <String, dynamic>{},
     String version = "v1",
     bool needLoader = true,
     bool isForFileUpload = false,
@@ -214,9 +209,7 @@ class AppAPIService extends GetConnect {
     required Function(Map<String, dynamic> json) successCallback,
     required Function(Map<String, dynamic> json) failureCallback,
     Map<String, dynamic> query = const <String, dynamic>{},
-
-    // ignore: avoid_annotating_with_dynamic
-    dynamic body,
+    Map<String, dynamic> body = const <String, dynamic>{},
     String version = "v1",
     bool needLoader = true,
     bool isForFileUpload = false,
@@ -285,9 +278,7 @@ class AppAPIService extends GetConnect {
     required Function(Map<String, dynamic> json) successCallback,
     required Function(Map<String, dynamic> json) failureCallback,
     Map<String, dynamic> query = const <String, dynamic>{},
-
-    // ignore: avoid_annotating_with_dynamic
-    dynamic body,
+    Map<String, dynamic> body = const <String, dynamic>{},
     String version = "v1",
     bool needLoader = true,
     bool isForFileUpload = false,
@@ -356,9 +347,7 @@ class AppAPIService extends GetConnect {
     required Function(Map<String, dynamic> json) successCallback,
     required Function(Map<String, dynamic> json) failureCallback,
     Map<String, dynamic> query = const <String, dynamic>{},
-
-    // ignore: avoid_annotating_with_dynamic
-    dynamic body,
+    Map<String, dynamic> body = const <String, dynamic>{},
     String version = "v1",
     bool needLoader = true,
     bool isForFileUpload = false,
@@ -447,23 +436,19 @@ class AppAPIService extends GetConnect {
     required String fullURL,
     required Map<String, dynamic> headers,
     required Map<String, dynamic> query,
-
-    // ignore: avoid_annotating_with_dynamic
-    required dynamic body,
+    required Map<String, dynamic> body,
     required FormData formData,
   }) {
     final String pretyHeaders = AppPrettyPrintJSON().prettyPrint(headers);
-    AppPrettyPrintJSON().prettyPrint(query);
-    // final String pretBody = body is Map<String, dynamic>
-    //     ? AppPrettyPrintJSON().prettyPrint(body)
-    //     : body ?? "";
+    final String pretyQuery = AppPrettyPrintJSON().prettyPrint(query);
+    final String pretBody = AppPrettyPrintJSON().prettyPrint(body);
 
     log("endPoint: $endPoint");
     log("fullURL: $fullURL");
     log("headers: $pretyHeaders");
-    // log("query: $pretyQuery");
-    // log("body: $pretBody");
-    // log("formData: ${formData.fields}");
+    log("query: $pretyQuery");
+    log("body: $pretBody");
+    log("formData: ${formData.fields}");
     return;
   }
 

@@ -217,5 +217,8 @@ class EnLanguage {
     AppLanguageKeys().strRecentlyAddedProduct: "Recently Added Product",
     AppLanguageKeys().strStartTime: "Start Time",
     AppLanguageKeys().strEndTime: "End Time",
+    AppLanguageKeys().strHello: "Hello",
+    AppLanguageKeys().strFeaturedServices: "Services",
+    AppLanguageKeys().strClickHereToAddNewProduct: "Click here to add new product",
   };
 }

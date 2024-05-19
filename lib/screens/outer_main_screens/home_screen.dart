@@ -1,622 +1,288 @@
+import "package:customer/common_widgets/common_home_title_bar.dart";
+import "package:customer/common_widgets/common_horizontal_list_view.dart";
+import "package:customer/common_widgets/common_horizontal_list_view_banner.dart";
+import "package:customer/common_widgets/product_list_view.dart";
 import "package:customer/controllers/outer_main_controllers/home_controller.dart";
-import "package:customer/screens/product_card/product_card.dart";
-import "package:customer/services/app_nav_service.dart";
-import "package:customer/utils/app_assets_images.dart";
+import "package:customer/models/banner_model.dart";
+import "package:customer/models/featured_model.dart";
+import "package:customer/models/product_model.dart";
 import "package:customer/utils/app_colors.dart";
-import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/localization/app_language_keys.dart";
-import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
+import "package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart";
 
 class HomeScreen extends GetView<HomeController> {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 5, 16, 30),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            // SearchTab(
-            //   mapController: ,
-            //   text: AppLanguageKeys().strSearch.tr,
-            // ),
-            const SizedBox(
-              height: 10,
-            ),
-            Text(
-              "Service",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-                color: AppColors().appBlackColor,
-              ),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(
-                  width: 110,
-                  height: 110,
-                  color: AppColors().appTransparentColor,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: InkWell(
-                      onTap: () async {
-                        await AppNavService().pushNamed(
-                          destination: AppRoutes().bookingSlot,
-                          arguments: <String, dynamic>{},
-                        );
-                      },
-                      child: GridTile(
-                        footer: Container(
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.all(8),
-                          //color: Colors.blue.withOpacity(.5),
-                          child: Text(
-                            AppLanguageKeys().strTractor.tr,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              color: AppColors().appWhiteColor,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                        child: Image.asset(
-                          AppAssetsImages.tractor,
-                          color: Colors.green.withOpacity(0.8),
-                          colorBlendMode: BlendMode.modulate,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Expanded(
+          child: LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              return LiquidPullToRefresh(
+                showChildOpacityTransition: false,
+                color: AppColors().appPrimaryColor,
+                backgroundColor: AppColors().appWhiteColor,
+                onRefresh: () async {
+                  controller
+                    ..pagingControllerServices.refresh()
+                    ..pagingControllerCategories.refresh()
+                    ..pagingControllerBanners.refresh()
+                    ..pagingControllerRecently.refresh()
+                    ..pagingControllerBooking.refresh();
+                },
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: constraints.maxHeight,
                     ),
-                  ),
-                ),
-                Container(
-                  width: 110,
-                  height: 110,
-                  color: AppColors().appTransparentColor,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: InkWell(
-                      onTap: () {},
-                      child: GridTile(
-                        footer: Container(
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.all(8),
-                          child: Text(
-                            AppLanguageKeys().strDrone.tr,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              color: AppColors().appWhiteColor,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                        child: Image.asset(
-                          AppAssetsImages.drone,
-                          color: Colors.green.withOpacity(0.9),
-                          colorBlendMode: BlendMode.modulate,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  width: 110,
-                  height: 110,
-                  color: AppColors().appTransparentColor,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: InkWell(
-                      onTap: () {},
-                      child: GridTile(
-                        footer: Container(
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.all(8),
-                          child: Text(
-                            AppLanguageKeys().strJCB.tr,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              color: AppColors().appWhiteColor,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                        child: Image.asset(
-                          AppAssetsImages.jcb,
-                          color: Colors.green.withOpacity(0.8),
-                          colorBlendMode: BlendMode.modulate,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: 80,
-              child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20),
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                ),
-                child: ColoredBox(
-                  color: Colors.green.withOpacity(0.8),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Row(
-                              children: <Widget>[
-                                Icon(
-                                  CupertinoIcons.location_solid,
-                                  color: AppColors().appWhiteColor,
-                                  size: 15,
-                                ),
-                                Text(
-                                  AppLanguageKeys().strNashikIndia.tr,
-                                  style: TextStyle(
-                                    color: AppColors().appWhiteColor,
-                                    fontSize: 11,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
-                              child: Text(
-                                AppLanguageKeys().strFriday.tr,
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  color: AppColors().appWhiteColor,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
-                              child: Row(
-                                children: <Widget>[
-                                  Text(
-                                    AppLanguageKeys().strDegree.tr,
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      color: AppColors().appWhiteColor,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Image.asset(
-                                    AppAssetsImages.rainy_2d,
-                                    height: 20,
-                                    width: 20,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          width: 15,
-                        ),
-                        Column(
-                          children: <Widget>[
-                            Text(
-                              AppLanguageKeys().strSAT.tr,
-                              style: TextStyle(
-                                color: AppColors().appWhiteColor,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            Text(
-                              AppLanguageKeys().strDegree1.tr,
-                              style: TextStyle(
-                                color: AppColors().appWhiteColor,
-                              ),
-                            ),
-                            Image.asset(
-                              AppAssetsImages.sunny_2d,
-                              height: 21,
-                              width: 21,
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Column(
-                          children: <Widget>[
-                            Text(
-                              AppLanguageKeys().strSUN.tr,
-                              style: TextStyle(
-                                color: AppColors().appWhiteColor,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            Text(
-                              AppLanguageKeys().strDegree2.tr,
-                              style: TextStyle(
-                                color: AppColors().appWhiteColor,
-                              ),
-                            ),
-                            Image.asset(
-                              AppAssetsImages.thunder_2d,
-                              height: 21,
-                              width: 21,
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Column(
-                          children: <Widget>[
-                            Text(
-                              AppLanguageKeys().strMON.tr,
-                              style: TextStyle(
-                                color: AppColors().appWhiteColor,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            Text(
-                              AppLanguageKeys().strDegree3.tr,
-                              style: TextStyle(
-                                color: AppColors().appWhiteColor,
-                              ),
-                            ),
-                            Image.asset(
-                              AppAssetsImages.sunny_2d,
-                              height: 21,
-                              width: 21,
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Column(
-                          children: <Widget>[
-                            Text(
-                              AppLanguageKeys().strTUE.tr,
-                              style: TextStyle(
-                                color: AppColors().appWhiteColor,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            Text(
-                              AppLanguageKeys().strDegree3.tr,
-                              style: TextStyle(
-                                color: AppColors().appWhiteColor,
-                              ),
-                            ),
-                            Image.asset(
-                              AppAssetsImages.rainy_2d,
-                              height: 21,
-                              width: 21,
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Column(
-                          children: <Widget>[
-                            Text(
-                              AppLanguageKeys().strWED.tr,
-                              style: TextStyle(
-                                color: AppColors().appWhiteColor,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            Text(
-                              AppLanguageKeys().strDegree3.tr,
-                              style: TextStyle(
-                                color: AppColors().appWhiteColor,
-                              ),
-                            ),
-                            Image.asset(
-                              AppAssetsImages.sunny_2d,
-                              height: 21,
-                              width: 21,
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Column(
-                          children: <Widget>[
-                            Text(
-                              AppLanguageKeys().strTHU.tr,
-                              style: TextStyle(
-                                color: AppColors().appWhiteColor,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            Text(
-                              AppLanguageKeys().strDegree5.tr,
-                              style: TextStyle(
-                                color: AppColors().appWhiteColor,
-                              ),
-                            ),
-                            Image.asset(
-                              AppAssetsImages.thunder_2d,
-                              height: 21,
-                              width: 21,
-                            ),
-                          ],
-                        ),
+                        helloWidget(),
+                        const SizedBox(height: 16),
+                        featuredServicesWidget(),
+                        const SizedBox(height: 16),
+                        weatherForecastWidget(),
+                        const SizedBox(height: 32),
+                        featuredCategoriesidget(),
+                        const SizedBox(height: 32),
+                        banners(),
+                        const SizedBox(height: 32),
+                        cattleFeedWidget(),
+                        const SizedBox(height: 32),
+                        fertilizerWidget(),
                       ],
                     ),
                   ),
                 ),
-              ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget helloWidget() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Text(
+            "${AppLanguageKeys().strHello.tr}, ${controller.firstName()}",
+            style: const TextStyle(
+              fontSize: 16 + 4,
+              fontWeight: FontWeight.w700,
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            Text(
-              AppLanguageKeys().strProduct.tr,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-                color: AppColors().appBlackColor,
-              ),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(
-                  width: 110,
-                  height: 110,
-                  color: AppColors().appTransparentColor,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: InkWell(
-                      onTap: () {},
-                      child: GridTile(
-                        footer: Container(
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.fromLTRB(8, 10, 8, 5),
-                          child: Text(
-                            AppLanguageKeys().strCattleFeed.tr,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              color: AppColors().appWhiteColor,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                        child: Image.asset(
-                          AppAssetsImages.cattle,
-                          color: Colors.green.withOpacity(0.5),
-                          colorBlendMode: BlendMode.modulate,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  width: 110,
-                  height: 110,
-                  color: AppColors().appTransparentColor,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: InkWell(
-                      onTap: () {},
-                      child: GridTile(
-                        footer: Container(
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.fromLTRB(8, 10, 8, 5),
-                          //color: Colors.blue.withOpacity(.5),
-                          child: Text(
-                            AppLanguageKeys().strNursery.tr,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              color: AppColors().appWhiteColor,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                        child: Image.asset(
-                          AppAssetsImages.cattle,
-                          color: Colors.green.withOpacity(0.5),
-                          colorBlendMode: BlendMode.modulate,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  width: 110,
-                  height: 110,
-                  color: AppColors().appTransparentColor,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: InkWell(
-                      onTap: () {},
-                      child: GridTile(
-                        footer: Container(
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.fromLTRB(8, 10, 8, 5),
-                          child: Text(
-                            AppLanguageKeys().strFertilizer.tr,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              color: AppColors().appWhiteColor,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                        child: Image.asset(
-                          AppAssetsImages.cattle,
-                          color: Colors.green.withOpacity(0.5),
-                          colorBlendMode: BlendMode.modulate,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            ClipRRect(
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(10),
-                bottomRight: Radius.circular(10),
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10),
-              ),
-              child: Image.asset(AppAssetsImages.banner2),
-            ),
-            const SizedBox(
-              height: 14,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget featuredServicesWidget() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: CommonHomeTitleBar(
+            title: AppLanguageKeys().strFeaturedServices.tr,
+            onTapViewAll: () {},
+          ),
+        ),
+        Divider(
+          color: AppColors().appGrey_,
+          indent: 16,
+          endIndent: 16,
+        ),
+        const SizedBox(height: 8),
+        CommonHorizontalListView(
+          pagingController: controller.pagingControllerServices,
+          onTap: (Categories item) async {
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget weatherForecastWidget() {
+    // Dummy data for the weather forecast
+    final List<Map<String, String>> weatherData = [
+      {'day': 'SAT', 'icon': '☀️', 'temp': '29°C'},
+      {'day': 'SUN', 'icon': '🌧️', 'temp': '29°C'},
+      {'day': 'MON', 'icon': '🌦️', 'temp': '29°C'},
+      {'day': 'TUE', 'icon': '⛅', 'temp': '29°C'},
+      {'day': 'WED', 'icon': '🌧️', 'temp': '29°C'},
+      {'day': 'THU', 'icon': '⛅', 'temp': '29°C'},
+      {'day': 'FRI', 'icon': '☀️', 'temp': '29°C'},
+    ];
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.green.shade700,
+          borderRadius: BorderRadius.circular(16.0),
+        ),
+        padding: const EdgeInsets.all(12.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: weatherData.map((weather) {
+            return Column(
               children: <Widget>[
                 Text(
-                  AppLanguageKeys().strCattleFeed.tr,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors().appBlackColor,
+                  weather['day']!,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                Row(
-                  children: <Widget>[
-                    Text(
-                      AppLanguageKeys().strViewAll.tr,
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors().appPrimaryColor,
+                const SizedBox(height: 4),
+                CircleAvatar(
+                  radius: 20,
+                  backgroundColor: Colors.green.shade700,
+                  child: CircleAvatar(
+                    radius: 18,
+                    backgroundColor: Colors.white,
+                    child: Text(
+                      weather['icon']!,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        color: Colors.green,
                       ),
                     ),
-                    const SizedBox(
-                      width: 2,
-                    ),
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      color: AppColors().appPrimaryColor,
-                      size: 12,
-                    ),
-                  ],
+                  ),
                 ),
-              ],
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            Row(
-              children: <Widget>[
-                ProductCard(
-                  height: 150,
-                  width: 150,
-                  price: "500",
-                  productName: AppLanguageKeys().strBajra.tr,
-                  productImage: AppAssetsImages.wheat,
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                ProductCard(
-                  height: 150,
-                  width: 150,
-                  price: "500",
-                  productName: AppLanguageKeys().strBajra.tr,
-                  productImage: AppAssetsImages.tractor,
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 14,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
+                const SizedBox(height: 4),
                 Text(
-                  AppLanguageKeys().strFertilizer.tr,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors().appBlackColor,
+                  weather['temp']!,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                Row(
-                  children: <Widget>[
-                    Text(
-                      AppLanguageKeys().strViewAll.tr,
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors().appPrimaryColor,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 2,
-                    ),
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      color: AppColors().appPrimaryColor,
-                      size: 12,
-                    ),
-                  ],
-                ),
               ],
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            Row(
-              children: <Widget>[
-                ProductCard(
-                  height: 150,
-                  width: 150,
-                  price: "500",
-                  productName: AppLanguageKeys().strBajra.tr,
-                  productImage: AppAssetsImages.wheat,
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                ProductCard(
-                  height: 150,
-                  width: 150,
-                  price: "500",
-                  productName: AppLanguageKeys().strBajra.tr,
-                  productImage: AppAssetsImages.tractor,
-                ),
-              ],
-            ),
-          ],
+            );
+          }).toList(),
         ),
       ),
+    );
+  }
+
+
+
+  Widget featuredCategoriesidget() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: CommonHomeTitleBar(
+            title: AppLanguageKeys().strProduct.tr,
+            onTapViewAll: () {},
+          ),
+        ),
+        Divider(
+          color: AppColors().appGrey_,
+          indent: 16,
+          endIndent: 16,
+        ),
+        const SizedBox(height: 8),
+        CommonHorizontalListView(
+          pagingController: controller.pagingControllerCategories,
+          onTap: (Categories item) async {
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget cattleFeedWidget() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: CommonHomeTitleBar(
+            title: AppLanguageKeys().strCattleFeed.tr,
+            onTapViewAll: () {},
+          ),
+        ),
+        Divider(
+          color: AppColors().appGrey_,
+          indent: 16,
+          endIndent: 16,
+        ),
+        const SizedBox(height: 8),
+        ProductListView(
+          pagingController: controller.pagingControllerRecently,
+          onTap: (Products item) async {
+
+          },
+        ),
+      ],
+    );
+  }
+
+
+  Widget fertilizerWidget() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: CommonHomeTitleBar(
+            title: AppLanguageKeys().strFertilizer.tr,
+            onTapViewAll: () {},
+          ),
+        ),
+        Divider(
+          color: AppColors().appGrey_,
+          indent: 16,
+          endIndent: 16,
+        ),
+        const SizedBox(height: 8),
+        ProductListView(
+          pagingController: controller.pagingControllerRecently,
+          onTap: (Products item) async {
+
+          },
+        ),
+      ],
+    );
+  }
+
+
+
+
+
+  Widget banners() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        CommonHorizontalListViewBanner(
+          pagingController: controller.pagingControllerBanners,
+          onTap: (Banners item) {},
+        ),
+      ],
     );
   }
 }
