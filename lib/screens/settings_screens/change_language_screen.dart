@@ -29,7 +29,7 @@ class ChangeLanguageScreen extends GetView<ChangeLanguageController> {
                     itemBuilder: (BuildContext context, int index) {
                       final Locale locale = controller.getItemFromIndex(index);
                       return RadioListTile<Locale>(
-                        title: Text(controller.getDisplayString(locale)),
+                        title: Text(controller.getDisplayStringOwnLanguage(locale)),
                         value: locale,
                         groupValue: controller.rxSelectedLocal.value,
                         controlAffinity: ListTileControlAffinity.trailing,

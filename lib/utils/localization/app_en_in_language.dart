@@ -47,6 +47,9 @@ class EnLanguage {
     AppLanguageKeys().strActionPerform: "Action Perform",
     AppLanguageKeys().strCamera: "Camera",
     AppLanguageKeys().strPhotoLibrary: "Photo Library",
+
+    AppLanguageKeys().strHello: "Hello",
+
     AppLanguageKeys().strBhola: "Bhola",
     AppLanguageKeys().strSearch: "Search here....",
     AppLanguageKeys().strTractor: "Tractor",
