@@ -12,7 +12,6 @@ import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:get/get.dart";
 import "package:intl/intl.dart";
-import "package:pinput/pinput.dart";
 import "package:place_picker/place_picker.dart";
 import "package:syncfusion_flutter_sliders/sliders.dart";
 
@@ -117,7 +116,7 @@ class BookingScreen extends GetView<BookingController> {
                     ),
                     title: Text(item),
                     onTap: () {
-                      controller.searchController.setText(item);
+                      controller.searchController.text = item;
                       controller.rxSearchQuery(item);
 
                       if (searchController.isOpen) {
@@ -716,7 +715,7 @@ class BookingScreen extends GetView<BookingController> {
       await controller.setAddressesAPI(result: result);
 
       final String formattedAddress = result.formattedAddress ?? "";
-      controller.searchController.setText(formattedAddress);
+      controller.searchController.text = formattedAddress;
       controller.rxSearchQuery(formattedAddress);
 
       if (controller.searchController.isOpen) {

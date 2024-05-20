@@ -59,6 +59,7 @@ class HomeScreen extends GetView<HomeController> {
                         cattleFeedWidget(),
                         const SizedBox(height: 32),
                         fertilizerWidget(),
+                        const SizedBox(height: 42),
                       ],
                     ),
                   ),
@@ -76,7 +77,10 @@ class HomeScreen extends GetView<HomeController> {
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: TextField(
         decoration: InputDecoration(
-          prefixIcon: const Icon(Icons.search, color: Colors.grey,),
+          prefixIcon: const Icon(
+            Icons.search,
+            color: Colors.grey,
+          ),
           hintText: "Search here...",
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(6),
@@ -106,7 +110,6 @@ class HomeScreen extends GetView<HomeController> {
     );
   }
 
-
   Widget featuredServicesWidget() {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -122,8 +125,7 @@ class HomeScreen extends GetView<HomeController> {
         const SizedBox(height: 8),
         CommonHorizontalListView(
           pagingController: controller.pagingControllerServices,
-          onTap: (Categories item) async {
-          },
+          onTap: (Categories item) async {},
         ),
       ],
     );
@@ -192,8 +194,6 @@ class HomeScreen extends GetView<HomeController> {
     );
   }
 
-
-
   Widget featuredCategoriesidget() {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -209,8 +209,7 @@ class HomeScreen extends GetView<HomeController> {
         const SizedBox(height: 8),
         CommonHorizontalListView(
           pagingController: controller.pagingControllerCategories,
-          onTap: (Categories item) async {
-          },
+          onTap: (Categories item) async {},
         ),
       ],
     );
@@ -231,14 +230,11 @@ class HomeScreen extends GetView<HomeController> {
         const SizedBox(height: 8),
         ProductListView(
           pagingController: controller.pagingControllerRecently,
-          onTap: (Products item) async {
-
-          },
+          onTap: (Products item) async {},
         ),
       ],
     );
   }
-
 
   Widget fertilizerWidget() {
     return Column(
@@ -255,17 +251,11 @@ class HomeScreen extends GetView<HomeController> {
         const SizedBox(height: 8),
         ProductListView(
           pagingController: controller.pagingControllerRecently,
-          onTap: (Products item) async {
-
-          },
+          onTap: (Products item) async {},
         ),
       ],
     );
   }
-
-
-
-
 
   Widget banners() {
     return Column(
