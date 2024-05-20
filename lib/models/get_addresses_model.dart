@@ -1,19 +1,18 @@
-class AddressModel {
-  AddressModel({this.success, this.data, this.statusCode, this.message});
-  AddressModel.fromJson(Map<String, dynamic> json) {
+class GetAddresses {
+  GetAddresses({this.success, this.data, this.statusCode, this.message});
+  GetAddresses.fromJson(Map<String, dynamic> json) {
     success = json["success"];
     if (json["data"] != null) {
-      data = <AddressModelData>[];
+      data = <GetAddressesData>[];
       for (final dynamic v in json["data"] as List<dynamic>) {
-        data!.add(AddressModelData.fromJson(v));
+        data!.add(GetAddressesData.fromJson(v));
       }
     }
     statusCode = json["statusCode"];
     message = json["message"];
   }
-
   bool? success;
-  List<AddressModelData>? data;
+  List<GetAddressesData>? data;
   int? statusCode;
   String? message;
 
@@ -22,7 +21,7 @@ class AddressModel {
     data["success"] = success;
     if (this.data != null) {
       data["data"] =
-          this.data!.map((AddressModelData v) => v.toJson()).toList();
+          this.data!.map((GetAddressesData v) => v.toJson()).toList();
     }
     data["statusCode"] = statusCode;
     data["message"] = message;
@@ -30,8 +29,8 @@ class AddressModel {
   }
 }
 
-class AddressModelData {
-  AddressModelData({
+class GetAddressesData {
+  GetAddressesData({
     this.sId,
     this.pinCode,
     this.street,
@@ -39,9 +38,13 @@ class AddressModelData {
     this.country,
     this.latitude,
     this.longitude,
+    this.user,
+    this.createdAt,
+    this.updatedAt,
+    this.iV,
   });
 
-  AddressModelData.fromJson(Map<String, dynamic> json) {
+  GetAddressesData.fromJson(Map<String, dynamic> json) {
     sId = json["_id"];
     pinCode = json["pinCode"];
     street = json["street"];
@@ -49,6 +52,10 @@ class AddressModelData {
     country = json["country"];
     latitude = json["latitude"];
     longitude = json["longitude"];
+    user = json["user"];
+    createdAt = json["createdAt"];
+    updatedAt = json["updatedAt"];
+    iV = json["__v"];
   }
   String? sId;
   String? pinCode;
@@ -57,6 +64,10 @@ class AddressModelData {
   String? country;
   double? latitude;
   double? longitude;
+  String? user;
+  String? createdAt;
+  String? updatedAt;
+  int? iV;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -67,7 +78,10 @@ class AddressModelData {
     data["country"] = country;
     data["latitude"] = latitude;
     data["longitude"] = longitude;
-
+    data["user"] = user;
+    data["createdAt"] = createdAt;
+    data["updatedAt"] = updatedAt;
+    data["__v"] = iV;
     return data;
   }
 }

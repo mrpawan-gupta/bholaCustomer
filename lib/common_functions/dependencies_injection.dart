@@ -23,9 +23,9 @@ void injectDependencies() {
     ..put(AppFCMService())
     ..put(AppNetCheckService())
     ..put(AppPermService())
-    ..put(AppLocationService())
     ..put(AppPkgInfoService())
     ..put(AppDevInfoService())
+    ..put(AppLocationService())
     ..put(AppRemoteConfig())
     ..put(AppFirestoreUserDB());
   return;
@@ -49,6 +49,9 @@ Future<void> initDependencies() async {
     final String data = initialMessage.data.toString();
     await AppFCMService().onTapTerminated(data);
   } else {}
+
+  await AppPkgInfoService().initPkgInformation();
+  await AppDevInfoService().initDevInformation();
 
   return Future<void>.value();
 }

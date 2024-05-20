@@ -1,6 +1,6 @@
 import "package:customer/common_widgets/app_icon_button.dart";
 import "package:customer/controllers/main_navigation_controller.dart";
-import "package:customer/screens/outer_main_screens/booking_slot_screens/book_slot_screen.dart";
+import "package:customer/screens/outer_main_screens/booking_screen.dart";
 import "package:customer/screens/outer_main_screens/help_screen.dart";
 import "package:customer/screens/outer_main_screens/home_screen.dart";
 import "package:customer/screens/outer_main_screens/order_history_screen.dart";
@@ -50,7 +50,7 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
           screens: const <Widget>[
             HomeScreen(),
             PortfolioScreen(),
-            BookSlotScreen(),
+            BookingScreen(),
             HelpScreen(),
             OrderHistoryScreen(),
           ],

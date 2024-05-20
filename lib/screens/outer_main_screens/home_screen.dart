@@ -1,9 +1,7 @@
 import "package:customer/controllers/outer_main_controllers/home_controller.dart";
 import "package:customer/screens/product_card/product_card.dart";
-import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_assets_images.dart";
 import "package:customer/utils/app_colors.dart";
-import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
@@ -48,12 +46,7 @@ class HomeScreen extends GetView<HomeController> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: InkWell(
-                      onTap: () async {
-                        await AppNavService().pushNamed(
-                          destination: AppRoutes().bookingSlot,
-                          arguments: <String, dynamic>{},
-                        );
-                      },
+                      onTap: () async {},
                       child: GridTile(
                         footer: Container(
                           alignment: Alignment.center,

@@ -1,4 +1,4 @@
-import "package:customer/controllers/outer_main_controllers/booking_slot_controllers/book_slot_controllers.dart";
+import "package:customer/controllers/outer_main_controllers/booking_controller.dart";
 import "package:customer/controllers/outer_main_controllers/help_controller.dart";
 import "package:customer/controllers/outer_main_controllers/home_controller.dart";
 import "package:customer/controllers/outer_main_controllers/order_history_controller.dart";
@@ -19,7 +19,7 @@ class MainNavigationController extends GetxController {
     Get
       ..put(HomeController())
       ..put(PortfolioController())
-      ..put(BookSlotController())
+      ..put(BookingController())
       ..put(HelpController())
       ..put(OrderHistoryController());
 

@@ -43,10 +43,8 @@ class AppAPIService extends GetConnect {
 
   Map<String, String> getHeaders() {
     final String auth = AppStorageService().getUserAuthModel().token ?? "";
-
     final Locale locale = AppStorageService().getUserLangFromStorage();
     final String actLng = AppTranslations().localeToDashString(locale: locale);
-
     return <String, String>{
       "Authorization": "Bearer $auth",
       "Accept-Language": actLng,
@@ -91,11 +89,11 @@ class AppAPIService extends GetConnect {
       successCallback: successCallback,
       failureCallback: failureCallback,
       continueCallback: () async {
-        if (needLoader) {
-          AppLoader().showLoader();
-        } else {}
-
         try {
+          if (needLoader) {
+            AppLoader().showLoader();
+          } else {}
+
           final Map<String, String> headers = getHeaders();
 
           requestPrinter(
@@ -127,11 +125,11 @@ class AppAPIService extends GetConnect {
             stackTrace: stackTrace,
           );
           failureCallback(<String, dynamic>{"message": error});
-        } finally {}
-
-        if (needLoader) {
-          AppLoader().hideLoader();
-        } else {}
+        } finally {
+          if (needLoader) {
+            AppLoader().hideLoader();
+          } else {}
+        }
       },
     );
     return Future<void>.value();
@@ -161,11 +159,11 @@ class AppAPIService extends GetConnect {
       successCallback: successCallback,
       failureCallback: failureCallback,
       continueCallback: () async {
-        if (needLoader) {
-          AppLoader().showLoader();
-        } else {}
-
         try {
+          if (needLoader) {
+            AppLoader().showLoader();
+          } else {}
+
           final Map<String, String> headers = getHeaders();
 
           requestPrinter(
@@ -198,11 +196,11 @@ class AppAPIService extends GetConnect {
             stackTrace: stackTrace,
           );
           failureCallback(<String, dynamic>{"message": error});
-        } finally {}
-
-        if (needLoader) {
-          AppLoader().hideLoader();
-        } else {}
+        } finally {
+          if (needLoader) {
+            AppLoader().hideLoader();
+          } else {}
+        }
       },
     );
     return Future<void>.value();
@@ -232,11 +230,11 @@ class AppAPIService extends GetConnect {
       successCallback: successCallback,
       failureCallback: failureCallback,
       continueCallback: () async {
-        if (needLoader) {
-          AppLoader().showLoader();
-        } else {}
-
         try {
+          if (needLoader) {
+            AppLoader().showLoader();
+          } else {}
+
           final Map<String, String> headers = getHeaders();
 
           requestPrinter(
@@ -269,11 +267,11 @@ class AppAPIService extends GetConnect {
             stackTrace: stackTrace,
           );
           failureCallback(<String, dynamic>{"message": error});
-        } finally {}
-
-        if (needLoader) {
-          AppLoader().hideLoader();
-        } else {}
+        } finally {
+          if (needLoader) {
+            AppLoader().hideLoader();
+          } else {}
+        }
       },
     );
     return Future<void>.value();
@@ -303,11 +301,11 @@ class AppAPIService extends GetConnect {
       successCallback: successCallback,
       failureCallback: failureCallback,
       continueCallback: () async {
-        if (needLoader) {
-          AppLoader().showLoader();
-        } else {}
-
         try {
+          if (needLoader) {
+            AppLoader().showLoader();
+          } else {}
+
           final Map<String, String> headers = getHeaders();
 
           requestPrinter(
@@ -340,11 +338,11 @@ class AppAPIService extends GetConnect {
             stackTrace: stackTrace,
           );
           failureCallback(<String, dynamic>{"message": error});
-        } finally {}
-
-        if (needLoader) {
-          AppLoader().hideLoader();
-        } else {}
+        } finally {
+          if (needLoader) {
+            AppLoader().hideLoader();
+          } else {}
+        }
       },
     );
     return Future<void>.value();
@@ -374,11 +372,11 @@ class AppAPIService extends GetConnect {
       successCallback: successCallback,
       failureCallback: failureCallback,
       continueCallback: () async {
-        if (needLoader) {
-          AppLoader().showLoader();
-        } else {}
-
         try {
+          if (needLoader) {
+            AppLoader().showLoader();
+          } else {}
+
           final Map<String, String> headers = getHeaders();
 
           requestPrinter(
@@ -410,11 +408,11 @@ class AppAPIService extends GetConnect {
             stackTrace: stackTrace,
           );
           failureCallback(<String, dynamic>{"message": error});
-        } finally {}
-
-        if (needLoader) {
-          AppLoader().hideLoader();
-        } else {}
+        } finally {
+          if (needLoader) {
+            AppLoader().hideLoader();
+          } else {}
+        }
       },
     );
     return Future<void>.value();
@@ -453,17 +451,19 @@ class AppAPIService extends GetConnect {
     required FormData formData,
   }) {
     final String pretyHeaders = AppPrettyPrintJSON().prettyPrint(headers);
-    AppPrettyPrintJSON().prettyPrint(query);
-    // final String pretBody = body is Map<String, dynamic>
-    //     ? AppPrettyPrintJSON().prettyPrint(body)
-    //     : body ?? "";
+    final String pretyQuery = AppPrettyPrintJSON().prettyPrint(query);
+    final String pretBody = body is Map<String, dynamic>
+        ? AppPrettyPrintJSON().prettyPrint(body)
+        : body is List<dynamic>
+            ? (body).toString()
+            : body ?? "";
 
     log("endPoint: $endPoint");
     log("fullURL: $fullURL");
     log("headers: $pretyHeaders");
-    // log("query: $pretyQuery");
-    // log("body: $pretBody");
-    // log("formData: ${formData.fields}");
+    log("query: $pretyQuery");
+    log("body: $pretBody");
+    log("formData: ${formData.fields}");
     return;
   }
 

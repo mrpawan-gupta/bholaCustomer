@@ -86,6 +86,8 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="high_importance_channel" />
+        <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyAu0uQwt1solBKGQcExM9eJvU8rEPfbNNo"/>
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package="com.ahinsaaggregator.customer">
