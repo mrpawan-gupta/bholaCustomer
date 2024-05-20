@@ -186,4 +186,6 @@ class AppLanguageKeys {
   final String strBuild = "strBuild";
   final String strStartTime = "strStartTime";
   final String strEndTime = "strEndTime";
+  final String strFeaturedServices = "strFeaturedServices";
+  final String strClickHereToAddNewProduct = "strClickHereToAddNewProduct";
 }
