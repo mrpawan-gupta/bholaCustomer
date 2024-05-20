@@ -46,5 +46,7 @@ class MrLanguage {
     AppLanguageKeys().strActionPerform: "कृती करा",
     AppLanguageKeys().strCamera: "कॅमेरा",
     AppLanguageKeys().strPhotoLibrary: "फोटो लायब्ररी",
+
+    AppLanguageKeys().strHello: "नमस्कार",
   };
 }

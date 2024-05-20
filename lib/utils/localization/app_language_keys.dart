@@ -93,6 +93,8 @@ class AppLanguageKeys {
   final String strFeaturedService = "Featured Service";
   final String strRecentlyAddedProduct = "Recently Added Product";
 
+  final String strHello = "strHello";
+
   final String strBhola = "strBhola";
   final String strSearch = "strSearch";
   final String strTractor = "strTractor";
@@ -184,7 +186,6 @@ class AppLanguageKeys {
   final String strBuild = "strBuild";
   final String strStartTime = "strStartTime";
   final String strEndTime = "strEndTime";
-  final String strHello = "strHello";
   final String strFeaturedServices = "strFeaturedServices";
   final String strClickHereToAddNewProduct = "strClickHereToAddNewProduct";
 }

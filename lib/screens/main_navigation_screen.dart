@@ -1,12 +1,14 @@
 import "package:customer/common_widgets/app_icon_button.dart";
 import "package:customer/controllers/main_navigation_controller.dart";
-import "package:customer/screens/outer_main_screens/booking_slot_screens/book_slot_screen.dart";
+import "package:customer/screens/outer_main_screens/booking_screen.dart";
 import "package:customer/screens/outer_main_screens/help_screen.dart";
 import "package:customer/screens/outer_main_screens/home_screen.dart";
 import "package:customer/screens/outer_main_screens/order_history_screen.dart";
 import "package:customer/screens/outer_main_screens/portfolio_screen.dart";
+import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_double_tap.dart";
+import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
@@ -18,24 +20,22 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        leading: SizedBox(
-          height: 48,
-          width: 48,
-          child: AppIconButton(
-            iconData: Icons.account_circle_outlined,
-            onPressed: () async {},
-          ),
-        ),
-        centerTitle: true,
-        title: Text("${AppLanguageKeys().strHelloWorld.tr}, Dharam"),
+        centerTitle: false,
+        title: helloWidget(),
         actions: <Widget>[
           SizedBox(
             height: 48,
             width: 48,
             child: AppIconButton(
-              iconData: Icons.settings_outlined,
-              onPressed: () async {},
+              iconData: Icons.account_circle_outlined,
+              onPressed: () async {
+                await AppNavService().pushNamed(
+                  destination: AppRoutes().settingsMainScreen,
+                  arguments: <String, dynamic>{},
+                );
+              },
             ),
           ),
         ],
@@ -50,7 +50,7 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
           screens: const <Widget>[
             HomeScreen(),
             PortfolioScreen(),
-            BookSlotScreen(),
+            BookingScreen(),
             HelpScreen(),
             OrderHistoryScreen(),
           ],
@@ -68,7 +68,7 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
               isCenterdItem: false,
             ),
             createItem(
-              title: "Add",
+              title: "New Order",
               activeIconData: Icons.add,
               inActiveIconData: Icons.add_outlined,
               isCenterdItem: true,
@@ -86,12 +86,10 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
               isCenterdItem: false,
             ),
           ],
-          onItemSelected: (int value) {
-            controller.tabController.jumpToTab(value);
-          },
+          onItemSelected: (int value) {},
           navBarStyle: NavBarStyle.style15,
           decoration: NavBarDecoration(
-            borderRadius: BorderRadius.circular(10.0),
+            borderRadius: BorderRadius.circular(12.0),
           ),
         ),
       ),
@@ -112,6 +110,15 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
       inactiveColorPrimary: AppColors().appGreyColor,
       activeColorSecondary: isCenterdItem ? AppColors().appWhiteColor : null,
       inactiveColorSecondary: AppColors().appTransparentColor,
+    );
+  }
+
+  Widget helloWidget() {
+    return Text(
+      "👋🏻 ${AppLanguageKeys().strHello.tr}, ${controller.firstName()}",
+      style: const TextStyle(fontSize: 16 + 4, fontWeight: FontWeight.w700),
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
     );
   }
 }

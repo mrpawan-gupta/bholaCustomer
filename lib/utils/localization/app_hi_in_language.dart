@@ -45,6 +45,9 @@ class HiLanguage {
     AppLanguageKeys().strActionPerform: "क्रिया प्रदर्शन",
     AppLanguageKeys().strCamera: "कैमरा",
     AppLanguageKeys().strPhotoLibrary: "चित्र पुस्तकालय",
+
+    AppLanguageKeys().strHello: "नमस्ते",
+
     AppLanguageKeys().strBhola: "Bhola",
     AppLanguageKeys().strSearch: "Search here....",
     AppLanguageKeys().strTractor: "Tractor",

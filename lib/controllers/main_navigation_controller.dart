@@ -1,12 +1,12 @@
-import "package:customer/controllers/outer_main_controllers/booking_slot_controllers/book_slot_controllers.dart";
+import "package:customer/controllers/outer_main_controllers/booking_controller.dart";
 import "package:customer/controllers/outer_main_controllers/help_controller.dart";
 import "package:customer/controllers/outer_main_controllers/home_controller.dart";
 import "package:customer/controllers/outer_main_controllers/order_history_controller.dart";
 import "package:customer/controllers/outer_main_controllers/portfolio_controller.dart";
+import "package:customer/services/app_storage_service.dart";
 import "package:customer/utils/app_whatsapp.dart";
 import "package:get/get.dart";
 import "package:persistent_bottom_nav_bar/persistent_tab_view.dart";
-
 
 class MainNavigationController extends GetxController {
   final PersistentTabController tabController = PersistentTabController();
@@ -19,12 +19,12 @@ class MainNavigationController extends GetxController {
     Get
       ..put(HomeController())
       ..put(PortfolioController())
-      ..put(BookSlotController())
+      ..put(BookingController())
       ..put(HelpController())
       ..put(OrderHistoryController());
 
     tabController.addListener(
-          () async {
+      () async {
         if (tabController.index != 3) {
           previousIndex(tabController.index);
         } else {
@@ -40,5 +40,9 @@ class MainNavigationController extends GetxController {
     tabController.dispose();
 
     super.onClose();
+  }
+
+  String firstName() {
+    return AppStorageService().getUserInfoModel().firstName ?? "";
   }
 }

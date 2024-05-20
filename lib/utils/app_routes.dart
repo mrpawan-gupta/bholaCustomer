@@ -5,8 +5,7 @@ import "package:customer/bindings/login_screen_bindings/otp_screen_binding.dart"
 import "package:customer/bindings/login_screen_bindings/phone_number_screen_binding.dart";
 import "package:customer/bindings/login_screen_bindings/splash_screen_binding.dart";
 import "package:customer/bindings/main_navigation_binding.dart";
-import "package:customer/bindings/outer_main_bindings/booking_slot_bindings/book_slot_bindings.dart";
-import "package:customer/bindings/outer_main_bindings/booking_slot_bindings/selected_slot_bindings.dart";
+import "package:customer/bindings/outer_main_bindings/booking_binding.dart";
 import "package:customer/bindings/outer_main_bindings/help_binding.dart";
 import "package:customer/bindings/outer_main_bindings/home_binding.dart";
 import "package:customer/bindings/outer_main_bindings/order_history_binding.dart";
@@ -14,6 +13,7 @@ import "package:customer/bindings/outer_main_bindings/portfolio_binding.dart";
 import "package:customer/bindings/product_deatils_bindings/cart_bindings.dart";
 import "package:customer/bindings/product_deatils_bindings/product_detail_page_bindings.dart";
 import "package:customer/bindings/settings_bindings/change_language_binding.dart";
+import "package:customer/bindings/settings_bindings/settings_main_binding.dart";
 import "package:customer/screens/account_screen.dart";
 import "package:customer/screens/login_screen/language_selection.dart";
 import "package:customer/screens/login_screen/notification_screen.dart";
@@ -21,8 +21,7 @@ import "package:customer/screens/login_screen/otp_screen.dart";
 import "package:customer/screens/login_screen/phone_number_screen.dart";
 import "package:customer/screens/login_screen/splash_screen.dart";
 import "package:customer/screens/main_navigation_screen.dart";
-import "package:customer/screens/outer_main_screens/booking_slot_screens/book_slot_screen.dart";
-import "package:customer/screens/outer_main_screens/booking_slot_screens/selected_slot_screen.dart";
+import "package:customer/screens/outer_main_screens/booking_screen.dart";
 import "package:customer/screens/outer_main_screens/help_screen.dart";
 import "package:customer/screens/outer_main_screens/home_screen.dart";
 import "package:customer/screens/outer_main_screens/order_history_screen.dart";
@@ -30,6 +29,7 @@ import "package:customer/screens/outer_main_screens/portfolio_screen.dart";
 import "package:customer/screens/product_details/cart.dart";
 import "package:customer/screens/product_details/product_details.dart";
 import "package:customer/screens/settings_screens/change_language_screen.dart";
+import "package:customer/screens/settings_screens/settings_main_screen.dart";
 import "package:get/get.dart";
 
 class AppRoutes {
@@ -49,15 +49,15 @@ class AppRoutes {
   final String mainNavigationScreen = "/mainNavigationScreen";
   final String homeScreen = "/homeScreen";
   final String portfolioScreen = "/portfolioScreen";
+  final String bookingScreen = "/bookingScreen";
   final String newOrderScreen = "/newOrderScreen";
   final String helpScreen = "/helpScreen";
   final String orderHistoryScreen = "/orderHistoryScreen";
   final String accountScreen = "/accountScreen";
+  final String settingsMainScreen = "/settingsMainScreen";
   final String changeLanguageScreen = "/changeLanguageScreen";
   final String productDetailScreen = "/productDetailScreen";
   final String cartScreen = "/cartScreen";
-  final String selectedSlotScreen = "/selectedSlotScreen";
-  final String bookingSlot = "/bookingSlot";
 
   List<GetPage<dynamic>> getPages() {
     final GetPage<dynamic> splashScreenRoute = GetPage<dynamic>(
@@ -101,6 +101,13 @@ class AppRoutes {
       page: PortfolioScreen.new,
       binding: PortfolioBinding(),
     );
+
+    final GetPage<dynamic> bookingRoute = GetPage<dynamic>(
+      name: portfolioScreen,
+      page: BookingScreen.new,
+      binding: BookingBinding(),
+    );
+
     final GetPage<dynamic> helpRoute = GetPage<dynamic>(
       name: helpScreen,
       page: HelpScreen.new,
@@ -115,6 +122,11 @@ class AppRoutes {
       name: accountScreen,
       page: AccountScreen.new,
       binding: AccountBinding(),
+    );
+    final GetPage<dynamic> settingsMainRoute = GetPage<dynamic>(
+      name: settingsMainScreen,
+      page: SettingsMainScreen.new,
+      binding: SettingsMainBinding(),
     );
     final GetPage<dynamic> changeLanguageRoute = GetPage<dynamic>(
       name: changeLanguageScreen,
@@ -132,16 +144,6 @@ class AppRoutes {
       page: CartScreen.new,
       binding: CartBinding(),
     );
-    final GetPage<dynamic> selectedSlotRoute = GetPage<dynamic>(
-      name: selectedSlotScreen,
-      page: SelectedSlotScreen.new,
-      binding: SelectedSlotBinding(),
-    );
-    final GetPage<dynamic> bookingSlotRoute = GetPage<dynamic>(
-      name: bookingSlot,
-      page: BookSlotScreen.new,
-      binding: BookSlotBinding(),
-    );
 
     return <GetPage<dynamic>>[
       splashScreenRoute,
@@ -152,14 +154,14 @@ class AppRoutes {
       mainNavigationRoute,
       homeRoute,
       portfolioRoute,
+      bookingRoute,
       helpRoute,
       orderHistoryRoute,
       accountRoute,
+      settingsMainRoute,
       changeLanguageRoute,
       productDetailRoute,
       cartRoute,
-      selectedSlotRoute,
-      bookingSlotRoute,
     ];
   }
 }

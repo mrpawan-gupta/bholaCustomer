@@ -1,17 +1,25 @@
+import "dart:ui";
+
 import "package:customer/services/app_storage_service.dart";
 import "package:customer/utils/localization/app_translations.dart";
-import "package:flutter/widgets.dart";
 import "package:get/get.dart";
 
 class ChangeLanguageController extends GetxController {
   Rx<Locale> rxSelectedLocal = AppTranslations().supportedLocales()[0].obs;
   RxInt rxAllAppLocalsLength = AppTranslations().supportedLocales().length.obs;
+  RxList<Locale> rxAllAppLocalsList = AppTranslations().supportedLocales().obs;
 
   @override
   void onInit() {
     super.onInit();
 
     getUserLangFromStorage();
+  }
+
+  void getUserLangFromStorage() {
+    final Locale value = AppStorageService().getUserLangFromStorage();
+    updateLocale(value);
+    return;
   }
 
   void updateLocale(Locale value) {
@@ -23,14 +31,8 @@ class ChangeLanguageController extends GetxController {
     return AppTranslations().supportedLocales()[index];
   }
 
-  String getDisplayString(Locale locale) {
-    return AppTranslations().localeToDisplayString(locale: locale);
-  }
-
-  void getUserLangFromStorage() {
-    final Locale value = AppStorageService().getUserLangFromStorage();
-    updateLocale(value);
-    return;
+  String getDisplayStringOwnLanguage(Locale locale) {
+    return AppTranslations().localeToDisplayStringOwnLanguage(locale: locale);
   }
 
   Future<void> setUserLangToStorage() async {

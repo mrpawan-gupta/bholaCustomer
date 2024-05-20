@@ -4,7 +4,7 @@ class FeaturedModel {
   FeaturedModel.fromJson(Map<String, dynamic> json) {
     success = json["success"];
     data =
-    json["data"] != null ? FeaturedModelData.fromJson(json["data"]) : null;
+        json["data"] != null ? FeaturedModelData.fromJson(json["data"]) : null;
     statusCode = json["statusCode"];
     message = json["message"];
   }

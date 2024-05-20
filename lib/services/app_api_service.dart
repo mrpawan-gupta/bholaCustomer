@@ -12,12 +12,12 @@ import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 
-/*
+/* 
   Sample:
 
   await AppAPIService().functionGet(
     endPoint: "users/1",
-    query: <String, dynamic>{},
+    query: <String, dynamic>{}, 
     body: <String, dynamic>{},
     successCallback: (Map<String, dynamic> json) {},
     failureCallback: (Map<String, dynamic> json) {},
@@ -43,10 +43,8 @@ class AppAPIService extends GetConnect {
 
   Map<String, String> getHeaders() {
     final String auth = AppStorageService().getUserAuthModel().token ?? "";
-
     final Locale locale = AppStorageService().getUserLangFromStorage();
     final String actLng = AppTranslations().localeToDashString(locale: locale);
-
     return <String, String>{
       "Authorization": "Bearer $auth",
       "Accept-Language": actLng,
@@ -55,14 +53,15 @@ class AppAPIService extends GetConnect {
 
   Map<String, dynamic> getValidQuery(Map<String, dynamic> query) {
     final Map<String, dynamic> parsedQuery =
-    !mapEquals(query, <String, dynamic>{})
-        ? query.map(
-      // ignore: avoid_annotating_with_dynamic
-          (String key, dynamic value) {
-        return MapEntry<String, dynamic>(key, value.toString());
-      },
-    )
-        : <String, dynamic>{};
+        !mapEquals(query, <String, dynamic>{})
+            ? query.map(
+                // ignore: avoid_annotating_with_dynamic
+                (String key, dynamic value) {
+                  return MapEntry<String, dynamic>(key, value.toString());
+                },
+              )
+            : <String, dynamic>{};
+
     return parsedQuery;
   }
 
@@ -72,7 +71,9 @@ class AppAPIService extends GetConnect {
     required Function(Map<String, dynamic> json) successCallback,
     required Function(Map<String, dynamic> json) failureCallback,
     Map<String, dynamic> query = const <String, dynamic>{},
-    Map<String, dynamic> body = const <String, dynamic>{},
+
+    // ignore: avoid_annotating_with_dynamic
+    dynamic body,
     String version = "v1",
     bool needLoader = true,
     bool isForFileUpload = false,
@@ -88,11 +89,11 @@ class AppAPIService extends GetConnect {
       successCallback: successCallback,
       failureCallback: failureCallback,
       continueCallback: () async {
-        if (needLoader) {
-          AppLoader().showLoader();
-        } else {}
-
         try {
+          if (needLoader) {
+            AppLoader().showLoader();
+          } else {}
+
           final Map<String, String> headers = getHeaders();
 
           requestPrinter(
@@ -124,11 +125,11 @@ class AppAPIService extends GetConnect {
             stackTrace: stackTrace,
           );
           failureCallback(<String, dynamic>{"message": error});
-        } finally {}
-
-        if (needLoader) {
-          AppLoader().hideLoader();
-        } else {}
+        } finally {
+          if (needLoader) {
+            AppLoader().hideLoader();
+          } else {}
+        }
       },
     );
     return Future<void>.value();
@@ -140,7 +141,9 @@ class AppAPIService extends GetConnect {
     required Function(Map<String, dynamic> json) successCallback,
     required Function(Map<String, dynamic> json) failureCallback,
     Map<String, dynamic> query = const <String, dynamic>{},
-    Map<String, dynamic> body = const <String, dynamic>{},
+
+    // ignore: avoid_annotating_with_dynamic
+    dynamic body,
     String version = "v1",
     bool needLoader = true,
     bool isForFileUpload = false,
@@ -156,11 +159,11 @@ class AppAPIService extends GetConnect {
       successCallback: successCallback,
       failureCallback: failureCallback,
       continueCallback: () async {
-        if (needLoader) {
-          AppLoader().showLoader();
-        } else {}
-
         try {
+          if (needLoader) {
+            AppLoader().showLoader();
+          } else {}
+
           final Map<String, String> headers = getHeaders();
 
           requestPrinter(
@@ -193,11 +196,11 @@ class AppAPIService extends GetConnect {
             stackTrace: stackTrace,
           );
           failureCallback(<String, dynamic>{"message": error});
-        } finally {}
-
-        if (needLoader) {
-          AppLoader().hideLoader();
-        } else {}
+        } finally {
+          if (needLoader) {
+            AppLoader().hideLoader();
+          } else {}
+        }
       },
     );
     return Future<void>.value();
@@ -209,7 +212,9 @@ class AppAPIService extends GetConnect {
     required Function(Map<String, dynamic> json) successCallback,
     required Function(Map<String, dynamic> json) failureCallback,
     Map<String, dynamic> query = const <String, dynamic>{},
-    Map<String, dynamic> body = const <String, dynamic>{},
+
+    // ignore: avoid_annotating_with_dynamic
+    dynamic body,
     String version = "v1",
     bool needLoader = true,
     bool isForFileUpload = false,
@@ -225,11 +230,11 @@ class AppAPIService extends GetConnect {
       successCallback: successCallback,
       failureCallback: failureCallback,
       continueCallback: () async {
-        if (needLoader) {
-          AppLoader().showLoader();
-        } else {}
-
         try {
+          if (needLoader) {
+            AppLoader().showLoader();
+          } else {}
+
           final Map<String, String> headers = getHeaders();
 
           requestPrinter(
@@ -262,11 +267,11 @@ class AppAPIService extends GetConnect {
             stackTrace: stackTrace,
           );
           failureCallback(<String, dynamic>{"message": error});
-        } finally {}
-
-        if (needLoader) {
-          AppLoader().hideLoader();
-        } else {}
+        } finally {
+          if (needLoader) {
+            AppLoader().hideLoader();
+          } else {}
+        }
       },
     );
     return Future<void>.value();
@@ -278,7 +283,9 @@ class AppAPIService extends GetConnect {
     required Function(Map<String, dynamic> json) successCallback,
     required Function(Map<String, dynamic> json) failureCallback,
     Map<String, dynamic> query = const <String, dynamic>{},
-    Map<String, dynamic> body = const <String, dynamic>{},
+
+    // ignore: avoid_annotating_with_dynamic
+    dynamic body,
     String version = "v1",
     bool needLoader = true,
     bool isForFileUpload = false,
@@ -294,11 +301,11 @@ class AppAPIService extends GetConnect {
       successCallback: successCallback,
       failureCallback: failureCallback,
       continueCallback: () async {
-        if (needLoader) {
-          AppLoader().showLoader();
-        } else {}
-
         try {
+          if (needLoader) {
+            AppLoader().showLoader();
+          } else {}
+
           final Map<String, String> headers = getHeaders();
 
           requestPrinter(
@@ -331,11 +338,11 @@ class AppAPIService extends GetConnect {
             stackTrace: stackTrace,
           );
           failureCallback(<String, dynamic>{"message": error});
-        } finally {}
-
-        if (needLoader) {
-          AppLoader().hideLoader();
-        } else {}
+        } finally {
+          if (needLoader) {
+            AppLoader().hideLoader();
+          } else {}
+        }
       },
     );
     return Future<void>.value();
@@ -347,7 +354,9 @@ class AppAPIService extends GetConnect {
     required Function(Map<String, dynamic> json) successCallback,
     required Function(Map<String, dynamic> json) failureCallback,
     Map<String, dynamic> query = const <String, dynamic>{},
-    Map<String, dynamic> body = const <String, dynamic>{},
+
+    // ignore: avoid_annotating_with_dynamic
+    dynamic body,
     String version = "v1",
     bool needLoader = true,
     bool isForFileUpload = false,
@@ -363,11 +372,11 @@ class AppAPIService extends GetConnect {
       successCallback: successCallback,
       failureCallback: failureCallback,
       continueCallback: () async {
-        if (needLoader) {
-          AppLoader().showLoader();
-        } else {}
-
         try {
+          if (needLoader) {
+            AppLoader().showLoader();
+          } else {}
+
           final Map<String, String> headers = getHeaders();
 
           requestPrinter(
@@ -399,11 +408,11 @@ class AppAPIService extends GetConnect {
             stackTrace: stackTrace,
           );
           failureCallback(<String, dynamic>{"message": error});
-        } finally {}
-
-        if (needLoader) {
-          AppLoader().hideLoader();
-        } else {}
+        } finally {
+          if (needLoader) {
+            AppLoader().hideLoader();
+          } else {}
+        }
       },
     );
     return Future<void>.value();
@@ -436,12 +445,18 @@ class AppAPIService extends GetConnect {
     required String fullURL,
     required Map<String, dynamic> headers,
     required Map<String, dynamic> query,
-    required Map<String, dynamic> body,
+
+    // ignore: avoid_annotating_with_dynamic
+    required dynamic body,
     required FormData formData,
   }) {
     final String pretyHeaders = AppPrettyPrintJSON().prettyPrint(headers);
     final String pretyQuery = AppPrettyPrintJSON().prettyPrint(query);
-    final String pretBody = AppPrettyPrintJSON().prettyPrint(body);
+    final String pretBody = body is Map<String, dynamic>
+        ? AppPrettyPrintJSON().prettyPrint(body)
+        : body is List<dynamic>
+            ? (body).toString()
+            : body ?? "";
 
     log("endPoint: $endPoint");
     log("fullURL: $fullURL");
