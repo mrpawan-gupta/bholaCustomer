@@ -5,7 +5,6 @@ import "package:customer/common_widgets/empty_vehicle_or_product_widget.dart";
 import "package:customer/models/product_model.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/localization/app_language_keys.dart";
-import "package:dotted_border/dotted_border.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";

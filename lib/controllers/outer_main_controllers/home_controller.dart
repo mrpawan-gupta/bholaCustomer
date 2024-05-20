@@ -220,7 +220,7 @@ class HomeController extends GetxController {
       query: <String, dynamic>{
         "offset": pageKey,
         "limit": pageSize,
-        "appType": "Vendor",
+        "appType": "Customer",
       },
       successCallback: (Map<String, dynamic> json) {
         AppLogger().info(message: json["message"]);
@@ -297,4 +297,5 @@ class HomeController extends GetxController {
     );
     return completer.future;
   }
+
 }

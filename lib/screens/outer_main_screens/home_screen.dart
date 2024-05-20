@@ -46,7 +46,7 @@ class HomeScreen extends GetView<HomeController> {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        helloWidget(),
+                        searchBarWidget(),
                         const SizedBox(height: 16),
                         featuredServicesWidget(),
                         const SizedBox(height: 16),
@@ -71,26 +71,41 @@ class HomeScreen extends GetView<HomeController> {
     );
   }
 
-  Widget helloWidget() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Text(
-            "${AppLanguageKeys().strHello.tr}, ${controller.firstName()}",
-            style: const TextStyle(
-              fontSize: 16 + 4,
-              fontWeight: FontWeight.w700,
+  Widget searchBarWidget() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: TextField(
+        decoration: InputDecoration(
+          prefixIcon: const Icon(Icons.search, color: Colors.grey,),
+          hintText: "Search here...",
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(6),
+            borderSide: BorderSide(
+              color: Colors.grey[400]!,
+              width: 1.5,
             ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
           ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(6),
+            borderSide: BorderSide(
+              color: Colors.grey[400]!,
+              width: 1.5,
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(6),
+            borderSide: BorderSide(
+              color: Colors.grey[700]!,
+              width: 1.5,
+            ),
+          ),
+          filled: true,
+          fillColor: Colors.white,
         ),
-      ],
+      ),
     );
   }
+
 
   Widget featuredServicesWidget() {
     return Column(
@@ -104,11 +119,6 @@ class HomeScreen extends GetView<HomeController> {
             onTapViewAll: () {},
           ),
         ),
-        Divider(
-          color: AppColors().appGrey_,
-          indent: 16,
-          endIndent: 16,
-        ),
         const SizedBox(height: 8),
         CommonHorizontalListView(
           pagingController: controller.pagingControllerServices,
@@ -121,14 +131,13 @@ class HomeScreen extends GetView<HomeController> {
 
   Widget weatherForecastWidget() {
     // Dummy data for the weather forecast
-    final List<Map<String, String>> weatherData = [
-      {'day': 'SAT', 'icon': '☀️', 'temp': '29°C'},
-      {'day': 'SUN', 'icon': '🌧️', 'temp': '29°C'},
-      {'day': 'MON', 'icon': '🌦️', 'temp': '29°C'},
-      {'day': 'TUE', 'icon': '⛅', 'temp': '29°C'},
-      {'day': 'WED', 'icon': '🌧️', 'temp': '29°C'},
-      {'day': 'THU', 'icon': '⛅', 'temp': '29°C'},
-      {'day': 'FRI', 'icon': '☀️', 'temp': '29°C'},
+    final List<Map<String, String>> weatherData = <Map<String, String>>[
+      <String, String>{"day": "SUN", "icon": "🌧️", "temp": "29°C"},
+      <String, String>{"day": "MON", "icon": "🌦️", "temp": "29°C"},
+      <String, String>{"day": "TUE", "icon": "⛅", "temp": "29°C"},
+      <String, String>{"day": "WED", "icon": "🌧️", "temp": "29°C"},
+      <String, String>{"day": "THU", "icon": "⛅", "temp": "29°C"},
+      <String, String>{"day": "FRI", "icon": "☀️", "temp": "29°C"},
     ];
 
     return Padding(
@@ -141,11 +150,11 @@ class HomeScreen extends GetView<HomeController> {
         padding: const EdgeInsets.all(12.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: weatherData.map((weather) {
+          children: weatherData.map((Map<String, String> weather) {
             return Column(
               children: <Widget>[
                 Text(
-                  weather['day']!,
+                  weather["day"]!,
                   style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -159,7 +168,7 @@ class HomeScreen extends GetView<HomeController> {
                     radius: 18,
                     backgroundColor: Colors.white,
                     child: Text(
-                      weather['icon']!,
+                      weather["icon"]!,
                       style: const TextStyle(
                         fontSize: 20,
                         color: Colors.green,
@@ -169,7 +178,7 @@ class HomeScreen extends GetView<HomeController> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  weather['temp']!,
+                  weather["temp"]!,
                   style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -197,11 +206,6 @@ class HomeScreen extends GetView<HomeController> {
             onTapViewAll: () {},
           ),
         ),
-        Divider(
-          color: AppColors().appGrey_,
-          indent: 16,
-          endIndent: 16,
-        ),
         const SizedBox(height: 8),
         CommonHorizontalListView(
           pagingController: controller.pagingControllerCategories,
@@ -223,11 +227,6 @@ class HomeScreen extends GetView<HomeController> {
             title: AppLanguageKeys().strCattleFeed.tr,
             onTapViewAll: () {},
           ),
-        ),
-        Divider(
-          color: AppColors().appGrey_,
-          indent: 16,
-          endIndent: 16,
         ),
         const SizedBox(height: 8),
         ProductListView(
@@ -252,11 +251,6 @@ class HomeScreen extends GetView<HomeController> {
             title: AppLanguageKeys().strFertilizer.tr,
             onTapViewAll: () {},
           ),
-        ),
-        Divider(
-          color: AppColors().appGrey_,
-          indent: 16,
-          endIndent: 16,
         ),
         const SizedBox(height: 8),
         ProductListView(
