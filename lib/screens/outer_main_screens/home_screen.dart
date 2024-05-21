@@ -234,7 +234,7 @@ class HomeScreen extends GetView<HomeController> {
           pagingController: controller.pagingControllerRecently,
           onTap: (Products item) async {
             await AppNavService().pushNamed(
-              destination: AppRoutes().productDetailScreen,
+              destination: AppRoutes().listingScreen,
               arguments: <String, dynamic>{},
             );
           },
