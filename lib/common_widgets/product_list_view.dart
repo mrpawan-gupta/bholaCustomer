@@ -49,6 +49,8 @@ class ProductListView extends StatelessWidget {
                     children: <Widget>[
                       stackWidget(item: item, index: i),
                       materialWidget(item: item, index: i),
+                      Padding(padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                        child: cardDetails(item),),
                     ],
                   ),
                 ),
@@ -80,6 +82,7 @@ class ProductListView extends StatelessWidget {
     );
   }
 
+
   Widget materialWidget({required Products item, required int index}) {
     return Material(
       clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -98,7 +101,7 @@ class ProductListView extends StatelessWidget {
         clipBehavior: Clip.antiAliasWithSaveLayer,
         color: Colors.transparent,
         child: MaybeMarqueeText(
-          text: photo.name ?? "",
+          text: "",
           style: TextStyle(
             fontSize: 16,
             color: AppColors().appWhiteColor,
@@ -109,4 +112,29 @@ class ProductListView extends StatelessWidget {
       ),
     );
   }
+
+
+  Widget cardDetails(Products item) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          item.name ?? "",
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          "\$${item.price}",
+          style: TextStyle(
+            fontSize: 14,
+            color: Colors.grey[600],
+          ),
+        ),
+      ],
+    );
+  }
+
 }

@@ -1,5 +1,4 @@
 import "package:customer/controllers/product_detail_page_controllers/product_detail_page_controllers.dart";
-import "package:customer/screens/widgets/conversation_list_widgets.dart";
 import "package:customer/screens/widgets/text_widgets.dart";
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_assets_images.dart";
@@ -43,9 +42,14 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                         borderRadius: BorderRadius.circular(7),
                         color: AppColors().appWhiteColor,
                       ),
-                      child: const Icon(
-                        CupertinoIcons.back,
-                        size: 20,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Icon(
+                          Icons.arrow_back,
+                          size: 20,
+                        ),
                       ),
                     ),
                   ),
@@ -266,7 +270,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                                 width: 3,
                               ),
                               Icon(
-                                Icons.arrow_drop_down_sharp,
+                                Icons.keyboard_arrow_down,
                                 color: AppColors().appPrimaryColor,
                                 size: 30,
                               ),
@@ -286,7 +290,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                                 width: 3,
                               ),
                               Icon(
-                                Icons.arrow_drop_down_sharp,
+                                Icons.keyboard_arrow_down,
                                 color: AppColors().appPrimaryColor,
                                 size: 30,
                               ),
@@ -313,7 +317,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  color: AppColors().appGreyColor,
+                  color: Colors.grey.shade200,
                 ),
                 height: 100,
                 width: MediaQuery.sizeOf(context).width,
@@ -337,7 +341,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                             child: Text(
                               AppLanguageKeys().strText.tr,
                               style: TextStyle(
-                                color: AppColors().appGreyColor,
+                                color: Colors.grey.shade600,
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -361,7 +365,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  color: AppColors().appGreyColor,
+                  color: Colors.grey.shade200,
                 ),
                 height: 75,
                 width: MediaQuery.sizeOf(context).width,
@@ -465,47 +469,47 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 20,
-              ),
-              TextWidget(
-                text: AppLanguageKeys().strHighlights.tr,
-                color: AppColors().appBlackColor,
-                size: 19,
-                fontWeight: FontWeight.bold,
-                isLineThrough: false,
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              Column(
-                children: <Widget>[
-                  ConversationList(
-                    name: AppLanguageKeys().strHighlight1.tr,
-                    messageText: AppLanguageKeys().strHightlightDescription.tr,
-                    imageUrl: AppAssetsImages.banner2,
-                    isMessageRead: false,
-                  ),
-                  ConversationList(
-                    name: AppLanguageKeys().strHighlight1.tr,
-                    messageText: AppLanguageKeys().strHightlightDescription.tr,
-                    imageUrl: AppAssetsImages.banner2,
-                    isMessageRead: false,
-                  ),
-                  ConversationList(
-                    name: AppLanguageKeys().strHighlight1.tr,
-                    messageText: AppLanguageKeys().strHightlightDescription.tr,
-                    imageUrl: AppAssetsImages.banner2,
-                    isMessageRead: false,
-                  ),
-                  ConversationList(
-                    name: AppLanguageKeys().strHighlight1.tr,
-                    messageText: AppLanguageKeys().strHightlightDescription.tr,
-                    imageUrl: AppAssetsImages.banner2,
-                    isMessageRead: false,
-                  ),
-                ],
-              ),
+              // const SizedBox(
+              //   height: 20,
+              // ),
+              // TextWidget(
+              //   text: AppLanguageKeys().strHighlights.tr,
+              //   color: AppColors().appBlackColor,
+              //   size: 19,
+              //   fontWeight: FontWeight.bold,
+              //   isLineThrough: false,
+              // ),
+              // const SizedBox(
+              //   height: 15,
+              // ),
+              // Column(
+              //   children: <Widget>[
+              //     ConversationList(
+              //       name: AppLanguageKeys().strHighlight1.tr,
+              //       messageText: AppLanguageKeys().strHightlightDescription.tr,
+              //       imageUrl: AppAssetsImages.banner2,
+              //       isMessageRead: false,
+              //     ),
+              //     ConversationList(
+              //       name: AppLanguageKeys().strHighlight1.tr,
+              //       messageText: AppLanguageKeys().strHightlightDescription.tr,
+              //       imageUrl: AppAssetsImages.banner2,
+              //       isMessageRead: false,
+              //     ),
+              //     ConversationList(
+              //       name: AppLanguageKeys().strHighlight1.tr,
+              //       messageText: AppLanguageKeys().strHightlightDescription.tr,
+              //       imageUrl: AppAssetsImages.banner2,
+              //       isMessageRead: false,
+              //     ),
+              //     ConversationList(
+              //       name: AppLanguageKeys().strHighlight1.tr,
+              //       messageText: AppLanguageKeys().strHightlightDescription.tr,
+              //       imageUrl: AppAssetsImages.banner2,
+              //       isMessageRead: false,
+              //     ),
+              //   ],
+              // ),
               const SizedBox(
                 height: 18,
               ),
@@ -532,7 +536,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  color: AppColors().appGreyColor,
+                  color: Colors.grey.shade100,
                 ),
                 height: 160,
                 width: MediaQuery.sizeOf(context).width,
@@ -558,7 +562,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                               ),
                               Icon(
                                 Icons.star,
-                                color: AppColors().appYellowColor,
+                                color: AppColors().appOrangeColor,
                               ),
                               const SizedBox(
                                 width: 8,
@@ -598,7 +602,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                               ),
                               Icon(
                                 Icons.star,
-                                color: AppColors().appYellowColor,
+                                color: AppColors().appOrangeColor,
                               ),
                               const SizedBox(
                                 width: 8,
@@ -638,7 +642,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                               ),
                               Icon(
                                 Icons.star,
-                                color: AppColors().appYellowColor,
+                                color: AppColors().appOrangeColor,
                               ),
                               const SizedBox(
                                 width: 8,
@@ -678,7 +682,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                               ),
                               Icon(
                                 Icons.star,
-                                color: AppColors().appYellowColor,
+                                color: AppColors().appOrangeColor,
                               ),
                               const SizedBox(
                                 width: 8,
@@ -718,7 +722,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                               ),
                               Icon(
                                 Icons.star,
-                                color: AppColors().appYellowColor,
+                                color: AppColors().appOrangeColor,
                               ),
                               const SizedBox(
                                 width: 8,
@@ -952,20 +956,20 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                           arguments: <String, dynamic>{},
                         );
                       },
-                      child: Row(
+                      child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Text(
-                            AppLanguageKeys().strAdd.tr.toUpperCase(),
-                            style: const TextStyle(
+                            "ADD TO CART",
+                            style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const SizedBox(
+                          SizedBox(
                             width: 15,
                           ),
-                          const Icon(
+                          Icon(
                             CupertinoIcons.arrow_right,
                             size: 22,
                           ),

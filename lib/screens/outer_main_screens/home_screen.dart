@@ -6,7 +6,9 @@ import "package:customer/controllers/outer_main_controllers/home_controller.dart
 import "package:customer/models/banner_model.dart";
 import "package:customer/models/featured_model.dart";
 import "package:customer/models/product_model.dart";
+import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
+import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
@@ -230,7 +232,12 @@ class HomeScreen extends GetView<HomeController> {
         const SizedBox(height: 8),
         ProductListView(
           pagingController: controller.pagingControllerRecently,
-          onTap: (Products item) async {},
+          onTap: (Products item) async {
+            await AppNavService().pushNamed(
+              destination: AppRoutes().productDetailScreen,
+              arguments: <String, dynamic>{},
+            );
+          },
         ),
       ],
     );
