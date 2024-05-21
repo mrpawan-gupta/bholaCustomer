@@ -226,7 +226,12 @@ class HomeScreen extends GetView<HomeController> {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: CommonHomeTitleBar(
             title: AppLanguageKeys().strCattleFeed.tr,
-            onTapViewAll: () {},
+            onTapViewAll: () async{
+              await AppNavService().pushNamed(
+                destination: AppRoutes().listingScreen,
+                arguments: <String, dynamic>{},
+              );
+            },
           ),
         ),
         const SizedBox(height: 8),
@@ -234,7 +239,7 @@ class HomeScreen extends GetView<HomeController> {
           pagingController: controller.pagingControllerRecently,
           onTap: (Products item) async {
             await AppNavService().pushNamed(
-              destination: AppRoutes().listingScreen,
+              destination: AppRoutes().productDetailScreen,
               arguments: <String, dynamic>{},
             );
           },
