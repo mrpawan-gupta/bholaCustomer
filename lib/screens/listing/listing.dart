@@ -1,9 +1,9 @@
-import "dart:ui";
-
 import "package:customer/common_widgets/common_horizontal_list_view_banner.dart";
+import "package:customer/common_widgets/list_card.dart";
 import "package:customer/controllers/listing_controllers/listing_controllers.dart";
 import "package:customer/models/banner_model.dart";
-import "package:customer/utils/app_assets_images.dart";
+import "package:customer/models/list_model.dart";
+import "package:customer/utils/app_colors.dart";
 import "package:flutter/material.dart";
 import "package:get/get_state_manager/src/simple/get_view.dart";
 
@@ -14,21 +14,21 @@ class ListingScreen extends GetView<ListingScreenController>  {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Listing"),
-        actions: [
+        title: const Text("Listing"),
+        actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.notifications),
+            icon: const Icon(Icons.notifications),
             onPressed: () {},
           ),
         ],
       ),
       body: SingleChildScrollView(
         child: Column(
-          children: [
+          children: <Widget>[
             searchBarWidget(),
             chipFilterRow(),
             banners(),
-            productGrid(),
+            productCards(),
           ],
         ),
       ),
@@ -67,7 +67,7 @@ class ListingScreen extends GetView<ListingScreenController>  {
             ),
           ),
           filled: true,
-          fillColor: Colors.white,
+          fillColor:AppColors().appWhiteColor,
         ),
       ),
     );
@@ -79,20 +79,20 @@ class ListingScreen extends GetView<ListingScreenController>  {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
-          children: [
+          children: <Widget>[
             FilterChip(
-              label: Text('2'),
+              label: const Text('2'),
               onSelected: (_) {},
-              selectedColor: Colors.green,
-              backgroundColor: Colors.green,
-              labelStyle: TextStyle(color: Colors.white),
-              avatar: Icon(Icons.filter_list, color: Colors.white),
+              selectedColor: AppColors().appPrimaryColor,
+              backgroundColor: AppColors().appPrimaryColor,
+              labelStyle:  TextStyle(color: AppColors().appWhiteColor,),
+              avatar: Icon(Icons.filter_list, color: AppColors().appWhiteColor,),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18)
               ),
-              side: BorderSide(color: Colors.transparent),
+              side:  BorderSide(color: AppColors().appTransparentColor,),
             ),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             FilterChip(
               label: Text('On Sale'),
               onSelected: (_) {},
@@ -100,20 +100,21 @@ class ListingScreen extends GetView<ListingScreenController>  {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18)
               ),
-              side: BorderSide(color: Colors.transparent),
+              side:  BorderSide(color: AppColors().appTransparentColor,),
             ),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             FilterChip(
               label: Text('Price'),
               onSelected: (_) {},
-              avatar: Icon(Icons.arrow_drop_down, color: Colors.white),
-              selectedColor: Colors.green,
-              backgroundColor: Colors.green,
-              labelStyle: TextStyle(color: Colors.white),
+              avatar:  Icon(Icons.arrow_drop_down,
+                color: AppColors().appWhiteColor,),
+              selectedColor: AppColors().appPrimaryColor,
+              backgroundColor:AppColors().appPrimaryColor,
+              labelStyle:  TextStyle(color: AppColors().appWhiteColor,),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18)
               ),
-              side: BorderSide(color: Colors.transparent),
+              side: BorderSide(color: AppColors().appTransparentColor,),
             ),
             SizedBox(width: 8),
             FilterChip(
@@ -124,20 +125,20 @@ class ListingScreen extends GetView<ListingScreenController>  {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(18)
               ),
-              side: BorderSide(color: Colors.transparent),
+              side: BorderSide(color: AppColors().appTransparentColor,),
             ),
             SizedBox(width: 8),
             FilterChip(
               label: Text('Brand'),
               onSelected: (_) {},
-              selectedColor: Colors.green,
-              backgroundColor: Colors.green,
-              labelStyle: TextStyle(color: Colors.white),
-              avatar: Icon(Icons.arrow_drop_down, color: Colors.white),
+              selectedColor: AppColors().appPrimaryColor,
+              backgroundColor: AppColors().appPrimaryColor,
+              labelStyle: TextStyle(color: AppColors().appWhiteColor,),
+              avatar: Icon(Icons.arrow_drop_down, color: AppColors().appWhiteColor,),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18)
               ),
-              side: BorderSide(color: Colors.transparent),
+              side: BorderSide(color: AppColors().appTransparentColor,),
             ),
           ],
         ),
@@ -159,76 +160,18 @@ class ListingScreen extends GetView<ListingScreenController>  {
     );
   }
 
-  Widget productGrid() {
-    return GridView.builder(
-      padding: EdgeInsets.all(16.0),
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 3 / 4,
-        crossAxisSpacing: 16.0,
-        mainAxisSpacing: 16.0,
-      ),
-      itemCount: 6,
-      itemBuilder: (context, index) {
-        return productCard();
-      },
-    );
-  }
 
-  Widget productCard() {
-    return Card(
-      elevation: 4,
-      child: Column(
-        children: [
-          Expanded(
-            child: Image.asset(
-              AppAssetsImages.product,
-              fit: BoxFit.cover,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Amul Cattle feed',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  'Lorem ipsum dolor sit amet consectetur',
-                  style: TextStyle(
-                    color: Colors.grey,
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      '\$16,00',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green,
-                      ),
-                    ),
-                    Text(
-                      '\$20,00',
-                      style: TextStyle(
-                        color: Colors.grey,
-                        decoration: TextDecoration.lineThrough,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+  Widget productCards() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        ListCardView(
+          pagingController: controller.pagingControllerProducts,
+          onTap: (Lists item) async {
+          },
+        ),
+      ],
     );
   }
 
