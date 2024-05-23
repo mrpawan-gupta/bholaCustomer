@@ -96,7 +96,7 @@ class CommonHorizontalListViewBanner extends StatelessWidget {
         clipBehavior: Clip.antiAliasWithSaveLayer,
         color: Colors.transparent,
         child: MaybeMarqueeText(
-          text: photo.text ?? "",
+          text: "",
           style: TextStyle(
             fontSize: 16,
             color: AppColors().appWhiteColor,

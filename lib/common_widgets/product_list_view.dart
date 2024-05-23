@@ -1,11 +1,7 @@
-import "package:customer/common_widgets/app_maybe_marquee.dart";
-import "package:customer/common_widgets/common_gradient.dart";
-import "package:customer/common_widgets/common_image_widget.dart";
-import "package:customer/models/product_model.dart";
-import "package:customer/utils/app_colors.dart";
-import "package:flutter/material.dart";
-import "package:infinite_scroll_pagination/infinite_scroll_pagination.dart";
-
+import 'package:flutter/material.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:customer/models/product_model.dart';
+import 'package:customer/common_widgets/common_image_widget.dart';
 
 class ProductListView extends StatelessWidget {
   const ProductListView({
@@ -20,7 +16,7 @@ class ProductListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 150,
+      height: 260,
       width: double.infinity,
       child: PagedListView<int, Products>(
         shrinkWrap: true,
@@ -34,22 +30,36 @@ class ProductListView extends StatelessWidget {
             final int length = pagingController.itemList?.length ?? 0;
             final bool isLast = i == length - 1;
             return Padding(
-              padding: EdgeInsets.only(
-                right: isLast ? 0.0 : 16.0,
-              ),
+              padding: EdgeInsets.only(right: isLast ? 0.0 : 16.0),
               child: SizedBox(
-                height: 150,
+                height: 250,
                 width: 150,
                 child: Card(
                   clipBehavior: Clip.antiAliasWithSaveLayer,
-                  elevation: 0,
+                  elevation: 3,
                   margin: EdgeInsets.zero,
-                  child: Stack(
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    children: <Widget>[
-                      stackWidget(item: item, index: i),
-                      materialWidget(item: item, index: i),
-                    ],
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: InkWell(
+                    onTap: () async {
+                      onTap(item);
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Expanded(
+                          child: CommonImageWidget(
+                            imageUrl: item.photo ?? "",
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: cardDetails(item),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -60,53 +70,27 @@ class ProductListView extends StatelessWidget {
     );
   }
 
-  Widget stackWidget({required Products item, required int index}) {
-    return Stack(
-      clipBehavior: Clip.antiAliasWithSaveLayer,
+  Widget cardDetails(Products item) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        CommonImageWidget(
-          imageUrl: item.photo ?? "",
-          fit: BoxFit.cover,
+        Text(
+          item.name ?? "",
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
         ),
-        AnimatedOpacity(
-          opacity: 1.00,
-          duration: const Duration(milliseconds: 250),
-          child: commonGradientWidget(
-            photo: item,
-            index: index,
+        const SizedBox(height: 4),
+        Text(
+          "\$${item.price}",
+          style: TextStyle(
+            fontSize: 14,
+            color: Colors.grey[600],
           ),
         ),
       ],
-    );
-  }
-
-  Widget materialWidget({required Products item, required int index}) {
-    return Material(
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: () async {
-          onTap(item);
-        },
-      ),
-    );
-  }
-
-  Widget commonGradientWidget({required Products photo, required int index}) {
-    return CommonGradient(
-      child: Material(
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        color: Colors.transparent,
-        child: MaybeMarqueeText(
-          text: photo.name ?? "",
-          style: TextStyle(
-            fontSize: 16,
-            color: AppColors().appWhiteColor,
-            fontWeight: FontWeight.bold,
-          ),
-          alignment: Alignment.center,
-        ),
-      ),
     );
   }
 }

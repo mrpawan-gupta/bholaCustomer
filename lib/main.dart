@@ -53,7 +53,7 @@ Future<void> main() async {
   } else {}
 
   injectDependencies();
-  await initDependencies();
+  // await initDependencies();
 
   runApp(const MyApp());
 }
