@@ -4,7 +4,7 @@ class GetAllServices {
     success = json["success"];
     if (json["data"] != null) {
       data = <GetAllServicesData>[];
-      for (final dynamic v in json["data"] as List<dynamic>) {
+      for (final dynamic v in json["data"]["services"] as List<dynamic>) {
         data!.add(GetAllServicesData.fromJson(v));
       }
     }
