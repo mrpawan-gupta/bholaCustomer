@@ -245,7 +245,7 @@ class HomeController extends GetxController {
       types: Types.order,
       endPoint: "product",
       query: <String, dynamic>{
-        "offset": 0,
+        "offset": pageKey,
         "limit": 3,
         "sortBy": "createdAt",
         "sortOrder": "desc",

@@ -1,4 +1,5 @@
 import "package:customer/bindings/account_binding.dart";
+import "package:customer/bindings/listing_binding/listing_binding.dart";
 import "package:customer/bindings/login_screen_bindings/language_selection_binding.dart";
 import "package:customer/bindings/login_screen_bindings/notification_screen_binding.dart";
 import "package:customer/bindings/login_screen_bindings/otp_screen_binding.dart";
@@ -32,6 +33,8 @@ import "package:customer/screens/settings_screens/change_language_screen.dart";
 import "package:customer/screens/settings_screens/settings_main_screen.dart";
 import "package:get/get.dart";
 
+import "../screens/listing/listing.dart";
+
 class AppRoutes {
   factory AppRoutes() {
     return _singleton;
@@ -58,6 +61,7 @@ class AppRoutes {
   final String changeLanguageScreen = "/changeLanguageScreen";
   final String productDetailScreen = "/productDetailScreen";
   final String cartScreen = "/cartScreen";
+  final String listingScreen = "/listingScreen";
 
   List<GetPage<dynamic>> getPages() {
     final GetPage<dynamic> splashScreenRoute = GetPage<dynamic>(
@@ -145,6 +149,12 @@ class AppRoutes {
       binding: CartBinding(),
     );
 
+    final GetPage<dynamic> listingRoute = GetPage<dynamic>(
+      name: listingScreen,
+      page: ListingScreen.new,
+      binding: ListingScreenBinding(),
+    );
+
     return <GetPage<dynamic>>[
       splashScreenRoute,
       languageSelectionRoute,
@@ -162,6 +172,7 @@ class AppRoutes {
       changeLanguageRoute,
       productDetailRoute,
       cartRoute,
+      listingRoute,
     ];
   }
 }
