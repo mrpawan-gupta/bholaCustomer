@@ -26,12 +26,7 @@ class FeaturedModel {
 }
 
 class FeaturedModelData {
-  FeaturedModelData({
-    this.categories,
-    this.totalItems,
-    this.limit,
-    this.offset,
-  });
+  FeaturedModelData({this.categories, this.limit, this.page, this.totalcounts});
 
   FeaturedModelData.fromJson(Map<String, dynamic> json) {
     if (json["categories"] != null) {
@@ -40,14 +35,14 @@ class FeaturedModelData {
         categories!.add(Categories.fromJson(v));
       }
     }
-    totalItems = json["totalItems"];
     limit = json["limit"];
-    offset = json["offset"];
+    page = json["page"];
+    totalcounts = json["totalcounts"];
   }
   List<Categories>? categories;
-  int? totalItems;
   int? limit;
-  int? offset;
+  int? page;
+  int? totalcounts;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -55,9 +50,9 @@ class FeaturedModelData {
       data["categories"] =
           categories!.map((Categories v) => v.toJson()).toList();
     }
-    data["totalItems"] = totalItems;
     data["limit"] = limit;
-    data["offset"] = offset;
+    data["page"] = page;
+    data["totalcounts"] = totalcounts;
     return data;
   }
 }

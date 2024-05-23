@@ -112,18 +112,28 @@ class AppAPIService extends GetConnect {
                 : contentTypeMultiPartFormData,
             headers: headers,
             query: getValidQuery(query),
-          );
+          ).timeout(const Duration(minutes: 1));
+
           await postAPICallProcedure(
             response: response,
             successCallback: successCallback,
             failureCallback: failureCallback,
           );
+
+          if (needLoader) {
+            AppLoader().hideLoader();
+          } else {}
         } on Exception catch (error, stackTrace) {
           AppLogger().error(
             message: "Exception caught",
             error: error,
             stackTrace: stackTrace,
           );
+
+          if (needLoader) {
+            AppLoader().hideLoader();
+          } else {}
+
           failureCallback(<String, dynamic>{"message": error});
         } finally {
           if (needLoader) {
@@ -183,18 +193,28 @@ class AppAPIService extends GetConnect {
                 : contentTypeMultiPartFormData,
             headers: headers,
             query: getValidQuery(query),
-          );
+          ).timeout(const Duration(minutes: 1));
+
           await postAPICallProcedure(
             response: response,
             successCallback: successCallback,
             failureCallback: failureCallback,
           );
+
+          if (needLoader) {
+            AppLoader().hideLoader();
+          } else {}
         } on Exception catch (error, stackTrace) {
           AppLogger().error(
             message: "Exception caught",
             error: error,
             stackTrace: stackTrace,
           );
+
+          if (needLoader) {
+            AppLoader().hideLoader();
+          } else {}
+
           failureCallback(<String, dynamic>{"message": error});
         } finally {
           if (needLoader) {
@@ -254,18 +274,28 @@ class AppAPIService extends GetConnect {
                 : contentTypeMultiPartFormData,
             headers: headers,
             query: getValidQuery(query),
-          );
+          ).timeout(const Duration(minutes: 1));
+
           await postAPICallProcedure(
             response: response,
             successCallback: successCallback,
             failureCallback: failureCallback,
           );
+
+          if (needLoader) {
+            AppLoader().hideLoader();
+          } else {}
         } on Exception catch (error, stackTrace) {
           AppLogger().error(
             message: "Exception caught",
             error: error,
             stackTrace: stackTrace,
           );
+
+          if (needLoader) {
+            AppLoader().hideLoader();
+          } else {}
+
           failureCallback(<String, dynamic>{"message": error});
         } finally {
           if (needLoader) {
@@ -325,18 +355,28 @@ class AppAPIService extends GetConnect {
                 : contentTypeMultiPartFormData,
             headers: headers,
             query: getValidQuery(query),
-          );
+          ).timeout(const Duration(minutes: 1));
+
           await postAPICallProcedure(
             response: response,
             successCallback: successCallback,
             failureCallback: failureCallback,
           );
+
+          if (needLoader) {
+            AppLoader().hideLoader();
+          } else {}
         } on Exception catch (error, stackTrace) {
           AppLogger().error(
             message: "Exception caught",
             error: error,
             stackTrace: stackTrace,
           );
+
+          if (needLoader) {
+            AppLoader().hideLoader();
+          } else {}
+
           failureCallback(<String, dynamic>{"message": error});
         } finally {
           if (needLoader) {
@@ -395,18 +435,28 @@ class AppAPIService extends GetConnect {
                 : contentTypeMultiPartFormData,
             headers: headers,
             query: getValidQuery(query),
-          );
+          ).timeout(const Duration(minutes: 1));
+
           await postAPICallProcedure(
             response: response,
             successCallback: successCallback,
             failureCallback: failureCallback,
           );
+
+          if (needLoader) {
+            AppLoader().hideLoader();
+          } else {}
         } on Exception catch (error, stackTrace) {
           AppLogger().error(
             message: "Exception caught",
             error: error,
             stackTrace: stackTrace,
           );
+
+          if (needLoader) {
+            AppLoader().hideLoader();
+          } else {}
+
           failureCallback(<String, dynamic>{"message": error});
         } finally {
           if (needLoader) {

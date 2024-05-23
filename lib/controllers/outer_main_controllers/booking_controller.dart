@@ -67,7 +67,7 @@ class BookingController extends GetxController {
           ..refresh();
       },
       failureCallback: (Map<String, dynamic> json) {
-        AppSnackbar().snackbarFailure(title: "", message: json["message"]);
+        AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
       },
     );
     return Future<void>.value();
@@ -91,7 +91,7 @@ class BookingController extends GetxController {
         unawaited(getAddressesAPI());
       },
       failureCallback: (Map<String, dynamic> json) {
-        AppSnackbar().snackbarFailure(title: "", message: json["message"]);
+        AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
       },
     );
     return Future<void>.value();
@@ -117,7 +117,7 @@ class BookingController extends GetxController {
           ..refresh();
       },
       failureCallback: (Map<String, dynamic> json) {
-        AppSnackbar().snackbarFailure(title: "", message: json["message"]);
+        AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
       },
     );
     return Future<void>.value();
@@ -144,7 +144,7 @@ class BookingController extends GetxController {
           ..refresh();
       },
       failureCallback: (Map<String, dynamic> json) {
-        AppSnackbar().snackbarFailure(title: "", message: json["message"]);
+        AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
       },
     );
     return Future<void>.value();
@@ -172,7 +172,7 @@ class BookingController extends GetxController {
       successCallback: (Map<String, dynamic> json) {
         clearForm();
 
-        AppSnackbar().snackbarSuccess(title: "", message: json["message"]);
+        AppSnackbar().snackbarSuccess(title: "Yay!", message: json["message"]);
 
         CreateBooking model = CreateBooking();
         model = CreateBooking.fromJson(json);
@@ -181,7 +181,7 @@ class BookingController extends GetxController {
         AppLogger().info(message: "Booking Id: $bookingId");
       },
       failureCallback: (Map<String, dynamic> json) {
-        AppSnackbar().snackbarFailure(title: "", message: json["message"]);
+        AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
       },
     );
     return Future<void>.value();
