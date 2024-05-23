@@ -2,13 +2,12 @@ class ProductModel {
   ProductModel({this.success, this.data, this.statusCode, this.message});
   ProductModel.fromJson(Map<String, dynamic> json) {
     success = json["success"];
-    data =
-    json["data"] != null ? ProductModelData.fromJson(json["data"]) : null;
+    data = json["data"] != null ? Data.fromJson(json["data"]) : null;
     statusCode = json["statusCode"];
     message = json["message"];
   }
   bool? success;
-  ProductModelData? data;
+  Data? data;
   int? statusCode;
   String? message;
 
@@ -24,33 +23,40 @@ class ProductModel {
   }
 }
 
-class ProductModelData {
-  ProductModelData({this.products, this.totalCount});
+class Data {
+  Data({this.products, this.totalcounts, this.limit, this.page});
 
-  ProductModelData.fromJson(Map<String, dynamic> json) {
+  Data.fromJson(Map<String, dynamic> json) {
     if (json["products"] != null) {
       products = <Products>[];
       for (final dynamic v in json["products"] as List<dynamic>) {
         products!.add(Products.fromJson(v));
       }
     }
-    totalCount = json["totalCount"];
+    totalcounts = json["totalcounts"];
+    limit = json["limit"];
+    page = json["page"];
   }
   List<Products>? products;
-  int? totalCount;
+  int? totalcounts;
+  int? limit;
+  int? page;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     if (products != null) {
       data["products"] = products!.map((Products v) => v.toJson()).toList();
     }
-    data["totalCount"] = totalCount;
+    data["totalcounts"] = totalcounts;
+    data["limit"] = limit;
+    data["page"] = page;
     return data;
   }
 }
 
 class Products {
   Products({
+    this.cumulativeRating,
     this.sId,
     this.name,
     this.description,
@@ -68,9 +74,12 @@ class Products {
     this.createdAt,
     this.updatedAt,
     this.iV,
+    this.discountPercent,
+    this.discountedPrice,
   });
 
   Products.fromJson(Map<String, dynamic> json) {
+    cumulativeRating = json["cumulativeRating"];
     sId = json["_id"];
     name = json["name"];
     description = json["description"];
@@ -78,7 +87,7 @@ class Products {
     isDeleted = json["isDeleted"];
     price = json["price"];
     category =
-    json["category"] != null ? Category.fromJson(json["category"]) : null;
+        json["category"] != null ? Category.fromJson(json["category"]) : null;
     itemCode = json["itemCode"];
     quantity = json["quantity"];
     sold = json["sold"];
@@ -89,7 +98,10 @@ class Products {
     createdAt = json["createdAt"];
     updatedAt = json["updatedAt"];
     iV = json["__v"];
+    discountPercent = json["discountPercent"];
+    discountedPrice = json["discountedPrice"];
   }
+  double? cumulativeRating;
   String? sId;
   String? name;
   String? description;
@@ -107,9 +119,12 @@ class Products {
   String? createdAt;
   String? updatedAt;
   int? iV;
+  int? discountPercent;
+  int? discountedPrice;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data["cumulativeRating"] = cumulativeRating;
     data["_id"] = sId;
     data["name"] = name;
     data["description"] = description;
@@ -129,6 +144,8 @@ class Products {
     data["createdAt"] = createdAt;
     data["updatedAt"] = updatedAt;
     data["__v"] = iV;
+    data["discountPercent"] = discountPercent;
+    data["discountedPrice"] = discountedPrice;
     return data;
   }
 }

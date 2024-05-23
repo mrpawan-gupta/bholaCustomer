@@ -3,12 +3,12 @@ class BannerModel {
 
   BannerModel.fromJson(Map<String, dynamic> json) {
     success = json["success"];
-    data = json["data"] != null ? Data.fromJson(json["data"]) : null;
+    data = json["data"] != null ? BannerModelData.fromJson(json["data"]) : null;
     statusCode = json["statusCode"];
     message = json["message"];
   }
   bool? success;
-  Data? data;
+  BannerModelData? data;
   int? statusCode;
   String? message;
 
@@ -24,33 +24,33 @@ class BannerModel {
   }
 }
 
-class Data {
-  Data({this.banners, this.totalItems, this.limit, this.offset});
+class BannerModelData {
+  BannerModelData({this.banners, this.totalcounts, this.limit, this.page});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  BannerModelData.fromJson(Map<String, dynamic> json) {
     if (json["banners"] != null) {
       banners = <Banners>[];
       for (final dynamic v in json["banners"] as List<dynamic>) {
         banners!.add(Banners.fromJson(v));
       }
     }
-    totalItems = json["totalItems"];
+    totalcounts = json["totalcounts"];
     limit = json["limit"];
-    offset = json["offset"];
+    page = json["page"];
   }
   List<Banners>? banners;
-  int? totalItems;
+  int? totalcounts;
   int? limit;
-  int? offset;
+  int? page;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     if (banners != null) {
       data["banners"] = banners!.map((Banners v) => v.toJson()).toList();
     }
-    data["totalItems"] = totalItems;
+    data["totalcounts"] = totalcounts;
     data["limit"] = limit;
-    data["offset"] = offset;
+    data["page"] = page;
     return data;
   }
 }
@@ -65,6 +65,7 @@ class Banners {
     this.type,
     this.iV,
   });
+
   Banners.fromJson(Map<String, dynamic> json) {
     sId = json["_id"];
     image = json["image"];

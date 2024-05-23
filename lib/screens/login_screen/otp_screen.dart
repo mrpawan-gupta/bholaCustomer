@@ -139,7 +139,7 @@ class OTPScreen extends GetView<OTPScreenController> {
                                 await controller.sendOTPAPICall(
                                   successCallback: (Map<String, dynamic> json) {
                                     AppSnackbar().snackbarSuccess(
-                                      title: "",
+                                      title: "Yay!",
                                       message: json["message"],
                                     );
 
@@ -147,7 +147,7 @@ class OTPScreen extends GetView<OTPScreenController> {
                                   },
                                   failureCallback: (Map<String, dynamic> json) {
                                     AppSnackbar().snackbarFailure(
-                                      title: "",
+                                      title: "Oops",
                                       message: json["message"],
                                     );
                                   },
@@ -194,7 +194,7 @@ class OTPScreen extends GetView<OTPScreenController> {
     await controller.verifyOTPAPICall(
       successCallback: (Map<String, dynamic> json) async {
         AppSnackbar().snackbarSuccess(
-          title: "",
+          title: "Yay!",
           message: json["message"],
         );
 
@@ -202,7 +202,7 @@ class OTPScreen extends GetView<OTPScreenController> {
       },
       failureCallback: (Map<String, dynamic> json) {
         AppSnackbar().snackbarFailure(
-          title: "",
+          title: "Oops",
           message: json["message"],
         );
       },

@@ -36,10 +36,10 @@ class SettingsMainController extends GetxController {
       types: Types.oauth,
       endPoint: "user/signout",
       successCallback: (Map<String, dynamic> json) async {
-        AppSnackbar().snackbarFailure(title: "", message: json["message"]);
+        AppSnackbar().snackbarSuccess(title: "Yay!", message: json["message"]);
       },
       failureCallback: (Map<String, dynamic> json) async {
-        AppSnackbar().snackbarFailure(title: "", message: json["message"]);
+        AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
       },
     );
 
