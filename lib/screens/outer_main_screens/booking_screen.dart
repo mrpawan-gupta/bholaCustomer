@@ -523,26 +523,26 @@ class BookingScreen extends GetView<BookingController> {
                             const SizedBox(width: 16 + 8),
                             Expanded(
                               child: DropdownButtonHideUnderline(
-                                child: DropdownButton<GetAllServicesData>(
+                                child: DropdownButton<Services>(
                                   value: mapEquals(
                                     controller.rxSelectedService.value.toJson(),
-                                    GetAllServicesData().toJson(),
+                                    Services().toJson(),
                                   )
                                       ? null
                                       : controller.rxSelectedService.value,
                                   items: controller.servicesList.map(
                                     (
-                                      GetAllServicesData value,
+                                      Services value,
                                     ) {
                                       return DropdownMenuItem<
-                                          GetAllServicesData>(
+                                          Services>(
                                         value: value,
                                         child: Text(value.name ?? ""),
                                       );
                                     },
                                   ).toList(),
                                   onChanged: (
-                                    GetAllServicesData? value,
+                                    Services? value,
                                   ) {
                                     if (value != null) {
                                       controller.rxSelectedService(value);

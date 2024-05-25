@@ -35,8 +35,6 @@ class VerifyOTPModelData {
     this.role,
     this.agreementStatus,
     this.token,
-    this.currentLattitude,
-    this.currentLongitude,
     this.isNewUser,
   });
 
@@ -49,8 +47,6 @@ class VerifyOTPModelData {
     role = json["role"];
     agreementStatus = json["agreement_status"];
     token = json["token"];
-    currentLattitude = json["current_lattitude"];
-    currentLongitude = json["current_longitude"];
     isNewUser = json["isNewUser"];
   }
   String? sId;
@@ -61,8 +57,6 @@ class VerifyOTPModelData {
   String? role;
   bool? agreementStatus;
   String? token;
-  num? currentLattitude;
-  num? currentLongitude;
   bool? isNewUser;
 
   Map<String, dynamic> toJson() {
@@ -75,8 +69,6 @@ class VerifyOTPModelData {
     data["role"] = role;
     data["agreement_status"] = agreementStatus;
     data["token"] = token;
-    data["current_lattitude"] = currentLattitude;
-    data["current_longitude"] = currentLongitude;
     data["isNewUser"] = isNewUser;
     return data;
   }
