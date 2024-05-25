@@ -29,7 +29,7 @@ class ProductDetailController extends GetxController {
       } else {}
     } else {}
 
-    unawaited(getVehicleDetailsAPICall());
+    unawaited(getProductDetailsAPICall());
   }
 
   void toggleDescTextShowFlag() {
@@ -64,12 +64,12 @@ class ProductDetailController extends GetxController {
     return;
   }
 
-  void updateVehicleDetailsData(ProductDetailsData value) {
+  void updateProductDetailsData(ProductDetailsData value) {
     rxProductDetailsData(value);
     return;
   }
 
-  Future<void> getVehicleDetailsAPICall() async {
+  Future<void> getProductDetailsAPICall() async {
     final Completer<void> completer = Completer<void>();
     await AppAPIService().functionGet(
       types: Types.order,
@@ -80,7 +80,7 @@ class ProductDetailController extends GetxController {
         ProductDetails vehicleDetails = ProductDetails();
         vehicleDetails = ProductDetails.fromJson(json);
 
-        updateVehicleDetailsData(vehicleDetails.data ?? ProductDetailsData());
+        updateProductDetailsData(vehicleDetails.data ?? ProductDetailsData());
 
         await initPodPlayerController();
 
