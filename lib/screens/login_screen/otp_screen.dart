@@ -63,12 +63,6 @@ class OTPScreen extends GetView<OTPScreenController> {
                     autofocus: true,
                     controller: controller.otpController,
                     onChanged: controller.updateOTP,
-                    onClipboardFound: (String value) async {
-                      await verifyOTPAPICall();
-                    },
-                    onCompleted: (String value) async {
-                      await verifyOTPAPICall();
-                    },
                     inputFormatters: <TextInputFormatter>[
                       FilteringTextInputFormatter.digitsOnly,
                       LengthLimitingTextInputFormatter(6),
