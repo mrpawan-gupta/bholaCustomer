@@ -41,8 +41,6 @@ class GetUserByIdData {
       this.iV,
       this.profile,
       this.deletedAt,
-      this.currentLattitude,
-      this.currentLongitude,
       this.language,
       this.isActive,
       this.joiningDate,
@@ -61,8 +59,6 @@ class GetUserByIdData {
     profile =
         json["profile"] != null ? Profile.fromJson(json["profile"]) : null;
     deletedAt = json["deletedAt"];
-    currentLattitude = json["current_lattitude"];
-    currentLongitude = json["current_longitude"];
     language = json["language"];
     isActive = json["isActive"];
     joiningDate = json["joiningDate"];
@@ -79,8 +75,6 @@ class GetUserByIdData {
   int? iV;
   Profile? profile;
   String? deletedAt;
-  num? currentLattitude;
-  num? currentLongitude;
   String? language;
   bool? isActive;
   String? joiningDate;
@@ -101,8 +95,6 @@ class GetUserByIdData {
       data["profile"] = profile!.toJson();
     }
     data["deletedAt"] = deletedAt;
-    data["current_lattitude"] = currentLattitude;
-    data["current_longitude"] = currentLongitude;
     data["language"] = language;
     data["isActive"] = isActive;
     data["joiningDate"] = joiningDate;

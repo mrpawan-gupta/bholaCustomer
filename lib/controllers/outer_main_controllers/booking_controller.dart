@@ -33,8 +33,8 @@ class BookingController extends GetxController {
   final RxList<Categories> categoriesList = <Categories>[].obs;
   final Rx<Categories> rxSelectedCategory = Categories().obs;
 
-  final RxList<GetAllServicesData> servicesList = <GetAllServicesData>[].obs;
-  final Rx<GetAllServicesData> rxSelectedService = GetAllServicesData().obs;
+  final RxList<Services> servicesList = <Services>[].obs;
+  final Rx<Services> rxSelectedService = Services().obs;
 
   final RxDouble rxFarmArea = 0.0.obs;
 
@@ -140,7 +140,7 @@ class BookingController extends GetxController {
 
         servicesList
           ..clear()
-          ..addAll(model.data ?? <GetAllServicesData>[])
+          ..addAll(model.data?.services ?? <Services>[])
           ..refresh();
       },
       failureCallback: (Map<String, dynamic> json) {
@@ -204,7 +204,7 @@ class BookingController extends GetxController {
     rxDate("");
 
     rxSelectedCategory(Categories());
-    rxSelectedService(GetAllServicesData());
+    rxSelectedService(Services());
 
     rxFarmArea(0.0);
 
@@ -301,7 +301,7 @@ class BookingController extends GetxController {
 
   int getSelectedServiceIndex() {
     return servicesList.indexWhere(
-      (GetAllServicesData item) {
+      (Services item) {
         return item == rxSelectedService.value;
       },
     );

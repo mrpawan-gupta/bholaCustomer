@@ -1,5 +1,6 @@
-import "package:customer/common_widgets/app_icon_button.dart";
+import "package:customer/common_widgets/common_image_widget.dart";
 import "package:customer/controllers/main_navigation_controller.dart";
+import "package:customer/models/get_user_by_id.dart";
 import "package:customer/screens/outer_main_screens/booking_screen.dart";
 import "package:customer/screens/outer_main_screens/help_screen.dart";
 import "package:customer/screens/outer_main_screens/home_screen.dart";
@@ -9,7 +10,6 @@ import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_double_tap.dart";
 import "package:customer/utils/app_routes.dart";
-import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:persistent_bottom_nav_bar/persistent_tab_view.dart";
@@ -25,17 +25,30 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
         centerTitle: false,
         title: helloWidget(),
         actions: <Widget>[
-          SizedBox(
-            height: 48,
-            width: 48,
-            child: AppIconButton(
-              iconData: Icons.account_circle_outlined,
-              onPressed: () async {
-                await AppNavService().pushNamed(
-                  destination: AppRoutes().settingsMainScreen,
-                  arguments: <String, dynamic>{},
-                );
-              },
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Material(
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () async {
+                  await AppNavService().pushNamed(
+                    destination: AppRoutes().settingsMainScreen,
+                    arguments: <String, dynamic>{},
+                  );
+                },
+                child: Container(
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  height: 48,
+                  width: 48,
+                  decoration: const BoxDecoration(shape: BoxShape.circle),
+                  child: CommonImageWidget(
+                    imageUrl:
+                        controller.getUserData().profile?.profilePhoto ?? "",
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
             ),
           ),
         ],
@@ -43,7 +56,13 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
       ),
       // ignore: deprecated_member_use
       body: WillPopScope(
-        onWillPop: AppDoubleTap().onWillPop,
+        onWillPop: () async {
+          bool value = false;
+          if (controller.tabController.index == 0) {
+            value = await AppDoubleTap().onWillPop();
+          } else {}
+          return Future<bool>.value(value);
+        },
         child: PersistentTabView(
           context,
           controller: controller.tabController,
@@ -114,8 +133,9 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
   }
 
   Widget helloWidget() {
+    final GetUserByIdData data = controller.getUserData();
     return Text(
-      "👋🏻 ${AppLanguageKeys().strHello.tr}, ${controller.firstName()}",
+      "${data.firstName ?? ""} ${data.lastName ?? ""}",
       style: const TextStyle(fontSize: 16 + 4, fontWeight: FontWeight.w700),
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
