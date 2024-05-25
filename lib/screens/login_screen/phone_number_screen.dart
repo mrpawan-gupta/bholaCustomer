@@ -169,7 +169,7 @@ class PhoneNumberScreen extends GetView<PhoneNumberScreenController> {
     await controller.sendOTPAPICall(
       successCallback: (Map<String, dynamic> json) async {
         AppSnackbar().snackbarSuccess(
-          title: "",
+          title: "Yay!",
           message: json["message"],
         );
 
@@ -182,7 +182,7 @@ class PhoneNumberScreen extends GetView<PhoneNumberScreenController> {
       },
       failureCallback: (Map<String, dynamic> json) {
         AppSnackbar().snackbarFailure(
-          title: "",
+          title: "Oops",
           message: json["message"],
         );
       },
