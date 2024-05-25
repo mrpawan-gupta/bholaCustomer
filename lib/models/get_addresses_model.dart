@@ -36,8 +36,6 @@ class GetAddressesData {
     this.street,
     this.city,
     this.country,
-    this.latitude,
-    this.longitude,
     this.user,
     this.createdAt,
     this.updatedAt,
@@ -50,8 +48,6 @@ class GetAddressesData {
     street = json["street"];
     city = json["city"];
     country = json["country"];
-    latitude = json["latitude"];
-    longitude = json["longitude"];
     user = json["user"];
     createdAt = json["createdAt"];
     updatedAt = json["updatedAt"];
@@ -62,8 +58,6 @@ class GetAddressesData {
   String? street;
   String? city;
   String? country;
-  double? latitude;
-  double? longitude;
   String? user;
   String? createdAt;
   String? updatedAt;
@@ -76,8 +70,6 @@ class GetAddressesData {
     data["street"] = street;
     data["city"] = city;
     data["country"] = country;
-    data["latitude"] = latitude;
-    data["longitude"] = longitude;
     data["user"] = user;
     data["createdAt"] = createdAt;
     data["updatedAt"] = updatedAt;

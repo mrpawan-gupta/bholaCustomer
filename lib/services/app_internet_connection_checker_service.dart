@@ -30,14 +30,12 @@ class AppNetCheckService extends GetxService {
         } else {
           hasConnection
               ? AppSnackbar().snackbarSuccess(
-                  title: "Connectivity Update",
+                  title: "Yay!",
                   message: "Data connection is available.",
-                  inMaterialBanner: true,
                 )
               : AppSnackbar().snackbarWarning(
-                  title: "Connectivity Update",
+                  title: "Oops",
                   message: "You are disconnected from the internet.",
-                  inMaterialBanner: true,
                 );
         }
       },
