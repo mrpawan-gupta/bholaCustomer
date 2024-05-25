@@ -1,3 +1,4 @@
+import "package:customer/common_functions/date_time_functions.dart";
 import "package:customer/controllers/product_detail_page_controllers/product_detail_page_controllers.dart";
 import "package:customer/models/product_details_model.dart";
 import "package:customer/screens/widgets/text_widgets.dart";
@@ -251,7 +252,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
         Row(
           children: <Widget>[
             TextWidget(
-              text: "₹199",
+              text: "\$${data.price}",
               color: AppColors().appBlackColor,
               size: 18,
               fontWeight: FontWeight.bold,
@@ -271,7 +272,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
               width: 5,
             ),
             TextWidget(
-              text: "₹599",
+              text: "\$${data.price}",
               color: AppColors().appGreyColor,
               size: 17,
               fontWeight: FontWeight.w600,
@@ -312,7 +313,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              AppLanguageKeys().strText1.tr,
+              data.description ?? "",
               maxLines: controller.descTextShowFlag ? 8 : 2,
               textAlign: TextAlign.start,
             ),
@@ -684,7 +685,8 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
             borderRadius: const BorderRadius.all(Radius.circular(10)),
             child: LinearProgressIndicator(
               value: value,
-              valueColor: AlwaysStoppedAnimation<Color>(AppColors().appPrimaryColor),
+              valueColor: AlwaysStoppedAnimation<Color>(
+                  AppColors().appPrimaryColor,),
               backgroundColor: const Color(0xffD6D6D6),
             ),
           ),
@@ -747,6 +749,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
   }
 
   Widget priceAndButtonWidget(BuildContext context) {
+    final ProductDetailsData data = controller.rxProductDetailsData.value;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -761,7 +764,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
               isLineThrough: false,
             ),
             TextWidget(
-              text: "₹199",
+              text: "\$${data.price}",
               color: AppColors().appPrimaryColor,
               size: 20,
               fontWeight: FontWeight.bold,
