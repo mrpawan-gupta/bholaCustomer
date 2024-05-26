@@ -1,43 +1,36 @@
+// ignore_for_file: non_constant_identifier_names, constant_identifier_names
+
 class AppAssetsImages {
   factory AppAssetsImages() {
     return _singleton;
   }
 
   AppAssetsImages._internal();
+
   static final AppAssetsImages _singleton = AppAssetsImages._internal();
 
-  final String iconFlutter = "assets/image/icon_flutter.png";
-  final String splash = "assets/image/splash.png";
-  static const String menu = "assets/image/menu.png";
-  static const String cart = "assets/image/cart.png";
-  static const String notification = "assets/image/notification.png";
-  static const String tractor = "assets/image/tractor.jpg.webp";
-  static const String drone = "assets/image/drone.jpeg";
-  static const String jcb = "assets/image/jcb.jpeg";
-  static const String rainy_2d = "assets/image/rainy_2d.png";
-  static const String sunny_2d = "assets/image/sunny_2d.png";
-  static const String thunder_2d = "assets/image/thunder_2d.png";
-  static const String cattle = "assets/image/cattle.webp";
-  static const String banner2 = "assets/image/banner2.jpeg";
-  static const String wheat = "assets/image/wheat.jpeg";
-  static const String back = "assets/image/back.png";
-  static const String product = "assets/image/product.png";
-  static const String blackright = "assets/image/blackright.png";
-  static const String home = "assets/image/Home.png";
-  static const String primary = "assets/image/primary.png";
-  static const String tractor_1 = "assets/image/tractor_1.png";
-  static const String whatsapp = "assets/image/whatsapp.png";
-  static const String bag = "assets/image/bag.png";
-  static const String morning = "assets/image/morning.png";
-  static const String afternoon = "assets/image/afternoon.png";
-  static const String evening = "assets/image/evening.png";
-  static const String night = "assets/image/night.png";
-  static const String bholaLogo = "assets/image/bholaLogo.png";
-  static const String onboard1 = "assets/image/onboard1.png";
-  static const String onboard2 = "assets/image/onboard2.png";
-  static const String onboard3 = "assets/image/onboard3.png";
-  final String flag = "assets/image/flag.jpg";
+  final String iconFlutter = "assets/images/icon_flutter.png";
+  final String add = "assets/images/add.png";
+  final String banner = "assets/images/banner.png";
+  final String banner2 = "assets/images/banner2.jpeg";
+  final String cattleFeed = "assets/images/cattlefeed.png";
+  final String drone = "assets/images/drone.jpeg";
+  final String fertilizer = "assets/images/fertilizer.png";
+  final String jcb = "assets/images/jcb.jpeg";
+  final String nursery = "assets/images/nursery.png";
+  final String ra_cattleFeed = "assets/images/ra_cattleFeed.png";
+  final String ra_fertilizer = "assets/images/ra_fertilizer.png";
+  final String ra_nursery = "assets/images/ra_nursery.png";
+  final String ratingBanner = "assets/images/ratingbanner.svg";
+  final String tractor = "assets/images/tractor.jpg.webp";
+  final String wheat = "assets/images/wheat.jpeg";
+  final String amulProduct = "assets/images/amul_product.png";
+  final String splash = "assets/images/splash.png";
+  final String flag = "assets/images/flag.jpg";
   final String userPlaceholder = "assets/images/default_avatar.png";
   final String imagePlaceholder = "assets/images/image_placeholder.png";
   final String videoPlaceholder = "assets/images/video.png";
+  final String product = "assets/image/product.png";
+  final String blackright = "assets/image/blackright.png";
+  final String back = "assets/image/back.png";
 }

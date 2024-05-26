@@ -40,12 +40,12 @@ class ListCardView extends StatelessWidget {
                 children: <Widget>[
                   Expanded(
                     child: Container(
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.vertical(
+                      decoration:  BoxDecoration(
+                        borderRadius: const BorderRadius.vertical(
                           top: Radius.circular(8.0),
                         ),
                         image: DecorationImage(
-                          image: AssetImage(AppAssetsImages.product),
+                          image: AssetImage(AppAssetsImages().product),
                           fit: BoxFit.cover,
                         ),
                       ),

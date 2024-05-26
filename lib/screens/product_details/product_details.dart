@@ -59,7 +59,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                     top: 165,
                     left: 10,
                     child: Image.asset(
-                      AppAssetsImages.back,
+                      AppAssetsImages().back,
                       height: 50,
                       color: AppColors().appBlackColor,
                     ),
@@ -67,7 +67,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                   Positioned(
                     top: 15,
                     child: Image.asset(
-                      AppAssetsImages.product,
+                      AppAssetsImages().product,
                       height: 400,
                     ),
                   ),
@@ -75,7 +75,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                     top: 165,
                     right: 10,
                     child: Image.asset(
-                      AppAssetsImages.blackright,
+                      AppAssetsImages().blackright,
                       height: 50,
                       color: Colors.black87,
                     ),
@@ -102,7 +102,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                                 child: ColoredBox(
                                   color: AppColors().appGreyColor,
                                   child: Image.asset(
-                                    AppAssetsImages.product,
+                                    AppAssetsImages().product,
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -116,7 +116,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                                 child: ColoredBox(
                                   color: Colors.grey.shade400,
                                   child: Image.asset(
-                                    AppAssetsImages.product,
+                                    AppAssetsImages().product,
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -130,7 +130,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                                 child: ColoredBox(
                                   color: AppColors().appGreyColor,
                                   child: Image.asset(
-                                    AppAssetsImages.product,
+                                    AppAssetsImages().product,
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -144,7 +144,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                                 child: ColoredBox(
                                   color: Colors.grey.shade400,
                                   child: Image.asset(
-                                    AppAssetsImages.product,
+                                    AppAssetsImages().product,
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -158,7 +158,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                                 child: ColoredBox(
                                   color: AppColors().appGreyColor,
                                   child: Image.asset(
-                                    AppAssetsImages.product,
+                                    AppAssetsImages().product,
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -462,7 +462,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                         width: 140,
                         alignment: Alignment.center,
                         child: Image.asset(
-                          AppAssetsImages.product,
+                          AppAssetsImages().product,
                           height: 200,
                           fit: BoxFit.cover,
                         ),
