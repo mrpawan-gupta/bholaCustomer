@@ -28,15 +28,7 @@ class AppLocationService extends GetxService {
     _timer = Timer.periodic(
       AppConstants().locationFetchDuration,
       (Timer timer) async {
-        final (double, double, String) value = await decideAndSend();
-        
-        if ((!value.$1.isEqual(0.0)) && (!value.$2.isEqual(0.0))) {
-          await updateInfoToFirestore(
-            latitude: value.$1,
-            longitude: value.$2,
-            from: value.$3,
-          );
-        } else {}
+        await automatedFunction();
       },
     );
   }
@@ -46,6 +38,19 @@ class AppLocationService extends GetxService {
     _timer.cancel();
 
     super.onClose();
+  }
+
+  Future<void> automatedFunction() async {
+    final (double, double, String) value = await decideAndSend();
+
+    if ((!value.$1.isEqual(0.0)) && (!value.$2.isEqual(0.0))) {
+      await updateInfoToFirestore(
+        latitude: value.$1,
+        longitude: value.$2,
+        from: value.$3,
+      );
+    } else {}
+    return Future<void>.value();
   }
 
   Future<(double, double, String)> decideAndSend() async {

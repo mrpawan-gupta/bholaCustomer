@@ -16,7 +16,7 @@ class BookingController extends GetxController {
   final SearchController searchController = SearchController();
   final RxString rxSearchQuery = "".obs;
 
-  final RxList<GetAddressesData> rxAddressList = <GetAddressesData>[].obs;
+  final RxList<Address> rxAddressList = <Address>[].obs;
 
   final TextEditingController cropNameController = TextEditingController();
   final RxString rxCropName = "".obs;
@@ -63,14 +63,41 @@ class BookingController extends GetxController {
 
         rxAddressList
           ..clear()
-          ..addAll(model.data ?? <GetAddressesData>[])
+          ..addAll(model.data?.address ?? <Address>[])
           ..refresh();
       },
       failureCallback: (Map<String, dynamic> json) {
         AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
       },
+      needLoader: false,
     );
     return Future<void>.value();
+  }
+
+  String validateLocationResult({required LocationResult result}) {
+    String reason = "";
+
+    final bool cond1 = (result.postalCode ?? "").isNotEmpty;
+    final bool cond2 = (result.formattedAddress ?? "").isNotEmpty;
+    final bool cond3 = (result.city?.name ?? "").isNotEmpty;
+    final bool cond4 = (result.country?.name ?? "").isNotEmpty;
+    final bool cond5 = (result.latLng?.latitude ?? 0.0) != 0.0;
+    final bool cond6 = (result.latLng?.longitude ?? 0.0) != 0.0;
+
+    if (!cond1) {
+      reason = "postalCode is missing, please select nearby location.";
+    } else if (!cond2) {
+      reason = "formattedAddress is missing, please select nearby location.";
+    } else if (!cond3) {
+      reason = "city name is missing, please select nearby location.";
+    } else if (!cond4) {
+      reason = "country name is missing, please select nearby location.";
+    } else if (!cond5) {
+      reason = "latitude is missing, please select nearby location.";
+    } else if (!cond6) {
+      reason = "longitude is missing, please select nearby location.";
+    } else {}
+    return reason;
   }
 
   Future<void> setAddressesAPI({required LocationResult result}) async {
@@ -119,6 +146,7 @@ class BookingController extends GetxController {
       failureCallback: (Map<String, dynamic> json) {
         AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
       },
+      needLoader: false,
     );
     return Future<void>.value();
   }
@@ -146,6 +174,7 @@ class BookingController extends GetxController {
       failureCallback: (Map<String, dynamic> json) {
         AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
       },
+      needLoader: false,
     );
     return Future<void>.value();
   }
@@ -233,6 +262,7 @@ class BookingController extends GetxController {
       GetAllServicesData().toJson(),
     );
     final bool cond13 = rxFarmArea.value > 0.0;
+    final bool cond14 = isValidStartAndEndTime();
 
     if (!cond01) {
       reason = "Please select your location.";
@@ -260,16 +290,19 @@ class BookingController extends GetxController {
       reason = "Please select any service.";
     } else if (!cond13) {
       reason = "Please select any farm area greater than 0.";
+    } else if (!cond14) {
+      reason = "Start time should be greater than end time - 1 hour difference";
     } else {}
     return reason;
   }
 
-  List<GetAddressesData> getSuggestions() {
+  List<Address> getSuggestions() {
     final String query = rxSearchQuery.value;
+
     return query.isEmpty
         ? rxAddressList
         : rxAddressList.where(
-            (GetAddressesData item) {
+            (Address item) {
               final String streetLowerCase = (item.street ?? "").toLowerCase();
               final String queryLowerCase = query.toLowerCase();
               return streetLowerCase.contains(queryLowerCase);
@@ -279,7 +312,7 @@ class BookingController extends GetxController {
 
   int getSelectedAddressIndex() {
     return rxAddressList.indexWhere(
-      (GetAddressesData item) {
+      (Address item) {
         final String street = item.street ?? "";
         final String search = searchController.value.text;
         return street == search;
@@ -305,5 +338,12 @@ class BookingController extends GetxController {
         return item == rxSelectedService.value;
       },
     );
+  }
+
+  bool isValidStartAndEndTime() {
+    final DateTime startTime = DateTime.parse(rxStartTime.value);
+    final DateTime endTime = DateTime.parse(rxEndTime.value);
+    return endTime.isAfter(startTime) &&
+        endTime.difference(startTime) >= const Duration(hours: 1);
   }
 }

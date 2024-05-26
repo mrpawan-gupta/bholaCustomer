@@ -1,7 +1,7 @@
 import "package:customer/models/list_model.dart";
-import 'package:flutter/material.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:customer/utils/app_assets_images.dart';
+import "package:customer/utils/app_assets_images.dart";
+import "package:flutter/material.dart";
+import "package:infinite_scroll_pagination/infinite_scroll_pagination.dart";
 
 class ListCardView extends StatelessWidget {
   const ListCardView({
@@ -17,7 +17,7 @@ class ListCardView extends StatelessWidget {
   Widget build(BuildContext context) {
     return PagedGridView<int, Lists>(
       pagingController: pagingController,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         crossAxisSpacing: 16.0,
         mainAxisSpacing: 16.0,
@@ -37,11 +37,13 @@ class ListCardView extends StatelessWidget {
               onTap: () => onTap(item),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                children: <Widget>[
                   Expanded(
                     child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.vertical(top: Radius.circular(8.0)),
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(8.0),
+                        ),
                         image: DecorationImage(
                           image: AssetImage(AppAssetsImages.product),
                           fit: BoxFit.cover,
@@ -53,26 +55,33 @@ class ListCardView extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                      children: <Widget>[
                         Text(
-                          item.name ?? 'Unknown',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          item.name ?? "Unknown",
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         Text(
-                          item.description ?? 'No description available.',
-                          style: TextStyle(color: Colors.grey, fontSize: 12),
+                          item.description ?? "No description available.",
+                          style:
+                              const TextStyle(color: Colors.grey, fontSize: 12),
                         ),
                         Row(
-                          children: [
+                          children: <Widget>[
                             Text(
-                              '\$${item.price}',
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                              "\$${item.price}",
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                            SizedBox(width: 8),
+                            const SizedBox(width: 8),
                             if (item.originalPrice != null)
                               Text(
-                                '\$${item.originalPrice}',
-                                style: TextStyle(
+                                "\$${item.originalPrice}",
+                                style: const TextStyle(
                                   fontSize: 12,
                                   decoration: TextDecoration.lineThrough,
                                   color: Colors.grey,
@@ -82,8 +91,11 @@ class ListCardView extends StatelessWidget {
                         ),
                         if (item.discount != null)
                           Text(
-                            '${item.discount}%',
-                            style: TextStyle(fontSize: 12, color: Colors.green),
+                            "${item.discount}%",
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.green,
+                            ),
                           ),
                       ],
                     ),
