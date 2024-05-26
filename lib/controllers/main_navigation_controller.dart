@@ -3,6 +3,7 @@ import "package:customer/controllers/outer_main_controllers/help_controller.dart
 import "package:customer/controllers/outer_main_controllers/home_controller.dart";
 import "package:customer/controllers/outer_main_controllers/order_history_controller.dart";
 import "package:customer/controllers/outer_main_controllers/portfolio_controller.dart";
+import "package:customer/models/get_user_by_id.dart";
 import "package:customer/services/app_storage_service.dart";
 import "package:customer/utils/app_whatsapp.dart";
 import "package:get/get.dart";
@@ -42,7 +43,7 @@ class MainNavigationController extends GetxController {
     super.onClose();
   }
 
-  String firstName() {
-    return AppStorageService().getUserInfoModel().firstName ?? "";
+  GetUserByIdData getUserData() {
+    return AppStorageService().getUserInfoModel();
   }
 }

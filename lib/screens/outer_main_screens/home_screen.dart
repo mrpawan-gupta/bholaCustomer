@@ -227,10 +227,10 @@ class HomeScreen extends GetView<HomeController> {
           child: CommonHomeTitleBar(
             title: AppLanguageKeys().strCattleFeed.tr,
             onTapViewAll: () async{
-              await AppNavService().pushNamed(
-                destination: AppRoutes().listingScreen,
-                arguments: <String, dynamic>{},
-              );
+              // await AppNavService().pushNamed(
+              //   destination: AppRoutes().productDetailScreen,
+              //   arguments: <String, dynamic>{"id": item.sId ?? ""},
+              // );
             },
           ),
         ),
