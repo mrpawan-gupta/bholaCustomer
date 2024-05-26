@@ -50,10 +50,10 @@ class AppImageVideoPicker {
               if (filePath.isNotEmpty) {
                 final int sizeInBytes = File(filePath).lengthSync();
                 final double sizeInMb = sizeInBytes / (1024 * 1024);
-                sizeInMb > 5
+                sizeInMb > 20
                     ? AppSnackbar().snackbarFailure(
                         title: "Oops",
-                        message: "File size should ne less than 5 MB",
+                        message: "File size should ne less than 20 MB",
                       )
                     : filePathCallback(filePath);
               } else {}
@@ -79,10 +79,10 @@ class AppImageVideoPicker {
               if (filePath.isNotEmpty) {
                 final int sizeInBytes = File(filePath).lengthSync();
                 final double sizeInMb = sizeInBytes / (1024 * 1024);
-                sizeInMb > 5
+                sizeInMb > 20
                     ? AppSnackbar().snackbarFailure(
                         title: "Oops",
-                        message: "File size should ne less than 5 MB",
+                        message: "File size should ne less than 20 MB",
                       )
                     : filePathCallback(filePath);
               } else {}

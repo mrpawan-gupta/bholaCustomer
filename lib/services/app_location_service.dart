@@ -19,26 +19,6 @@ class AppLocationService extends GetxService {
   static final AppLocationService _singleton = AppLocationService._internal();
 
   bool hasAlreadyAskedForGPSWitPrompt = false;
-  late Timer _timer;
-
-  @override
-  void onInit() {
-    super.onInit();
-
-    _timer = Timer.periodic(
-      AppConstants().locationFetchDuration,
-      (Timer timer) async {
-        await automatedFunction();
-      },
-    );
-  }
-
-  @override
-  void onClose() {
-    _timer.cancel();
-
-    super.onClose();
-  }
 
   Future<void> automatedFunction() async {
     final (double, double, String) value = await decideAndSend();
@@ -161,8 +141,8 @@ class AppLocationService extends GetxService {
     //   failureCallback: (Map<String, dynamic> json) {},
     // );
 
-    lat = 22.4667;
-    long = 70.0644;
+    lat = 21.3245;
+    long = 74.5564;
     AppLogger().info(message: "FromIP: lat: $lat long: $long");
 
     return Future<(double, double)>.value((lat, long));
