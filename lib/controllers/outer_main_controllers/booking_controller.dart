@@ -72,6 +72,7 @@ class BookingController extends GetxController {
       needLoader: false,
     );
     return Future<void>.value();
+
   }
 
   String validateLocationResult({required LocationResult result}) {
