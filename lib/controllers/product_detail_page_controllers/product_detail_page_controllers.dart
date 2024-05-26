@@ -12,7 +12,8 @@ class ProductDetailController extends GetxController {
   final RxString rxProductId = "".obs;
   final RxInt rxCurrentIndex = 0.obs;
   final Rx<ProductDetailsData> rxProductDetailsData = ProductDetailsData().obs;
-  bool descTextShowFlag = false;
+  final RxBool descTextShowFlag = false.obs;
+  final RxString productPhoto = "".obs;
 
   PodPlayerController podPlayerController = PodPlayerController(
     playVideoFrom: PlayVideoFrom.network(""),
@@ -33,8 +34,7 @@ class ProductDetailController extends GetxController {
   }
 
   void toggleDescTextShowFlag() {
-    descTextShowFlag = !descTextShowFlag;
-    update();
+    descTextShowFlag.value = !descTextShowFlag.value;
   }
 
   void updateProductId(String value) {
@@ -66,8 +66,10 @@ class ProductDetailController extends GetxController {
 
   void updateProductDetailsData(ProductDetailsData value) {
     rxProductDetailsData(value);
+    productPhoto(value.photo ?? "");
     return;
   }
+
 
   Future<void> getProductDetailsAPICall() async {
     final Completer<void> completer = Completer<void>();
@@ -77,10 +79,10 @@ class ProductDetailController extends GetxController {
       successCallback: (Map<String, dynamic> json) async {
         AppLogger().info(message: json["message"]);
 
-        ProductDetails vehicleDetails = ProductDetails();
-        vehicleDetails = ProductDetails.fromJson(json);
+        ProductDetails productDetails = ProductDetails();
+        productDetails = ProductDetails.fromJson(json);
 
-        updateProductDetailsData(vehicleDetails.data ?? ProductDetailsData());
+        updateProductDetailsData(productDetails.data ?? ProductDetailsData());
 
         await initPodPlayerController();
 
@@ -94,5 +96,7 @@ class ProductDetailController extends GetxController {
     );
     return completer.future;
   }
+
+
 
 }

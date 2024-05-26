@@ -1,4 +1,5 @@
 import "package:customer/common_functions/date_time_functions.dart";
+import "package:customer/common_widgets/common_image_widget.dart";
 import "package:customer/controllers/product_detail_page_controllers/product_detail_page_controllers.dart";
 import "package:customer/models/product_details_model.dart";
 import "package:customer/screens/widgets/text_widgets.dart";
@@ -9,7 +10,10 @@ import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
+import "package:flutter_rating_bar/flutter_rating_bar.dart";
 import "package:get/get.dart";
+import "package:page_view_dot_indicator/page_view_dot_indicator.dart";
+import "package:pod_player/pod_player.dart";
 
 class ProductDetailScreen extends GetView<ProductDetailController> {
   const ProductDetailScreen({super.key});
@@ -24,57 +28,30 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
           children: <Widget>[
             Expanded(
               child: SingleChildScrollView(
-                  child: Obx(
-                      () {
-                        return Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            buildImageWidget(context),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            buildProductDetailsWidget(controller),
-                            buildDeliveryAddressWidget(context),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            buildSuggestedProductsWidget(context),
-                            const SizedBox(
-                              height: 18,
-                            ),
-                            buildRatingsWidget(context),
-                            buildReviewItem(
-                              context,
-                              AppLanguageKeys().strKrishnaAgarwal.tr,
-                              "2 mins ago",
-                              AppLanguageKeys().strText2.tr,
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            const Divider(),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            buildReviewItem(
-                              context,
-                              AppLanguageKeys().strKrishnaAgarwal.tr,
-                              "2 mins ago",
-                              AppLanguageKeys().strText2.tr,
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            const Divider(),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            priceAndButtonWidget(context),
-                          ],
-                        );
-                      }
-                  ),
+                child: Obx(() {
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      pageViewWidget(),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      buildProductDetailsWidget(),
+                      buildDeliveryAddressWidget(context),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      buildProductPhotoWidget(),
+                      const SizedBox(
+                        height: 18,
+                      ),
+                      buildRatingsWidget(context),
+                      reviewsWidget(),
+                      priceAndButtonWidget(context),
+                    ],
+                  );
+                }),
               ),
             ),
           ],
@@ -83,168 +60,117 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
     );
   }
 
-  Widget buildImageWidget(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: <Widget>[
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: AppColors().appGreyColor,
-          ),
-          height: 440,
-          width: MediaQuery.of(context).size.width,
-        ),
-        Positioned(
-          top: 20,
-          left: 20,
-          child: Container(
-            height: 30,
-            width: 30,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(7),
-              color: AppColors().appWhiteColor,
-            ),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: const Icon(
-                Icons.arrow_back,
-                size: 20,
+  Widget pageViewWidget() {
+    final ProductDetailsData data = controller.rxProductDetailsData.value;
+    List<String> thumbnails = [
+      data.photo ?? "",
+      data.video ?? "",
+    ];
+
+    return AspectRatio(
+      aspectRatio: 16 / 9,
+      child: Column(
+        children: <Widget>[
+          Expanded(
+            child: Card(
+              margin: EdgeInsets.symmetric(horizontal: 16.0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+              child: Column(
+                children: <Widget>[
+                  Expanded(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12.0),
+                      child: PageView.builder(
+                        itemCount: 3,
+                        itemBuilder: (BuildContext context, int index) {
+                          String imageUrl = "";
+                          if (index == 0) {
+                            imageUrl = data.photo ?? "";
+                          } else if (index == 1) {
+                            imageUrl = data.video ?? "";
+                          }
+                          return index != 1
+                              ? CommonImageWidget(
+                                  imageUrl: imageUrl,
+                                  fit: BoxFit.cover,
+                                  imageType: ImageType.image,
+                                )
+                              : Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: PodVideoPlayer(
+                                    controller: controller.podPlayerController,
+                                  ),
+                                );
+                        },
+                        onPageChanged: controller.updateCurrentIndex,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  SizedBox(
+                    height: 60,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: List.generate(thumbnails.length, (int index) {
+                          return Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 4.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: index != 1
+                                  ? Image.network(
+                                      thumbnails[index],
+                                      width: 60,
+                                      height: 60,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Container(
+                                      width: 60,
+                                      height: 60,
+                                      color: Colors.black26,
+                                      child: const Icon(
+                                        Icons.play_circle_filled,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                            ),
+                          );
+                        }),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                ],
               ),
             ),
           ),
-        ),
-        Positioned(
-          top: 165,
-          left: 10,
-          child: Image.asset(
-            AppAssetsImages.back,
-            height: 50,
-            color: AppColors().appBlackColor,
+          const SizedBox(height: 8),
+          PageViewDotIndicator(
+            currentItem: controller.rxCurrentIndex.value,
+            count: 3,
+            selectedColor: AppColors().appPrimaryColor,
+            unselectedColor: AppColors().appGreyColor,
           ),
-        ),
-        Positioned(
-          top: 15,
-          child: Image.asset(
-            AppAssetsImages.product,
-            height: 400,
-          ),
-        ),
-        Positioned(
-          top: 165,
-          right: 10,
-          child: Image.asset(
-            AppAssetsImages.blackright,
-            height: 50,
-            color: Colors.black87,
-          ),
-        ),
-        Positioned(
-          bottom: 15,
-          child: Container(
-            height: 70,
-            width: MediaQuery.of(context).size.width / 1.2,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: AppColors().appWhiteColor,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(6, 2, 6, 2),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      // Image border
-                      child: SizedBox.fromSize(
-                        size: const Size.fromRadius(30),
-                        child: ColoredBox(
-                          color: AppColors().appGreyColor,
-                          child: Image.asset(
-                            AppAssetsImages.product,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    ),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      // Image border
-                      child: SizedBox.fromSize(
-                        size: const Size.fromRadius(30),
-                        child: ColoredBox(
-                          color: Colors.grey.shade400,
-                          child: Image.asset(
-                            AppAssetsImages.product,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    ),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      // Image border
-                      child: SizedBox.fromSize(
-                        size: const Size.fromRadius(30),
-                        child: ColoredBox(
-                          color: AppColors().appGreyColor,
-                          child: Image.asset(
-                            AppAssetsImages.product,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    ),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      // Image border
-                      child: SizedBox.fromSize(
-                        size: const Size.fromRadius(30),
-                        child: ColoredBox(
-                          color: Colors.grey.shade400,
-                          child: Image.asset(
-                            AppAssetsImages.product,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    ),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      // Image border
-                      child: SizedBox.fromSize(
-                        size: const Size.fromRadius(30),
-                        child: ColoredBox(
-                          color: AppColors().appGreyColor,
-                          child: Image.asset(
-                            AppAssetsImages.product,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
+          const SizedBox(height: 16),
+        ],
+      ),
     );
   }
 
-  Widget buildProductDetailsWidget(ProductDetailController controller) {
+  Widget buildProductDetailsWidget() {
+    final ProductDetailController controller =
+        Get.find<ProductDetailController>();
     final ProductDetailsData data = controller.rxProductDetailsData.value;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         TextWidget(
-          text: AppLanguageKeys().strAmul.tr,
-          color: AppColors().appBlackColor,
+          text: data.name ?? "",
+          color: Colors.black,
           size: 22,
           fontWeight: FontWeight.bold,
           isLineThrough: false,
@@ -253,7 +179,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
           children: <Widget>[
             TextWidget(
               text: "\$${data.price}",
-              color: AppColors().appBlackColor,
+              color: Colors.black,
               size: 18,
               fontWeight: FontWeight.bold,
               isLineThrough: false,
@@ -262,8 +188,8 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
               width: 20,
             ),
             TextWidget(
-              text: AppLanguageKeys().strMRP.tr,
-              color: AppColors().appGreyColor,
+              text: AppLanguageKeys().strMRP,
+              color: Colors.grey,
               size: 17,
               fontWeight: FontWeight.w600,
               isLineThrough: false,
@@ -273,7 +199,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
             ),
             TextWidget(
               text: "\$${data.price}",
-              color: AppColors().appGreyColor,
+              color: Colors.grey,
               size: 17,
               fontWeight: FontWeight.w600,
               isLineThrough: true,
@@ -282,8 +208,8 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
               width: 10,
             ),
             TextWidget(
-              text: "(45 % Off)",
-              color: AppColors().appOrangeColor,
+              text: "${data.discountPercent ?? ""}%",
+              color: Colors.orange,
               size: 17,
               fontWeight: FontWeight.bold,
               isLineThrough: false,
@@ -295,81 +221,68 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
         ),
         Row(
           children: <Widget>[
-            Icon(
+            const Icon(
               Icons.star,
-              color: AppColors().appOrangeColor,
+              color: Colors.orange,
               size: 15,
             ),
             TextWidget(
-              text: "4.5 (355 Reviews)",
-              color: AppColors().appGreyColor,
+              text:
+                  "${data.cumulativeRating ?? ""} (${data.reviewCount} Reviews)",
+              color: Colors.grey,
               size: 14,
               fontWeight: FontWeight.w500,
               isLineThrough: false,
             ),
           ],
         ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              data.description ?? "",
-              maxLines: controller.descTextShowFlag ? 8 : 2,
-              textAlign: TextAlign.start,
-            ),
-            const SizedBox(
-              height: 3,
-            ),
-            InkWell(
-              onTap: () {
-                controller.toggleDescTextShowFlag();
-              },
-              child: Row(
-                children: <Widget>[
-                  if (controller.descTextShowFlag)
-                    Row(
-                      children: <Widget>[
-                        Text(
-                          AppLanguageKeys().strReadLess.tr,
-                          style: TextStyle(
-                            color: AppColors().appPrimaryColor,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 3,
-                        ),
-                        Icon(
-                          Icons.keyboard_arrow_down,
-                          color: AppColors().appPrimaryColor,
-                          size: 30,
-                        ),
-                      ],
-                    )
-                  else
-                    Row(
-                      children: <Widget>[
-                        Text(
-                          AppLanguageKeys().strReadMore.tr,
-                          style: TextStyle(
-                            color: AppColors().appPrimaryColor,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 3,
-                        ),
-                        Icon(
-                          Icons.keyboard_arrow_down,
-                          color: AppColors().appPrimaryColor,
-                          size: 30,
-                        ),
-                      ],
-                    ),
-                ],
+        const SizedBox(
+          height: 8,
+        ),
+        Obx(
+          () => Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                data.description ?? "",
+                maxLines: controller.descTextShowFlag.value ? null : 2,
+                overflow: controller.descTextShowFlag.value
+                    ? TextOverflow.visible
+                    : TextOverflow.ellipsis,
+                textAlign: TextAlign.start,
               ),
-            ),
-          ],
+              const SizedBox(
+                height: 3,
+              ),
+              if (data.description != null && data.description!.length > 80)
+                InkWell(
+                  onTap: controller.toggleDescTextShowFlag,
+                  child: Row(
+                    children: <Widget>[
+                      Text(
+                        controller.descTextShowFlag.value
+                            ? AppLanguageKeys().strReadMore
+                            : AppLanguageKeys().strReadLess,
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 3,
+                      ),
+                      Icon(
+                        controller.descTextShowFlag.value
+                            ? Icons.keyboard_arrow_up
+                            : Icons.keyboard_arrow_down,
+                        color: Colors.blue,
+                        size: 30,
+                      ),
+                    ],
+                  ),
+                ),
+            ],
+          ),
         ),
         const SizedBox(
           height: 8,
@@ -500,7 +413,11 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
     );
   }
 
-  Widget buildSuggestedProductsWidget(BuildContext context) {
+  Widget buildProductPhotoWidget() {
+    final ProductDetailController controller =
+        Get.find<ProductDetailController>();
+    final String photoUrl = controller.productPhoto.value;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -523,38 +440,30 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
             ),
           ],
         ),
-        const SizedBox(
-          height: 10,
-        ),
-        SizedBox(
-          height: 200,
-          child: ListView(
-            shrinkWrap: true,
-            scrollDirection: Axis.horizontal,
-            children: List<Widget>.generate(
-              4,
-                  (int i) => Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 12, 0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: Colors.grey.shade200,
-                  ),
-                  width: 140,
-                  alignment: Alignment.center,
-                  child: Image.asset(
-                    AppAssetsImages.product,
-                    height: 200,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
+        const SizedBox(height: 10),
+        if (photoUrl.isNotEmpty)
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Image.network(
+              photoUrl,
+              height: 200,
+              fit: BoxFit.cover,
             ),
+          )
+        else
+          Container(
+            height: 200,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: Colors.grey.shade200,
+            ),
+            alignment: Alignment.center,
+            child: Text("No photo available"),
           ),
-        ),
       ],
     );
   }
+
 
   Widget buildRatingsWidget(BuildContext context) {
     return Column(
@@ -662,7 +571,8 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
     );
   }
 
-  Widget buildRatingRow(BuildContext context, int star, double value, double width) {
+  Widget buildRatingRow(
+      BuildContext context, int star, double value, double width) {
     return Row(
       children: <Widget>[
         TextWidget(
@@ -686,7 +596,8 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
             child: LinearProgressIndicator(
               value: value,
               valueColor: AlwaysStoppedAnimation<Color>(
-                  AppColors().appPrimaryColor,),
+                AppColors().appPrimaryColor,
+              ),
               backgroundColor: const Color(0xffD6D6D6),
             ),
           ),
@@ -695,59 +606,143 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
     );
   }
 
-  Widget buildReviewItem(BuildContext context, String name, String timeAgo, String reviewText) {
-    return Column(
-      children: <Widget>[
-        ListTile(
-          contentPadding: EdgeInsets.zero,
-          leading: const CircleAvatar(
-            backgroundColor: Color(0xff764abc),
-          ),
-          title: Text(
-            name,
-          ),
-
-          subtitle: Row(
+  Widget reviewsWidget() {
+    final ProductDetailsData data = controller.rxProductDetailsData.value;
+    return data.reviews?.isEmpty ?? true
+        ? const SizedBox()
+        : Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Icon(
-                Icons.star,
-                color: AppColors().appOrangeColor,
-                size: 20,
+              ListView.separated(
+                shrinkWrap: true,
+                itemCount: data.reviews?.length ?? 0,
+                physics: const NeverScrollableScrollPhysics(),
+                separatorBuilder: (BuildContext context, int index) {
+                  return const Divider(indent: 16, endIndent: 16);
+                },
+                itemBuilder: (BuildContext context, int index) {
+                  final Reviews item = data.reviews?[index] ?? Reviews();
+                  final String customerFirstName = item.customerFirstName ?? "";
+                  final String customerLastName = item.customerLastName ?? "";
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      ListTile(
+                        leading: CircleAvatar(
+                          radius: 24,
+                          foregroundImage: NetworkImage(
+                            item.customerProfilePhoto ?? "",
+                          ),
+                        ),
+                        title: Text(
+                          "$customerFirstName $customerLastName",
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Row(
+                          children: <Widget>[
+                            Flexible(
+                              child: IgnorePointer(
+                                child: RatingBar.builder(
+                                  initialRating: (item.star ?? 0.0).toDouble(),
+                                  itemSize: 16,
+                                  unratedColor: AppColors().appGrey_,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Icon(
+                                      Icons.star,
+                                      color: AppColors().appOrangeColor,
+                                    );
+                                  },
+                                  onRatingUpdate: (double value) {},
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              formattedDateTime(
+                                dateTimeString: item.date ?? "",
+                              ),
+                            ),
+                          ],
+                        ),
+                        trailing: IconButton(
+                          onPressed: () {},
+                          icon: const Icon(Icons.more_vert),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Text(
+                          item.review ?? "",
+                          style: TextStyle(color: AppColors().appGrey_),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  );
+                },
               ),
-              Icon(
-                Icons.star,
-                color: AppColors().appOrangeColor,
-                size: 20,
-              ),
-              Icon(
-                Icons.star,
-                color: AppColors().appOrangeColor,
-                size: 20,
-              ),
-              Icon(
-                Icons.star,
-                color: AppColors().appGreyColor,
-                size: 20,
-              ),
-              Icon(
-                Icons.star,
-                color: AppColors().appGreyColor,
-                size: 20,
-              ),
-              const SizedBox(
-                width: 15,
-              ),
-              Text(timeAgo),
+              const SizedBox(height: 16),
             ],
-          ),
-          trailing: const Icon(Icons.more_vert),
-        ),
-        Text(
-          reviewText,
-        ),
-      ],
-    );
+          );
   }
+
+  // Widget buildReviewItem(BuildContext context,
+  //     String name, String timeAgo, String reviewText) {
+  //   return Column(
+  //     children: <Widget>[
+  //       ListTile(
+  //         contentPadding: EdgeInsets.zero,
+  //         leading: const CircleAvatar(
+  //           backgroundColor: Color(0xff764abc),
+  //         ),
+  //         title: Text(
+  //           name,
+  //         ),
+  //
+  //         subtitle: Row(
+  //           children: <Widget>[
+  //             Icon(
+  //               Icons.star,
+  //               color: AppColors().appOrangeColor,
+  //               size: 20,
+  //             ),
+  //             Icon(
+  //               Icons.star,
+  //               color: AppColors().appOrangeColor,
+  //               size: 20,
+  //             ),
+  //             Icon(
+  //               Icons.star,
+  //               color: AppColors().appOrangeColor,
+  //               size: 20,
+  //             ),
+  //             Icon(
+  //               Icons.star,
+  //               color: AppColors().appGreyColor,
+  //               size: 20,
+  //             ),
+  //             Icon(
+  //               Icons.star,
+  //               color: AppColors().appGreyColor,
+  //               size: 20,
+  //             ),
+  //             const SizedBox(
+  //               width: 15,
+  //             ),
+  //             Text(timeAgo),
+  //           ],
+  //         ),
+  //         trailing: const Icon(Icons.more_vert),
+  //       ),
+  //       Text(
+  //         reviewText,
+  //       ),
+  //     ],
+  //   );
+  // }
 
   Widget priceAndButtonWidget(BuildContext context) {
     final ProductDetailsData data = controller.rxProductDetailsData.value;

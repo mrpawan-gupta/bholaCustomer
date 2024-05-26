@@ -107,7 +107,7 @@ class ProductDetailsData {
   int? reviewCount;
   int? ratingCount;
   int? wishlistCount;
-  int? unit;
+  String? unit;
   int? price;
   int? itemCode;
   int? sold;
@@ -166,6 +166,9 @@ class Reviews {
     this.date,
     this.isDeleted,
     this.review,
+    this.customerFirstName,
+    this.customerLastName,
+    this.customerProfilePhoto,
   });
 
   Reviews.fromJson(Map<String, dynamic> json) {
@@ -176,6 +179,9 @@ class Reviews {
     date = json["date"];
     isDeleted = json["isDeleted"];
     review = json["review"];
+    customerFirstName = json["customerFirstName"];
+    customerLastName = json["customerLastName"];
+    customerProfilePhoto = json["customerProfilePhoto"];
   }
   String? customer;
   int? star;
@@ -184,6 +190,9 @@ class Reviews {
   String? date;
   String? review;
   bool? isDeleted;
+  String? customerFirstName;
+  String? customerLastName;
+  String? customerProfilePhoto;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -194,6 +203,9 @@ class Reviews {
     data["_id"] = sId;
     data["date"] = date;
     data["isDeleted"] = isDeleted;
+    data["customerFirstName"] = customerFirstName;
+    data["customerLastName"] = customerLastName;
+    data["customerProfilePhoto"] = customerProfilePhoto;
     return data;
   }
 }

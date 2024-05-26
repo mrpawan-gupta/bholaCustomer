@@ -30,7 +30,7 @@ class AppAssetsImages {
   final String userPlaceholder = "assets/images/default_avatar.png";
   final String imagePlaceholder = "assets/images/image_placeholder.png";
   final String videoPlaceholder = "assets/images/video.png";
-  final String product = "assets/image/product.png";
-  final String blackright = "assets/image/blackright.png";
-  final String back = "assets/image/back.png";
+  final String product = "assets/images/product.png";
+  final String blackright = "assets/images/blackright.png";
+  final String back = "assets/images/back.png";
 }
