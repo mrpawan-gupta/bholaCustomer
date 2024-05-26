@@ -80,7 +80,8 @@ class Lists {
     price = json["price"];
     originalPrice = json["originalPrice"];
     discount = json["discount"];
-    category = json["category"] != null ? Category.fromJson(json["category"]) : null;
+    category =
+        json["category"] != null ? Category.fromJson(json["category"]) : null;
     itemCode = json["itemCode"];
     quantity = json["quantity"];
     sold = json["sold"];

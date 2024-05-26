@@ -14,7 +14,7 @@ class SplashScreenController extends GetxController {
   }
 
   Future<void> furtherProceure() async {
-    await Future<void>.delayed(const Duration(seconds: 3));
+    await Future<void>.delayed(const Duration(seconds: 1));
 
     AppSession().isUserLoggedIn()
         ? await AppSession().performSignIn()

@@ -1,8 +1,8 @@
 import "package:customer/controllers/outer_main_controllers/booking_controller.dart";
+import "package:customer/controllers/outer_main_controllers/category_controller.dart";
 import "package:customer/controllers/outer_main_controllers/help_controller.dart";
 import "package:customer/controllers/outer_main_controllers/home_controller.dart";
 import "package:customer/controllers/outer_main_controllers/order_history_controller.dart";
-import "package:customer/controllers/outer_main_controllers/portfolio_controller.dart";
 import "package:customer/models/get_user_by_id.dart";
 import "package:customer/services/app_storage_service.dart";
 import "package:customer/utils/app_whatsapp.dart";
@@ -13,13 +13,15 @@ class MainNavigationController extends GetxController {
   final PersistentTabController tabController = PersistentTabController();
   final RxInt previousIndex = 0.obs;
 
+  final Rx<GetUserByIdData> rxUserInfo = GetUserByIdData().obs;
+
   @override
   void onInit() {
     super.onInit();
 
     Get
       ..put(HomeController())
-      ..put(PortfolioController())
+      ..put(CategoryController())
       ..put(BookingController())
       ..put(HelpController())
       ..put(OrderHistoryController());
@@ -34,6 +36,8 @@ class MainNavigationController extends GetxController {
         }
       },
     );
+
+    initAndReInitFunction();
   }
 
   @override
@@ -43,7 +47,13 @@ class MainNavigationController extends GetxController {
     super.onClose();
   }
 
-  GetUserByIdData getUserData() {
-    return AppStorageService().getUserInfoModel();
+  void initAndReInitFunction() {
+    updateUserInfo(AppStorageService().getUserInfoModel());
+    return;
+  }
+
+  void updateUserInfo(GetUserByIdData value) {
+    rxUserInfo(value);
+    return;
   }
 }

@@ -17,7 +17,13 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
 
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+
     <queries>
+        <package android:name="com.ahinsaaggregator.admin" />
+        <package android:name="com.ahinsaaggregator.customer" />
+        <package android:name="com.ahinsaaggregator.vendor" />
+
         <intent>
             <action android:name="android.intent.action.VIEW"/>
             <data android:scheme="http"/>
@@ -69,6 +75,11 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
+                
+                <!-- Code for external_app_launcher package start-->
+                <category android:name="android.intent.category.HOME"/> 
+                <category android:name="android.intent.category.DEFAULT"/>
+                <!-- Code for external_app_launcher package end -->
             </intent-filter>
             <intent-filter>
                 <action android:name="FLUTTER_NOTIFICATION_CLICK" />
@@ -87,7 +98,7 @@
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="high_importance_channel" />
         <meta-data android:name="com.google.android.geo.API_KEY"
-               android:value="AIzaSyAu0uQwt1solBKGQcExM9eJvU8rEPfbNNo"/>
+               android:value="AIzaSyAIi-Wjyn2iEjhj8BEGccXt8ts2P9zK_Gk"/>
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package="com.ahinsaaggregator.customer">

@@ -17,10 +17,13 @@ class AppConstants {
   final bool isEnabledFirestoreUpdateLocInfo = kReleaseMode;
   final bool isEnabledFirestoreUpdatePkgInfo = kReleaseMode;
   final bool isEnabledFirestoreUpdateDevInfo = kReleaseMode;
-  final Duration locationFetchDuration = const Duration(minutes: 10);
+  
+  final Duration locationFetchDuration = const Duration(minutes: 5);
 
   final String samplePDF =  "https://pdfobject.com/pdf/sample.pdf";
   final String sampleImg = "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTExL3BmLXMxMDgtcG0tNDExMy1tb2NrdXAuanBn.jpg";
 
   final String googleMapAPIKey = "AIzaSyAu0uQwt1solBKGQcExM9eJvU8rEPfbNNo";
+  
+  final String whatsAppNumber = "+919765716231";
 }

@@ -1,22 +1,39 @@
+import "dart:async";
+
+import "package:customer/models/get_addresses_model.dart";
 import "package:customer/models/get_user_by_id.dart";
 import "package:customer/services/app_api_service.dart";
 import "package:customer/services/app_storage_service.dart";
+import "package:customer/utils/app_logger.dart";
 import "package:customer/utils/app_session.dart";
 import "package:customer/utils/app_snackbar.dart";
+import "package:flutter/foundation.dart";
 import "package:get/get.dart";
 
 class SettingsMainController extends GetxController {
   final Rx<GetUserByIdData> rxUserInfo = GetUserByIdData().obs;
+  final Rx<Address> rxAddressInfo = Address().obs;
 
   @override
   void onInit() {
     super.onInit();
 
+    initAndReInitFunction();
+  }
+
+  void initAndReInitFunction() {
     updateUserInfo(AppStorageService().getUserInfoModel());
+    unawaited(getAddressesAPI());
+    return;
   }
 
   void updateUserInfo(GetUserByIdData value) {
     rxUserInfo(value);
+    return;
+  }
+
+  void updateAddressInfo(Address value) {
+    rxAddressInfo(value);
     return;
   }
 
@@ -29,6 +46,59 @@ class SettingsMainController extends GetxController {
   String getEmailOrEmailPlaceholder() {
     final String email = rxUserInfo.value.email ?? "";
     return email.isNotEmpty ? email : "Email not available";
+  }
+
+  String getPhoneNumberOrPhoneNumberPlaceholder() {
+    final String phoneNumber = rxUserInfo.value.phoneNumber ?? "";
+    return phoneNumber.isNotEmpty ? phoneNumber : "Phone Number not available";
+  }
+
+  String getAddressOrAddressPlaceholder() {
+    String value = "";
+    final bool isMapEquals = mapEquals(
+      rxAddressInfo.value.toJson(),
+      GetAddressesData().toJson(),
+    );
+    if (isMapEquals) {
+      value = "Address not available";
+    } else {
+      final String street = rxAddressInfo.value.street ?? "";
+      final String city = rxAddressInfo.value.city ?? "";
+      final String country = rxAddressInfo.value.country ?? "";
+      final String pinCode = rxAddressInfo.value.pinCode ?? "";
+      value = "$street $city $country $pinCode";
+    }
+    return value;
+  }
+
+  Future<void> getAddressesAPI() async {
+    await AppAPIService().functionGet(
+      types: Types.oauth,
+      endPoint: "address",
+      successCallback: (Map<String, dynamic> json) {
+        AppLogger().info(message: json["message"]);
+
+        GetAddresses model = GetAddresses();
+        model = GetAddresses.fromJson(json);
+
+        final List<Address> list =
+            (model.data?.address ?? <Address>[]).where(
+          (Address element) {
+            return (element.primary ?? false) == true;
+          },
+        ).toList();
+
+        if (list.isEmpty) {
+        } else {
+          updateAddressInfo(list.first);
+        }
+      },
+      failureCallback: (Map<String, dynamic> json) {
+        AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
+      },
+      needLoader: false,
+    );
+    return Future<void>.value();
   }
 
   Future<void> signoutAPICall() async {

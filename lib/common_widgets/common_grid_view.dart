@@ -76,6 +76,7 @@ class CommonGridView extends StatelessWidget {
         CommonImageWidget(
           imageUrl: item.photo ?? "",
           fit: BoxFit.cover,
+          imageType: ImageType.image,
         ),
         AnimatedOpacity(
           opacity: 1.00,

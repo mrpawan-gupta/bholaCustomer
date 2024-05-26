@@ -37,4 +37,7 @@ class AppAssetsImages {
   static const String onboard2 = "assets/image/onboard2.png";
   static const String onboard3 = "assets/image/onboard3.png";
   final String flag = "assets/image/flag.jpg";
+  final String userPlaceholder = "assets/images/default_avatar.png";
+  final String imagePlaceholder = "assets/images/image_placeholder.png";
+  final String videoPlaceholder = "assets/images/video.png";
 }

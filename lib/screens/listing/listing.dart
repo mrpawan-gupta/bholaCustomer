@@ -7,7 +7,7 @@ import "package:customer/utils/app_colors.dart";
 import "package:flutter/material.dart";
 import "package:get/get_state_manager/src/simple/get_view.dart";
 
-class ListingScreen extends GetView<ListingScreenController>  {
+class ListingScreen extends GetView<ListingScreenController> {
   const ListingScreen({super.key});
 
   @override
@@ -67,7 +67,7 @@ class ListingScreen extends GetView<ListingScreenController>  {
             ),
           ),
           filled: true,
-          fillColor:AppColors().appWhiteColor,
+          fillColor: AppColors().appWhiteColor,
         ),
       ),
     );
@@ -81,71 +81,94 @@ class ListingScreen extends GetView<ListingScreenController>  {
         child: Row(
           children: <Widget>[
             FilterChip(
-              label: const Text('2'),
+              label: const Text("2"),
               onSelected: (_) {},
               selectedColor: AppColors().appPrimaryColor,
               backgroundColor: AppColors().appPrimaryColor,
-              labelStyle:  TextStyle(color: AppColors().appWhiteColor,),
-              avatar: Icon(Icons.filter_list, color: AppColors().appWhiteColor,),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18)
+              labelStyle: TextStyle(
+                color: AppColors().appWhiteColor,
               ),
-              side:  BorderSide(color: AppColors().appTransparentColor,),
+              avatar: Icon(
+                Icons.filter_list,
+                color: AppColors().appWhiteColor,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18),
+              ),
+              side: BorderSide(
+                color: AppColors().appTransparentColor,
+              ),
             ),
             const SizedBox(width: 8),
             FilterChip(
-              label: Text('On Sale'),
+              label: const Text("On Sale"),
               onSelected: (_) {},
               backgroundColor: Colors.grey.shade200,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18)
+                borderRadius: BorderRadius.circular(18),
               ),
-              side:  BorderSide(color: AppColors().appTransparentColor,),
+              side: BorderSide(
+                color: AppColors().appTransparentColor,
+              ),
             ),
             const SizedBox(width: 8),
             FilterChip(
-              label: Text('Price'),
+              label: const Text("Price"),
               onSelected: (_) {},
-              avatar:  Icon(Icons.arrow_drop_down,
-                color: AppColors().appWhiteColor,),
+              avatar: Icon(
+                Icons.arrow_drop_down,
+                color: AppColors().appWhiteColor,
+              ),
               selectedColor: AppColors().appPrimaryColor,
-              backgroundColor:AppColors().appPrimaryColor,
-              labelStyle:  TextStyle(color: AppColors().appWhiteColor,),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18)
+              backgroundColor: AppColors().appPrimaryColor,
+              labelStyle: TextStyle(
+                color: AppColors().appWhiteColor,
               ),
-              side: BorderSide(color: AppColors().appTransparentColor,),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18),
+              ),
+              side: BorderSide(
+                color: AppColors().appTransparentColor,
+              ),
             ),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             FilterChip(
-              label: Text('Sort by'),
+              label: const Text("Sort by"),
               onSelected: (_) {},
-              avatar: Icon(Icons.arrow_drop_down),
+              avatar: const Icon(Icons.arrow_drop_down),
               backgroundColor: Colors.grey.shade200,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18)
+                borderRadius: BorderRadius.circular(18),
               ),
-              side: BorderSide(color: AppColors().appTransparentColor,),
+              side: BorderSide(
+                color: AppColors().appTransparentColor,
+              ),
             ),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             FilterChip(
-              label: Text('Brand'),
+              label: const Text("Brand"),
               onSelected: (_) {},
               selectedColor: AppColors().appPrimaryColor,
               backgroundColor: AppColors().appPrimaryColor,
-              labelStyle: TextStyle(color: AppColors().appWhiteColor,),
-              avatar: Icon(Icons.arrow_drop_down, color: AppColors().appWhiteColor,),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18)
+              labelStyle: TextStyle(
+                color: AppColors().appWhiteColor,
               ),
-              side: BorderSide(color: AppColors().appTransparentColor,),
+              avatar: Icon(
+                Icons.arrow_drop_down,
+                color: AppColors().appWhiteColor,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18),
+              ),
+              side: BorderSide(
+                color: AppColors().appTransparentColor,
+              ),
             ),
           ],
         ),
       ),
     );
   }
-
 
   Widget banners() {
     return Column(
@@ -160,7 +183,6 @@ class ListingScreen extends GetView<ListingScreenController>  {
     );
   }
 
-
   Widget productCards() {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -168,11 +190,9 @@ class ListingScreen extends GetView<ListingScreenController>  {
       children: <Widget>[
         ListCardView(
           pagingController: controller.pagingControllerProducts,
-          onTap: (Lists item) async {
-          },
+          onTap: (Lists item) async {},
         ),
       ],
     );
   }
-
 }

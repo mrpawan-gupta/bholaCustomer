@@ -1,3 +1,5 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import "package:customer/controllers/product_detail_page_controllers/product_detail_page_controllers.dart";
 import "package:customer/screens/widgets/text_widgets.dart";
 import "package:customer/services/app_nav_service.dart";
