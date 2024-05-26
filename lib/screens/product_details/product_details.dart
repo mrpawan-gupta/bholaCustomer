@@ -706,6 +706,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
           title: Text(
             name,
           ),
+
           subtitle: Row(
             children: <Widget>[
               Icon(
