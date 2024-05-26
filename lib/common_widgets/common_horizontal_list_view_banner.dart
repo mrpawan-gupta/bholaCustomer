@@ -67,6 +67,7 @@ class CommonHorizontalListViewBanner extends StatelessWidget {
         CommonImageWidget(
           imageUrl: item.image ?? "",
            fit: BoxFit.cover,
+           imageType: ImageType.image,
         ),
         AnimatedOpacity(
           opacity: 1.00,

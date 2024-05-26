@@ -33,7 +33,7 @@ class AppNavService extends GetxService {
     return Future<void>.value();
   }
 
-  void pop(Object? result) {
+  void pop([Object? result]) {
     final bool canPop = Get.key.currentState?.canPop() ?? false;
     if (canPop) {
       Get.key.currentState?.pop(result);

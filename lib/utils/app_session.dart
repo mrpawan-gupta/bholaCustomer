@@ -4,6 +4,8 @@ import "package:customer/models/get_user_by_id.dart";
 import "package:customer/models/verify_otp.dart";
 import "package:customer/services/app_api_service.dart";
 import "package:customer/services/app_dev_info_service.dart";
+import "package:customer/services/app_fcm_service.dart";
+import "package:customer/services/app_location_service.dart";
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/services/app_pkg_info_service.dart";
 import "package:customer/services/app_storage_service.dart";
@@ -30,6 +32,11 @@ class AppSession {
 
     await AppPkgInfoService().updateInfoToFirestore();
     await AppDevInfoService().updateInfoToFirestore();
+    
+    await AppLocationService().automatedFunction();
+
+    final String id = AppStorageService().getUserAuthModel().sId ?? "";
+    await AppFCMService().instance.subscribeToTopic(id);
 
     await AppNavService().pushNamedAndRemoveUntil(
       destination: AppRoutes().mainNavigationScreen,
@@ -39,6 +46,9 @@ class AppSession {
   }
 
   Future<void> performSignOut() async {
+    final String id = AppStorageService().getUserAuthModel().sId ?? "";
+    await AppFCMService().instance.unsubscribeFromTopic(id);
+
     await AppStorageService().erase();
 
     await AppNavService().pushNamedAndRemoveUntil(

@@ -47,7 +47,7 @@ class OTPScreen extends GetView<OTPScreenController> {
                   ),
                   const SizedBox(height: 32),
                   Text(
-                    "+91 ${controller.rxPhoneNumber.value}",
+                    "+91${controller.rxPhoneNumber.value}",
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
@@ -62,12 +62,10 @@ class OTPScreen extends GetView<OTPScreenController> {
                     length: 6,
                     autofocus: true,
                     controller: controller.otpController,
-                    onChanged: controller.updateOTP,
-                    onClipboardFound: (String value) async {
-                      await verifyOTPAPICall();
-                    },
-                    onCompleted: (String value) async {
-                      await verifyOTPAPICall();
+                    onChanged: (String value) {
+                      controller
+                        ..updateOTP(value)
+                        ..unfocus();
                     },
                     inputFormatters: <TextInputFormatter>[
                       FilteringTextInputFormatter.digitsOnly,

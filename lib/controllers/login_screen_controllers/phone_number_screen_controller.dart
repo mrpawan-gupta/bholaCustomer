@@ -53,13 +53,12 @@ class PhoneNumberScreenController extends GetxController {
     return Future<void>.value();
   }
 
-  void unfocus({required Function() callAPI}) {
+  void unfocus() {
     final bool cond1 = phoneNumberController.value.text.length == 10;
     final bool cond2 = rxPhoneNumber.value.length == 10;
 
     if (cond1 && cond2) {
       FocusManager.instance.primaryFocus?.unfocus();
-      callAPI();
     } else {}
     return;
   }
@@ -89,7 +88,7 @@ class PhoneNumberScreenController extends GetxController {
       types: Types.oauth,
       endPoint: "auth/send-otp",
       body: <String, dynamic>{
-        "phoneNumber": rxPhoneNumber.value.trim(),
+        "phoneNumber": "+91${rxPhoneNumber.value.trim()}",
       },
       successCallback: successCallback,
       failureCallback: failureCallback,

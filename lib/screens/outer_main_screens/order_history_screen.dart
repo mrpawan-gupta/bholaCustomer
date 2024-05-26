@@ -7,26 +7,8 @@ class OrderHistoryScreen extends GetView<OrderHistoryController> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Expanded(
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: 20,
-            itemBuilder: (BuildContext context, int index) {
-              return Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: ListTile(
-                    title: Text("$index"),
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-      ],
     );
   }
 }

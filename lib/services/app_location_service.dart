@@ -19,33 +19,18 @@ class AppLocationService extends GetxService {
   static final AppLocationService _singleton = AppLocationService._internal();
 
   bool hasAlreadyAskedForGPSWitPrompt = false;
-  late Timer _timer;
 
-  @override
-  void onInit() {
-    super.onInit();
+  Future<void> automatedFunction() async {
+    final (double, double, String) value = await decideAndSend();
 
-    _timer = Timer.periodic(
-      AppConstants().locationFetchDuration,
-      (Timer timer) async {
-        final (double, double, String) value = await decideAndSend();
-        
-        if ((!value.$1.isEqual(0.0)) && (!value.$2.isEqual(0.0))) {
-          await updateInfoToFirestore(
-            latitude: value.$1,
-            longitude: value.$2,
-            from: value.$3,
-          );
-        } else {}
-      },
-    );
-  }
-
-  @override
-  void onClose() {
-    _timer.cancel();
-
-    super.onClose();
+    if ((!value.$1.isEqual(0.0)) && (!value.$2.isEqual(0.0))) {
+      await updateInfoToFirestore(
+        latitude: value.$1,
+        longitude: value.$2,
+        from: value.$3,
+      );
+    } else {}
+    return Future<void>.value();
   }
 
   Future<(double, double, String)> decideAndSend() async {
@@ -156,8 +141,8 @@ class AppLocationService extends GetxService {
     //   failureCallback: (Map<String, dynamic> json) {},
     // );
 
-    lat = 22.4667;
-    long = 70.0644;
+    lat = 21.3245;
+    long = 74.5564;
     AppLogger().info(message: "FromIP: lat: $lat long: $long");
 
     return Future<(double, double)>.value((lat, long));

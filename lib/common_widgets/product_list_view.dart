@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:customer/models/product_model.dart';
-import 'package:customer/common_widgets/common_image_widget.dart';
+import "package:customer/common_widgets/common_image_widget.dart";
+import "package:customer/models/product_model.dart";
+import "package:flutter/material.dart";
+import "package:infinite_scroll_pagination/infinite_scroll_pagination.dart";
 
 class ProductListView extends StatelessWidget {
   const ProductListView({
@@ -52,6 +52,7 @@ class ProductListView extends StatelessWidget {
                           child: CommonImageWidget(
                             imageUrl: item.photo ?? "",
                             fit: BoxFit.cover,
+                            imageType: ImageType.image,
                           ),
                         ),
                         Padding(

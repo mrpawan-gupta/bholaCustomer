@@ -822,6 +822,4 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
       ],
     );
   }
-
 }
-

@@ -95,7 +95,7 @@ class CartScreen extends GetView<CartController> {
                                 width: 90,
                                 height: 100,
                                 child: Image.asset(
-                                  AppAssetsImages.tractor,
+                                  AppAssetsImages().tractor,
                                   fit: BoxFit.fitHeight,
                                 ),
                               ),
@@ -218,7 +218,7 @@ class CartScreen extends GetView<CartController> {
                               width: 90,
                               height: 100,
                               child: Image.asset(
-                                AppAssetsImages.tractor,
+                                AppAssetsImages().tractor,
                                 fit: BoxFit.fitHeight,
                               ),
                             ),
@@ -392,7 +392,7 @@ class CartScreen extends GetView<CartController> {
                         AppLanguageKeys().strCoupon.tr,
                       ),
                       Image.asset(
-                        AppAssetsImages.blackright,
+                        AppAssetsImages().blackright,
                         height: 25,
                       ),
                     ],

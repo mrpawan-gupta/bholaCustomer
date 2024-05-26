@@ -1,5 +1,3 @@
-import "package:customer/bindings/account_binding.dart";
-import "package:customer/bindings/listing_binding/listing_binding.dart";
 import "package:customer/bindings/login_screen_bindings/language_selection_binding.dart";
 import "package:customer/bindings/login_screen_bindings/notification_screen_binding.dart";
 import "package:customer/bindings/login_screen_bindings/otp_screen_binding.dart";
@@ -7,15 +5,16 @@ import "package:customer/bindings/login_screen_bindings/phone_number_screen_bind
 import "package:customer/bindings/login_screen_bindings/splash_screen_binding.dart";
 import "package:customer/bindings/main_navigation_binding.dart";
 import "package:customer/bindings/outer_main_bindings/booking_binding.dart";
+import "package:customer/bindings/outer_main_bindings/category_binding.dart";
 import "package:customer/bindings/outer_main_bindings/help_binding.dart";
 import "package:customer/bindings/outer_main_bindings/home_binding.dart";
 import "package:customer/bindings/outer_main_bindings/order_history_binding.dart";
-import "package:customer/bindings/outer_main_bindings/portfolio_binding.dart";
 import "package:customer/bindings/product_deatils_bindings/cart_bindings.dart";
 import "package:customer/bindings/product_deatils_bindings/product_detail_page_bindings.dart";
+import "package:customer/bindings/product_listing_binding/product_listing_binding.dart";
 import "package:customer/bindings/settings_bindings/change_language_binding.dart";
+import "package:customer/bindings/settings_bindings/edit_profile_binding.dart";
 import "package:customer/bindings/settings_bindings/settings_main_binding.dart";
-import "package:customer/screens/account_screen.dart";
 import "package:customer/screens/login_screen/language_selection.dart";
 import "package:customer/screens/login_screen/notification_screen.dart";
 import "package:customer/screens/login_screen/otp_screen.dart";
@@ -23,17 +22,17 @@ import "package:customer/screens/login_screen/phone_number_screen.dart";
 import "package:customer/screens/login_screen/splash_screen.dart";
 import "package:customer/screens/main_navigation_screen.dart";
 import "package:customer/screens/outer_main_screens/booking_screen.dart";
+import "package:customer/screens/outer_main_screens/category_screen.dart";
 import "package:customer/screens/outer_main_screens/help_screen.dart";
 import "package:customer/screens/outer_main_screens/home_screen.dart";
 import "package:customer/screens/outer_main_screens/order_history_screen.dart";
-import "package:customer/screens/outer_main_screens/portfolio_screen.dart";
 import "package:customer/screens/product_details/cart.dart";
 import "package:customer/screens/product_details/product_details.dart";
+import "package:customer/screens/product_listing/product_listing.dart";
 import "package:customer/screens/settings_screens/change_language_screen.dart";
+import "package:customer/screens/settings_screens/edit_profile_screen.dart";
 import "package:customer/screens/settings_screens/settings_main_screen.dart";
 import "package:get/get.dart";
-
-import "../screens/listing/listing.dart";
 
 class AppRoutes {
   factory AppRoutes() {
@@ -51,7 +50,7 @@ class AppRoutes {
 
   final String mainNavigationScreen = "/mainNavigationScreen";
   final String homeScreen = "/homeScreen";
-  final String portfolioScreen = "/portfolioScreen";
+  final String categoryScreen = "/categoryScreen";
   final String bookingScreen = "/bookingScreen";
   final String newOrderScreen = "/newOrderScreen";
   final String helpScreen = "/helpScreen";
@@ -61,7 +60,8 @@ class AppRoutes {
   final String changeLanguageScreen = "/changeLanguageScreen";
   final String productDetailScreen = "/productDetailScreen";
   final String cartScreen = "/cartScreen";
-  final String listingScreen = "/listingScreen";
+  final String productListingScreen = "/productListingScreen";
+  final String editProfileScreen = "/editProfileScreen";
 
   List<GetPage<dynamic>> getPages() {
     final GetPage<dynamic> splashScreenRoute = GetPage<dynamic>(
@@ -100,14 +100,14 @@ class AppRoutes {
       page: HomeScreen.new,
       binding: HomeBinding(),
     );
-    final GetPage<dynamic> portfolioRoute = GetPage<dynamic>(
-      name: portfolioScreen,
-      page: PortfolioScreen.new,
-      binding: PortfolioBinding(),
+    final GetPage<dynamic> categoryRoute = GetPage<dynamic>(
+      name: categoryScreen,
+      page: CategoryScreen.new,
+      binding: CategoryBinding(),
     );
 
     final GetPage<dynamic> bookingRoute = GetPage<dynamic>(
-      name: portfolioScreen,
+      name: bookingScreen,
       page: BookingScreen.new,
       binding: BookingBinding(),
     );
@@ -121,11 +121,6 @@ class AppRoutes {
       name: orderHistoryScreen,
       page: OrderHistoryScreen.new,
       binding: OrderHistoryBinding(),
-    );
-    final GetPage<dynamic> accountRoute = GetPage<dynamic>(
-      name: accountScreen,
-      page: AccountScreen.new,
-      binding: AccountBinding(),
     );
     final GetPage<dynamic> settingsMainRoute = GetPage<dynamic>(
       name: settingsMainScreen,
@@ -149,10 +144,16 @@ class AppRoutes {
       binding: CartBinding(),
     );
 
-    final GetPage<dynamic> listingRoute = GetPage<dynamic>(
-      name: listingScreen,
-      page: ListingScreen.new,
-      binding: ListingScreenBinding(),
+    final GetPage<dynamic> productListingRoute = GetPage<dynamic>(
+      name: productListingScreen,
+      page: ProductListingScreen.new,
+      binding: ProductListingScreenBinding(),
+    );
+
+    final GetPage<dynamic> editProfileRoute = GetPage<dynamic>(
+      name: editProfileScreen,
+      page: EditProfileScreen.new,
+      binding: EditProfileBinding(),
     );
 
     return <GetPage<dynamic>>[
@@ -163,16 +164,16 @@ class AppRoutes {
       otpScreenRoute,
       mainNavigationRoute,
       homeRoute,
-      portfolioRoute,
+      categoryRoute,
       bookingRoute,
       helpRoute,
       orderHistoryRoute,
-      accountRoute,
       settingsMainRoute,
       changeLanguageRoute,
       productDetailRoute,
       cartRoute,
-      listingRoute,
+      productListingRoute,
+      editProfileRoute,
     ];
   }
 }

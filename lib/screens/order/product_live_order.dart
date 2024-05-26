@@ -40,7 +40,7 @@ class ProductLivePendingOrder extends GetView<ProductLiveOrderController> {
                   children: <Widget>[
                     buildContent(
                       userName: AppLanguageKeys().strAshutoshPatil.tr,
-                      imagePath: AppAssetsImages.tractor,
+                      imagePath: AppAssetsImages().tractor,
                       productName: AppLanguageKeys().strMahindra.tr,
                       address: AppLanguageKeys().strAddress.tr,
                       contact: "8855816942",

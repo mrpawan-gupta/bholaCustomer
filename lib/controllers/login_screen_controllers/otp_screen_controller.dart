@@ -65,6 +65,16 @@ class OTPScreenController extends GetxController {
     return;
   }
 
+  void unfocus() {
+    final bool cond1 = otpController.value.text.length == 10;
+    final bool cond2 = rxOTP.value.length == 10;
+
+    if (cond1 && cond2) {
+      FocusManager.instance.primaryFocus?.unfocus();
+    } else {}
+    return;
+  }
+
   String validate() {
     String reason = "";
     final bool cond1 = rxOTP.value.isNotEmpty;
@@ -85,7 +95,7 @@ class OTPScreenController extends GetxController {
       types: Types.oauth,
       endPoint: "auth/send-otp",
       body: <String, dynamic>{
-        "phoneNumber": rxPhoneNumber.value.trim(),
+        "phoneNumber": "+91${rxPhoneNumber.value.trim()}",
       },
       successCallback: successCallback,
       failureCallback: failureCallback,
@@ -101,7 +111,7 @@ class OTPScreenController extends GetxController {
       types: Types.oauth,
       endPoint: "auth/verify-otp/Customer",
       body: <String, dynamic>{
-        "phoneNumber": rxPhoneNumber.value.trim(),
+        "phoneNumber": "+91${rxPhoneNumber.value.trim()}",
         "otp": rxOTP.value.trim(),
       },
       successCallback: (Map<String, dynamic> json) async {

@@ -1,10 +1,12 @@
 import "package:customer/common_widgets/app_maybe_marquee.dart";
 import "package:customer/common_widgets/common_image_widget.dart";
 import "package:customer/controllers/settings_controllers/settings_main_controller.dart";
+import "package:customer/models/get_user_by_id.dart";
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/app_whatsapp.dart";
+import "package:external_app_launcher/external_app_launcher.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 
@@ -20,74 +22,100 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
         surfaceTintColor: AppColors().appTransparentColor,
       ),
       body: SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            userImage(),
-            const SizedBox(height: 16),
-            userInfo(
-              name: controller.getFullName(),
-              email: controller.getEmailOrEmailPlaceholder(),
-              phone: controller.rxUserInfo.value.phoneNumber ?? "",
-              onTap: () {},
-            ),
-            const SizedBox(height: 16),
-            settingsItems(
-              itemName: "Change Language",
-              onTap: () async {
-                await AppNavService().pushNamed(
-                  destination: AppRoutes().changeLanguageScreen,
-                  arguments: <String, dynamic>{},
-                );
-              },
-            ),
-            const SizedBox(height: 16),
-            settingsItems(
-              itemName: "Help",
-              onTap: () async {
-                await AppWhatsApp().openWhatsApp();
-              },
-            ),
-            const SizedBox(height: 16),
-            settingsItems1(itemName: "Try our Customer App", onTap: () {}),
-            const SizedBox(height: 16),
-            settingsItems1(itemName: "Apply For Kishan Credit", onTap: () {}),
-            const Spacer(),
-            settingsItems2(
-              itemName: "Logout",
-              onTap: controller.signoutAPICall,
-            ),
-            const SizedBox(height: 16),
-          ],
+        child: SingleChildScrollView(
+          child: Obx(
+            () {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  userImage(),
+                  const SizedBox(height: 16),
+                  userInfo(),
+                  const SizedBox(height: 16),
+                  settingsItems(
+                    itemName: "Change Language",
+                    onTap: () async {
+                      await AppNavService().pushNamed(
+                        destination: AppRoutes().changeLanguageScreen,
+                        arguments: <String, dynamic>{},
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  settingsItems(
+                    itemName: "Help",
+                    onTap: () async {
+                      await AppWhatsApp().openWhatsApp();
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  settingsItems1(
+                    itemName: "Try our Customer App",
+                    onTap: () async {
+                      await LaunchApp.openApp(
+                        androidPackageName: "com.ahinsaaggregator.customer",
+                        iosUrlScheme: "ahinsaaggregatorVendor://",
+                        appStoreLink:
+                            "itms-apps://itunes.apple.com/us/app/pulse-secure/id945832041",
+                        openStore: true,
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  settingsItems2(
+                    itemName: "Logout",
+                    onTap: controller.signoutAPICall,
+                  ),
+                  const SizedBox(height: 16),
+                ],
+              );
+            },
+          ),
         ),
       ),
     );
   }
 
   Widget userImage() {
+    final GetUserByIdData data = controller.rxUserInfo.value;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Container(
+          height: 64 * 2,
+          width: 64 * 2,
           clipBehavior: Clip.antiAliasWithSaveLayer,
-          height: 150,
-          width: 150,
           decoration: const BoxDecoration(shape: BoxShape.circle),
-          child: CommonImageWidget(
-            imageUrl: controller.rxUserInfo.value.profile?.profilePhoto ?? "",
-            fit: BoxFit.cover,
+          child: Stack(
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            children: <Widget>[
+              CommonImageWidget(
+                imageUrl: data.profile?.profilePhoto ?? "",
+                fit: BoxFit.cover,
+                imageType: ImageType.user,
+              ),
+              Material(
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () async {
+                    await AppNavService().pushNamed(
+                      destination: AppRoutes().editProfileScreen,
+                      arguments: <String, dynamic>{},
+                    );
+
+                    controller.initAndReInitFunction();
+                  },
+                ),
+              ),
+            ],
           ),
         ),
       ],
     );
   }
 
-  Widget userInfo({
-    required String name,
-    required String email,
-    required String phone,
-    required void Function() onTap,
-  }) {
+  Widget userInfo() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Card(
@@ -96,76 +124,68 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
         margin: EdgeInsets.zero,
         color: AppColors().appGreyColor.withOpacity(0.10),
         child: InkWell(
-          onTap: onTap,
+          onTap: () async {
+            await AppNavService().pushNamed(
+              destination: AppRoutes().editProfileScreen,
+              arguments: <String, dynamic>{},
+            );
+
+            controller.initAndReInitFunction();
+          },
           child: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Row(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                Expanded(
-                  flex: 10,
-                  child: Column(
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: MaybeMarqueeText(
-                              text: name,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                              alignment: Alignment.centerLeft,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 4),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Expanded(
-                            child: MaybeMarqueeText(
-                              text: email,
-                              style: TextStyle(
-                                color: AppColors().appGreyColor,
-                              ),
-                              alignment: Alignment.centerLeft,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 4),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Expanded(
-                            child: MaybeMarqueeText(
-                              text: phone,
-                              style: TextStyle(
-                                color: AppColors().appGreyColor,
-                              ),
-                              alignment: Alignment.centerLeft,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                commonTitleAndValueWidget(
+                  title: "Name",
+                  value: controller.getFullName(),
                 ),
-                // Flexible(
-                //   child: MaybeMarqueeText(
-                //     text: "Edit",
-                //     style: TextStyle(
-                //       fontWeight: FontWeight.bold,
-                //       color: AppColors().appPrimaryColor,
-                //     ),
-                //     alignment: Alignment.centerLeft,
-                //   ),
-                // ),
+                const SizedBox(height: 16),
+                commonTitleAndValueWidget(
+                  title: "Email",
+                  value: controller.getEmailOrEmailPlaceholder(),
+                ),
+                const SizedBox(height: 16),
+                commonTitleAndValueWidget(
+                  title: "Phone",
+                  value: controller.getPhoneNumberOrPhoneNumberPlaceholder(),
+                ),
+                const SizedBox(height: 16),
+                commonTitleAndValueWidget(
+                  title: "Address",
+                  value: controller.getAddressOrAddressPlaceholder(),
+                ),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget commonTitleAndValueWidget({
+    required String title,
+    required String value,
+  }) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Text(
+          title,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+        const SizedBox(height: 4),
+        Text(
+          value,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+          maxLines: 5,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ],
     );
   }
 

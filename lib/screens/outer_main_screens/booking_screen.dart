@@ -103,7 +103,7 @@ class BookingScreen extends GetView<BookingController> {
               BuildContext context,
               SearchController searchController,
             ) {
-              final List<GetAddressesData> items = controller.getSuggestions();
+              final List<Address> items = controller.getSuggestions();
               return List<Widget>.generate(
                 items.length,
                 (int index) {
@@ -438,7 +438,9 @@ class BookingScreen extends GetView<BookingController> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
-                          color: AppColors().appGreyColor.withOpacity(0.10),
+                          color: controller.categoriesList.isEmpty
+                              ? AppColors().appRedColor.withOpacity(0.10)
+                              : AppColors().appGreyColor.withOpacity(0.10),
                         ),
                       ),
                       child: IntrinsicHeight(
@@ -514,7 +516,9 @@ class BookingScreen extends GetView<BookingController> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
-                          color: AppColors().appGreyColor.withOpacity(0.10),
+                          color: controller.servicesList.isEmpty
+                              ? AppColors().appRedColor.withOpacity(0.10)
+                              : AppColors().appGreyColor.withOpacity(0.10),
                         ),
                       ),
                       child: IntrinsicHeight(
@@ -534,8 +538,7 @@ class BookingScreen extends GetView<BookingController> {
                                     (
                                       Services value,
                                     ) {
-                                      return DropdownMenuItem<
-                                          Services>(
+                                      return DropdownMenuItem<Services>(
                                         value: value,
                                         child: Text(value.name ?? ""),
                                       );
@@ -707,20 +710,29 @@ class BookingScreen extends GetView<BookingController> {
 
   Future<void> showPlacePicker() async {
     final PlacePicker route = PlacePicker(AppConstants().googleMapAPIKey);
+
     final dynamic result = await Navigator.of(Get.context!).push(
       MaterialPageRoute<dynamic>(builder: (BuildContext context) => route),
     );
 
     if (result != null && result is LocationResult) {
-      await controller.setAddressesAPI(result: result);
+      final String reason = controller.validateLocationResult(result: result);
+      if (reason.isEmpty) {
+        await controller.setAddressesAPI(result: result);
 
-      final String formattedAddress = result.formattedAddress ?? "";
-      controller.searchController.text = formattedAddress;
-      controller.rxSearchQuery(formattedAddress);
+        final String formattedAddress = result.formattedAddress ?? "";
+        controller.searchController.text = formattedAddress;
+        controller.rxSearchQuery(formattedAddress);
 
-      if (controller.searchController.isOpen) {
-        controller.searchController.closeView(formattedAddress);
-      } else {}
+        if (controller.searchController.isOpen) {
+          controller.searchController.closeView(formattedAddress);
+        } else {}
+      } else {
+        AppSnackbar().snackbarFailure(
+          title: "Oops",
+          message: reason,
+        );
+      }
     } else {}
     return Future<void>.value();
   }
