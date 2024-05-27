@@ -4,7 +4,6 @@ import "package:customer/controllers/product_detail_page_controllers/product_det
 import "package:customer/models/product_details_model.dart";
 import "package:customer/screens/widgets/text_widgets.dart";
 import "package:customer/services/app_nav_service.dart";
-import "package:customer/utils/app_assets_images.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/localization/app_language_keys.dart";
@@ -62,7 +61,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
 
   Widget pageViewWidget() {
     final ProductDetailsData data = controller.rxProductDetailsData.value;
-    List<String> thumbnails = [
+    List<String> thumbnails = <String>[
       data.photo ?? "",
       data.video ?? "",
     ];
@@ -73,7 +72,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
         children: <Widget>[
           Expanded(
             child: Card(
-              margin: EdgeInsets.symmetric(horizontal: 16.0),
+              margin: const EdgeInsets.symmetric(horizontal: 16.0),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12.0),
               ),
@@ -98,11 +97,13 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                                   imageType: ImageType.image,
                                 )
                               : Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: PodVideoPlayer(
-                                    controller: controller.podPlayerController,
-                                  ),
-                                );
+                            padding: const EdgeInsets.all(8.0),
+                            child: Flexible(
+                              child: PodVideoPlayer(
+                                controller: controller.podPlayerController,
+                              ),
+                            ),
+                          );
                         },
                         onPageChanged: controller.updateCurrentIndex,
                       ),
