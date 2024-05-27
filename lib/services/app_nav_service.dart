@@ -11,6 +11,8 @@ class AppNavService extends GetxService {
   AppNavService._internal();
   static final AppNavService _singleton = AppNavService._internal();
 
+  String previousRoute = "/";
+
   Future<void> pushNamed({
     required String destination,
     required Map<String, dynamic> arguments,
@@ -43,10 +45,13 @@ class AppNavService extends GetxService {
 
   Future<void> observer(Routing? routing) async {
     if (routing != null) {
+      previousRoute = routing.previous;
+
       final String current = routing.current;
       final dynamic args = routing.args;
 
       AppLogger().info(message: "Current route:: screen: $current args: $args");
+
       await AppAnalyticsService().logScreenView(
         current: routing.current,
         args: routing.args,
