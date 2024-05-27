@@ -77,8 +77,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
                 
                 <!-- Code for external_app_launcher package start-->
-                <category android:name="android.intent.category.HOME"/> 
-                <category android:name="android.intent.category.DEFAULT"/>
+                <!-- <category android:name="android.intent.category.HOME"/> 
+                <category android:name="android.intent.category.DEFAULT"/> -->
                 <!-- Code for external_app_launcher package end -->
             </intent-filter>
             <intent-filter>

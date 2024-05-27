@@ -72,7 +72,6 @@ class BookingController extends GetxController {
       needLoader: false,
     );
     return Future<void>.value();
-
   }
 
   String validateLocationResult({required LocationResult result}) {
@@ -130,7 +129,7 @@ class BookingController extends GetxController {
       types: Types.rental,
       endPoint: "vehicleCategories",
       query: <String, dynamic>{
-        "offset": 0,
+        "page": 1,
         "limit": 1000,
       },
       successCallback: (Map<String, dynamic> json) {
@@ -157,7 +156,7 @@ class BookingController extends GetxController {
       types: Types.rental,
       endPoint: "services",
       query: <String, dynamic>{
-        "offset": 0,
+        "page": 1,
         "limit": 1000,
         "categoryId": categoriesList[getSelectedCategoryIndex()].sId ?? "",
       },

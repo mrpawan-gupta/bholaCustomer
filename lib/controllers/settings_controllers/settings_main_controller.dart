@@ -45,12 +45,12 @@ class SettingsMainController extends GetxController {
 
   String getEmailOrEmailPlaceholder() {
     final String email = rxUserInfo.value.email ?? "";
-    return email.isNotEmpty ? email : "Email not available";
+    return email.isNotEmpty ? email : "-";
   }
 
   String getPhoneNumberOrPhoneNumberPlaceholder() {
     final String phoneNumber = rxUserInfo.value.phoneNumber ?? "";
-    return phoneNumber.isNotEmpty ? phoneNumber : "Phone Number not available";
+    return phoneNumber.isNotEmpty ? phoneNumber : "-";
   }
 
   String getAddressOrAddressPlaceholder() {
@@ -60,7 +60,7 @@ class SettingsMainController extends GetxController {
       GetAddressesData().toJson(),
     );
     if (isMapEquals) {
-      value = "Address not available";
+      value = "-";
     } else {
       final String street = rxAddressInfo.value.street ?? "";
       final String city = rxAddressInfo.value.city ?? "";
@@ -81,8 +81,7 @@ class SettingsMainController extends GetxController {
         GetAddresses model = GetAddresses();
         model = GetAddresses.fromJson(json);
 
-        final List<Address> list =
-            (model.data?.address ?? <Address>[]).where(
+        final List<Address> list = (model.data?.address ?? <Address>[]).where(
           (Address element) {
             return (element.primary ?? false) == true;
           },

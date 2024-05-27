@@ -61,7 +61,7 @@ dependencies:
   place_picker: ^0.10.0
   pod_player: ^0.2.0
   smart_auth: ^2.0.0
-  syncfusion_flutter_sliders: ^25.2.4
+  syncfusion_flutter_sliders: 25.2.4
   transparent_image: ^2.0.1
   url_launcher: ^6.2.6
   video_thumbnail:
