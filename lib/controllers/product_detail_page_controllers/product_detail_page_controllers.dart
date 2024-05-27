@@ -15,6 +15,7 @@ class ProductDetailController extends GetxController {
   final RxBool descTextShowFlag = false.obs;
   final RxString productPhoto = "".obs;
 
+
   PodPlayerController podPlayerController = PodPlayerController(
     playVideoFrom: PlayVideoFrom.network(""),
   );

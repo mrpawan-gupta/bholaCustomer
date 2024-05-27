@@ -20,6 +20,14 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back_ios),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 30),
         child: Column(
@@ -61,102 +69,104 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
 
   Widget pageViewWidget() {
     final ProductDetailsData data = controller.rxProductDetailsData.value;
-    List<String> thumbnails = <String>[
+    final List<String> thumbnails = <String>[
       data.photo ?? "",
       data.video ?? "",
     ];
 
-    return AspectRatio(
-      aspectRatio: 16 / 9,
-      child: Column(
-        children: <Widget>[
-          Expanded(
-            child: Card(
-              margin: const EdgeInsets.symmetric(horizontal: 16.0),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.0),
-              ),
-              child: Column(
-                children: <Widget>[
-                  Expanded(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12.0),
-                      child: PageView.builder(
-                        itemCount: 3,
-                        itemBuilder: (BuildContext context, int index) {
-                          String imageUrl = "";
-                          if (index == 0) {
-                            imageUrl = data.photo ?? "";
-                          } else if (index == 1) {
-                            imageUrl = data.video ?? "";
-                          }
-                          return index != 1
-                              ? CommonImageWidget(
-                                  imageUrl: imageUrl,
-                                  fit: BoxFit.cover,
-                                  imageType: ImageType.image,
-                                )
-                              : Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Flexible(
-                              child: PodVideoPlayer(
-                                controller: controller.podPlayerController,
+    return Padding(
+      padding: const EdgeInsets.only(top: 0.5),
+      child: AspectRatio(
+        aspectRatio: 16 / 9,
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: Card(
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Column(
+                  children: <Widget>[
+                    Expanded(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(12.0),
+                        child: PageView.builder(
+                          itemCount: 2,
+                          itemBuilder: (BuildContext context, int index) {
+                            String imageUrl = "";
+                            if (index == 0) {
+                              imageUrl = data.photo ?? "";
+                            } else if (index == 1) {
+                              imageUrl = data.video ?? "";
+                            }
+                            return index != 1
+                                ? CommonImageWidget(
+                              imageUrl: imageUrl,
+                              fit: BoxFit.cover,
+                              imageType: ImageType.image,
+                            )
+                                : Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Flexible(
+                                child: PodVideoPlayer(
+                                  controller: controller.podPlayerController,
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                        onPageChanged: controller.updateCurrentIndex,
+                            );
+                          },
+                          onPageChanged: controller.updateCurrentIndex,
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  SizedBox(
-                    height: 60,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: List.generate(thumbnails.length, (int index) {
-                          return Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 4.0),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8.0),
-                              child: index != 1
-                                  ? Image.network(
-                                      thumbnails[index],
-                                      width: 60,
-                                      height: 60,
-                                      fit: BoxFit.cover,
-                                    )
-                                  : Container(
-                                      width: 60,
-                                      height: 60,
-                                      color: Colors.black26,
-                                      child: const Icon(
-                                        Icons.play_circle_filled,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                            ),
-                          );
-                        }),
+                    const SizedBox(height: 8),
+                    SizedBox(
+                      height: 60,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: List.generate(thumbnails.length, (int index) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8.0),
+                                child: index != 1
+                                    ? Image.network(
+                                  thumbnails[index],
+                                  width: 60,
+                                  height: 60,
+                                  fit: BoxFit.cover,
+                                )
+                                    : Container(
+                                  width: 60,
+                                  height: 60,
+                                  color: Colors.black26,
+                                  child: const Icon(
+                                    Icons.play_circle_filled,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }),
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                ],
+                    const SizedBox(height: 8),
+                  ],
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: 8),
-          PageViewDotIndicator(
-            currentItem: controller.rxCurrentIndex.value,
-            count: 3,
-            selectedColor: AppColors().appPrimaryColor,
-            unselectedColor: AppColors().appGreyColor,
-          ),
-          const SizedBox(height: 16),
-        ],
+            const SizedBox(height: 8),
+            PageViewDotIndicator(
+              currentItem: controller.rxCurrentIndex.value,
+              count: 2,
+              selectedColor: AppColors().appPrimaryColor,
+              unselectedColor: AppColors().appGreyColor,
+            ),
+            const SizedBox(height: 16),
+          ],
+        ),
       ),
     );
   }
@@ -264,7 +274,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                         controller.descTextShowFlag.value
                             ? AppLanguageKeys().strReadMore
                             : AppLanguageKeys().strReadLess,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.blue,
                           fontWeight: FontWeight.w600,
                         ),
@@ -465,7 +475,6 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
     );
   }
 
-
   Widget buildRatingsWidget(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -644,19 +653,19 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                           children: <Widget>[
                             Flexible(
                               child: IgnorePointer(
-                                child: RatingBar.builder(
-                                  initialRating: (item.star ?? 0.0).toDouble(),
-                                  itemSize: 16,
-                                  unratedColor: AppColors().appGrey_,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return Icon(
-                                      Icons.star,
-                                      color: AppColors().appOrangeColor,
-                                    );
-                                  },
-                                  onRatingUpdate: (double value) {},
-                                ),
+                                // child: RatingBar.builder(
+                                //   initialRating: (item.star ?? 0.0).toDouble(),
+                                //   itemSize: 16,
+                                //   unratedColor: AppColors().appGrey_,
+                                //   itemBuilder:
+                                //       (BuildContext context, int index) {
+                                //     return Icon(
+                                //       Icons.star,
+                                //       color: AppColors().appOrangeColor,
+                                //     );
+                                //   },
+                                //   onRatingUpdate: (double value) {},
+                                // ),
                               ),
                             ),
                             const SizedBox(width: 8),
@@ -690,60 +699,6 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
           );
   }
 
-  // Widget buildReviewItem(BuildContext context,
-  //     String name, String timeAgo, String reviewText) {
-  //   return Column(
-  //     children: <Widget>[
-  //       ListTile(
-  //         contentPadding: EdgeInsets.zero,
-  //         leading: const CircleAvatar(
-  //           backgroundColor: Color(0xff764abc),
-  //         ),
-  //         title: Text(
-  //           name,
-  //         ),
-  //
-  //         subtitle: Row(
-  //           children: <Widget>[
-  //             Icon(
-  //               Icons.star,
-  //               color: AppColors().appOrangeColor,
-  //               size: 20,
-  //             ),
-  //             Icon(
-  //               Icons.star,
-  //               color: AppColors().appOrangeColor,
-  //               size: 20,
-  //             ),
-  //             Icon(
-  //               Icons.star,
-  //               color: AppColors().appOrangeColor,
-  //               size: 20,
-  //             ),
-  //             Icon(
-  //               Icons.star,
-  //               color: AppColors().appGreyColor,
-  //               size: 20,
-  //             ),
-  //             Icon(
-  //               Icons.star,
-  //               color: AppColors().appGreyColor,
-  //               size: 20,
-  //             ),
-  //             const SizedBox(
-  //               width: 15,
-  //             ),
-  //             Text(timeAgo),
-  //           ],
-  //         ),
-  //         trailing: const Icon(Icons.more_vert),
-  //       ),
-  //       Text(
-  //         reviewText,
-  //       ),
-  //     ],
-  //   );
-  // }
 
   Widget priceAndButtonWidget(BuildContext context) {
     final ProductDetailsData data = controller.rxProductDetailsData.value;

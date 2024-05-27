@@ -174,7 +174,7 @@ class Reviews {
   Reviews.fromJson(Map<String, dynamic> json) {
     customer = json["customer"];
     star = json["star"];
-    reviewPhotos = (json["review_photos"] as List<dynamic>).cast<String>();
+    reviewPhotos = (json["photos"] as List<dynamic>).cast<String>();
     sId = json["_id"];
     date = json["date"];
     isDeleted = json["isDeleted"];
@@ -199,7 +199,7 @@ class Reviews {
     data["customer"] = customer;
     data["review"] = review;
     data["star"] = star;
-    data["review_photos"] = reviewPhotos;
+    data["photos"] = reviewPhotos;
     data["_id"] = sId;
     data["date"] = date;
     data["isDeleted"] = isDeleted;
