@@ -1,3 +1,4 @@
+import "package:customer/bindings/booking_binding/booking_details_binding.dart";
 import "package:customer/bindings/login_screen_bindings/language_selection_binding.dart";
 import "package:customer/bindings/login_screen_bindings/notification_screen_binding.dart";
 import "package:customer/bindings/login_screen_bindings/otp_screen_binding.dart";
@@ -15,6 +16,7 @@ import "package:customer/bindings/product_listing_binding/product_listing_bindin
 import "package:customer/bindings/settings_bindings/change_language_binding.dart";
 import "package:customer/bindings/settings_bindings/edit_profile_binding.dart";
 import "package:customer/bindings/settings_bindings/settings_main_binding.dart";
+import "package:customer/screens/booking_screen/booking_details_screen.dart";
 import "package:customer/screens/login_screen/language_selection.dart";
 import "package:customer/screens/login_screen/notification_screen.dart";
 import "package:customer/screens/login_screen/otp_screen.dart";
@@ -22,7 +24,7 @@ import "package:customer/screens/login_screen/phone_number_screen.dart";
 import "package:customer/screens/login_screen/splash_screen.dart";
 import "package:customer/screens/main_navigation_screen.dart";
 import "package:customer/screens/outer_main_screens/booking_screen.dart";
-import "package:customer/screens/outer_main_screens/category_screen.dart";
+import "package:customer/screens/outer_main_screens/category/category_screen.dart";
 import "package:customer/screens/outer_main_screens/help_screen.dart";
 import "package:customer/screens/outer_main_screens/home_screen.dart";
 import "package:customer/screens/outer_main_screens/order_history_screen.dart";
@@ -62,6 +64,7 @@ class AppRoutes {
   final String cartScreen = "/cartScreen";
   final String productListingScreen = "/productListingScreen";
   final String editProfileScreen = "/editProfileScreen";
+  final String bookingDetailsScreen = "/bookingDetailsScreen";
 
   List<GetPage<dynamic>> getPages() {
     final GetPage<dynamic> splashScreenRoute = GetPage<dynamic>(
@@ -156,6 +159,12 @@ class AppRoutes {
       binding: EditProfileBinding(),
     );
 
+    final GetPage<dynamic> bookingDetailsRoute = GetPage<dynamic>(
+      name: bookingDetailsScreen,
+      page: BookingDetailsScreen.new,
+      binding: BookingDetailsBinding(),
+    );
+    
     return <GetPage<dynamic>>[
       splashScreenRoute,
       languageSelectionRoute,
@@ -174,6 +183,7 @@ class AppRoutes {
       cartRoute,
       productListingRoute,
       editProfileRoute,
+      bookingDetailsRoute,
     ];
   }
 }

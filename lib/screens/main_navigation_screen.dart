@@ -2,7 +2,7 @@ import "package:customer/common_widgets/common_image_widget.dart";
 import "package:customer/controllers/main_navigation_controller.dart";
 import "package:customer/models/get_user_by_id.dart";
 import "package:customer/screens/outer_main_screens/booking_screen.dart";
-import "package:customer/screens/outer_main_screens/category_screen.dart";
+import "package:customer/screens/outer_main_screens/category/category_screen.dart";
 import "package:customer/screens/outer_main_screens/help_screen.dart";
 import "package:customer/screens/outer_main_screens/home_screen.dart";
 import "package:customer/screens/outer_main_screens/order_history_screen.dart";

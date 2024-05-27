@@ -50,10 +50,10 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
                   ),
                   const SizedBox(height: 16),
                   settingsItems1(
-                    itemName: "Try our Customer App",
+                    itemName: "Try our Vendor App",
                     onTap: () async {
                       await LaunchApp.openApp(
-                        androidPackageName: "com.ahinsaaggregator.customer",
+                        androidPackageName: "com.ahinsaaggregator.vendor",
                         iosUrlScheme: "ahinsaaggregatorVendor://",
                         appStoreLink:
                             "itms-apps://itunes.apple.com/us/app/pulse-secure/id945832041",
