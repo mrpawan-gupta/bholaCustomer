@@ -152,19 +152,27 @@ class BookingController extends GetxController {
   }
 
   Future<void> getServicesAPI() async {
+    final int selectedCategoryIndex = getSelectedCategoryIndex();
+    if (selectedCategoryIndex == -1) {
+      AppSnackbar().snackbarFailure(
+        title: "Oops",
+        message: "Please select a category first.",
+      );
+      return;
+    }
+
     await AppAPIService().functionGet(
       types: Types.rental,
       endPoint: "services",
       query: <String, dynamic>{
         "page": 1,
         "limit": 1000,
-        "categoryId": categoriesList[getSelectedCategoryIndex()].sId ?? "",
+        "categoryId": categoriesList[selectedCategoryIndex].sId ?? "",
       },
       successCallback: (Map<String, dynamic> json) {
         AppLogger().info(message: json["message"]);
 
-        GetAllServices model = GetAllServices();
-        model = GetAllServices.fromJson(json);
+        final GetAllServices model = GetAllServices.fromJson(json);
 
         servicesList
           ..clear()
@@ -179,42 +187,67 @@ class BookingController extends GetxController {
     return Future<void>.value();
   }
 
-  Future<void> createBookingAPI() async {
+
+  Future<String?> createBookingAPI() async {
+    final int selectedCategoryIndex = getSelectedCategoryIndex();
+    final int selectedAddressIndex = getSelectedAddressIndex();
+    final int selectedServiceIndex = getSelectedServiceIndex();
+
+    if (selectedCategoryIndex == -1 || selectedAddressIndex == -1 ||
+        selectedServiceIndex == -1) {
+      AppSnackbar().snackbarFailure(
+        title: "Oops",
+        message: "Please make sure all fields are properly filled.",
+      );
+      return null;
+    }
+
     final Map<String, dynamic> body = <String, dynamic>{
       "scheduleDate": rxDate.value,
       "approxStartTime": rxStartTime.value,
       "approxEndTime": rxEndTime.value,
       "crop": rxCropName.value,
-      "vehicleCategory": categoriesList[getSelectedCategoryIndex()].sId ?? "",
-      "deliveryAddress": rxAddressList[getSelectedAddressIndex()].sId ?? "",
+      "vehicleCategory": categoriesList[selectedCategoryIndex].sId ?? "",
+      "deliveryAddress": rxAddressList[selectedAddressIndex].sId ?? "",
       "services": <Map<String, dynamic>>[
         <String, dynamic>{
-          "service": servicesList[getSelectedServiceIndex()].sId ?? "",
+          "service": servicesList[selectedServiceIndex].sId ?? "",
           "area": rxFarmArea.value,
         }
       ],
     };
+
+
+    Completer<String?> completer = Completer<String?>();
+
     await AppAPIService().functionPost(
       types: Types.rental,
       endPoint: "booking",
       body: body,
       successCallback: (Map<String, dynamic> json) {
-        clearForm();
+        CreateBooking model = CreateBooking.fromJson(json);
 
-        AppSnackbar().snackbarSuccess(title: "Yay!", message: json["message"]);
-
-        CreateBooking model = CreateBooking();
-        model = CreateBooking.fromJson(json);
-
-        final String bookingId = model.data?.sId ?? "";
-        AppLogger().info(message: "Booking Id: $bookingId");
+        if (model.data != null) {
+          String? bookingId = model.data!.sId;
+          clearForm();
+          AppSnackbar().snackbarSuccess(title: "Yay!", message: json["message"]);
+          completer.complete(bookingId);
+        } else {
+          AppSnackbar().snackbarFailure(title: "Oops", message: "Invalid response from server.");
+          completer.complete(null);
+        }
       },
       failureCallback: (Map<String, dynamic> json) {
         AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
+        completer.complete(null);
       },
     );
-    return Future<void>.value();
+
+    return completer.future;
   }
+
+
+
 
   void clearForm() {
     searchController.clear();
