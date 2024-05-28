@@ -49,6 +49,9 @@ dependencies:
   location: ^6.0.2
   logger: ^2.3.0
   marquee: ^2.2.3
+  media_info:
+    git:
+      url: https://github.com/dharambudh1/flutter_plugin_media_info.git
   mime: ^1.0.5
   overlay_support: ^2.1.0
   package_info_plus: ^8.0.0

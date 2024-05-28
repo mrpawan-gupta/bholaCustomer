@@ -3,11 +3,13 @@ import "dart:typed_data";
 
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/services/app_perm_service.dart";
+import "package:customer/utils/app_logger.dart";
 import "package:customer/utils/app_snackbar.dart";
 import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:image_picker/image_picker.dart";
+import "package:media_info/media_info.dart";
 import "package:transparent_image/transparent_image.dart";
 import "package:video_thumbnail/video_thumbnail.dart";
 
@@ -18,6 +20,9 @@ class AppImageVideoPicker {
 
   AppImageVideoPicker._internal();
   static final AppImageVideoPicker _singleton = AppImageVideoPicker._internal();
+
+  final ImagePicker _picker = ImagePicker();
+  final MediaInfo _mediaInfo = MediaInfo();
 
   Future<void> openImageVideoPicker({
     required Function(String filePath) filePathCallback,
@@ -47,15 +52,38 @@ class AppImageVideoPicker {
               final String filePath = await onSelectCamera(
                 isForVideo: isForVideo,
               );
+
               if (filePath.isNotEmpty) {
                 final int sizeInBytes = File(filePath).lengthSync();
                 final double sizeInMb = sizeInBytes / (1024 * 1024);
-                sizeInMb > 20
-                    ? AppSnackbar().snackbarFailure(
+
+                if (sizeInMb > 20) {
+                  AppSnackbar().snackbarFailure(
+                    title: "Oops",
+                    message: "File size should ne less than 20 MB",
+                  );
+                } else {
+                  Map<String, dynamic> info = <String, dynamic>{};
+                  info = await _mediaInfo.getMediaInfo(filePath);
+
+                  AppLogger().info(message: "getMediaInfo: $info");
+
+                  if (info.containsKey("durationMs")) {
+                    final num durationMs = info["durationMs"];
+                    final num durationinMinutes = durationMs / 60000;
+
+                    if (durationinMinutes > 5) {
+                      AppSnackbar().snackbarFailure(
                         title: "Oops",
-                        message: "File size should ne less than 20 MB",
-                      )
-                    : filePathCallback(filePath);
+                        message: "File duration should ne less than 5 minutes",
+                      );
+                    } else {
+                      filePathCallback(filePath);
+                    }
+                  } else {
+                    filePathCallback(filePath);
+                  }
+                }
               } else {}
             },
           ),
@@ -76,19 +104,43 @@ class AppImageVideoPicker {
               final String filePath = await onSelectPhotoLibrary(
                 isForVideo: isForVideo,
               );
+
               if (filePath.isNotEmpty) {
                 final int sizeInBytes = File(filePath).lengthSync();
                 final double sizeInMb = sizeInBytes / (1024 * 1024);
-                sizeInMb > 20
-                    ? AppSnackbar().snackbarFailure(
+
+                if (sizeInMb > 20) {
+                  AppSnackbar().snackbarFailure(
+                    title: "Oops",
+                    message: "File size should ne less than 20 MB",
+                  );
+                } else {
+                  Map<String, dynamic> info = <String, dynamic>{};
+                  info = await _mediaInfo.getMediaInfo(filePath);
+
+                  AppLogger().info(message: "getMediaInfo: $info");
+
+                  if (info.containsKey("durationMs")) {
+                    final num durationMs = info["durationMs"];
+                    final num durationinMinutes = durationMs / 60000;
+
+                    if (durationinMinutes > 5) {
+                      AppSnackbar().snackbarFailure(
                         title: "Oops",
-                        message: "File size should ne less than 20 MB",
-                      )
-                    : filePathCallback(filePath);
+                        message: "File duration should ne less than 5 minutes",
+                      );
+                    } else {
+                      filePathCallback(filePath);
+                    }
+                  } else {
+                    filePathCallback(filePath);
+                  }
+                }
               } else {}
             },
           ),
-          const SizedBox(height: 48),
+          const SizedBox(height: 16),
+          const SizedBox(height: 32),
         ],
       ),
       backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
@@ -101,12 +153,11 @@ class AppImageVideoPicker {
     String filePath = "";
     final bool hasPerm = await AppPermService().permissionPhotoOrStorage();
     if (hasPerm) {
-      final ImagePicker picker = ImagePicker();
       const ImageSource src = ImageSource.camera;
 
       final XFile file = isForVideo
-          ? await picker.pickVideo(source: src) ?? XFile("")
-          : await picker.pickImage(source: src) ?? XFile("");
+          ? await _picker.pickVideo(source: src) ?? XFile("")
+          : await _picker.pickImage(source: src) ?? XFile("");
 
       filePath = file.path;
     } else {
@@ -122,12 +173,11 @@ class AppImageVideoPicker {
     String filePath = "";
     final bool hasPerm = await AppPermService().permissionPhotoOrStorage();
     if (hasPerm) {
-      final ImagePicker picker = ImagePicker();
       const ImageSource src = ImageSource.gallery;
 
       final XFile file = isForVideo
-          ? await picker.pickVideo(source: src) ?? XFile("")
-          : await picker.pickImage(source: src) ?? XFile("");
+          ? await _picker.pickVideo(source: src) ?? XFile("")
+          : await _picker.pickImage(source: src) ?? XFile("");
 
       filePath = file.path;
     } else {
