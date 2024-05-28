@@ -65,12 +65,13 @@ class OTPScreenController extends GetxController {
     return;
   }
 
-  void unfocus() {
-    final bool cond1 = otpController.value.text.length == 10;
-    final bool cond2 = rxOTP.value.length == 10;
+  void unfocus({required Function() autoNext}) {
+    final bool cond1 = otpController.value.text.length == 6;
+    final bool cond2 = rxOTP.value.length == 6;
 
     if (cond1 && cond2) {
       FocusManager.instance.primaryFocus?.unfocus();
+      autoNext();
     } else {}
     return;
   }

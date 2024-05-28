@@ -31,7 +31,7 @@ class HiLanguage {
         "ये नियम और शर्तें वेबसाइट.कॉम पर स्थित कंपनी नाम की वेबसाइट के उपयोग के लिए नियमों और विनियमों को रेखांकित करती हैं।\n\nइस वेबसाइट तक पहुंचने पर हम मानते हैं कि आप इन नियमों और शर्तों को स्वीकार करते हैं। यदि आप इस पृष्ठ पर बताए गए सभी नियमों और शर्तों को मानने से सहमत नहीं हैं तो वेबसाइट नाम का उपयोग जारी न रखें।",
     AppLanguageKeys().strVendorAgreement: "विक्रेता समझौता",
     AppLanguageKeys().strTapToExpand: "विस्तार करने के लिए टैप करें",
-    AppLanguageKeys().strAgreeTermsAndConditions: "नियमों और शर्तों पर सहमत",
+    AppLanguageKeys().strAgreeTermsAndConditions: "मैं नियम, शर्तों और समझौतों से सहमत हूं",
     AppLanguageKeys().strAgreePrivacyPolicy: "मैं निजता नीति से सहमत हूं",
     AppLanguageKeys().strNext: "अगला",
     AppLanguageKeys().strFillInYourProfile: "अपना प्रोफ़ाइल भरें",

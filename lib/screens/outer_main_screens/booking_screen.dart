@@ -1,14 +1,20 @@
+import "dart:convert";
+
 import "package:customer/common_widgets/app_elevated_button.dart";
+import "package:customer/common_widgets/app_text_button.dart";
 import "package:customer/common_widgets/app_text_field.dart";
 import "package:customer/controllers/outer_main_controllers/booking_controller.dart";
+import "package:customer/models/create_booking.dart";
 import "package:customer/models/featured_model.dart";
 import "package:customer/models/get_addresses_model.dart";
 import "package:customer/models/get_all_services.dart";
-import "package:customer/screens/outer_main_screens/category/booking_success_screen.dart";
+import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_constants.dart";
-import "package:customer/utils/app_logger.dart";
+import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/app_snackbar.dart";
+import "package:customer/utils/app_whatsapp.dart";
+import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
@@ -670,26 +676,39 @@ class BookingScreen extends GetView<BookingController> {
             text: "Get Quote",
             onPressed: () async {
               final String reason = controller.validateForm();
+
               if (reason.isEmpty) {
-                final String? bookingId = await controller.createBookingAPI();
-                if (bookingId != null) {
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => BookingSuccessScreen(bookingId: bookingId),
-                    ),
+                CreateBookingData model = CreateBookingData();
+                model = await controller.createBookingAPI()
+
+                  //
+                  ..vendorsAvailable = true;
+                //
+
+                if (!mapEquals(model.toJson(), CreateBookingData().toJson())) {
+                  final String id = model.booking?.sId ?? "";
+
+                  await openBookingGlanceWidget(
+                    data: model,
+                    onPressedConfirm: () async {
+                      bool value = false;
+                      value = await controller.confirmOrderAPICall(id: id);
+
+                      if (value) {
+                        controller.clearForm();
+
+                        final String data = json.encode(model.toJson());
+                        await AppNavService().pushNamed(
+                          destination: AppRoutes().bookingPaymentScreen,
+                          arguments: <String, dynamic>{"id": id, "data": data},
+                        );
+                      } else {}
+                    },
+                    onPressedSupport: AppWhatsApp().openWhatsApp,
                   );
-                } else {
-                  AppSnackbar().snackbarFailure(
-                    title: "Oops",
-                    message: "Booking failed. Please try again.",
-                  );
-                }
+                } else {}
               } else {
-                AppSnackbar().snackbarFailure(
-                  title: "Oops",
-                  message: reason,
-                );
+                AppSnackbar().snackbarFailure(title: "Oops", message: reason);
               }
             },
           ),
@@ -697,8 +716,6 @@ class BookingScreen extends GetView<BookingController> {
       ),
     );
   }
-
-
 
   Widget clearFormWidget() {
     return Padding(
@@ -791,6 +808,202 @@ class BookingScreen extends GetView<BookingController> {
       final String formattedTime = DateFormat("hh:mm a").format(dateTime);
       onPicked(dateTime.toString(), formattedTime);
     } else {}
+    return Future<void>.value();
+  }
+
+  Future<void> openBookingGlanceWidget({
+    required CreateBookingData data,
+    required Function() onPressedConfirm,
+    required Function() onPressedSupport,
+  }) async {
+    await Get.bottomSheet(
+      (data.vendorsAvailable ?? false)
+          ? Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const SizedBox(height: 16),
+                Text(
+                  AppLanguageKeys().strActionPerform.tr,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 16),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Text(
+                    "The selected service is currently available in your area.",
+                    maxLines: 5,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Row(
+                    children: <Widget>[
+                      const Expanded(
+                        child: Text(
+                          "• Price Per Acre:",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Text(
+                        "₹${data.booking?.services?.first.price ?? 0}",
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Row(
+                    children: <Widget>[
+                      const Expanded(
+                        child: Text(
+                          "• Farm Area:",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Text(
+                        "${data.booking?.farmArea ?? 0}",
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Row(
+                    children: <Widget>[
+                      const Expanded(
+                        child: Text(
+                          "• Total amount (Price per Acre * Farm Area):",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Text(
+                        "₹${data.booking?.amount ?? 0}",
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Expanded(
+                        child: SizedBox(
+                          height: 50,
+                          child: AppTextButton(
+                            text: "Select different service",
+                            onPressed: () async {
+                              AppNavService().pop();
+                            },
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: SizedBox(
+                          height: 50,
+                          child: AppElevatedButton(
+                            text: "Confirm Booking",
+                            onPressed: () {
+                              AppNavService().pop();
+                              onPressedConfirm();
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                const SizedBox(height: 48),
+              ],
+            )
+          : Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const SizedBox(height: 16),
+                Text(
+                  AppLanguageKeys().strActionPerform.tr,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 16),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Text(
+                    // ignore: lines_longer_than_80_chars
+                    "The selected service is currently not available in your area. Try Selecting the different service or contact the support team.",
+                    maxLines: 5,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Expanded(
+                        child: SizedBox(
+                          height: 50,
+                          child: AppTextButton(
+                            text: "Select different service",
+                            onPressed: () async {
+                              AppNavService().pop();
+                            },
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: SizedBox(
+                          height: 50,
+                          child: AppElevatedButton(
+                            text: "Contact Support",
+                            onPressed: () {
+                              AppNavService().pop();
+                              onPressedSupport();
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                const SizedBox(height: 48),
+              ],
+            ),
+      backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
+      isScrollControlled: true,
+    );
     return Future<void>.value();
   }
 }

@@ -111,7 +111,7 @@ class PhoneNumberScreen extends GetView<PhoneNumberScreenController> {
                                         value,
                                       );
 
-                                controller.unfocus();
+                                controller.unfocus(autoNext: sendOTPAPICall);
                               },
                               onTap: () {},
                               inputFormatters: <TextInputFormatter>[

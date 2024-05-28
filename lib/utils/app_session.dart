@@ -9,6 +9,7 @@ import "package:customer/services/app_location_service.dart";
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/services/app_pkg_info_service.dart";
 import "package:customer/services/app_storage_service.dart";
+import "package:customer/utils/app_loader.dart";
 import "package:customer/utils/app_logger.dart";
 import "package:customer/utils/app_routes.dart";
 
@@ -23,20 +24,25 @@ class AppSession {
   bool isUserLoggedIn() {
     final bool hasUserAuth = AppStorageService().getUserAuth().isNotEmpty;
     final bool hasUserInfo = AppStorageService().getUserInfo().isNotEmpty;
-    return hasUserAuth && hasUserInfo;
+    final bool result = hasUserAuth && hasUserInfo;
+    return result;
   }
 
   Future<void> performSignIn() async {
+    AppLoader().showLoader();
+
     final GetUserByIdData userInfo = await AppSession().getUserAPICall();
     await AppSession().setUserInfo(userInfo: userInfo);
 
     await AppPkgInfoService().updateInfoToFirestore();
     await AppDevInfoService().updateInfoToFirestore();
-    
+
     await AppLocationService().automatedFunction();
 
     final String id = AppStorageService().getUserAuthModel().sId ?? "";
     await AppFCMService().instance.subscribeToTopic(id);
+
+    AppLoader().hideLoader();
 
     await AppNavService().pushNamedAndRemoveUntil(
       destination: AppRoutes().mainNavigationScreen,
@@ -46,10 +52,14 @@ class AppSession {
   }
 
   Future<void> performSignOut() async {
+    AppLoader().showLoader();
+
     final String id = AppStorageService().getUserAuthModel().sId ?? "";
     await AppFCMService().instance.unsubscribeFromTopic(id);
 
     await AppStorageService().erase();
+
+    AppLoader().hideLoader();
 
     await AppNavService().pushNamedAndRemoveUntil(
       destination: AppRoutes().splashScreen,

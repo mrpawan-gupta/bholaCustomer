@@ -32,7 +32,8 @@ class MrLanguage {
         "या अटी आणि शर्ती Website.com वर असलेल्या कंपनीच्या नावाच्या वेबसाइटच्या वापरासाठी नियम आणि नियमांची रूपरेषा दर्शवितात.\n\nया वेबसाइटवर प्रवेश करून आम्ही असे गृहीत धरतो की तुम्ही या अटी व शर्ती स्वीकारता. आपण या पृष्ठावर नमूद केलेल्या सर्व अटी व शर्ती स्वीकारण्यास सहमत नसल्यास वेबसाइटचे नाव वापरणे सुरू ठेवू नका.",
     AppLanguageKeys().strVendorAgreement: "विक्रेता करार",
     AppLanguageKeys().strTapToExpand: "विस्तृत करण्यासाठी टॅप करा",
-    AppLanguageKeys().strAgreeTermsAndConditions: "मी नियम आणि अटींशी सहमत आहे",
+    AppLanguageKeys().strAgreeTermsAndConditions:
+        "मी अटी, शर्ती आणि करारांना सहमती देतो",
     AppLanguageKeys().strAgreePrivacyPolicy: "मी गोपनीयता धोरणाशी सहमत आहे",
     AppLanguageKeys().strNext: "पुढे",
     AppLanguageKeys().strFillInYourProfile: "तुमचे प्रोफाइल भरा",
@@ -46,7 +47,6 @@ class MrLanguage {
     AppLanguageKeys().strActionPerform: "कृती करा",
     AppLanguageKeys().strCamera: "कॅमेरा",
     AppLanguageKeys().strPhotoLibrary: "फोटो लायब्ररी",
-
     AppLanguageKeys().strHello: "नमस्कार",
   };
 }

@@ -1,4 +1,5 @@
 import "package:customer/bindings/booking_binding/booking_details_binding.dart";
+import "package:customer/bindings/booking_binding/booking_payment_binding.dart";
 import "package:customer/bindings/login_screen_bindings/language_selection_binding.dart";
 import "package:customer/bindings/login_screen_bindings/notification_screen_binding.dart";
 import "package:customer/bindings/login_screen_bindings/otp_screen_binding.dart";
@@ -17,6 +18,7 @@ import "package:customer/bindings/settings_bindings/change_language_binding.dart
 import "package:customer/bindings/settings_bindings/edit_profile_binding.dart";
 import "package:customer/bindings/settings_bindings/settings_main_binding.dart";
 import "package:customer/screens/booking_screen/booking_details_screen.dart";
+import "package:customer/screens/booking_screen/booking_payment_screen.dart";
 import "package:customer/screens/login_screen/language_selection.dart";
 import "package:customer/screens/login_screen/notification_screen.dart";
 import "package:customer/screens/login_screen/otp_screen.dart";
@@ -65,6 +67,7 @@ class AppRoutes {
   final String productListingScreen = "/productListingScreen";
   final String editProfileScreen = "/editProfileScreen";
   final String bookingDetailsScreen = "/bookingDetailsScreen";
+  final String bookingPaymentScreen = "/bookingPaymentScreen";
 
   List<GetPage<dynamic>> getPages() {
     final GetPage<dynamic> splashScreenRoute = GetPage<dynamic>(
@@ -164,7 +167,13 @@ class AppRoutes {
       page: BookingDetailsScreen.new,
       binding: BookingDetailsBinding(),
     );
-    
+
+    final GetPage<dynamic> bookingPaymentRoute = GetPage<dynamic>(
+      name: bookingPaymentScreen,
+      page: BookingPaymentScreen.new,
+      binding: BookingPaymentBinding(),
+    );
+
     return <GetPage<dynamic>>[
       splashScreenRoute,
       languageSelectionRoute,
@@ -184,6 +193,7 @@ class AppRoutes {
       productListingRoute,
       editProfileRoute,
       bookingDetailsRoute,
+      bookingPaymentRoute,
     ];
   }
 }

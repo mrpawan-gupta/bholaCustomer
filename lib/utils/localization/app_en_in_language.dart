@@ -33,7 +33,7 @@ class EnLanguage {
     AppLanguageKeys().strVendorAgreement: "Vendor agreement",
     AppLanguageKeys().strTapToExpand: "Tap to expand",
     AppLanguageKeys().strAgreeTermsAndConditions:
-        "I agree to Terms and Conditions",
+        "I agree to Terms, Conditions & Agreements",
     AppLanguageKeys().strAgreePrivacyPolicy: "I agree to Privacy Policy",
     AppLanguageKeys().strNext: "Next",
     AppLanguageKeys().strFillInYourProfile: "Fill In Your Profile",

@@ -65,7 +65,7 @@ class OTPScreen extends GetView<OTPScreenController> {
                     onChanged: (String value) {
                       controller
                         ..updateOTP(value)
-                        ..unfocus();
+                        ..unfocus(autoNext: verifyOTPAPICall);
                     },
                     inputFormatters: <TextInputFormatter>[
                       FilteringTextInputFormatter.digitsOnly,

@@ -97,6 +97,7 @@ class _FilterCategoryByWidgetState extends State<FilterCategoryByWidget> {
                   ),
                 ),
               ),
+              const SizedBox(width: 16),
               Expanded(
                 child: SizedBox(
                   height: 50,

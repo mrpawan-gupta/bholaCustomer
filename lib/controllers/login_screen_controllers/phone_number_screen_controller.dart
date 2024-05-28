@@ -53,12 +53,13 @@ class PhoneNumberScreenController extends GetxController {
     return Future<void>.value();
   }
 
-  void unfocus() {
+  void unfocus({required Function() autoNext}) {
     final bool cond1 = phoneNumberController.value.text.length == 10;
     final bool cond2 = rxPhoneNumber.value.length == 10;
 
     if (cond1 && cond2) {
       FocusManager.instance.primaryFocus?.unfocus();
+      autoNext();
     } else {}
     return;
   }
