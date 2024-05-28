@@ -4,8 +4,10 @@ import "package:customer/controllers/outer_main_controllers/booking_controller.d
 import "package:customer/models/featured_model.dart";
 import "package:customer/models/get_addresses_model.dart";
 import "package:customer/models/get_all_services.dart";
+import "package:customer/screens/outer_main_screens/category/booking_success_screen.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_constants.dart";
+import "package:customer/utils/app_logger.dart";
 import "package:customer/utils/app_snackbar.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
@@ -49,7 +51,7 @@ class BookingScreen extends GetView<BookingController> {
             ),
           ),
         ),
-        buttonWidget(),
+        buttonWidget(context),
         const SizedBox(height: 32),
       ],
     );
@@ -657,7 +659,7 @@ class BookingScreen extends GetView<BookingController> {
     );
   }
 
-  Widget buttonWidget() {
+  Widget buttonWidget(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
@@ -669,7 +671,20 @@ class BookingScreen extends GetView<BookingController> {
             onPressed: () async {
               final String reason = controller.validateForm();
               if (reason.isEmpty) {
-                await controller.createBookingAPI();
+                final String? bookingId = await controller.createBookingAPI();
+                if (bookingId != null) {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BookingSuccessScreen(bookingId: bookingId),
+                    ),
+                  );
+                } else {
+                  AppSnackbar().snackbarFailure(
+                    title: "Oops",
+                    message: "Booking failed. Please try again.",
+                  );
+                }
               } else {
                 AppSnackbar().snackbarFailure(
                   title: "Oops",
@@ -682,6 +697,8 @@ class BookingScreen extends GetView<BookingController> {
       ),
     );
   }
+
+
 
   Widget clearFormWidget() {
     return Padding(
