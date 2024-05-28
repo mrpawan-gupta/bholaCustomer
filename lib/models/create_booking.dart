@@ -7,6 +7,7 @@ class CreateBooking {
     statusCode = json["statusCode"];
     message = json["message"];
   }
+
   bool? success;
   Data? data;
   int? statusCode;
@@ -30,6 +31,7 @@ class Data {
   Data.fromJson(Map<String, dynamic> json) {
     sId = json["_id"];
   }
+
   String? sId;
 
   Map<String, dynamic> toJson() {
