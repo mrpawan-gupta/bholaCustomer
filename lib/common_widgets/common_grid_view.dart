@@ -1,4 +1,5 @@
 import "package:customer/common_widgets/app_maybe_marquee.dart";
+import "package:customer/common_widgets/app_no_item_found.dart";
 import "package:customer/common_widgets/common_gradient.dart";
 import "package:customer/common_widgets/common_image_widget.dart";
 import "package:customer/common_widgets/empty_vehicle_or_product_widget.dart";
@@ -10,18 +11,19 @@ import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:infinite_scroll_pagination/infinite_scroll_pagination.dart";
 
-
 class CommonGridView extends StatelessWidget {
   const CommonGridView({
     required this.pagingController,
     required this.onTapExistingProduct,
     required this.onTapNewProduct,
+    required this.type,
     super.key,
   });
 
   final PagingController<int, Products> pagingController;
   final Function(Products item) onTapExistingProduct;
   final Function() onTapNewProduct;
+  final String type;
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +39,13 @@ class CommonGridView extends StatelessWidget {
         crossAxisSpacing: 16,
       ),
       builderDelegate: PagedChildBuilderDelegate<Products>(
+        noItemsFoundIndicatorBuilder: (BuildContext context) {
+          return AppNoItemFoundWidget(
+            title: "No items found",
+            message: "The $type is currently empty.",
+            onTryAgain: pagingController.refresh,
+          );
+        },
         itemBuilder: (BuildContext context, Products item, int i) {
           // final int length = pagingController.itemList?.length ?? 0;
           // final bool isLast = i == length - 1;

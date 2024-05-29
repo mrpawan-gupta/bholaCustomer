@@ -1,6 +1,9 @@
+import "dart:async";
+
 import "package:customer/models/verify_otp.dart";
 import "package:customer/services/app_api_service.dart";
 import "package:customer/utils/app_session.dart";
+import "package:customer/utils/app_snackbar.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 
@@ -65,18 +68,18 @@ class OTPScreenController extends GetxController {
     return;
   }
 
-  void unfocus({required Function() autoNext}) {
+  void unfocus() {
     final bool cond1 = otpController.value.text.length == 6;
     final bool cond2 = rxOTP.value.length == 6;
 
     if (cond1 && cond2) {
       FocusManager.instance.primaryFocus?.unfocus();
-      autoNext();
+      unawaited(verifyOTPAPICall());
     } else {}
     return;
   }
 
-  String validate() {
+  String formValidate() {
     String reason = "";
     final bool cond1 = rxOTP.value.isNotEmpty;
     final bool cond2 = rxOTP.value.length == 6;
@@ -88,34 +91,45 @@ class OTPScreenController extends GetxController {
     return reason;
   }
 
-  Future<void> sendOTPAPICall({
-    required Function(Map<String, dynamic> json) successCallback,
-    required Function(Map<String, dynamic> json) failureCallback,
-  }) async {
+  Future<void> sendOTPAPICall() async {
     await AppAPIService().functionPost(
       types: Types.oauth,
       endPoint: "auth/send-otp",
       body: <String, dynamic>{
         "phoneNumber": "+91${rxPhoneNumber.value.trim()}",
       },
-      successCallback: successCallback,
-      failureCallback: failureCallback,
+      successCallback: (Map<String, dynamic> json) async {
+        AppSnackbar().snackbarSuccess(
+          title: "Yay!",
+          message: json["message"],
+        );
+
+        timerStart();
+      },
+      failureCallback: (Map<String, dynamic> json) {
+        AppSnackbar().snackbarFailure(
+          title: "Oops",
+          message: json["message"],
+        );
+      },
     );
     return Future<void>.value();
   }
 
-  Future<void> verifyOTPAPICall({
-    required Function(Map<String, dynamic> json) successCallback,
-    required Function(Map<String, dynamic> json) failureCallback,
-  }) async {
+  Future<void> verifyOTPAPICall() async {
     await AppAPIService().functionPost(
       types: Types.oauth,
-      endPoint: "auth/verify-otp/Customer",
+      endPoint: "auth/verify-otp/Vendor",
       body: <String, dynamic>{
         "phoneNumber": "+91${rxPhoneNumber.value.trim()}",
         "otp": rxOTP.value.trim(),
       },
       successCallback: (Map<String, dynamic> json) async {
+        AppSnackbar().snackbarSuccess(
+          title: "Yay!",
+          message: json["message"],
+        );
+
         VerifyOTPModel verifyOTPModel = VerifyOTPModel();
         verifyOTPModel = VerifyOTPModel.fromJson(json);
 
@@ -124,9 +138,14 @@ class OTPScreenController extends GetxController {
         final VerifyOTPModelData userAuth = verifyOTPData.value;
         await AppSession().setUserAuth(userAuth: userAuth);
 
-        successCallback(json);
+        await decideAndNavigate();
       },
-      failureCallback: failureCallback,
+      failureCallback: (Map<String, dynamic> json) {
+        AppSnackbar().snackbarFailure(
+          title: "Oops",
+          message: json["message"],
+        );
+      },
     );
     return Future<void>.value();
   }

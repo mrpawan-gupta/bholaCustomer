@@ -67,12 +67,14 @@ dependencies:
   smart_auth: ^2.0.0
   syncfusion_flutter_sliders: 25.2.4
   transparent_image: ^2.0.1
+  upgrader: ^10.3.0
   url_launcher: ^6.2.6
   video_thumbnail:
     git:
       url: https://github.com/dharambudh1/video_thumbnail.git
 
 dev_dependencies:
+  flutter_launcher_icons: "^0.13.1"
   flutter_lints: ^4.0.0
   flutter_test:
     sdk: flutter
@@ -82,3 +84,9 @@ flutter:
   assets:
     - assets/
     - assets/images/
+
+flutter_launcher_icons:
+  image_path: "assets/images/app_icon.png"
+  android: true
+  ios: true
+  remove_alpha_ios: true

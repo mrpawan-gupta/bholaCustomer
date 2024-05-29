@@ -20,6 +20,7 @@ import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:flutter_localizations/flutter_localizations.dart";
 import "package:get/get.dart";
+import "package:upgrader/upgrader.dart";
 
 @pragma("vm:entry-point")
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -75,10 +76,24 @@ class MyApp extends StatelessWidget {
       ],
       debugShowCheckedModeBanner: false,
       builder: (BuildContext context, Widget? child) {
+        final Locale locale = AppStorageService().getUserLangFromStorage();
         return AppLoader().globalLoaderOverlay(
           child: AppOverlay().globalOverlaySupport(
             child: AppKeyboardManager().globalKeyboardDismisser(
-              child: child ?? const SizedBox(),
+              child: UpgradeAlert(
+                navigatorKey: Get.key,
+                // showIgnore: false,
+                // showLater: false,
+                upgrader: Upgrader(
+                  languageCode: locale.languageCode,
+                  countryCode: locale.countryCode ?? "",
+                  debugLogging: kDebugMode,
+                  debugDisplayOnce: kDebugMode,
+                  debugDisplayAlways: kDebugMode,
+                  minAppVersion: "1.0.0",
+                ),
+                child: child ?? const SizedBox(),
+              ),
             ),
           ),
         );

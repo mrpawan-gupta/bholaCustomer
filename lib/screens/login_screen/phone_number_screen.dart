@@ -1,10 +1,8 @@
 import "package:customer/common_widgets/app_elevated_button.dart";
 import "package:customer/common_widgets/app_text_field.dart";
 import "package:customer/controllers/login_screen_controllers/phone_number_screen_controller.dart";
-import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_assets_images.dart";
 import "package:customer/utils/app_colors.dart";
-import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/app_snackbar.dart";
 import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/material.dart";
@@ -111,7 +109,7 @@ class PhoneNumberScreen extends GetView<PhoneNumberScreenController> {
                                         value,
                                       );
 
-                                controller.unfocus(autoNext: sendOTPAPICall);
+                                controller.unfocus();
                               },
                               onTap: () {},
                               inputFormatters: <TextInputFormatter>[
@@ -143,9 +141,9 @@ class PhoneNumberScreen extends GetView<PhoneNumberScreenController> {
                   AppElevatedButton(
                     text: AppLanguageKeys().strContinue.tr,
                     onPressed: () async {
-                      final String reason = controller.validate();
+                      final String reason = controller.formValidate();
                       if (reason.isEmpty) {
-                        await sendOTPAPICall();
+                        await controller.sendOTPAPICall();
                       } else {
                         AppSnackbar().snackbarFailure(
                           title: "Oops",
@@ -163,30 +161,5 @@ class PhoneNumberScreen extends GetView<PhoneNumberScreenController> {
         ],
       ),
     );
-  }
-
-  Future<void> sendOTPAPICall() async {
-    await controller.sendOTPAPICall(
-      successCallback: (Map<String, dynamic> json) async {
-        AppSnackbar().snackbarSuccess(
-          title: "Yay!",
-          message: json["message"],
-        );
-
-        await AppNavService().pushNamed(
-          destination: AppRoutes().otpScreen,
-          arguments: <String, dynamic>{
-            "phoneNumber": controller.rxPhoneNumber.value,
-          },
-        );
-      },
-      failureCallback: (Map<String, dynamic> json) {
-        AppSnackbar().snackbarFailure(
-          title: "Oops",
-          message: json["message"],
-        );
-      },
-    );
-    return Future<void>.value();
   }
 }

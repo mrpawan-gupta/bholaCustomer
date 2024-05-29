@@ -385,19 +385,19 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
               );
             },
           ),
-          ListTile(
-            dense: true,
-            leading: const Icon(Icons.public),
-            title: const Text("Terms & Conditions - Vendor"),
-            subtitle: Text(AppConstants().appURLsTAndCVendor),
-            trailing: const Icon(Icons.open_in_new),
-            onTap: () async {
-              AppNavService().pop();
-              await AppInAppBrowser().openInAppBrowser(
-                url: AppConstants().appURLsTAndCVendor,
-              );
-            },
-          ),
+          // ListTile(
+          //   dense: true,
+          //   leading: const Icon(Icons.public),
+          //   title: const Text("Terms & Conditions - Vendor"),
+          //   subtitle: Text(AppConstants().appURLsTAndCVendor),
+          //   trailing: const Icon(Icons.open_in_new),
+          //   onTap: () async {
+          //     AppNavService().pop();
+          //     await AppInAppBrowser().openInAppBrowser(
+          //       url: AppConstants().appURLsTAndCVendor,
+          //     );
+          //   },
+          // ),
           const SizedBox(height: 48),
         ],
       ),

@@ -156,7 +156,7 @@ class LanguageSelectionPage extends GetView<LanguageSelectionController> {
             recognizer: TapGestureRecognizer()
               ..onTap = () async {
                 await AppInAppBrowser().openInAppBrowser(
-                  url: AppConstants().appURLsTAndCVendor,
+                  url: AppConstants().appURLsTAndCCustomer,
                 );
               },
           ),

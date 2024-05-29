@@ -1,4 +1,5 @@
 import "package:customer/common_widgets/app_maybe_marquee.dart";
+import "package:customer/common_widgets/app_no_item_found.dart";
 import "package:customer/common_widgets/common_gradient.dart";
 import "package:customer/common_widgets/common_image_widget.dart";
 import "package:customer/models/banner_model.dart";
@@ -6,16 +7,17 @@ import "package:customer/utils/app_colors.dart";
 import "package:flutter/material.dart";
 import "package:infinite_scroll_pagination/infinite_scroll_pagination.dart";
 
-
 class CommonHorizontalListViewBanner extends StatelessWidget {
   const CommonHorizontalListViewBanner({
     required this.pagingController,
     required this.onTap,
+    required this.type,
     super.key,
   });
 
   final PagingController<int, Banners> pagingController;
   final Function(Banners item) onTap;
+  final String type;
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +32,13 @@ class CommonHorizontalListViewBanner extends StatelessWidget {
         physics: const ScrollPhysics(),
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         builderDelegate: PagedChildBuilderDelegate<Banners>(
+          noItemsFoundIndicatorBuilder: (BuildContext context) {
+            return AppNoItemFoundWidget(
+              title: "No items found",
+              message: "The $type is currently empty.",
+              onTryAgain: pagingController.refresh,
+            );
+          },
           itemBuilder: (BuildContext context, Banners item, int i) {
             final int length = pagingController.itemList?.length ?? 0;
             final bool isLast = i == length - 1;
@@ -66,8 +75,8 @@ class CommonHorizontalListViewBanner extends StatelessWidget {
       children: <Widget>[
         CommonImageWidget(
           imageUrl: item.image ?? "",
-           fit: BoxFit.cover,
-           imageType: ImageType.image,
+          fit: BoxFit.cover,
+          imageType: ImageType.image,
         ),
         AnimatedOpacity(
           opacity: 1.00,

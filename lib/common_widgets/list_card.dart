@@ -1,3 +1,4 @@
+import "package:customer/common_widgets/app_no_item_found.dart";
 import "package:customer/models/list_model.dart";
 import "package:customer/utils/app_assets_images.dart";
 import "package:flutter/material.dart";
@@ -7,11 +8,13 @@ class ListCardView extends StatelessWidget {
   const ListCardView({
     required this.pagingController,
     required this.onTap,
+    required this.type,
     super.key,
   });
 
   final PagingController<int, Lists> pagingController;
   final Function(Lists item) onTap;
+  final String type;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +30,13 @@ class ListCardView extends StatelessWidget {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       builderDelegate: PagedChildBuilderDelegate<Lists>(
+        noItemsFoundIndicatorBuilder: (BuildContext context) {
+          return AppNoItemFoundWidget(
+            title: "No items found",
+            message: "The $type is currently empty.",
+            onTryAgain: pagingController.refresh,
+          );
+        },
         itemBuilder: (BuildContext context, Lists item, int index) {
           return Card(
             shape: RoundedRectangleBorder(
@@ -40,7 +50,7 @@ class ListCardView extends StatelessWidget {
                 children: <Widget>[
                   Expanded(
                     child: Container(
-                      decoration:  BoxDecoration(
+                      decoration: BoxDecoration(
                         borderRadius: const BorderRadius.vertical(
                           top: Radius.circular(8.0),
                         ),

@@ -157,8 +157,6 @@ class ProductListingScreenController extends GetxController {
     final Map<String, dynamic> query = <String, dynamic>{
       "page": pageKey,
       "limit": pageSize,
-      "sortBy": "createdAt",
-      "sortOrder": "desc",
     };
 
     if (rxSearchQuery.isNotEmpty) {
@@ -177,9 +175,26 @@ class ProductListingScreenController extends GetxController {
     } else {}
 
     if (filterIsSortByApplied().value) {
-      query.addAll(
-        <String, dynamic>{"sortBy": rxFilterSelectedSortBy.value},
-      );
+      if (rxFilterSelectedSortBy.value == defaultSortBy[0]) {
+        query.addAll(
+          <String, dynamic>{"sortBy": "cumulativeRating", "sortOrder": "desc"},
+        );
+      } else {}
+      if (rxFilterSelectedSortBy.value == defaultSortBy[1]) {
+        query.addAll(
+          <String, dynamic>{"sortBy": "price", "sortOrder": "asc"},
+        );
+      } else {}
+      if (rxFilterSelectedSortBy.value == defaultSortBy[2]) {
+        query.addAll(
+          <String, dynamic>{"sortBy": "price", "sortOrder": "desc"},
+        );
+      } else {}
+      if (rxFilterSelectedSortBy.value == defaultSortBy[3]) {
+        query.addAll(
+          <String, dynamic>{"sortBy": "createdAt", "sortOrder": "desc"},
+        );
+      } else {}
     } else {}
 
     if (filterIsCategoryApplied().value) {
@@ -216,8 +231,8 @@ class ProductListingScreenController extends GetxController {
 
   Future<void> getCategoriesAPI() async {
     await AppAPIService().functionGet(
-      types: Types.rental,
-      endPoint: "vehicleCategories",
+      types: Types.order,
+      endPoint: "category",
       query: <String, dynamic>{
         "page": 1,
         "limit": 1000,

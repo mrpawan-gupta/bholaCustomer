@@ -2,6 +2,9 @@ import "dart:async";
 
 import "package:customer/services/app_api_service.dart";
 import "package:customer/services/app_dev_info_service.dart";
+import "package:customer/services/app_nav_service.dart";
+import "package:customer/utils/app_routes.dart";
+import "package:customer/utils/app_snackbar.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:smart_auth/smart_auth.dart";
@@ -28,6 +31,7 @@ class PhoneNumberScreenController extends GetxController {
 
         if (result.id.isNotEmpty) {
           await stringOperation(fullPhoneNumber: result.id);
+          unfocus();
         } else {}
       } else {}
     } else {}
@@ -53,13 +57,13 @@ class PhoneNumberScreenController extends GetxController {
     return Future<void>.value();
   }
 
-  void unfocus({required Function() autoNext}) {
+  void unfocus() {
     final bool cond1 = phoneNumberController.value.text.length == 10;
     final bool cond2 = rxPhoneNumber.value.length == 10;
 
     if (cond1 && cond2) {
       FocusManager.instance.primaryFocus?.unfocus();
-      autoNext();
+      unawaited(sendOTPAPICall());
     } else {}
     return;
   }
@@ -69,7 +73,7 @@ class PhoneNumberScreenController extends GetxController {
     return;
   }
 
-  String validate() {
+  String formValidate() {
     String reason = "";
     final bool cond1 = rxPhoneNumber.value.isNotEmpty;
     final bool cond2 = rxPhoneNumber.value.length == 10;
@@ -81,18 +85,32 @@ class PhoneNumberScreenController extends GetxController {
     return reason;
   }
 
-  Future<void> sendOTPAPICall({
-    required Function(Map<String, dynamic> json) successCallback,
-    required Function(Map<String, dynamic> json) failureCallback,
-  }) async {
+  Future<void> sendOTPAPICall() async {
     await AppAPIService().functionPost(
       types: Types.oauth,
       endPoint: "auth/send-otp",
       body: <String, dynamic>{
         "phoneNumber": "+91${rxPhoneNumber.value.trim()}",
       },
-      successCallback: successCallback,
-      failureCallback: failureCallback,
+      successCallback: (Map<String, dynamic> json) async {
+        AppSnackbar().snackbarSuccess(
+          title: "Yay!",
+          message: json["message"],
+        );
+
+        await AppNavService().pushNamed(
+          destination: AppRoutes().otpScreen,
+          arguments: <String, dynamic>{
+            "phoneNumber": rxPhoneNumber.value,
+          },
+        );
+      },
+      failureCallback: (Map<String, dynamic> json) {
+        AppSnackbar().snackbarFailure(
+          title: "Oops",
+          message: json["message"],
+        );
+      },
     );
     return Future<void>.value();
   }

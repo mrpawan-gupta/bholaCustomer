@@ -65,7 +65,7 @@ class OTPScreen extends GetView<OTPScreenController> {
                     onChanged: (String value) {
                       controller
                         ..updateOTP(value)
-                        ..unfocus(autoNext: verifyOTPAPICall);
+                        ..unfocus();
                     },
                     inputFormatters: <TextInputFormatter>[
                       FilteringTextInputFormatter.digitsOnly,
@@ -134,22 +134,7 @@ class OTPScreen extends GetView<OTPScreenController> {
                           : InkWell(
                               borderRadius: BorderRadius.circular(32),
                               onTap: () async {
-                                await controller.sendOTPAPICall(
-                                  successCallback: (Map<String, dynamic> json) {
-                                    AppSnackbar().snackbarSuccess(
-                                      title: "Yay!",
-                                      message: json["message"],
-                                    );
-
-                                    controller.timerStart();
-                                  },
-                                  failureCallback: (Map<String, dynamic> json) {
-                                    AppSnackbar().snackbarFailure(
-                                      title: "Oops",
-                                      message: json["message"],
-                                    );
-                                  },
-                                );
+                                await controller.sendOTPAPICall();
                               },
                               child: Text(
                                 AppLanguageKeys().strResend.tr,
@@ -166,9 +151,9 @@ class OTPScreen extends GetView<OTPScreenController> {
                   AppElevatedButton(
                     text: AppLanguageKeys().strContinue.tr,
                     onPressed: () async {
-                      final String reason = controller.validate();
+                      final String reason = controller.formValidate();
                       if (reason.isEmpty) {
-                        await verifyOTPAPICall();
+                        await controller.verifyOTPAPICall();
                       } else {
                         AppSnackbar().snackbarFailure(
                           title: "Oops",
@@ -186,25 +171,5 @@ class OTPScreen extends GetView<OTPScreenController> {
         ],
       ),
     );
-  }
-
-  Future<void> verifyOTPAPICall() async {
-    await controller.verifyOTPAPICall(
-      successCallback: (Map<String, dynamic> json) async {
-        AppSnackbar().snackbarSuccess(
-          title: "Yay!",
-          message: json["message"],
-        );
-
-        await controller.decideAndNavigate();
-      },
-      failureCallback: (Map<String, dynamic> json) {
-        AppSnackbar().snackbarFailure(
-          title: "Oops",
-          message: json["message"],
-        );
-      },
-    );
-    return Future<void>.value();
   }
 }

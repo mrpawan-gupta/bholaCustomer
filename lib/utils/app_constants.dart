@@ -10,6 +10,7 @@ class AppConstants {
 
   final String vpnAPIKey = "40f6cdcbaf9b4c139d4a276b9788dee6";
   final double elevation = 0.0;
+  
   final Duration duration = const Duration(seconds: 4);
 
   final bool isEnabledAppLogger = kDebugMode;
@@ -20,7 +21,11 @@ class AppConstants {
 
   final Duration locationFetchDuration = const Duration(minutes: 5);
 
-  final String samplePDF = "https://pdfobject.com/pdf/sample.pdf";
+  final String samplePDFThumb =
+      "https://drive.usercontent.google.com/u/0/uc?id=1lANuruz2k7cpKGxLz4aIf2w7PtA153qO&export=pdf";
+  final String samplePDFView =
+      "https://drive.google.com/file/d/1lANuruz2k7cpKGxLz4aIf2w7PtA153qO/view";
+
   final String sampleImg =
       "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTExL3BmLXMxMDgtcG0tNDExMy1tb2NrdXAuanBn.jpg";
 
@@ -35,5 +40,5 @@ class AppConstants {
   final String appURLsRefundPolicy = "http://dev.bhola.org.in/refund/";
 
   final String appURLsTAndCCustomer = "http://dev.bhola.org.in/customer/";
-  final String appURLsTAndCVendor = "http://dev.bhola.org.in/vender/";
+  final String appURLsTAndCVendor = "https://dev.bhola.org.in/vendor/";
 }

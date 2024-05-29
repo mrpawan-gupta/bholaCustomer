@@ -340,6 +340,7 @@ class ProductListingScreen extends GetView<ProductListingScreenController> {
         CommonHorizontalListViewBanner(
           pagingController: controller.pagingControllerBanners,
           onTap: (Banners item) {},
+          type: "banners list",
         ),
       ],
     );
@@ -357,9 +358,10 @@ class ProductListingScreen extends GetView<ProductListingScreenController> {
               onTap: (Products item) async {
                 await AppNavService().pushNamed(
                   destination: AppRoutes().productDetailScreen,
-                  arguments: <String, dynamic>{"id" : item.sId ?? ""},
+                  arguments: <String, dynamic>{"id": item.sId ?? ""},
                 );
               },
+              type: "product list",
             ),
           ),
         ],
