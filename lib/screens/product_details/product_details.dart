@@ -2,6 +2,7 @@ import "package:customer/common_functions/date_time_functions.dart";
 import "package:customer/common_widgets/common_image_widget.dart";
 import "package:customer/controllers/product_detail_page_controllers/product_detail_page_controllers.dart";
 import "package:customer/models/product_details_model.dart";
+import "package:customer/models/product_model.dart";
 import "package:customer/screens/widgets/text_widgets.dart";
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
@@ -9,7 +10,6 @@ import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
-import "package:flutter_rating_bar/flutter_rating_bar.dart";
 import "package:get/get.dart";
 import "package:page_view_dot_indicator/page_view_dot_indicator.dart";
 import "package:pod_player/pod_player.dart";
@@ -21,9 +21,11 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        surfaceTintColor: AppColors().appWhiteColor,
+        title: const Text("Product Detail Listing"),
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            AppNavService().pop();
           },
           icon: const Icon(Icons.arrow_back_ios),
         ),
@@ -55,17 +57,18 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                       ),
                       buildRatingsWidget(context),
                       reviewsWidget(),
-                      priceAndButtonWidget(context),
                     ],
                   );
                 }),
               ),
             ),
+            Obx(() => priceAndButtonWidget(context)),
           ],
         ),
       ),
     );
   }
+
 
   Widget pageViewWidget() {
     final ProductDetailsData data = controller.rxProductDetailsData.value;
@@ -77,7 +80,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
     return Padding(
       padding: const EdgeInsets.only(top: 0.5),
       child: AspectRatio(
-        aspectRatio: 16 / 9,
+        aspectRatio: 16 / 18,
         child: Column(
           children: <Widget>[
             Expanded(
@@ -91,31 +94,63 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                     Expanded(
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(12.0),
-                        child: PageView.builder(
-                          itemCount: 2,
-                          itemBuilder: (BuildContext context, int index) {
-                            String imageUrl = "";
-                            if (index == 0) {
-                              imageUrl = data.photo ?? "";
-                            } else if (index == 1) {
-                              imageUrl = data.video ?? "";
-                            }
-                            return index != 1
-                                ? CommonImageWidget(
-                              imageUrl: imageUrl,
-                              fit: BoxFit.cover,
-                              imageType: ImageType.image,
-                            )
-                                : Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Flexible(
-                                child: PodVideoPlayer(
-                                  controller: controller.podPlayerController,
-                                ),
+                        child: Stack(
+                          children: [
+                            PageView.builder(
+                              itemCount: 2,
+                              itemBuilder: (BuildContext context, int index) {
+                                String imageUrl = "";
+                                if (index == 0) {
+                                  imageUrl = data.photo ?? "";
+                                } else if (index == 1) {
+                                  imageUrl = data.video ?? "";
+                                }
+                                return index != 1
+                                    ? CommonImageWidget(
+                                  imageUrl: imageUrl,
+                                  fit: BoxFit.cover,
+                                  imageType: ImageType.image,
+                                )
+                                    : Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Flexible(
+                                    child: PodVideoPlayer(
+                                      controller: controller.podPlayerController,
+                                    ),
+                                  ),
+                                );
+                              },
+                              onPageChanged: controller.updateCurrentIndex,
+                            ),
+                            Positioned(
+                              left: 4.0,
+                              top: 0.0,
+                              bottom: 0.0,
+                              child: IconButton(
+                                icon: Icon(Icons.arrow_back_ios_new, size: 30,),
+                                color: Colors.black,
+                                onPressed: () {
+                                  int currentIndex = controller.rxCurrentIndex.value;
+                                  int previousIndex = (currentIndex - 1) < 0 ? 1 : currentIndex - 1;
+                                  controller.updateCurrentIndex(previousIndex);
+                                },
                               ),
-                            );
-                          },
-                          onPageChanged: controller.updateCurrentIndex,
+                            ),
+                            Positioned(
+                              right: 4.0,
+                              top: 0.0,
+                              bottom: 0.0,
+                              child: IconButton(
+                                icon: Icon(Icons.arrow_forward_ios_outlined, size: 30,),
+                                color: Colors.black,
+                                onPressed: () {
+                                  int currentIndex = controller.rxCurrentIndex.value;
+                                  int nextIndex = (currentIndex + 1) % 2;
+                                  controller.updateCurrentIndex(nextIndex);
+                                },
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -128,22 +163,26 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                           children: List.generate(thumbnails.length, (int index) {
                             return Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8.0),
-                                child: index != 1
-                                    ? Image.network(
-                                  thumbnails[index],
-                                  width: 60,
-                                  height: 60,
-                                  fit: BoxFit.cover,
-                                )
-                                    : Container(
-                                  width: 60,
-                                  height: 60,
-                                  color: Colors.black26,
-                                  child: const Icon(
-                                    Icons.play_circle_filled,
-                                    color: Colors.white,
+                              child: Container(
+                                color: Colors.white,
+                                padding: const EdgeInsets.all(4.0),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  child: index != 1
+                                      ? Image.network(
+                                    thumbnails[index],
+                                    width: 60,
+                                    height: 60,
+                                    fit: BoxFit.cover,
+                                  )
+                                      : Container(
+                                    width: 60,
+                                    height: 60,
+                                    color: Colors.black26,
+                                    child: const Icon(
+                                      Icons.play_circle_filled,
+                                      color: Colors.white,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -172,9 +211,9 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
   }
 
   Widget buildProductDetailsWidget() {
-    final ProductDetailController controller =
-        Get.find<ProductDetailController>();
     final ProductDetailsData data = controller.rxProductDetailsData.value;
+    final int price = data.price ?? 0;
+    final int discountedPrice = data.discountedPrice ?? 0;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -186,50 +225,62 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
           fontWeight: FontWeight.bold,
           isLineThrough: false,
         ),
-        Row(
-          children: <Widget>[
-            TextWidget(
-              text: "\$${data.price}",
-              color: Colors.black,
-              size: 18,
+        const SizedBox(height: 8),
+        if (discountedPrice == 0)
+          Text(
+            "₹$price",
+            style: TextStyle(
+              fontSize: 20,
               fontWeight: FontWeight.bold,
-              isLineThrough: false,
+              color: AppColors().appPrimaryColor,
             ),
-            const SizedBox(
-              width: 20,
-            ),
-            TextWidget(
-              text: AppLanguageKeys().strMRP,
-              color: Colors.grey,
-              size: 17,
-              fontWeight: FontWeight.w600,
-              isLineThrough: false,
-            ),
-            const SizedBox(
-              width: 5,
-            ),
-            TextWidget(
-              text: "\$${data.price}",
-              color: Colors.grey,
-              size: 17,
-              fontWeight: FontWeight.w600,
-              isLineThrough: true,
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            TextWidget(
-              text: "${data.discountPercent ?? ""}%",
-              color: Colors.orange,
-              size: 17,
-              fontWeight: FontWeight.bold,
-              isLineThrough: false,
-            ),
-          ],
-        ),
-        const SizedBox(
-          height: 2,
-        ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          )
+        else
+          Row(
+            children: <Widget>[
+              Flexible(
+                child: Text(
+                  "₹$discountedPrice",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors().appPrimaryColor,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              const SizedBox(width: 4),
+              Flexible(
+                child: Text(
+                  "₹$price",
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    decoration: TextDecoration.lineThrough,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              const SizedBox(width: 10),
+              Flexible(
+                child: Text(
+                  "(${data.discountPercent ?? ""}% off)",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.orange,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
+        const SizedBox(height: 2),
         Row(
           children: <Widget>[
             const Icon(
@@ -238,8 +289,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
               size: 15,
             ),
             TextWidget(
-              text:
-                  "${data.cumulativeRating ?? ""} (${data.reviewCount} Reviews)",
+              text: "${data.cumulativeRating ?? ""} (${data.reviewCount} Reviews)",
               color: Colors.grey,
               size: 14,
               fontWeight: FontWeight.w500,
@@ -247,11 +297,9 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
             ),
           ],
         ),
-        const SizedBox(
-          height: 8,
-        ),
+        const SizedBox(height: 8),
         Obx(
-          () => Column(
+              () => Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
@@ -262,9 +310,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                     : TextOverflow.ellipsis,
                 textAlign: TextAlign.start,
               ),
-              const SizedBox(
-                height: 3,
-              ),
+              const SizedBox(height: 3),
               if (data.description != null && data.description!.length > 80)
                 InkWell(
                   onTap: controller.toggleDescTextShowFlag,
@@ -279,9 +325,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      const SizedBox(
-                        width: 3,
-                      ),
+                      const SizedBox(width: 3),
                       Icon(
                         controller.descTextShowFlag.value
                             ? Icons.keyboard_arrow_up
@@ -295,14 +339,13 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
             ],
           ),
         ),
-        const SizedBox(
-          height: 8,
-        ),
+        const SizedBox(height: 8),
       ],
     );
   }
 
   Widget buildDeliveryAddressWidget(BuildContext context) {
+    final ProductDetailsData data = controller.rxProductDetailsData.value;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -319,7 +362,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-            color: Colors.grey.shade200,
+            color: Colors.grey.shade100,
           ),
           height: 100,
           width: MediaQuery.of(context).size.width,
@@ -332,7 +375,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     TextWidget(
-                      text: AppLanguageKeys().strRohan.tr,
+                      text: controller.getFullName(),
                       color: AppColors().appBlackColor,
                       size: 16,
                       fontWeight: FontWeight.bold,
@@ -341,7 +384,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width / 1.4,
                       child: Text(
-                        AppLanguageKeys().strText.tr,
+                        controller.getAddressOrAddressPlaceholder(),
                         style: TextStyle(
                           color: Colors.grey.shade600,
                           fontSize: 16,
@@ -367,7 +410,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-            color: Colors.grey.shade200,
+            color: Colors.grey.shade100,
           ),
           height: 75,
           width: MediaQuery.of(context).size.width,
@@ -426,7 +469,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
 
   Widget buildProductPhotoWidget() {
     final ProductDetailController controller =
-        Get.find<ProductDetailController>();
+    Get.find<ProductDetailController>();
     final String photoUrl = controller.productPhoto.value;
 
     return Column(
@@ -452,137 +495,138 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
           ],
         ),
         const SizedBox(height: 10),
-        if (photoUrl.isNotEmpty)
-          ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: Image.network(
-              photoUrl,
-              height: 200,
-              fit: BoxFit.cover,
-            ),
-          )
-        else
-          Container(
-            height: 200,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: Colors.grey.shade200,
-            ),
-            alignment: Alignment.center,
-            child: Text("No photo available"),
+        Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
           ),
+          elevation: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                if (photoUrl.isNotEmpty)
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.network(
+                      photoUrl,
+                      height: 200,
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                else
+                  Container(
+                    height: 200,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: Colors.grey.shade200,
+                    ),
+                    alignment: Alignment.center,
+                    child: Text("No photo available"),
+                  ),
+              ],
+            ),
+          ),
+        ),
       ],
     );
   }
 
   Widget buildRatingsWidget(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            TextWidget(
-              text: AppLanguageKeys().strRatings.tr,
-              color: AppColors().appBlackColor,
-              size: 19,
-              fontWeight: FontWeight.bold,
-              isLineThrough: false,
-            ),
-            Icon(
-              Icons.edit_calendar_rounded,
-              color: AppColors().appPrimaryColor,
-              size: 30,
-            ),
-          ],
-        ),
-        const SizedBox(
-          height: 12,
-        ),
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            color: Colors.grey.shade100,
+    final ProductDetailController controller = Get.find<ProductDetailController>();
+
+    return Obx(() {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              TextWidget(
+                text: AppLanguageKeys().strRatings.tr,
+                color: AppColors().appBlackColor,
+                size: 19,
+                fontWeight: FontWeight.bold,
+                isLineThrough: false,
+              ),
+              Icon(
+                Icons.edit_calendar_rounded,
+                color: AppColors().appPrimaryColor,
+                size: 30,
+              ),
+            ],
           ),
-          height: 160,
-          width: MediaQuery.of(context).size.width,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      buildRatingRow(context, 5, 1, 150),
-                      const SizedBox(height: 2),
-                      buildRatingRow(context, 4, 1, 130),
-                      const SizedBox(height: 2),
-                      buildRatingRow(context, 3, 1, 100),
-                      const SizedBox(height: 2),
-                      buildRatingRow(context, 2, 1, 70),
-                      const SizedBox(height: 2),
-                      buildRatingRow(context, 1, 1, 50),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    child: Column(
-                      children: <Widget>[
-                        TextWidget(
-                          text: "4.0",
-                          color: AppColors().appBlackColor,
-                          size: 30,
-                          fontWeight: FontWeight.bold,
-                          isLineThrough: false,
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Icon(
-                              Icons.star,
-                              color: AppColors().appOrangeColor,
-                            ),
-                            Icon(
-                              Icons.star,
-                              color: AppColors().appOrangeColor,
-                            ),
-                            Icon(
-                              Icons.star,
-                              color: AppColors().appOrangeColor,
-                            ),
-                            Icon(
-                              Icons.star,
-                              color: AppColors().appGreyColor,
-                            ),
-                            Icon(
-                              Icons.star,
-                              color: AppColors().appGreyColor,
-                            ),
-                          ],
-                        ),
-                        TextWidget(
-                          text: "52 Reviews",
-                          color: AppColors().appBlackColor,
-                          size: 17,
-                          fontWeight: FontWeight.w500,
-                          isLineThrough: false,
-                        ),
-                      ],
+          const SizedBox(height: 12),
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: Colors.grey.shade100,
+            ),
+            height: 160,
+            width: MediaQuery.of(context).size.width,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: List.generate(5, (index) {
+                          int star = 5 - index;
+                          int count = controller.ratings.where((r) => r.star == star).length;
+                          double width = (count / (controller.totalReviews.value > 0 ? controller.totalReviews.value : 1)) * 150.0;
+                          return Column(
+                            children: <Widget>[
+                              buildRatingRow(context, star, count, width),
+                              const SizedBox(height: 2),
+                            ],
+                          );
+                        }),
+                      ),
                     ),
-                  ),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                      child: Column(
+                        children: <Widget>[
+                          TextWidget(
+                            text: controller.averageRating.toStringAsFixed(1),
+                            color: AppColors().appBlackColor,
+                            size: 30,
+                            fontWeight: FontWeight.bold,
+                            isLineThrough: false,
+                          ),
+                          Row(
+                            children: List.generate(5, (index) {
+                              return Icon(
+                                index < controller.averageRating.value.round() ? Icons.star : Icons.star_border,
+                                color: AppColors().appOrangeColor,
+                              );
+                            }),
+                          ),
+                          TextWidget(
+                            text: "${controller.totalReviews} Reviews",
+                            color: AppColors().appBlackColor,
+                            size: 17,
+                            fontWeight: FontWeight.w500,
+                            isLineThrough: false,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-      ],
-    );
+        ],
+      );
+    });
   }
 
-  Widget buildRatingRow(
-      BuildContext context, int star, double value, double width) {
+  Widget buildRatingRow(BuildContext context, int star, int count, double width) {
     return Row(
       children: <Widget>[
         TextWidget(
@@ -604,7 +648,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
           child: ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(10)),
             child: LinearProgressIndicator(
-              value: value,
+              value: count / (controller.totalReviews.value > 0 ? controller.totalReviews.value : 1),
               valueColor: AlwaysStoppedAnimation<Color>(
                 AppColors().appPrimaryColor,
               ),
@@ -618,87 +662,86 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
 
   Widget reviewsWidget() {
     final ProductDetailsData data = controller.rxProductDetailsData.value;
-    return data.reviews?.isEmpty ?? true
-        ? const SizedBox()
-        : Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              ListView.separated(
-                shrinkWrap: true,
-                itemCount: data.reviews?.length ?? 0,
-                physics: const NeverScrollableScrollPhysics(),
-                separatorBuilder: (BuildContext context, int index) {
-                  return const Divider(indent: 16, endIndent: 16);
-                },
-                itemBuilder: (BuildContext context, int index) {
-                  final Reviews item = data.reviews?[index] ?? Reviews();
-                  final String customerFirstName = item.customerFirstName ?? "";
-                  final String customerLastName = item.customerLastName ?? "";
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      ListTile(
-                        leading: CircleAvatar(
-                          radius: 24,
-                          foregroundImage: NetworkImage(
-                            item.customerProfilePhoto ?? "",
+    print("data_reviews, ${data.reviews}");
+    if (data.reviews?.isEmpty ?? true) {
+      return const SizedBox();
+    } else {
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          ListView.separated(
+            shrinkWrap: true,
+            itemCount: data.reviews?.length ?? 0,
+            physics: const NeverScrollableScrollPhysics(),
+            separatorBuilder: (BuildContext context, int index) {
+              return const Divider(indent: 16, endIndent: 16);
+            },
+            itemBuilder: (BuildContext context, int index) {
+              final Reviews item = data.reviews![index];
+              final String customerFullName = '${item.customerFirstName ?? ""} ${item.customerLastName ?? ""}';
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  ListTile(
+                    leading: CircleAvatar(
+                      radius: 24,
+                      backgroundImage: NetworkImage(item.customerProfilePhoto ?? ""),
+                    ),
+                    title: Text(
+                      customerFullName.trim(),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Row(
+                      children: <Widget>[
+                        Icon(
+                          Icons.star,
+                          color: AppColors().appOrangeColor,
+                          size: 20,
+                        ),
+                        SizedBox(width: 4), // Added some space between the star and text
+                        Flexible( // Use Flexible to allow the text to wrap if needed
+                          child: Text(
+                            '${item.star ?? 0}',
+                            style: TextStyle(color: AppColors().appGreyColor),
+                            overflow: TextOverflow.ellipsis, // Ensure the text does not overflow
                           ),
                         ),
-                        title: Text(
-                          "$customerFirstName $customerLastName",
-                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        const SizedBox(width: 8),
+                        Flexible( // Use Flexible to allow the text to wrap if needed
+                          child: Text(
+                            formattedDateTime(dateTimeString: item.date ?? ""),
+                            style: TextStyle(color: AppColors().appGreyColor),
+                            overflow: TextOverflow.ellipsis, // Ensure the text does not overflow
+                          ),
                         ),
-                        subtitle: Row(
-                          children: <Widget>[
-                            Flexible(
-                              child: IgnorePointer(
-                                // child: RatingBar.builder(
-                                //   initialRating: (item.star ?? 0.0).toDouble(),
-                                //   itemSize: 16,
-                                //   unratedColor: AppColors().appGrey_,
-                                //   itemBuilder:
-                                //       (BuildContext context, int index) {
-                                //     return Icon(
-                                //       Icons.star,
-                                //       color: AppColors().appOrangeColor,
-                                //     );
-                                //   },
-                                //   onRatingUpdate: (double value) {},
-                                // ),
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              formattedDateTime(
-                                dateTimeString: item.date ?? "",
-                              ),
-                            ),
-                          ],
-                        ),
-                        trailing: IconButton(
-                          onPressed: () {},
-                          icon: const Icon(Icons.more_vert),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Text(
-                          item.review ?? "",
-                          style: TextStyle(color: AppColors().appGrey_),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              ),
-              const SizedBox(height: 16),
-            ],
-          );
+                      ],
+                    ),
+                    trailing: IconButton(
+                      onPressed: () {
+                        // Define your onPressed action here
+                      },
+                      icon: const Icon(Icons.more_vert),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text(
+                      item.review ?? "",
+                      style: TextStyle(color: AppColors().appGrey_),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+          const SizedBox(height: 16),
+        ],
+      );
+    }
   }
-
 
   Widget priceAndButtonWidget(BuildContext context) {
     final ProductDetailsData data = controller.rxProductDetailsData.value;
@@ -716,7 +759,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
               isLineThrough: false,
             ),
             TextWidget(
-              text: "\$${data.price}",
+              text: "₹${data.price}",
               color: AppColors().appPrimaryColor,
               size: 20,
               fontWeight: FontWeight.bold,
