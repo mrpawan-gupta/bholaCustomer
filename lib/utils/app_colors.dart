@@ -18,4 +18,5 @@ class AppColors {
   final Color appRedColor = Colors.red;
   final Color appGrey = const Color.fromRGBO(60, 60, 67, 0.6);
   final Color appBlueColor = Colors.blue;
+  final Color appGrey_ = const Color.fromRGBO(60, 60, 67, 0.6);
 }
