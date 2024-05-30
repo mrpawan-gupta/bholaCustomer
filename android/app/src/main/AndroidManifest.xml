@@ -13,17 +13,14 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
-
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
 
     <queries>
         <package android:name="com.ahinsaaggregator.admin" />
         <package android:name="com.ahinsaaggregator.customer" />
         <package android:name="com.ahinsaaggregator.vendor" />
-
         <intent>
             <action android:name="android.intent.action.VIEW"/>
             <data android:scheme="http"/>
@@ -58,7 +55,7 @@
         <activity 
             android:name=".MainActivity" 
             android:exported="true" 
-            android:launchMode="singleTop" 
+            android:launchMode="singleTask" 
             android:theme="@style/LaunchTheme" 
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode" 
             android:screenOrientation="portrait"
@@ -75,15 +72,30 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
-                
-                <!-- Code for external_app_launcher package start-->
-                <!-- <category android:name="android.intent.category.HOME"/> 
-                <category android:name="android.intent.category.DEFAULT"/> -->
-                <!-- Code for external_app_launcher package end -->
             </intent-filter>
             <intent-filter>
                 <action android:name="FLUTTER_NOTIFICATION_CLICK" />
                 <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <!-- App Link -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http" android:host="dev.bhola.org.in" />
+                <data android:scheme="http" android:host="bhola.org.in" />
+                <data android:scheme="https" android:host="dev.bhola.org.in" />
+                <data android:scheme="https" android:host="bhola.org.in" />
+            </intent-filter>
+
+            <!-- Deep Link -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="ahinsaaggregatorCustomer" android:host="dev.bhola.org.in" />
+                <data android:scheme="ahinsaaggregatorCustomer" android:host="bhola.org.in" />
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
@@ -99,6 +111,9 @@
             android:value="high_importance_channel" />
         <meta-data android:name="com.google.android.geo.API_KEY"
                android:value="AIzaSyAIi-Wjyn2iEjhj8BEGccXt8ts2P9zK_Gk"/>
+        <meta-data
+                android:name="flutter_deeplinking_enabled"
+                android:value="true" />
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package="com.ahinsaaggregator.customer">

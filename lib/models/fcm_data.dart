@@ -17,7 +17,7 @@ class FCMData {
   String? title;
   String? body;
   String? clickAction;
-  int? id;
+  String? id;
   String? screen;
 
   Map<String, dynamic> toJson() {

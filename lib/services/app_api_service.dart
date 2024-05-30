@@ -41,6 +41,16 @@ class AppAPIService extends GetConnect {
   final String contentTypeApplicationJson = "application/json";
   final String contentTypeMultiPartFormData = "multipart/form-data";
 
+  @override
+  void onInit() {
+    super.onInit();
+
+    timeout = const Duration(minutes: 1);
+    maxAuthRetries = 3;
+
+    AppLogger().info(message: "AppAPIService: onInit(): ${timeout.inSeconds}");
+  }
+
   Map<String, String> getHeaders() {
     final String auth = AppStorageService().getUserAuthModel().token ?? "";
     final Locale locale = AppStorageService().getUserLangFromStorage();

@@ -7,11 +7,12 @@ import "package:customer/screens/outer_main_screens/help_screen.dart";
 import "package:customer/screens/outer_main_screens/home_screen.dart";
 import "package:customer/screens/outer_main_screens/order_history_screen.dart";
 import "package:customer/services/app_nav_service.dart";
+import "package:customer/utils/app_assets_images.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_routes.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
-import "package:persistent_bottom_nav_bar/persistent_tab_view.dart";
+import "package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart";
 
 class MainNavigationScreen extends GetView<MainNavigationController> {
   const MainNavigationScreen({super.key});
@@ -51,7 +52,6 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
                               destination: AppRoutes().settingsMainScreen,
                               arguments: <String, dynamic>{},
                             );
-
                             controller.initAndReInitFunction();
                           },
                         ),
@@ -75,52 +75,43 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
               return Future<bool>.value(value);
             },
             child: PersistentTabView(
-              context,
               controller: controller.tabController,
-              screens: const <Widget>[
-                HomeScreen(),
-                CategoryScreen(),
-                BookingScreen(),
-                HelpScreen(),
-                OrderHistoryScreen(),
-              ],
-              items: <PersistentBottomNavBarItem>[
-                createItem(
+              tabs: <PersistentTabConfig>[
+                persistentTabConfig(
+                  itemIndex: 0,
+                  screen: const HomeScreen(),
+                  asset: AppAssetsImages().bottomNavHome,
                   title: "Home",
-                  activeIconData: Icons.home,
-                  inActiveIconData: Icons.home_outlined,
-                  isCenterdItem: false,
                 ),
-                createItem(
+                persistentTabConfig(
+                  itemIndex: 1,
+                  screen: const CategoryScreen(),
+                  asset: AppAssetsImages().bottomNavCategory,
                   title: "Category",
-                  activeIconData: Icons.category,
-                  inActiveIconData: Icons.category_outlined,
-                  isCenterdItem: false,
                 ),
-                createItem(
-                  title: "Book",
-                  activeIconData: Icons.shopping_bag,
-                  inActiveIconData: Icons.shopping_bag_outlined,
-                  isCenterdItem: true,
+                persistentTabConfig(
+                  itemIndex: 2,
+                  screen: const BookingScreen(),
+                  asset: controller.timerCurrent.value,
+                  title: "Booking",
                 ),
-                createItem(
+                persistentTabConfig(
+                  itemIndex: 3,
+                  screen: const HelpScreen(),
+                  asset: AppAssetsImages().bottomNavHelp,
                   title: "Help",
-                  activeIconData: Icons.help,
-                  inActiveIconData: Icons.help_outlined,
-                  isCenterdItem: false,
                 ),
-                createItem(
-                  title: "History",
-                  activeIconData: Icons.library_books,
-                  inActiveIconData: Icons.library_books_outlined,
-                  isCenterdItem: false,
+                persistentTabConfig(
+                  itemIndex: 4,
+                  screen: const OrderHistoryScreen(),
+                  asset: AppAssetsImages().bottomNavShopping,
+                  title: "Order History",
                 ),
               ],
-              onItemSelected: (int value) {},
-              navBarStyle: NavBarStyle.style15,
-              decoration: NavBarDecoration(
-                borderRadius: BorderRadius.circular(12.0),
-              ),
+              navBarBuilder: (NavBarConfig navBarConfig) {
+                return Style13BottomNavBar(navBarConfig: navBarConfig);
+              },
+              navBarOverlap: const NavBarOverlap.none(),
             ),
           ),
         );
@@ -128,20 +119,37 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
     );
   }
 
-  PersistentBottomNavBarItem createItem({
+  PersistentTabConfig persistentTabConfig({
+    required int itemIndex,
+    required Widget screen,
+    required String asset,
     required String title,
-    required IconData activeIconData,
-    required IconData inActiveIconData,
-    required bool isCenterdItem,
   }) {
-    return PersistentBottomNavBarItem(
-      title: title,
-      icon: Icon(activeIconData),
-      inactiveIcon: Icon(inActiveIconData),
-      activeColorPrimary: AppColors().appPrimaryColor,
-      inactiveColorPrimary: AppColors().appGreyColor,
-      activeColorSecondary: isCenterdItem ? AppColors().appWhiteColor : null,
-      inactiveColorSecondary: AppColors().appTransparentColor,
+    return PersistentTabConfig(
+      screen: screen,
+      item: ItemConfig(
+        icon: Image.asset(
+          asset,
+          fit: BoxFit.cover,
+          height: itemIndex != 2 ? 28 : 56,
+          width: itemIndex != 2 ? 28 : 56,
+          color: itemIndex != 2
+              ? AppColors().appPrimaryColor
+              : AppColors().appWhiteColor,
+        ),
+        inactiveIcon: Image.asset(
+          asset,
+          fit: BoxFit.cover,
+          height: itemIndex != 2 ? 28 : 56,
+          width: itemIndex != 2 ? 28 : 56,
+          color: itemIndex != 2
+              ? AppColors().appGreyColor
+              : AppColors().appWhiteColor,
+        ),
+        title: title,
+        activeForegroundColor: AppColors().appPrimaryColor,
+        inactiveForegroundColor: AppColors().appGrey,
+      ),
     );
   }
 

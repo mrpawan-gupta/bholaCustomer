@@ -3,6 +3,7 @@ import "dart:async";
 import "package:customer/services/app_api_service.dart";
 import "package:customer/services/app_dev_info_service.dart";
 import "package:customer/services/app_nav_service.dart";
+import "package:customer/utils/app_logger.dart";
 import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/app_snackbar.dart";
 import "package:flutter/material.dart";
@@ -12,12 +13,21 @@ import "package:smart_auth/smart_auth.dart";
 class PhoneNumberScreenController extends GetxController {
   final TextEditingController phoneNumberController = TextEditingController();
   final RxString rxPhoneNumber = "".obs;
+  final RxString rxAppSignature = "".obs;
 
   @override
   void onReady() {
     super.onReady();
 
+    unawaited(getAppSignature());
     unawaited(requestHint());
+  }
+
+  Future<void> getAppSignature() async {
+    final String appSignature = await SmartAuth().getAppSignature() ?? "";
+    AppLogger().info(message: "appSignature: $appSignature");
+    updateAppSignature(appSignature);
+    return Future<void>.value();
   }
 
   Future<void> requestHint() async {
@@ -73,6 +83,11 @@ class PhoneNumberScreenController extends GetxController {
     return;
   }
 
+  void updateAppSignature(String value) {
+    rxAppSignature(value);
+    return;
+  }
+
   String formValidate() {
     String reason = "";
     final bool cond1 = rxPhoneNumber.value.isNotEmpty;
@@ -91,6 +106,7 @@ class PhoneNumberScreenController extends GetxController {
       endPoint: "auth/send-otp",
       body: <String, dynamic>{
         "phoneNumber": "+91${rxPhoneNumber.value.trim()}",
+        // "appSignature": rxAppSignature.value.trim(),
       },
       successCallback: (Map<String, dynamic> json) async {
         AppSnackbar().snackbarSuccess(
@@ -102,6 +118,7 @@ class PhoneNumberScreenController extends GetxController {
           destination: AppRoutes().otpScreen,
           arguments: <String, dynamic>{
             "phoneNumber": rxPhoneNumber.value,
+            "appSignature": rxAppSignature.value,
           },
         );
       },

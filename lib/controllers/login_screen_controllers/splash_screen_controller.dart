@@ -1,5 +1,6 @@
 import "dart:async";
 
+import "package:customer/services/app_fcm_service.dart";
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/app_session.dart";
@@ -10,18 +11,44 @@ class SplashScreenController extends GetxController {
   void onInit() {
     super.onInit();
 
-    unawaited(furtherProceure());
+    unawaited(furtherProcedure());
   }
 
-  Future<void> furtherProceure() async {
-    await Future<void>.delayed(const Duration(seconds: 1));
+  Future<void> furtherProcedure() async {
+    const Duration duration = Duration(seconds: 1);
+    await Future<void>.delayed(duration);
 
-    AppSession().isUserLoggedIn()
-        ? await AppSession().performSignIn()
-        : await AppNavService().pushNamedAndRemoveUntil(
-            destination: AppRoutes().languageSelectionScreen,
-            arguments: <String, dynamic>{},
-          );
+    final String route = AppFCMService().route;
+    final String arguments = AppFCMService().arguments;
+    final bool hasLoggedIn = AppSession().isUserLoggedIn();
+
+    if (route.isEmpty && !hasLoggedIn) {
+      await AppNavService().pushNamedAndRemoveUntil(
+        destination: AppRoutes().languageSelectionScreen,
+        arguments: <String, dynamic>{},
+      );
+    } else if (route.isEmpty && hasLoggedIn) {
+      await AppSession().performSignIn();
+    } else if (route.isNotEmpty && hasLoggedIn) {
+      await AppNavService().pushNamed(
+        destination: route,
+        arguments: arguments.isEmpty
+            ? <String, dynamic>{}
+            : <String, dynamic>{"id": arguments},
+      );
+
+      await AppSession().performSignIn();
+    } else if (route.isNotEmpty && !hasLoggedIn) {
+      await AppNavService().pushNamedAndRemoveUntil(
+        destination: AppRoutes().languageSelectionScreen,
+        arguments: arguments.isEmpty
+            ? <String, dynamic>{}
+            : <String, dynamic>{"id": arguments},
+      );
+    } else {}
+
+    AppFCMService().route = "";
+    AppFCMService().arguments = "";
     return Future<void>.value();
   }
 }

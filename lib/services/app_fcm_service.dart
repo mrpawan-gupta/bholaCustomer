@@ -1,7 +1,7 @@
 import "dart:developer";
 
 import "package:customer/models/fcm_data.dart";
-import "package:customer/services/app_perm_service.dart";
+import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_constants.dart";
 import "package:customer/utils/app_routes.dart";
 import "package:firebase_messaging/firebase_messaging.dart";
@@ -21,7 +21,7 @@ class AppFCMService extends GetxService {
   final FirebaseMessaging instance = FirebaseMessaging.instance;
 
   String route = "";
-  int arguments = 0;
+  String arguments = "";
 
   Future<void> setupInteractedMessage() async {
     FirebaseMessaging.onMessageOpenedApp.listen(
@@ -53,7 +53,7 @@ class AppFCMService extends GetxService {
     );
     final FlutterLocalNotificationsPlugin plugin =
         FlutterLocalNotificationsPlugin();
-    await AppPermService().permissionNotification();
+
     await plugin
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
@@ -66,6 +66,7 @@ class AppFCMService extends GetxService {
       android: androidSettings,
       iOS: iOSSettings,
     );
+
     await plugin.initialize(
       initSettings,
       onDidReceiveNotificationResponse: (NotificationResponse details) async {
@@ -108,13 +109,6 @@ class AppFCMService extends GetxService {
             duration: const Duration(seconds: 5),
             slideDismissDirection: DismissDirection.horizontal,
           );
-
-          // if (hasLoggedIn) {
-          //   await BadgeCountService.instance.makeAPIRequestGetBadgeCount(
-          //     onSuccess: (String message) async {},
-          //     onfailure: (String message) async {},
-          //   );
-          // } else {}
         } else {}
       },
     );
@@ -129,29 +123,33 @@ class AppFCMService extends GetxService {
         // ignore: avoid_annotating_with_dynamic
         (dynamic value) {
           final dynamic temp = value;
-          return int.parse(temp);
+          return temp;
         },
       );
     FCMData notificationData = FCMData();
     notificationData = FCMData.fromJson(jsonMap);
     String route = "";
-    final int arguments = notificationData.id ?? 0;
+    final String id = notificationData.id ?? "";
     switch (notificationData.screen) {
       case "Home":
         route = AppRoutes().mainNavigationScreen;
         break;
-
+      case "bookingDetailsScreen":
+        route = AppRoutes().bookingDetailsScreen;
+        break;
       default:
         break;
     }
     route.isEmpty
         ? log("route isEmpty")
         : route == AppRoutes().mainNavigationScreen
-            ? await Get.offAllNamed(AppRoutes().mainNavigationScreen)
-            : await Get.toNamed(
-                route,
-                arguments: arguments,
-                preventDuplicates: false,
+            ? await AppNavService().pushNamed(
+                destination: AppRoutes().mainNavigationScreen,
+                arguments: <String, dynamic>{},
+              )
+            : await AppNavService().pushNamed(
+                destination: route,
+                arguments: <String, dynamic>{"id": id},
               );
     return Future<void>.value();
   }
@@ -164,7 +162,7 @@ class AppFCMService extends GetxService {
         // ignore: avoid_annotating_with_dynamic
         (dynamic value) {
           final dynamic temp = value;
-          return int.parse(temp);
+          return temp;
         },
       );
     FCMData notificationData = FCMData();
@@ -173,11 +171,13 @@ class AppFCMService extends GetxService {
       case "Home":
         route = AppRoutes().mainNavigationScreen;
         break;
-
+      case "bookingDetailsScreen":
+        route = AppRoutes().bookingDetailsScreen;
+        break;
       default:
         break;
     }
-    arguments = notificationData.id ?? 0;
+    arguments = notificationData.id ?? "";
     return Future<void>.value();
   }
 

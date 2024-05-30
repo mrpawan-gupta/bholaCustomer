@@ -82,15 +82,10 @@ class MyApp extends StatelessWidget {
             child: AppKeyboardManager().globalKeyboardDismisser(
               child: UpgradeAlert(
                 navigatorKey: Get.key,
-                // showIgnore: false,
-                // showLater: false,
                 upgrader: Upgrader(
                   languageCode: locale.languageCode,
                   countryCode: locale.countryCode ?? "",
                   debugLogging: kDebugMode,
-                  debugDisplayOnce: kDebugMode,
-                  debugDisplayAlways: kDebugMode,
-                  minAppVersion: "1.0.0",
                 ),
                 child: child ?? const SizedBox(),
               ),

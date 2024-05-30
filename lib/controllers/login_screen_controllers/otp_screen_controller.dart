@@ -12,9 +12,9 @@ class OTPScreenController extends GetxController {
   final TextEditingController otpController = TextEditingController();
 
   final RxString rxPhoneNumber = "".obs;
+  final RxString rxAppSignature = "".obs;
   final RxString rxOTP = "".obs;
   final Rx<DateTime> otpResendDateTime = DateTime.now().obs;
-
   final Rx<VerifyOTPModelData> verifyOTPData = VerifyOTPModelData().obs;
 
   @override
@@ -26,12 +26,17 @@ class OTPScreenController extends GetxController {
       if (arguments.containsKey("phoneNumber")) {
         updatePhoneNo(arguments["phoneNumber"]);
       } else {}
+
+      if (arguments.containsKey("appSignature")) {
+        updateAppSignature(arguments["appSignature"]);
+      } else {}
     } else {}
   }
 
   @override
   void onReady() {
     super.onReady();
+
     timerStart();
   }
 
@@ -55,6 +60,11 @@ class OTPScreenController extends GetxController {
 
   void updatePhoneNo(String value) {
     rxPhoneNumber(value);
+    return;
+  }
+
+  void updateAppSignature(String value) {
+    rxAppSignature(value);
     return;
   }
 
@@ -97,6 +107,7 @@ class OTPScreenController extends GetxController {
       endPoint: "auth/send-otp",
       body: <String, dynamic>{
         "phoneNumber": "+91${rxPhoneNumber.value.trim()}",
+        // "appSignature": rxAppSignature.value.trim(),
       },
       successCallback: (Map<String, dynamic> json) async {
         AppSnackbar().snackbarSuccess(
@@ -119,7 +130,7 @@ class OTPScreenController extends GetxController {
   Future<void> verifyOTPAPICall() async {
     await AppAPIService().functionPost(
       types: Types.oauth,
-      endPoint: "auth/verify-otp/Vendor",
+      endPoint: "auth/verify-otp/Customer",
       body: <String, dynamic>{
         "phoneNumber": "+91${rxPhoneNumber.value.trim()}",
         "otp": rxOTP.value.trim(),
