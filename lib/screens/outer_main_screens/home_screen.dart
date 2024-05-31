@@ -128,6 +128,7 @@ class HomeScreen extends GetView<HomeController> {
         CommonHorizontalListView(
           pagingController: controller.pagingControllerServices,
           onTap: (Categories item) async {},
+          type: "rental categories list",
         ),
       ],
     );
@@ -212,6 +213,7 @@ class HomeScreen extends GetView<HomeController> {
         CommonHorizontalListView(
           pagingController: controller.pagingControllerCategories,
           onTap: (Categories item) async {},
+          type: "product categories list",
         ),
       ],
     );
@@ -226,11 +228,11 @@ class HomeScreen extends GetView<HomeController> {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: CommonHomeTitleBar(
             title: AppLanguageKeys().strCattleFeed.tr,
-            onTapViewAll: () async{
-              // await AppNavService().pushNamed(
-              //   destination: AppRoutes().productDetailScreen,
-              //   arguments: <String, dynamic>{"id": item.sId ?? ""},
-              // );
+            onTapViewAll: () async {
+              await AppNavService().pushNamed(
+                destination: AppRoutes().productListingScreen,
+                arguments: <String, dynamic>{},
+              );
             },
           ),
         ),
@@ -240,9 +242,10 @@ class HomeScreen extends GetView<HomeController> {
           onTap: (Products item) async {
             await AppNavService().pushNamed(
               destination: AppRoutes().productDetailScreen,
-              arguments: <String, dynamic>{},
+              arguments: <String, dynamic>{"id": item.sId ?? ""},
             );
           },
+          type: "cattle feed list",
         ),
       ],
     );
@@ -257,13 +260,19 @@ class HomeScreen extends GetView<HomeController> {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: CommonHomeTitleBar(
             title: AppLanguageKeys().strFertilizer.tr,
-            onTapViewAll: () {},
+            onTapViewAll: () async {
+              await AppNavService().pushNamed(
+                destination: AppRoutes().productListingScreen,
+                arguments: <String, dynamic>{},
+              );
+            },
           ),
         ),
         const SizedBox(height: 8),
         ProductListView(
           pagingController: controller.pagingControllerRecently,
           onTap: (Products item) async {},
+          type: "fertilizer list",
         ),
       ],
     );
@@ -277,6 +286,7 @@ class HomeScreen extends GetView<HomeController> {
         CommonHorizontalListViewBanner(
           pagingController: controller.pagingControllerBanners,
           onTap: (Banners item) {},
+          type: "banners list",
         ),
       ],
     );

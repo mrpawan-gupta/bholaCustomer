@@ -35,11 +35,21 @@ class AppAPIService extends GetConnect {
   AppAPIService._internal();
   static final AppAPIService _singleton = AppAPIService._internal();
 
-  final String baseURL = "http://dev.bhola.org.in";
+  final String baseURL = "https://dev.bhola.org.in";
   final String middleware = "api";
 
   final String contentTypeApplicationJson = "application/json";
   final String contentTypeMultiPartFormData = "multipart/form-data";
+
+  @override
+  void onInit() {
+    super.onInit();
+
+    timeout = const Duration(minutes: 1);
+    maxAuthRetries = 3;
+
+    AppLogger().info(message: "AppAPIService: onInit(): ${timeout.inSeconds}");
+  }
 
   Map<String, String> getHeaders() {
     final String auth = AppStorageService().getUserAuthModel().token ?? "";

@@ -50,6 +50,7 @@ class CategoryScreen extends GetView<CategoryController> {
                   arguments: <String, dynamic>{},
                 );
               },
+              type: "rental categories list",
             ),
           ),
         ],
@@ -82,6 +83,7 @@ class CategoryScreen extends GetView<CategoryController> {
                   arguments: <String, dynamic>{},
                 );
               },
+              type: "product categories list",
             ),
           ),
         ],

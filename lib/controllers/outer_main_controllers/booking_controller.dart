@@ -152,27 +152,19 @@ class BookingController extends GetxController {
   }
 
   Future<void> getServicesAPI() async {
-    final int selectedCategoryIndex = getSelectedCategoryIndex();
-    if (selectedCategoryIndex == -1) {
-      AppSnackbar().snackbarFailure(
-        title: "Oops",
-        message: "Please select a category first.",
-      );
-      return;
-    }
-
     await AppAPIService().functionGet(
       types: Types.rental,
       endPoint: "services",
       query: <String, dynamic>{
         "page": 1,
         "limit": 1000,
-        "categoryId": categoriesList[selectedCategoryIndex].sId ?? "",
+        "categoryId": categoriesList[getSelectedCategoryIndex()].sId ?? "",
       },
       successCallback: (Map<String, dynamic> json) {
         AppLogger().info(message: json["message"]);
 
-        final GetAllServices model = GetAllServices.fromJson(json);
+        GetAllServices model = GetAllServices();
+        model = GetAllServices.fromJson(json);
 
         servicesList
           ..clear()
@@ -187,67 +179,65 @@ class BookingController extends GetxController {
     return Future<void>.value();
   }
 
-
-  Future<String?> createBookingAPI() async {
-    final int selectedCategoryIndex = getSelectedCategoryIndex();
-    final int selectedAddressIndex = getSelectedAddressIndex();
-    final int selectedServiceIndex = getSelectedServiceIndex();
-
-    if (selectedCategoryIndex == -1 || selectedAddressIndex == -1 ||
-        selectedServiceIndex == -1) {
-      AppSnackbar().snackbarFailure(
-        title: "Oops",
-        message: "Please make sure all fields are properly filled.",
-      );
-      return null;
-    }
+  Future<CreateBookingData> createBookingAPI() async {
+    final Completer<CreateBookingData> completer =
+        Completer<CreateBookingData>();
 
     final Map<String, dynamic> body = <String, dynamic>{
       "scheduleDate": rxDate.value,
       "approxStartTime": rxStartTime.value,
       "approxEndTime": rxEndTime.value,
       "crop": rxCropName.value,
-      "vehicleCategory": categoriesList[selectedCategoryIndex].sId ?? "",
-      "deliveryAddress": rxAddressList[selectedAddressIndex].sId ?? "",
+      "vehicleCategory": categoriesList[getSelectedCategoryIndex()].sId ?? "",
+      "deliveryAddress": rxAddressList[getSelectedAddressIndex()].sId ?? "",
       "services": <Map<String, dynamic>>[
         <String, dynamic>{
-          "service": servicesList[selectedServiceIndex].sId ?? "",
+          "service": servicesList[getSelectedServiceIndex()].sId ?? "",
           "area": rxFarmArea.value,
         }
       ],
     };
-
-
-    Completer<String?> completer = Completer<String?>();
 
     await AppAPIService().functionPost(
       types: Types.rental,
       endPoint: "booking",
       body: body,
       successCallback: (Map<String, dynamic> json) {
-        CreateBooking model = CreateBooking.fromJson(json);
+        AppSnackbar().snackbarSuccess(title: "Yay!", message: json["message"]);
 
-        if (model.data != null) {
-          String? bookingId = model.data!.sId;
-          clearForm();
-          AppSnackbar().snackbarSuccess(title: "Yay!", message: json["message"]);
-          completer.complete(bookingId);
-        } else {
-          AppSnackbar().snackbarFailure(title: "Oops", message: "Invalid response from server.");
-          completer.complete(null);
-        }
+        CreateBooking model = CreateBooking();
+        model = CreateBooking.fromJson(json);
+
+        completer.complete(model.data ?? CreateBookingData());
       },
       failureCallback: (Map<String, dynamic> json) {
         AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
-        completer.complete(null);
+
+        completer.complete(CreateBookingData());
       },
     );
-
     return completer.future;
   }
 
+  Future<bool> confirmOrderAPICall({required String id}) async {
+    final Completer<bool> completer = Completer<bool>();
+    await AppAPIService().functionPatch(
+      types: Types.rental,
+      endPoint: "accept/booking/$id",
+      body: <String, String>{"status": "BookingConfirm"},
+      successCallback: (Map<String, dynamic> json) {
+        AppSnackbar().snackbarSuccess(title: "Yay!", message: json["message"]);
 
+        completer.complete(true);
+      },
+      failureCallback: (Map<String, dynamic> json) {
+        AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
 
+        completer.complete(false);
+      },
+    );
+    return completer.future;
+  }
 
   void clearForm() {
     searchController.clear();
@@ -277,7 +267,7 @@ class BookingController extends GetxController {
     String reason = "";
 
     final bool cond01 = searchController.value.text.isNotEmpty;
-    final bool cond02 = hasFoundQueryInAddress();
+    final bool cond02 = getSelectedAddressIndex() != -1;
     final bool cond03 = cropNameController.value.text.isNotEmpty;
     final bool cond04 = rxCropName.value.isNotEmpty;
     final bool cond05 = startTimeController.value.text.isNotEmpty;
@@ -286,16 +276,19 @@ class BookingController extends GetxController {
     final bool cond08 = rxEndTime.value.isNotEmpty;
     final bool cond9 = dateController.value.text.isNotEmpty;
     final bool cond10 = rxDate.value.isNotEmpty;
+
     final bool cond11 = !mapEquals(
       rxSelectedCategory.value.toJson(),
       Categories().toJson(),
     );
-    final bool cond12 = !mapEquals(
+    final bool cond12 = getSelectedCategoryIndex() != -1;
+    final bool cond13 = !mapEquals(
       rxSelectedService.value.toJson(),
       GetAllServicesData().toJson(),
     );
-    final bool cond13 = rxFarmArea.value > 0.0;
-    final bool cond14 = isValidStartAndEndTime();
+    final bool cond14 = getSelectedServiceIndex() != -1;
+    final bool cond15 = rxFarmArea.value > 0.0;
+    final bool cond16 = isValidStartAndEndTime();
 
     if (!cond01) {
       reason = "Please select your location.";
@@ -320,10 +313,14 @@ class BookingController extends GetxController {
     } else if (!cond11) {
       reason = "Please select any category.";
     } else if (!cond12) {
-      reason = "Please select any service.";
+      reason = "Please select any category.";
     } else if (!cond13) {
-      reason = "Please select any farm area greater than 0.";
+      reason = "Please select any service.";
     } else if (!cond14) {
+      reason = "Please select any service.";
+    } else if (!cond15) {
+      reason = "Please select any farm area greater than 0.";
+    } else if (!cond16) {
       reason = "Start time should be greater than end time - 1 hour difference";
     } else {}
     return reason;
@@ -345,31 +342,19 @@ class BookingController extends GetxController {
 
   int getSelectedAddressIndex() {
     return rxAddressList.indexWhere(
-      (Address item) {
-        final String street = item.street ?? "";
-        final String search = searchController.value.text;
-        return street == search;
-      },
+      (Address item) => (item.street ?? "") == searchController.value.text,
     );
-  }
-
-  bool hasFoundQueryInAddress() {
-    return getSelectedAddressIndex() != -1;
   }
 
   int getSelectedCategoryIndex() {
     return categoriesList.indexWhere(
-      (Categories item) {
-        return item == rxSelectedCategory.value;
-      },
+      (Categories item) => item == rxSelectedCategory.value,
     );
   }
 
   int getSelectedServiceIndex() {
     return servicesList.indexWhere(
-      (Services item) {
-        return item == rxSelectedService.value;
-      },
+      (Services item) => item == rxSelectedService.value,
     );
   }
 

@@ -1,6 +1,7 @@
 // ignore_for_file: lines_longer_than_80_chars
 
 import "package:customer/common_functions/booking_functions.dart";
+import "package:customer/common_widgets/app_no_item_found.dart";
 import "package:customer/common_widgets/common_image_widget.dart";
 import "package:customer/controllers/outer_main_controllers/order_history_controller.dart";
 import "package:customer/models/featured_model.dart";
@@ -70,6 +71,9 @@ class OrderHistoryScreen extends GetView<OrderHistoryController> {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         builderDelegate: PagedChildBuilderDelegate<Categories>(
+          noItemsFoundIndicatorBuilder: (BuildContext context) {
+            return const SizedBox();
+          },
           itemBuilder: (BuildContext context, Categories item, int index) {
             final List<Categories> itemList =
                 controller.pagingControllerServices.itemList ?? <Categories>[];
@@ -140,6 +144,13 @@ class OrderHistoryScreen extends GetView<OrderHistoryController> {
         padding: EdgeInsets.zero,
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         builderDelegate: PagedChildBuilderDelegate<Bookings>(
+          noItemsFoundIndicatorBuilder: (BuildContext context) {
+            return AppNoItemFoundWidget(
+              title: "No items found",
+              message: "The order history list is currently empty.",
+              onTryAgain: controller.pagingControllerNewOrder.refresh,
+            );
+          },
           itemBuilder: (BuildContext context, Bookings item, int index) {
             final List<Bookings> itemList =
                 controller.pagingControllerNewOrder.itemList ?? <Bookings>[];

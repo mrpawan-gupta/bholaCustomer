@@ -32,7 +32,7 @@ class AppSession {
 
     await AppPkgInfoService().updateInfoToFirestore();
     await AppDevInfoService().updateInfoToFirestore();
-    
+
     await AppLocationService().automatedFunction();
 
     final String id = AppStorageService().getUserAuthModel().sId ?? "";

@@ -9,6 +9,16 @@ class AppAssetsImages {
 
   static final AppAssetsImages _singleton = AppAssetsImages._internal();
 
+  final String bottomNavHome = "assets/images/bottom_nav_home.png";
+  final String bottomNavPortfolio = "assets/images/bottom_nav_portfolio.png";
+  final String bottomNavCategory = "assets/images/bottom_nav_category.png";
+  final String bottomNavHelp = "assets/images/bottom_nav_help.png";
+  final String bottomNavShopping = "assets/images/bottom_nav_shopping.png";
+  final String bottomNavOrderHistory = "assets/images/bottom_nav_history.png";
+  final String bottomNavTruck = "assets/images/bottom_nav_truck.png";
+  final String bottomNavDrone = "assets/images/bottom_nav_drone.png";
+  final String bottomNavJCB = "assets/images/bottom_nav_jcb.png";
+
   final String iconFlutter = "assets/images/icon_flutter.png";
   final String add = "assets/images/add.png";
   final String banner = "assets/images/banner.png";

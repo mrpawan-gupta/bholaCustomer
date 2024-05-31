@@ -97,6 +97,7 @@ class _FilterSortByWidgetState extends State<FilterSortByWidget> {
                   ),
                 ),
               ),
+              const SizedBox(width: 16),
               Expanded(
                 child: SizedBox(
                   height: 50,

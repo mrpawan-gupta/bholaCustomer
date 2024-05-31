@@ -1,3 +1,4 @@
+import "package:customer/common_widgets/app_no_item_found.dart";
 import "package:customer/common_widgets/common_image_widget.dart";
 import "package:customer/models/product_model.dart";
 import "package:flutter/material.dart";
@@ -7,11 +8,13 @@ class ProductListView extends StatelessWidget {
   const ProductListView({
     required this.pagingController,
     required this.onTap,
+    required this.type,
     super.key,
   });
 
   final PagingController<int, Products> pagingController;
   final Function(Products item) onTap;
+  final String type;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +29,13 @@ class ProductListView extends StatelessWidget {
         physics: const ScrollPhysics(),
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         builderDelegate: PagedChildBuilderDelegate<Products>(
+          noItemsFoundIndicatorBuilder: (BuildContext context) {
+            return AppNoItemFoundWidget(
+              title: "No items found",
+              message: "The $type is currently empty.",
+              onTryAgain: pagingController.refresh,
+            );
+          },
           itemBuilder: (BuildContext context, Products item, int i) {
             final int length = pagingController.itemList?.length ?? 0;
             final bool isLast = i == length - 1;

@@ -1,5 +1,7 @@
 import "package:customer/main.dart";
 import "package:customer/services/app_analytics_service.dart";
+import "package:customer/services/app_api_service.dart";
+import "package:customer/services/app_app_links_deep_link_service.dart";
 import "package:customer/services/app_dev_info_service.dart";
 import "package:customer/services/app_fcm_service.dart";
 import "package:customer/services/app_firestore_user_db.dart";
@@ -19,10 +21,12 @@ void injectDependencies() {
   Get
     ..put(AppStorageService())
     ..put(AppNavService())
+    ..put(AppAPIService())
     ..put(AppAnalyticsService())
     ..put(AppFCMService())
     ..put(AppNetCheckService())
     ..put(AppPermService())
+    ..put(AppAppLinksDeepLinkService())
     ..put(AppPkgInfoService())
     ..put(AppDevInfoService())
     ..put(AppLocationService())
@@ -44,7 +48,6 @@ Future<void> initDependencies() async {
 
   RemoteMessage? initialMessage;
   initialMessage = await AppFCMService().instance.getInitialMessage();
-
   if (initialMessage != null) {
     final String data = initialMessage.data.toString();
     await AppFCMService().onTapTerminated(data);
@@ -52,6 +55,5 @@ Future<void> initDependencies() async {
 
   await AppPkgInfoService().initPkgInformation();
   await AppDevInfoService().initDevInformation();
-
   return Future<void>.value();
 }

@@ -108,6 +108,7 @@ class _FilterRangeWidgetState extends State<FilterRangeWidget> {
                       ),
                     ),
                   ),
+                  const SizedBox(width: 16),
                   Expanded(
                     child: SizedBox(
                       height: 50,

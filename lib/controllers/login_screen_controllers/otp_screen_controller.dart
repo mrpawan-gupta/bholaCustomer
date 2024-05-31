@@ -1,6 +1,9 @@
+import "dart:async";
+
 import "package:customer/models/verify_otp.dart";
 import "package:customer/services/app_api_service.dart";
 import "package:customer/utils/app_session.dart";
+import "package:customer/utils/app_snackbar.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 
@@ -9,9 +12,9 @@ class OTPScreenController extends GetxController {
   final TextEditingController otpController = TextEditingController();
 
   final RxString rxPhoneNumber = "".obs;
+  final RxString rxAppSignature = "".obs;
   final RxString rxOTP = "".obs;
   final Rx<DateTime> otpResendDateTime = DateTime.now().obs;
-
   final Rx<VerifyOTPModelData> verifyOTPData = VerifyOTPModelData().obs;
 
   @override
@@ -23,12 +26,17 @@ class OTPScreenController extends GetxController {
       if (arguments.containsKey("phoneNumber")) {
         updatePhoneNo(arguments["phoneNumber"]);
       } else {}
+
+      if (arguments.containsKey("appSignature")) {
+        updateAppSignature(arguments["appSignature"]);
+      } else {}
     } else {}
   }
 
   @override
   void onReady() {
     super.onReady();
+
     timerStart();
   }
 
@@ -55,6 +63,11 @@ class OTPScreenController extends GetxController {
     return;
   }
 
+  void updateAppSignature(String value) {
+    rxAppSignature(value);
+    return;
+  }
+
   void updateOTP(String value) {
     rxOTP(value);
     return;
@@ -66,16 +79,17 @@ class OTPScreenController extends GetxController {
   }
 
   void unfocus() {
-    final bool cond1 = otpController.value.text.length == 10;
-    final bool cond2 = rxOTP.value.length == 10;
+    final bool cond1 = otpController.value.text.length == 6;
+    final bool cond2 = rxOTP.value.length == 6;
 
     if (cond1 && cond2) {
       FocusManager.instance.primaryFocus?.unfocus();
+      unawaited(verifyOTPAPICall());
     } else {}
     return;
   }
 
-  String validate() {
+  String formValidate() {
     String reason = "";
     final bool cond1 = rxOTP.value.isNotEmpty;
     final bool cond2 = rxOTP.value.length == 6;
@@ -87,26 +101,33 @@ class OTPScreenController extends GetxController {
     return reason;
   }
 
-  Future<void> sendOTPAPICall({
-    required Function(Map<String, dynamic> json) successCallback,
-    required Function(Map<String, dynamic> json) failureCallback,
-  }) async {
+  Future<void> sendOTPAPICall() async {
     await AppAPIService().functionPost(
       types: Types.oauth,
       endPoint: "auth/send-otp",
       body: <String, dynamic>{
         "phoneNumber": "+91${rxPhoneNumber.value.trim()}",
+        // "appSignature": rxAppSignature.value.trim(),
       },
-      successCallback: successCallback,
-      failureCallback: failureCallback,
+      successCallback: (Map<String, dynamic> json) async {
+        AppSnackbar().snackbarSuccess(
+          title: "Yay!",
+          message: json["message"],
+        );
+
+        timerStart();
+      },
+      failureCallback: (Map<String, dynamic> json) {
+        AppSnackbar().snackbarFailure(
+          title: "Oops",
+          message: json["message"],
+        );
+      },
     );
     return Future<void>.value();
   }
 
-  Future<void> verifyOTPAPICall({
-    required Function(Map<String, dynamic> json) successCallback,
-    required Function(Map<String, dynamic> json) failureCallback,
-  }) async {
+  Future<void> verifyOTPAPICall() async {
     await AppAPIService().functionPost(
       types: Types.oauth,
       endPoint: "auth/verify-otp/Customer",
@@ -115,6 +136,11 @@ class OTPScreenController extends GetxController {
         "otp": rxOTP.value.trim(),
       },
       successCallback: (Map<String, dynamic> json) async {
+        AppSnackbar().snackbarSuccess(
+          title: "Yay!",
+          message: json["message"],
+        );
+
         VerifyOTPModel verifyOTPModel = VerifyOTPModel();
         verifyOTPModel = VerifyOTPModel.fromJson(json);
 
@@ -123,9 +149,14 @@ class OTPScreenController extends GetxController {
         final VerifyOTPModelData userAuth = verifyOTPData.value;
         await AppSession().setUserAuth(userAuth: userAuth);
 
-        successCallback(json);
+        await decideAndNavigate();
       },
-      failureCallback: failureCallback,
+      failureCallback: (Map<String, dynamic> json) {
+        AppSnackbar().snackbarFailure(
+          title: "Oops",
+          message: json["message"],
+        );
+      },
     );
     return Future<void>.value();
   }

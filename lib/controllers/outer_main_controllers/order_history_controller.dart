@@ -116,7 +116,8 @@ class OrderHistoryController extends GetxController {
           completer.complete(model.data?.categories ?? <Categories>[]);
         },
         failureCallback: (Map<String, dynamic> json) {
-        AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
+          AppSnackbar()
+              .snackbarFailure(title: "Oops", message: json["message"]);
 
           completer.complete(<Categories>[]);
         },
@@ -146,7 +147,7 @@ class OrderHistoryController extends GetxController {
 
     await AppAPIService().functionGet(
       types: Types.rental,
-      endPoint: "user/booking/history/Vendor",
+      endPoint: "user/booking/history/Customer",
       query: query,
       successCallback: (Map<String, dynamic> json) {
         AppLogger().info(message: json["message"]);
