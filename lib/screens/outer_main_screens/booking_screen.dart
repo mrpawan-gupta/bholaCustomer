@@ -481,6 +481,9 @@ class BookingScreen extends GetView<BookingController> {
                                     if (value != null) {
                                       controller.rxSelectedCategory(value);
 
+                                      controller.rxSelectedService(Services());
+                                      controller.servicesList.clear();
+
                                       await controller.getServicesAPI();
                                     } else {}
                                   },
@@ -679,11 +682,7 @@ class BookingScreen extends GetView<BookingController> {
 
               if (reason.isEmpty) {
                 CreateBookingData model = CreateBookingData();
-                model = await controller.createBookingAPI()
-
-                  //
-                  ..vendorsAvailable = true;
-                //
+                model = await controller.createBookingAPI();
 
                 if (!mapEquals(model.toJson(), CreateBookingData().toJson())) {
                   final String id = model.booking?.sId ?? "";
@@ -696,7 +695,6 @@ class BookingScreen extends GetView<BookingController> {
 
                       if (value) {
                         controller.clearForm();
-
                         final String data = json.encode(model.toJson());
                         await AppNavService().pushNamed(
                           destination: AppRoutes().bookingPaymentScreen,

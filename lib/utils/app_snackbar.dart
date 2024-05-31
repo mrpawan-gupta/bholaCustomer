@@ -1,9 +1,7 @@
 import "package:customer/utils/app_colors.dart";
-import "package:customer/utils/app_constants.dart";
 import "package:customer/utils/app_logger.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
-import "package:overlay_support/overlay_support.dart";
 
 class AppSnackbar {
   factory AppSnackbar() {
@@ -65,29 +63,16 @@ class AppSnackbar {
       default:
         break;
     }
-    showSimpleNotification(
-      const SizedBox(),
-      context: Get.context,
-      elevation: AppConstants().elevation,
-      foreground: Theme.of(Get.context!).scaffoldBackgroundColor,
-      background: color,
-      subtitle: ListTile(
-        dense: true,
-        title: Text(
-          title,
-          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-        subtitle: Text(
-          message,
-          style: const TextStyle(fontSize: 16),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-      ),
+
+    Get.snackbar(
+      title,
+      message,
+      snackPosition: SnackPosition.TOP,
+      backgroundColor: color.withOpacity(0.64),
       duration: duration,
-      slideDismissDirection: DismissDirection.horizontal,
+      isDismissible: true,
+      dismissDirection: DismissDirection.horizontal,
+      colorText: Colors.white,
     );
     return;
   }

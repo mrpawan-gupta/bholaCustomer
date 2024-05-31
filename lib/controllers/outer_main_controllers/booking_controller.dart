@@ -138,6 +138,7 @@ class BookingController extends GetxController {
         FeaturedModel model = FeaturedModel();
         model = FeaturedModel.fromJson(json);
 
+        rxSelectedCategory(Categories());
         categoriesList
           ..clear()
           ..addAll(model.data?.categories ?? <Categories>[])
@@ -166,6 +167,7 @@ class BookingController extends GetxController {
         GetAllServices model = GetAllServices();
         model = GetAllServices.fromJson(json);
 
+        rxSelectedService(Services());
         servicesList
           ..clear()
           ..addAll(model.data?.services ?? <Services>[])

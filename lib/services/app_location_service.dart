@@ -1,11 +1,14 @@
 import "dart:async";
 import "dart:developer";
 
+import "package:customer/models/vpn_api_custom.dart";
+import "package:customer/services/app_api_service.dart";
 import "package:customer/services/app_firestore_user_db.dart";
 import "package:customer/services/app_perm_service.dart";
 import "package:customer/services/app_storage_service.dart";
 import "package:customer/utils/app_constants.dart";
 import "package:customer/utils/app_logger.dart";
+import "package:dart_ipify/dart_ipify.dart";
 import "package:geolocator/geolocator.dart";
 import "package:get/get.dart";
 import "package:location/location.dart" as loc;
@@ -19,17 +22,52 @@ class AppLocationService extends GetxService {
   static final AppLocationService _singleton = AppLocationService._internal();
 
   bool hasAlreadyAskedForGPSWitPrompt = false;
+  // late Timer _timer;
+  (double, double, String) previousLocation = (0.0, 0.0, "");
+
+  // @override
+  // void onInit() {
+  //   super.onInit();
+
+  //   _timer = Timer.periodic(
+  //     AppConstants().locationFetchDuration,
+  //     (Timer timer) async {
+  //       await automatedFunction();
+  //     },
+  //   );
+  // }
+
+  // @override
+  // void onClose() {
+  //   _timer.cancel();
+
+  //   super.onClose();
+  // }
 
   Future<void> automatedFunction() async {
-    final (double, double, String) value = await decideAndSend();
+    final (double, double, String) currentLocation = await decideAndSend();
+    AppLogger().info(message: "automatedFunction(): curr.: $currentLocation");
+    AppLogger().info(message: "automatedFunction(): prev.: $previousLocation");
 
-    if ((!value.$1.isEqual(0.0)) && (!value.$2.isEqual(0.0))) {
-      await updateInfoToFirestore(
-        latitude: value.$1,
-        longitude: value.$2,
-        from: value.$3,
-      );
-    } else {}
+    if (previousLocation != currentLocation) {
+      final bool condition1 = !currentLocation.$1.isEqual(0.0);
+      final bool condition2 = !currentLocation.$2.isEqual(0.0);
+
+      if (condition1 && condition2) {
+        AppLogger().info(message: "automatedFunction(): Sync");
+        await updateInfoToFirestore(
+          latitude: currentLocation.$1,
+          longitude: currentLocation.$2,
+          from: currentLocation.$3,
+        );
+
+        previousLocation = currentLocation;
+      } else {
+        AppLogger().info(message: "automatedFunction(): Not sync: No Lat Long");
+      }
+    } else {
+      AppLogger().info(message: "automatedFunction(): Not sync: Same Location");
+    }
     return Future<void>.value();
   }
 
@@ -123,29 +161,41 @@ class AppLocationService extends GetxService {
   }
 
   Future<(double, double)> fetchLocationFromIPAddress() async {
-    double lat = 0.0;
-    double long = 0.0;
+    final Completer<(double, double)> completer = Completer<(double, double)>();
 
-    // await AppAPIService().functionGet(
-    //   endPoint: "",
-    //   query: <String, dynamic>{"key": AppConstants().vpnAPIKey},
-    //   body: <String, dynamic>{},
-    //   successCallback: (Map<String, dynamic> json) {
-    //     final VPNAPIIOResponse response = VPNAPIIOResponse.fromJson(json);
-    //     final String strLatitude = response.location?.latitude ?? "0.0";
-    //     final String strLongitude = response.location?.longitude ?? "0.0";
-    //     lat = double.tryParse(strLatitude) ?? 0.0;
-    //     long = double.tryParse(strLongitude) ?? 0.0;
-    //     AppLogger().info(message: "LocationFromIP: lat: $lat long: $long");
-    //   },
-    //   failureCallback: (Map<String, dynamic> json) {},
-    // );
+    final String ip = await Ipify.ipv64();
+    AppLogger().info(message: "fetchLocationFromIPAddress(): ip: $ip");
 
-    lat = 21.3245;
-    long = 74.5564;
-    AppLogger().info(message: "FromIP: lat: $lat long: $long");
+    if (ip.isEmpty) {
+      completer.complete((0.0, 0.0));
+    } else {
+      await AppAPIService().functionGet(
+        types: Types.oauth,
+        endPoint: "vpn-info",
+        body: <String, dynamic>{"ip": ip},
+        successCallback: (Map<String, dynamic> json) {
+          AppLogger().info(message: json["message"]);
 
-    return Future<(double, double)>.value((lat, long));
+          VPNAPICustom model = VPNAPICustom();
+          model = VPNAPICustom.fromJson(json);
+
+          final String strLatitude = model.data?.latitude ?? "0.0";
+          final String strLongitude = model.data?.longitude ?? "0.0";
+          final double lat = double.tryParse(strLatitude) ?? 0.0;
+          final double long = double.tryParse(strLongitude) ?? 0.0;
+
+          completer.complete((lat, long));
+        },
+        failureCallback: (Map<String, dynamic> json) {
+          AppLogger().error(message: json["message"]);
+
+          completer.complete((0.0, 0.0));
+        },
+        needLoader: false,
+      );
+    }
+
+    return completer.future;
   }
 
   Future<void> updateInfoToFirestore({
