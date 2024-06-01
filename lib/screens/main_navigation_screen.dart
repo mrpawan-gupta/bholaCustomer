@@ -112,6 +112,7 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
                 return Style13BottomNavBar(navBarConfig: navBarConfig);
               },
               navBarOverlap: const NavBarOverlap.none(),
+              handleAndroidBackButtonPress: false,
             ),
           ),
         );

@@ -19,6 +19,7 @@ class MainNavigationController extends GetxController {
   final Rx<GetUserByIdData> rxUserInfo = GetUserByIdData().obs;
 
   late Timer _timer;
+
   RxList<String> list = <String>[
     AppAssetsImages().bottomNavTruck,
     AppAssetsImages().bottomNavDrone,
@@ -50,16 +51,7 @@ class MainNavigationController extends GetxController {
       },
     );
 
-    tabController.addListener(
-      () async {
-        if (tabController.index != 3) {
-          previousIndex(tabController.index);
-        } else {
-          tabController.jumpToTab(previousIndex.value);
-          await AppWhatsApp().openWhatsApp();
-        }
-      },
-    );
+    tabController.addListener(tabControllerFunction);
 
     initAndReInitFunction();
   }
@@ -67,7 +59,10 @@ class MainNavigationController extends GetxController {
   @override
   void onClose() {
     _timer.cancel();
-    tabController.dispose();
+
+    tabController
+      ..removeListener(tabControllerFunction)
+      ..dispose();
 
     super.onClose();
   }
@@ -80,5 +75,15 @@ class MainNavigationController extends GetxController {
   void updateUserInfo(GetUserByIdData value) {
     rxUserInfo(value);
     return;
+  }
+
+  Future<void> tabControllerFunction() async {
+    if (tabController.index != 3) {
+      previousIndex(tabController.index);
+    } else {
+      tabController.jumpToTab(previousIndex.value);
+      await AppWhatsApp().openWhatsApp();
+    }
+    return Future<void>.value();
   }
 }

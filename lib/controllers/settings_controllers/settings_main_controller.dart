@@ -23,6 +23,7 @@ class SettingsMainController extends GetxController {
 
   void initAndReInitFunction() {
     updateUserInfo(AppStorageService().getUserInfoModel());
+
     unawaited(getAddressesAPI());
     return;
   }
@@ -100,19 +101,69 @@ class SettingsMainController extends GetxController {
     return Future<void>.value();
   }
 
+  Future<void> deleteAPICall() async {
+    final Completer<void> completer = Completer<void>();
+
+    final String id = AppStorageService().getUserAuthModel().sId ?? "";
+
+    if (id.isNotEmpty) {
+      await AppAPIService().functionDelete(
+        types: Types.oauth,
+        endPoint: "user/$id",
+        successCallback: (Map<String, dynamic> json) async {
+          AppSnackbar().snackbarSuccess(
+            title: "Yay!",
+            message: json["message"],
+          );
+
+          completer.complete();
+        },
+        failureCallback: (Map<String, dynamic> json) async {
+          AppSnackbar().snackbarFailure(
+            title: "Oops",
+            message: json["message"],
+          );
+
+          completer.complete();
+        },
+        needLoader: false,
+      );
+    } else {
+      completer.complete();
+    }
+
+    await AppSession().performSignOut();
+
+    return completer.future;
+  }
+
   Future<void> signoutAPICall() async {
+    final Completer<void> completer = Completer<void>();
+
     await AppAPIService().functionDelete(
       types: Types.oauth,
       endPoint: "user/signout",
       successCallback: (Map<String, dynamic> json) async {
-        AppSnackbar().snackbarSuccess(title: "Yay!", message: json["message"]);
+        AppSnackbar().snackbarSuccess(
+          title: "Yay!",
+          message: json["message"],
+        );
+
+        completer.complete();
       },
       failureCallback: (Map<String, dynamic> json) async {
-        AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
+        AppSnackbar().snackbarFailure(
+          title: "Oops",
+          message: json["message"],
+        );
+
+        completer.complete();
       },
+      needLoader: false,
     );
 
     await AppSession().performSignOut();
-    return Future<void>.value();
+
+    return completer.future;
   }
 }

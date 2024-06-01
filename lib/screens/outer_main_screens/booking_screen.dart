@@ -906,31 +906,28 @@ class BookingScreen extends GetView<BookingController> {
                 const SizedBox(height: 16),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Row(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Expanded(
-                        child: SizedBox(
-                          height: 50,
-                          child: AppTextButton(
-                            text: "Select different service",
-                            onPressed: () async {
-                              AppNavService().pop();
-                            },
-                          ),
+                      SizedBox(
+                        height: 50,
+                        child: AppElevatedButton(
+                          text: "Confirm Booking",
+                          onPressed: () {
+                            AppNavService().pop();
+                            onPressedConfirm();
+                          },
                         ),
                       ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: SizedBox(
-                          height: 50,
-                          child: AppElevatedButton(
-                            text: "Confirm Booking",
-                            onPressed: () {
-                              AppNavService().pop();
-                              onPressedConfirm();
-                            },
-                          ),
+                      const SizedBox(height: 16),
+                      SizedBox(
+                        height: 50,
+                        child: AppTextButton(
+                          text: "Contact Support",
+                          onPressed: () async {
+                            AppNavService().pop();
+                            onPressedSupport();
+                          },
                         ),
                       ),
                     ],
@@ -965,31 +962,28 @@ class BookingScreen extends GetView<BookingController> {
                 const SizedBox(height: 16),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Row(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Expanded(
-                        child: SizedBox(
-                          height: 50,
-                          child: AppTextButton(
-                            text: "Select different service",
-                            onPressed: () async {
-                              AppNavService().pop();
-                            },
-                          ),
+                      SizedBox(
+                        height: 50,
+                        child: AppElevatedButton(
+                          text: "Confirm Booking",
+                          onPressed: () {
+                            AppNavService().pop();
+                            onPressedConfirm();
+                          },
                         ),
                       ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: SizedBox(
-                          height: 50,
-                          child: AppElevatedButton(
-                            text: "Contact Support",
-                            onPressed: () {
-                              AppNavService().pop();
-                              onPressedSupport();
-                            },
-                          ),
+                      const SizedBox(height: 16),
+                      SizedBox(
+                        height: 50,
+                        child: AppTextButton(
+                          text: "Contact Support",
+                          onPressed: () async {
+                            AppNavService().pop();
+                            onPressedSupport();
+                          },
                         ),
                       ),
                     ],

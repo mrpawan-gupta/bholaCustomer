@@ -1,4 +1,6 @@
+import "package:customer/common_widgets/app_elevated_button.dart";
 import "package:customer/common_widgets/app_maybe_marquee.dart";
+import "package:customer/common_widgets/app_text_button.dart";
 import "package:customer/common_widgets/common_image_widget.dart";
 import "package:customer/controllers/settings_controllers/settings_main_controller.dart";
 import "package:customer/models/get_user_by_id.dart";
@@ -58,14 +60,23 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
                   ),
                   const SizedBox(height: 16),
                   settingsItems1(
-                    itemName: "Try our Customer App",
+                    itemName: "Try our Vendor App",
                     onTap: () async {
                       await LaunchApp.openApp(
-                        androidPackageName: "com.ahinsaaggregator.customer",
-                        iosUrlScheme: "ahinsaaggregatorCustomer://",
+                        androidPackageName: "com.ahinsaaggregator.vendor",
+                        iosUrlScheme: "ahinsaaggregatorVendor://",
                         appStoreLink:
                             "itms-apps://itunes.apple.com/us/app/pulse-secure/id945832041",
                         openStore: true,
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  settingsItems2(
+                    itemName: "Delete Account",
+                    onTap: () async {
+                      await openDeleteAccountWidget(
+                        onPressedDelete: controller.deleteAPICall,
                       );
                     },
                   ),
@@ -160,6 +171,19 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
                   title: "Phone",
                   value: controller.getPhoneNumberOrPhoneNumberPlaceholder(),
                 ),
+                const SizedBox(height: 16),
+                AppTextButton(
+                  text: "Update Profile",
+                  onPressed: () async {
+                    await AppNavService().pushNamed(
+                      destination: AppRoutes().editProfileScreen,
+                      arguments: <String, dynamic>{},
+                    );
+
+                    controller.initAndReInitFunction();
+                  },
+                ),
+
                 // const SizedBox(height: 16),
                 // commonTitleAndValueWidget(
                 //   title: "Address",
@@ -385,19 +409,70 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
               );
             },
           ),
-          // ListTile(
-          //   dense: true,
-          //   leading: const Icon(Icons.public),
-          //   title: const Text("Terms & Conditions - Vendor"),
-          //   subtitle: Text(AppConstants().appURLsTAndCVendor),
-          //   trailing: const Icon(Icons.open_in_new),
-          //   onTap: () async {
-          //     AppNavService().pop();
-          //     await AppInAppBrowser().openInAppBrowser(
-          //       url: AppConstants().appURLsTAndCVendor,
-          //     );
-          //   },
-          // ),
+          const SizedBox(height: 48),
+        ],
+      ),
+      backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
+      isScrollControlled: true,
+    );
+    return Future<void>.value();
+  }
+
+  Future<void> openDeleteAccountWidget({
+    required Function() onPressedDelete,
+  }) async {
+    await Get.bottomSheet(
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          const SizedBox(height: 16),
+          Text(
+            AppLanguageKeys().strActionPerform.tr,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 16),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text(
+              "Are you sure you want to delete? It is an irreversible process!",
+              maxLines: 5,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                SizedBox(
+                  height: 50,
+                  child: AppElevatedButton(
+                    text: "Do not delete account",
+                    onPressed: () {
+                      AppNavService().pop();
+                    },
+                  ),
+                ),
+                const SizedBox(height: 16),
+                SizedBox(
+                  height: 50,
+                  child: AppTextButton(
+                    text: "Delete account",
+                    onPressed: () async {
+                      AppNavService().pop();
+                      onPressedDelete();
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
           const SizedBox(height: 48),
         ],
       ),

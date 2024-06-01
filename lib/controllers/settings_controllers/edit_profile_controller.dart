@@ -1,3 +1,5 @@
+import "dart:async";
+
 import "package:customer/models/get_user_by_id.dart";
 import "package:customer/services/app_api_service.dart";
 import "package:customer/services/app_storage_service.dart";
@@ -65,46 +67,28 @@ class EditProfileController extends GetxController {
     return;
   }
 
-  Future<void> confirmSaveProcedure({
-    required Function() successCallback,
-    required Function() failureCallback,
-  }) async {
-    int successCount = 0;
+  Future<bool> confirmSaveProcedure() async {
+    final Completer<bool> completer = Completer<bool>();
 
-    await editProfileFieldsAPICall(
-      successCallback: (Map<String, dynamic> json) {
-        AppSnackbar().snackbarSuccess(title: "Oops", message: json["message"]);
+    bool isEditProfileFieldsDone = false;
+    isEditProfileFieldsDone = await editProfileFieldsAPICall();
 
-        successCount++;
-      },
-      failureCallback: (Map<String, dynamic> json) {
-        AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
-      },
-    );
-    await editProfileFilesAPICall(
-      successCallback: (Map<String, dynamic> json) {
-        AppSnackbar().snackbarSuccess(title: "Oops", message: json["message"]);
-
-        successCount++;
-      },
-      failureCallback: (Map<String, dynamic> json) {
-        AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
-      },
-    );
+    bool isEditProfileFilesDone = false;
+    isEditProfileFilesDone = await editProfileFilesAPICall();
 
     final GetUserByIdData userInfo = await AppSession().getUserAPICall();
     await AppSession().setUserInfo(userInfo: userInfo);
 
-    successCount >= 1 ? successCallback() : failureCallback();
+    completer.complete(isEditProfileFieldsDone || isEditProfileFilesDone);
 
-    return Future<void>.value();
+    return completer.future;
   }
 
   String validateForm() {
     String reason = "";
 
-    final bool cond1 = rxProfilePictureURLs.value.isNotEmpty;
-    final bool cond2 = rxProfilePicturePath.value.isNotEmpty;
+    // final bool cond1 = rxProfilePictureURLs.value.isNotEmpty;
+    // final bool cond2 = rxProfilePicturePath.value.isNotEmpty;
     final bool cond3 = rxFirstName.value.isNotEmpty;
     final bool cond4 = AppRegex().isValidNameRegex(rxFirstName.value);
     final bool cond5 = rxLastName.value.isNotEmpty;
@@ -112,9 +96,10 @@ class EditProfileController extends GetxController {
     final bool cond7 = rxEmailAddress.value.isEmpty;
     final bool cond8 = rxEmailAddress.value.isEmail;
 
-    if (!cond1 && !cond2) {
-      reason = "Please upload your profile picture.";
-    } else if (!cond3) {
+    // if (!cond1 && !cond2) {
+    //   reason = "Please upload your profile picture.";
+    // } else
+    if (!cond3) {
       reason = "Please enter your first name.";
     } else if (!cond4) {
       reason = "Please enter your valid first name.";
@@ -131,10 +116,9 @@ class EditProfileController extends GetxController {
     return reason;
   }
 
-  Future<void> editProfileFieldsAPICall({
-    required dynamic Function(Map<String, dynamic>) successCallback,
-    required dynamic Function(Map<String, dynamic>) failureCallback,
-  }) async {
+  Future<bool> editProfileFieldsAPICall() async {
+    final Completer<bool> completer = Completer<bool>();
+
     final Map<String, dynamic> body = <String, dynamic>{
       "firstName": rxFirstName.value.trim(),
       "lastName": rxLastName.value.trim(),
@@ -148,16 +132,30 @@ class EditProfileController extends GetxController {
       types: Types.oauth,
       endPoint: "user",
       body: body,
-      successCallback: successCallback,
-      failureCallback: failureCallback,
+      successCallback: (Map<String, dynamic> json) {
+        AppSnackbar().snackbarSuccess(
+          title: "Yay!",
+          message: json["message"],
+        );
+
+        completer.complete(true);
+      },
+      failureCallback: (Map<String, dynamic> json) {
+        AppSnackbar().snackbarFailure(
+          title: "Oops",
+          message: json["message"],
+        );
+
+        completer.complete(false);
+      },
     );
-    return Future<void>.value();
+
+    return completer.future;
   }
 
-  Future<void> editProfileFilesAPICall({
-    required dynamic Function(Map<String, dynamic>) successCallback,
-    required dynamic Function(Map<String, dynamic>) failureCallback,
-  }) async {
+  Future<bool> editProfileFilesAPICall() async {
+    final Completer<bool> completer = Completer<bool>();
+
     if (rxProfilePicturePath.value.isNotEmpty) {
       final FormData formData = FormData(<String, dynamic>{});
 
@@ -173,12 +171,29 @@ class EditProfileController extends GetxController {
       await AppAPIService().functionPatch(
         types: Types.oauth,
         endPoint: "profile/photo",
-        successCallback: successCallback,
-        failureCallback: failureCallback,
-        isForFileUpload: true,
+        successCallback: (Map<String, dynamic> json) {
+          AppSnackbar().snackbarSuccess(
+            title: "Yay!",
+            message: json["message"],
+          );
+
+          completer.complete(true);
+        },
+        failureCallback: (Map<String, dynamic> json) {
+          AppSnackbar().snackbarFailure(
+            title: "Oops",
+            message: json["message"],
+          );
+
+          completer.complete(false);
+        },
+        isForFileUpload: true,  
         formData: formData,
       );
-    } else {}
-    return Future<void>.value();
+    } else {
+      completer.complete(false);
+    }
+
+    return completer.future;
   }
 }

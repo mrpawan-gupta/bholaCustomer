@@ -279,10 +279,10 @@ class EditProfileScreen extends GetView<EditProfileController> {
                 onPressed: () async {
                   final String reason = controller.validateForm();
                   if (reason.isEmpty) {
-                    await controller.confirmSaveProcedure(
-                      successCallback: AppNavService().pop,
-                      failureCallback: () {},
-                    );
+                    final bool value = await controller.confirmSaveProcedure();
+                    if (value) {
+                      AppNavService().pop();
+                    } else {}
                   } else {
                     AppSnackbar().snackbarFailure(
                       title: "Oops",
