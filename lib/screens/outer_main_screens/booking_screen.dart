@@ -1,5 +1,3 @@
-import "dart:convert";
-
 import "package:customer/common_widgets/app_elevated_button.dart";
 import "package:customer/common_widgets/app_text_button.dart";
 import "package:customer/common_widgets/app_text_field.dart";
@@ -57,7 +55,9 @@ class BookingScreen extends GetView<BookingController> {
             ),
           ),
         ),
-        buttonWidget(context),
+        getQuoteButtonWidget(context),
+        const SizedBox(height: 16),
+        alreadyAddedQuoteButtonWidget(context),
         const SizedBox(height: 32),
       ],
     );
@@ -668,7 +668,7 @@ class BookingScreen extends GetView<BookingController> {
     );
   }
 
-  Widget buttonWidget(BuildContext context) {
+  Widget getQuoteButtonWidget(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
@@ -695,10 +695,10 @@ class BookingScreen extends GetView<BookingController> {
 
                       if (value) {
                         controller.clearForm();
-                        final String data = json.encode(model.toJson());
+                         
                         await AppNavService().pushNamed(
                           destination: AppRoutes().bookingPaymentScreen,
-                          arguments: <String, dynamic>{"id": id, "data": data},
+                          arguments: <String, dynamic>{"id": id},
                         );
                       } else {}
                     },
@@ -709,6 +709,30 @@ class BookingScreen extends GetView<BookingController> {
                 AppSnackbar().snackbarFailure(title: "Oops", message: reason);
               }
             },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget alreadyAddedQuoteButtonWidget(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          SizedBox(
+            height: 50,
+            child: AppTextButton(
+              text: "View already added quotations",
+              onPressed: () async {
+                await AppNavService().pushNamed(
+                  destination: AppRoutes().addedQuotesScreen,
+                  arguments: <String, dynamic>{},
+                );
+              },
+            ),
           ),
         ],
       ),

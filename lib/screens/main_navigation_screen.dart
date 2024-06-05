@@ -4,7 +4,7 @@ import "package:customer/models/get_user_by_id.dart";
 import "package:customer/screens/outer_main_screens/booking_screen.dart";
 import "package:customer/screens/outer_main_screens/category/category_screen.dart";
 import "package:customer/screens/outer_main_screens/help_screen.dart";
-import "package:customer/screens/outer_main_screens/home_screen.dart";
+import "package:customer/screens/outer_main_screens/home/home_screen.dart";
 import "package:customer/screens/outer_main_screens/order_history_screen.dart";
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_assets_images.dart";

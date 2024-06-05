@@ -1,7 +1,6 @@
 import "dart:async";
 
 import "package:customer/models/banner_model.dart";
-import "package:customer/models/booking_model.dart";
 import "package:customer/models/featured_model.dart";
 import "package:customer/models/product_model.dart";
 import "package:customer/services/app_api_service.dart";
@@ -22,11 +21,11 @@ class HomeController extends GetxController {
   final PagingController<int, Banners> pagingControllerBanners =
       PagingController<int, Banners>(firstPageKey: 1);
 
-  final PagingController<int, Products> pagingControllerRecently =
+  final PagingController<int, Products> pagingControllerCattleFeed =
       PagingController<int, Products>(firstPageKey: 1);
 
-  final PagingController<int, Bookings> pagingControllerBooking =
-      PagingController<int, Bookings>(firstPageKey: 1);
+  final PagingController<int, Products> pagingControllerFertilizer =
+      PagingController<int, Products>(firstPageKey: 1);
 
   @override
   void onInit() {
@@ -35,8 +34,8 @@ class HomeController extends GetxController {
     pagingControllerServices.addPageRequestListener(_fetchPageServices);
     pagingControllerCategories.addPageRequestListener(_fetchPageCategories);
     pagingControllerBanners.addPageRequestListener(_fetchPageBanners);
-    pagingControllerRecently.addPageRequestListener(_fetchPageRecently);
-    pagingControllerBooking.addPageRequestListener(_fetchPageBooking);
+    pagingControllerCattleFeed.addPageRequestListener(_fetchPageCattleFeed);
+    pagingControllerFertilizer.addPageRequestListener(_fetchPageFertilizer);
   }
 
   @override
@@ -53,12 +52,12 @@ class HomeController extends GetxController {
       ..removePageRequestListener(_fetchPageBanners)
       ..dispose();
 
-    pagingControllerRecently
-      ..removePageRequestListener(_fetchPageRecently)
+    pagingControllerCattleFeed
+      ..removePageRequestListener(_fetchPageCattleFeed)
       ..dispose();
 
-    pagingControllerBooking
-      ..removePageRequestListener(_fetchPageBooking)
+    pagingControllerFertilizer
+      ..removePageRequestListener(_fetchPageFertilizer)
       ..dispose();
 
     super.onClose();
@@ -118,38 +117,38 @@ class HomeController extends GetxController {
     return Future<void>.value();
   }
 
-  Future<void> _fetchPageRecently(int pageKey) async {
+  Future<void> _fetchPageCattleFeed(int pageKey) async {
     try {
-      final List<Products> newItems = await _apiCallRecently(pageKey);
+      final List<Products> newItems = await _apiCallCattleFeed(pageKey);
       final bool isLastPage = newItems.length < pageSize;
       isLastPage
-          ? pagingControllerRecently.appendLastPage(newItems)
-          : pagingControllerRecently.appendPage(newItems, pageKey + 1);
+          ? pagingControllerCattleFeed.appendLastPage(newItems)
+          : pagingControllerCattleFeed.appendPage(newItems, pageKey + 1);
     } on Exception catch (error, stackTrace) {
       AppLogger().error(
         message: "Exception caught",
         error: error,
         stackTrace: stackTrace,
       );
-      pagingControllerRecently.error = error;
+      pagingControllerCattleFeed.error = error;
     } finally {}
     return Future<void>.value();
   }
 
-  Future<void> _fetchPageBooking(int pageKey) async {
+  Future<void> _fetchPageFertilizer(int pageKey) async {
     try {
-      final List<Bookings> newItems = await _apiCallBooking(pageKey);
+      final List<Products> newItems = await _apiCallFertilizer(pageKey);
       final bool isLastPage = newItems.length < pageSize;
       isLastPage
-          ? pagingControllerBooking.appendLastPage(newItems)
-          : pagingControllerBooking.appendPage(newItems, pageKey + 1);
+          ? pagingControllerFertilizer.appendLastPage(newItems)
+          : pagingControllerFertilizer.appendPage(newItems, pageKey + 1);
     } on Exception catch (error, stackTrace) {
       AppLogger().error(
         message: "Exception caught",
         error: error,
         stackTrace: stackTrace,
       );
-      pagingControllerBooking.error = error;
+      pagingControllerFertilizer.error = error;
     } finally {}
     return Future<void>.value();
   }
@@ -236,69 +235,62 @@ class HomeController extends GetxController {
     return completer.future;
   }
 
-  Future<List<Products>> _apiCallRecently(int pageKey) async {
+  Future<List<Products>> _apiCallCattleFeed(int pageKey) async {
     final Completer<List<Products>> completer = Completer<List<Products>>();
 
-    if (pageKey > 1) {
-      completer.complete(<Products>[]);
-    } else {
-      await AppAPIService().functionGet(
-        types: Types.order,
-        endPoint: "product",
-        query: <String, dynamic>{
-          "page": pageKey,
-          "limit": pageSize,
-          "sortBy": "createdAt",
-          "sortOrder": "desc",
-        },
-        successCallback: (Map<String, dynamic> json) {
-          AppLogger().info(message: json["message"]);
-
-          ProductModel model = ProductModel();
-          model = ProductModel.fromJson(json);
-
-          final List<Products> temp = <Products>[
-            ...model.data?.products ?? <Products>[],
-            ...<Products>[Products()],
-          ];
-
-          completer.complete(temp);
-        },
-        failureCallback: (Map<String, dynamic> json) {
-          AppSnackbar()
-              .snackbarFailure(title: "Oops", message: json["message"]);
-
-          completer.complete(<Products>[]);
-        },
-        needLoader: false,
-      );
-    }
-
-    return completer.future;
-  }
-
-  Future<List<Bookings>> _apiCallBooking(int pageKey) async {
-    final Completer<List<Bookings>> completer = Completer<List<Bookings>>();
     await AppAPIService().functionGet(
-      types: Types.rental,
-      endPoint: "live/booking",
+      types: Types.order,
+      endPoint: "product",
       query: <String, dynamic>{
         "page": pageKey,
         "limit": pageSize,
-        "status": "Created",
+        "sortBy": "createdAt",
+        "sortOrder": "desc",
+        "categoryName": "Cattle Feed",
       },
       successCallback: (Map<String, dynamic> json) {
         AppLogger().info(message: json["message"]);
 
-        BookingModel model = BookingModel();
-        model = BookingModel.fromJson(json);
+        ProductModel model = ProductModel();
+        model = ProductModel.fromJson(json);
 
-        completer.complete(model.data?.bookings ?? <Bookings>[]);
+        completer.complete(model.data?.products ?? <Products>[]);
       },
       failureCallback: (Map<String, dynamic> json) {
         AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
 
-        completer.complete(<Bookings>[]);
+        completer.complete(<Products>[]);
+      },
+      needLoader: false,
+    );
+    return completer.future;
+  }
+
+  Future<List<Products>> _apiCallFertilizer(int pageKey) async {
+    final Completer<List<Products>> completer = Completer<List<Products>>();
+
+    await AppAPIService().functionGet(
+      types: Types.order,
+      endPoint: "product",
+      query: <String, dynamic>{
+        "page": pageKey,
+        "limit": pageSize,
+        "sortBy": "createdAt",
+        "sortOrder": "desc",
+        "categoryName": "Fertilizer",
+      },
+      successCallback: (Map<String, dynamic> json) {
+        AppLogger().info(message: json["message"]);
+
+        ProductModel model = ProductModel();
+        model = ProductModel.fromJson(json);
+
+        completer.complete(model.data?.products ?? <Products>[]);
+      },
+      failureCallback: (Map<String, dynamic> json) {
+        AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
+
+        completer.complete(<Products>[]);
       },
       needLoader: false,
     );

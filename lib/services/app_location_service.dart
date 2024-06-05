@@ -1,13 +1,14 @@
 import "dart:async";
 import "dart:developer";
 
-import "package:customer/models/vpn_api_custom.dart";
+import "package:customer/models/vpn_api_io_response.dart";
 import "package:customer/services/app_api_service.dart";
 import "package:customer/services/app_firestore_user_db.dart";
 import "package:customer/services/app_perm_service.dart";
 import "package:customer/services/app_storage_service.dart";
 import "package:customer/utils/app_constants.dart";
 import "package:customer/utils/app_logger.dart";
+import "package:customer/utils/app_pretty_print_json.dart";
 import "package:dart_ipify/dart_ipify.dart";
 import "package:geolocator/geolocator.dart";
 import "package:get/get.dart";
@@ -161,41 +162,45 @@ class AppLocationService extends GetxService {
   }
 
   Future<(double, double)> fetchLocationFromIPAddress() async {
-    final Completer<(double, double)> completer = Completer<(double, double)>();
+    double lat = 0.0;
+    double long = 0.0;
 
     final String ip = await Ipify.ipv64();
     AppLogger().info(message: "fetchLocationFromIPAddress(): ip: $ip");
 
     if (ip.isEmpty) {
-      completer.complete((0.0, 0.0));
     } else {
-      await AppAPIService().functionGet(
-        types: Types.oauth,
-        endPoint: "vpn-info",
-        body: <String, dynamic>{"ip": ip},
-        successCallback: (Map<String, dynamic> json) {
-          AppLogger().info(message: json["message"]);
+      try {
+        final Map<String, dynamic> query = <String, dynamic>{
+          "key": AppConstants().vpnAPIKey,
+        };
+        final Response<dynamic> response = await AppAPIService().get(
+          "https://vpnapi.io/api/$ip",
+          query: query,
+        );
 
-          VPNAPICustom model = VPNAPICustom();
-          model = VPNAPICustom.fromJson(json);
+        if (response.isOk && response.body is Map<String, dynamic>) {
+          final String temp = AppPrettyPrintJSON().prettyPrint(response.body);
+          log("fetchLocationFromIPAddress(): response.body: $temp");
 
-          final String strLatitude = model.data?.latitude ?? "0.0";
-          final String strLongitude = model.data?.longitude ?? "0.0";
-          final double lat = double.tryParse(strLatitude) ?? 0.0;
-          final double long = double.tryParse(strLongitude) ?? 0.0;
+          VPNAPIIOResponse model = VPNAPIIOResponse();
+          model = VPNAPIIOResponse.fromJson(response.body);
 
-          completer.complete((lat, long));
-        },
-        failureCallback: (Map<String, dynamic> json) {
-          AppLogger().error(message: json["message"]);
+          final String strLatitude = model.location?.latitude ?? "0.0";
+          final String strLongitude = model.location?.longitude ?? "0.0";
 
-          completer.complete((0.0, 0.0));
-        },
-        needLoader: false,
-      );
+          lat = double.tryParse(strLatitude) ?? 0.0;
+          long = double.tryParse(strLongitude) ?? 0.0;
+        } else {}
+      } on Exception catch (error, stackTrace) {
+        AppLogger().error(
+          message: "Exception caught",
+          error: error,
+          stackTrace: stackTrace,
+        );
+      } finally {}
     }
-
-    return completer.future;
+    return Future<(double, double)>.value((lat, long));
   }
 
   Future<void> updateInfoToFirestore({

@@ -35,11 +35,10 @@ class AppSession {
 
     await AppPkgInfoService().updateInfoToFirestore();
     await AppDevInfoService().updateInfoToFirestore();
-
     await AppLocationService().automatedFunction();
 
     final String id = AppStorageService().getUserAuthModel().sId ?? "";
-    await AppFCMService().instance.subscribeToTopic(id);
+    await AppFCMService().subscribeToTopic(id: id);
 
     AppLoader().hideLoader();
 
@@ -54,7 +53,7 @@ class AppSession {
     AppLoader().showLoader();
 
     final String id = AppStorageService().getUserAuthModel().sId ?? "";
-    await AppFCMService().instance.unsubscribeFromTopic(id);
+    await AppFCMService().unsubscribeFromTopic(id: id);
 
     await AppStorageService().erase();
 
@@ -104,6 +103,7 @@ class AppSession {
     } else {
       completer.complete(GetUserByIdData());
     }
+
     return completer.future;
   }
 }

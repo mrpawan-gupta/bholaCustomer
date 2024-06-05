@@ -1,7 +1,7 @@
 name: customer
 description: "A new Flutter project."
 publish_to: 'none'
-version: 1.0.1+2
+version: 1.0.2+3
 
 environment:
   sdk: '>=3.3.1 <4.0.0'
@@ -67,6 +67,7 @@ dependencies:
   pinput: ^4.0.0
   place_picker: ^0.10.0
   pod_player: ^0.2.0
+  read_more_text: ^0.0.5
   smart_auth: ^2.0.0
   syncfusion_flutter_sliders: 25.2.4
   transparent_image: ^2.0.1

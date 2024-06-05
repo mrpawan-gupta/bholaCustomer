@@ -20,7 +20,7 @@ class CategoryScreen extends GetView<CategoryController> {
         featuredServicesWidget(),
         const SizedBox(height: 32),
         featuredCategoriesidget(),
-        const SizedBox(height: 32),
+        // const SizedBox(height: 32),
       ],
     );
   }
@@ -47,7 +47,7 @@ class CategoryScreen extends GetView<CategoryController> {
               onTap: (Categories item) async {
                 await AppNavService().pushNamed(
                   destination: AppRoutes().productListingScreen,
-                  arguments: <String, dynamic>{},
+                  arguments: <String, dynamic>{"id": item.sId ?? ""},
                 );
               },
               type: "rental categories list",
@@ -80,7 +80,7 @@ class CategoryScreen extends GetView<CategoryController> {
               onTap: (Categories item) async {
                 await AppNavService().pushNamed(
                   destination: AppRoutes().productListingScreen,
-                  arguments: <String, dynamic>{},
+                  arguments: <String, dynamic>{"id": item.sId ?? ""},
                 );
               },
               type: "product categories list",

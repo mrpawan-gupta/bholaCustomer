@@ -3,7 +3,7 @@
 import "package:customer/common_functions/booking_functions.dart";
 import "package:customer/common_widgets/app_no_item_found.dart";
 import "package:customer/common_widgets/common_image_widget.dart";
-import "package:customer/controllers/outer_main_controllers/order_history_controller.dart";
+import "package:customer/controllers/booking_controller/added_quotes_controller.dart";
 import "package:customer/models/featured_model.dart";
 import "package:customer/models/new_order_model.dart";
 import "package:customer/services/app_nav_service.dart";
@@ -14,48 +14,57 @@ import "package:get/get.dart";
 import "package:infinite_scroll_pagination/infinite_scroll_pagination.dart";
 import "package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart";
 
-class OrderHistoryScreen extends GetView<OrderHistoryController> {
-  const OrderHistoryScreen({super.key});
+class AddedQuotesScreen extends GetView<AddedQuotesController> {
+  const AddedQuotesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Expanded(
-          child: LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints constraints) {
-              return LiquidPullToRefresh(
-                showChildOpacityTransition: false,
-                color: AppColors().appPrimaryColor,
-                backgroundColor: AppColors().appWhiteColor,
-                onRefresh: () async {
-                  controller.pagingControllerServices.refresh();
-                  controller.pagingControllerNewOrder.refresh();
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text("Already Added Quotes"),
+        surfaceTintColor: AppColors().appTransparentColor,
+      ),
+      body: SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Expanded(
+              child: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  return LiquidPullToRefresh(
+                    showChildOpacityTransition: false,
+                    color: AppColors().appPrimaryColor,
+                    backgroundColor: AppColors().appWhiteColor,
+                    onRefresh: () async {
+                      controller.pagingControllerServices.refresh();
+                      controller.pagingControllerNewOrder.refresh();
+                    },
+                    child: SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: constraints.maxHeight,
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            chipSelection(),
+                            const SizedBox(height: 16 - 4),
+                            cardWidget(),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
                 },
-                child: SingleChildScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minHeight: constraints.maxHeight,
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        chipSelection(),
-                        const SizedBox(height: 16 - 4),
-                        cardWidget(),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            },
-          ),
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 
@@ -147,7 +156,7 @@ class OrderHistoryScreen extends GetView<OrderHistoryController> {
           noItemsFoundIndicatorBuilder: (BuildContext context) {
             return AppNoItemFoundWidget(
               title: "No items found",
-              message: "The order history list is currently empty.",
+              message: "The new order list is currently empty.",
               onTryAgain: controller.pagingControllerNewOrder.refresh,
             );
           },
@@ -156,6 +165,10 @@ class OrderHistoryScreen extends GetView<OrderHistoryController> {
                 controller.pagingControllerNewOrder.itemList ?? <Bookings>[];
             final int length = itemList.length;
             final bool isLast = index == length - 1;
+
+            final String status = item.status ?? "";
+            final bool isStatusCorrect = status == "Created";
+
             return Padding(
               padding: EdgeInsets.only(bottom: isLast ? 32.0 : 16.0),
               child: Card(
@@ -176,6 +189,8 @@ class OrderHistoryScreen extends GetView<OrderHistoryController> {
                       destination: AppRoutes().bookingDetailsScreen,
                       arguments: <String, dynamic>{"id": item.sId ?? ""},
                     );
+
+                    controller.pagingControllerNewOrder.refresh();
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
@@ -360,6 +375,108 @@ class OrderHistoryScreen extends GetView<OrderHistoryController> {
                             ),
                           ],
                         ),
+                        SizedBox(height: isStatusCorrect ? 8 : 0),
+                        if (isStatusCorrect)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Expanded(
+                                child: Card(
+                                  margin: EdgeInsets.zero,
+                                  elevation: 4,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12.0),
+                                    side: BorderSide(
+                                      color: AppColors().appPrimaryColor,
+                                    ),
+                                  ),
+                                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                                  surfaceTintColor: AppColors().appWhiteColor,
+                                  child: InkWell(
+                                    borderRadius: BorderRadius.circular(12.0),
+                                    onTap: () async {
+                                      final String id = item.sId ?? "";
+
+                                      bool value = false;
+                                      value = await controller
+                                          .confirmOrderAPICall(id: id);
+
+                                      if (value) {
+                                        await AppNavService().pushNamed(
+                                          destination:
+                                              AppRoutes().bookingPaymentScreen,
+                                          arguments: <String, dynamic>{
+                                            "id": id,
+                                          },
+                                        );
+
+                                        controller.pagingControllerNewOrder
+                                            .refresh();
+                                      } else {}
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(16.0),
+                                      child: Center(
+                                        child: Text(
+                                          "Confirm Booking",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: AppColors().appPrimaryColor,
+                                          ),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Card(
+                                  margin: EdgeInsets.zero,
+                                  elevation: 4,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12.0),
+                                    side: BorderSide(
+                                      color: AppColors().appRedColor,
+                                    ),
+                                  ),
+                                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                                  surfaceTintColor: AppColors().appWhiteColor,
+                                  child: InkWell(
+                                    borderRadius: BorderRadius.circular(12.0),
+                                    onTap: () async {
+                                      final String id = item.sId ?? "";
+                                      await controller.cancelBookingAPICall(
+                                        id: id,
+                                      );
+
+                                      controller.pagingControllerNewOrder
+                                          .refresh();
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(16.0),
+                                      child: Center(
+                                        child: Text(
+                                          "Cancel Booking",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: AppColors().appRedColor,
+                                          ),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        else
+                          const SizedBox(),
                       ],
                     ),
                   ),

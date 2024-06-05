@@ -1,10 +1,13 @@
 // ignore_for_file: lines_longer_than_80_chars
 
 import "package:customer/common_functions/booking_functions.dart";
+import "package:customer/common_widgets/app_review_rating_widget.dart";
 import "package:customer/common_widgets/common_image_widget.dart";
 import "package:customer/controllers/booking_controller/booking_details_controller.dart";
 import "package:customer/models/new_order_model.dart";
+import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
+import "package:customer/utils/app_routes.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 
@@ -26,6 +29,10 @@ class BookingDetailsScreen extends GetView<BookingDetailsController> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 cardWidget(),
+                const Spacer(),
+                decideActionButtonWidget(),
+                // const Spacer(),
+                const SizedBox(height: 16),
               ],
             );
           },
@@ -72,7 +79,7 @@ class BookingDetailsScreen extends GetView<BookingDetailsController> {
                           ),
                           child: CommonImageWidget(
                             imageUrl: item.vehicleCategory?.photo ?? "",
-                            fit: BoxFit.cover,
+                            fit: BoxFit.contain,
                             imageType: ImageType.image,
                           ),
                         ),
@@ -282,6 +289,181 @@ class BookingDetailsScreen extends GetView<BookingDetailsController> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget decideActionButtonWidget() {
+    final Bookings item = controller.rxBookings.value;
+
+    final bool isVisibleDeleteButton = controller.isVisibleDeleteButton();
+    final bool isVisibleReviewRating = controller.isVisibleReviewRating();
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        if (isVisibleDeleteButton)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Expanded(
+                  child: Card(
+                    margin: EdgeInsets.zero,
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                      side: BorderSide(
+                        color: AppColors().appPrimaryColor,
+                      ),
+                    ),
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    surfaceTintColor: AppColors().appWhiteColor,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(12.0),
+                      onTap: () async {
+                        final String id = controller.rxBookingId.value;
+
+                        bool value = false;
+                        value = await controller.confirmOrderAPICall(id: id);
+
+                        if (value) {
+                          await AppNavService().pushNamed(
+                            destination: AppRoutes().bookingPaymentScreen,
+                            arguments: <String, dynamic>{"id": id},
+                          );
+
+                          await controller.getBookingAPICall();
+                        } else {}
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Center(
+                          child: Text(
+                            "Confirm Booking",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: AppColors().appPrimaryColor,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Card(
+                    margin: EdgeInsets.zero,
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                      side: BorderSide(
+                        color: AppColors().appRedColor,
+                      ),
+                    ),
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    surfaceTintColor: AppColors().appWhiteColor,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(12.0),
+                      onTap: () async {
+                        final String id = controller.rxBookingId.value;
+                        await controller.cancelBookingAPICall(id: id);
+
+                        await controller.getBookingAPICall();
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Center(
+                          child: Text(
+                            "Cancel Booking",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: AppColors().appRedColor,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )
+        else
+          const SizedBox(),
+        if (isVisibleReviewRating)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Expanded(
+                  child: Card(
+                    margin: EdgeInsets.zero,
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                      side: BorderSide(
+                        color: getBorderColor(
+                          status: item.status ?? "",
+                        ),
+                      ),
+                    ),
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    surfaceTintColor: AppColors().appWhiteColor,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(12.0),
+                      onTap: () async {
+                        final (double, String)? result = await Get.bottomSheet(
+                          const AppReviewRatingWidget(),
+                          backgroundColor:
+                              Theme.of(Get.context!).scaffoldBackgroundColor,
+                          isScrollControlled: true,
+                        );
+
+                        if (result != null) {
+                          final String id = controller.rxBookingId.value;
+                          await controller.addReviewRatingAPICall(
+                            id: id,
+                            rating: result.$1.toInt(),
+                            review: result.$2,
+                          );
+
+                          await controller.getBookingAPICall();
+                        } else {}
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Center(
+                          child: Text(
+                            "Add Review & Rating",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: getBorderColor(
+                                status: item.status ?? "",
+                              ),
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )
+        else
+          const SizedBox(),
+      ],
     );
   }
 }

@@ -84,7 +84,7 @@ class SettingsMainController extends GetxController {
 
         final List<Address> list = (model.data?.address ?? <Address>[]).where(
           (Address element) {
-            return (element.primary ?? false) == true;
+            return (element.isPrimary ?? false) == true;
           },
         ).toList();
 

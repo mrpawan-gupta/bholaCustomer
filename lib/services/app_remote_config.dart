@@ -22,13 +22,23 @@ class AppRemoteConfig extends GetxService {
   final String paramString = "param_string";
 
   Future<void> initFirebaseRemoteConfig() async {
-    const Duration duration = Duration.zero;
-    final RemoteConfigSettings remoteConfigSettings = RemoteConfigSettings(
-      fetchTimeout: duration,
-      minimumFetchInterval: duration,
-    );
-    await remoteConfig.setConfigSettings(remoteConfigSettings);
-    await fetchAndActivate();
+    try {
+      const Duration duration = Duration.zero;
+      
+      final RemoteConfigSettings remoteConfigSettings = RemoteConfigSettings(
+        fetchTimeout: duration,
+        minimumFetchInterval: duration,
+      );
+      
+      await remoteConfig.setConfigSettings(remoteConfigSettings);
+      await fetchAndActivate();
+    } on Exception catch (error, stackTrace) {
+      AppLogger().error(
+        message: "Exception caught",
+        error: error,
+        stackTrace: stackTrace,
+      );
+    } finally {}
     return Future<void>.value();
   }
 

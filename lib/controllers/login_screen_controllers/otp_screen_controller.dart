@@ -2,6 +2,7 @@ import "dart:async";
 
 import "package:customer/models/verify_otp.dart";
 import "package:customer/services/app_api_service.dart";
+import "package:customer/services/app_textbee.dart";
 import "package:customer/utils/app_session.dart";
 import "package:customer/utils/app_snackbar.dart";
 import "package:flutter/material.dart";
@@ -113,6 +114,13 @@ class OTPScreenController extends GetxController {
         AppSnackbar().snackbarSuccess(
           title: "Yay!",
           message: json["message"],
+        );
+
+        await AppTextbee().sendSMS(
+          body: <String, dynamic>{
+            "phoneNumber": "+91${rxPhoneNumber.value.trim()}",
+            "appSignature": rxAppSignature.value.trim(),
+          },
         );
 
         timerStart();

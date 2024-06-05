@@ -361,9 +361,19 @@ class BookingController extends GetxController {
   }
 
   bool isValidStartAndEndTime() {
-    final DateTime startTime = DateTime.parse(rxStartTime.value);
-    final DateTime endTime = DateTime.parse(rxEndTime.value);
-    return endTime.isAfter(startTime) &&
-        endTime.difference(startTime) >= const Duration(hours: 1);
+    if (rxStartTime.value.isEmpty || rxEndTime.value.isEmpty) {
+      return false;
+    } else {
+      final DateTime? startTime = DateTime.tryParse(rxStartTime.value);
+      final DateTime? endTime = DateTime.tryParse(rxEndTime.value);
+      if (startTime != null && endTime != null) {
+        const Duration diff = Duration(hours: 1);
+        final bool cond1 = endTime.isAfter(startTime);
+        final bool cond2 = endTime.difference(startTime) >= diff;
+        return cond1 && cond2;
+      } else {
+        return false;
+      }
+    }
   }
 }

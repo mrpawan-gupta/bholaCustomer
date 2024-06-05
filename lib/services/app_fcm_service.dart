@@ -3,6 +3,8 @@ import "dart:developer";
 import "package:customer/models/fcm_data.dart";
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_constants.dart";
+import "package:customer/utils/app_logger.dart";
+import "package:customer/utils/app_pretty_print_json.dart";
 import "package:customer/utils/app_routes.dart";
 import "package:firebase_messaging/firebase_messaging.dart";
 import "package:flutter/material.dart";
@@ -195,5 +197,83 @@ class AppFCMService extends GetxService {
       result.putIfAbsent(s[0].trim(), () => s[1].trim());
     }
     return result;
+  }
+
+  Future<void> getToken() async {
+    try {
+      final String fcmToken = await instance.getToken() ?? "";
+      AppLogger().info(message: "fcmToken: $fcmToken");
+    } on Exception catch (error, stackTrace) {
+      AppLogger().error(
+        message: "Exception caught",
+        error: error,
+        stackTrace: stackTrace,
+      );
+    } finally {}
+    return Future<void>.value();
+  }
+
+  Future<void> getInitialMessage() async {
+    try {
+      RemoteMessage? initialMessage;
+      initialMessage = await AppFCMService().instance.getInitialMessage();
+
+      if (initialMessage != null) {
+        final Map<String, dynamic> mapData = initialMessage.data;
+        final String prettyJSON = AppPrettyPrintJSON().prettyPrint(mapData);
+        log("getInitialMessage(): prettyJSON: $prettyJSON");
+
+        final String stringData = initialMessage.data.toString();
+        await AppFCMService().onTapTerminated(stringData);
+      } else {}
+    } on Exception catch (error, stackTrace) {
+      AppLogger().error(
+        message: "Exception caught",
+        error: error,
+        stackTrace: stackTrace,
+      );
+    } finally {}
+    return Future<void>.value();
+  }
+
+  Future<void> subscribeToTopic({required String id}) async {
+    if (id.isNotEmpty) {
+      try {
+        final bool value = isValidTopic(id);
+        value
+            ? await instance.subscribeToTopic(id)
+            : AppLogger().error(message: "$id must match the firebase regex.");
+      } on Exception catch (error, stackTrace) {
+        AppLogger().error(
+          message: "Exception caught",
+          error: error,
+          stackTrace: stackTrace,
+        );
+      } finally {}
+    } else {}
+    return Future<void>.value();
+  }
+
+  Future<void> unsubscribeFromTopic({required String id}) async {
+    if (id.isNotEmpty) {
+      try {
+        final bool value = isValidTopic(id);
+        value
+            ? await instance.unsubscribeFromTopic(id)
+            : AppLogger().error(message: "$id must match the firebase regex.");
+      } on Exception catch (error, stackTrace) {
+        AppLogger().error(
+          message: "Exception caught",
+          error: error,
+          stackTrace: stackTrace,
+        );
+      } finally {}
+    } else {}
+    return Future<void>.value();
+  }
+
+  bool isValidTopic(String topic) {
+    final bool isValid = RegExp(r"^[a-zA-Z0-9-_.~%]{1,900}$").hasMatch(topic);
+    return isValid;
   }
 }

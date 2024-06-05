@@ -12,7 +12,6 @@ import "package:customer/services/app_perm_service.dart";
 import "package:customer/services/app_pkg_info_service.dart";
 import "package:customer/services/app_remote_config.dart";
 import "package:customer/services/app_storage_service.dart";
-import "package:customer/utils/app_logger.dart";
 import "package:customer/utils/app_orientations.dart";
 import "package:firebase_messaging/firebase_messaging.dart";
 import "package:get/get.dart";
@@ -43,15 +42,8 @@ Future<void> initDependencies() async {
   await AppFCMService().setupInteractedMessage();
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
-  final String fcmToken = await AppFCMService().instance.getToken() ?? "";
-  AppLogger().info(message: "fcmToken: $fcmToken");
-
-  RemoteMessage? initialMessage;
-  initialMessage = await AppFCMService().instance.getInitialMessage();
-  if (initialMessage != null) {
-    final String data = initialMessage.data.toString();
-    await AppFCMService().onTapTerminated(data);
-  } else {}
+  await AppFCMService().getToken();
+  await AppFCMService().getInitialMessage();
 
   await AppPkgInfoService().initPkgInformation();
   await AppDevInfoService().initDevInformation();
