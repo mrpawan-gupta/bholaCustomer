@@ -46,9 +46,9 @@ class BookingScreen extends GetView<BookingController> {
                     scheduleAndServiceWidget(),
                     const SizedBox(height: 16),
                     farmAreaWidget(),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 8),
                     clearFormWidget(),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 8),
                   ],
                 );
               },
@@ -56,9 +56,9 @@ class BookingScreen extends GetView<BookingController> {
           ),
         ),
         getQuoteButtonWidget(context),
-        const SizedBox(height: 16),
+        const SizedBox(height: 8),
         alreadyAddedQuoteButtonWidget(context),
-        const SizedBox(height: 32),
+        // const SizedBox(height: 32),
       ],
     );
   }
@@ -92,10 +92,12 @@ class BookingScreen extends GetView<BookingController> {
             isFullScreen: false,
             barHintStyle: MaterialStatePropertyAll<TextStyle>(
               TextStyle(
+                fontSize: 14,
                 color: AppColors().appGreyColor,
               ),
             ),
             viewHeaderHintStyle: TextStyle(
+              fontSize: 14,
               color: AppColors().appGreyColor,
             ),
             barTrailing: <Widget>[
@@ -157,8 +159,7 @@ class BookingScreen extends GetView<BookingController> {
                   children: <Widget>[
                     const Text(
                       "Crop",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontWeight: FontWeight.bold),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -200,6 +201,7 @@ class BookingScreen extends GetView<BookingController> {
                                 autofillHints: const <String>[],
                                 hintText: "Wheat",
                                 hintStyle: TextStyle(
+                                  fontSize: 14,
                                   color: AppColors().appGreyColor,
                                 ),
                                 prefixIcon: null,
@@ -222,8 +224,7 @@ class BookingScreen extends GetView<BookingController> {
                   children: <Widget>[
                     const Text(
                       "Date",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontWeight: FontWeight.bold),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -266,6 +267,7 @@ class BookingScreen extends GetView<BookingController> {
                                 autofillHints: const <String>[],
                                 hintText: "Pick Date",
                                 hintStyle: TextStyle(
+                                  fontSize: 14,
                                   color: AppColors().appGreyColor,
                                 ),
                                 prefixIcon: null,
@@ -299,7 +301,7 @@ class BookingScreen extends GetView<BookingController> {
         children: <Widget>[
           const Text(
             "Slot",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -344,6 +346,7 @@ class BookingScreen extends GetView<BookingController> {
                             autofillHints: const <String>[],
                             hintText: "Start Time",
                             hintStyle: TextStyle(
+                              fontSize: 14,
                               color: AppColors().appGreyColor,
                             ),
                             prefixIcon: null,
@@ -398,6 +401,7 @@ class BookingScreen extends GetView<BookingController> {
                             autofillHints: const <String>[],
                             hintText: "End Time",
                             hintStyle: TextStyle(
+                              fontSize: 14,
                               color: AppColors().appGreyColor,
                             ),
                             prefixIcon: null,
@@ -436,8 +440,7 @@ class BookingScreen extends GetView<BookingController> {
                   children: <Widget>[
                     const Text(
                       "Category",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontWeight: FontWeight.bold),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -495,6 +498,7 @@ class BookingScreen extends GetView<BookingController> {
                                   hint: Text(
                                     "Pick Category",
                                     style: TextStyle(
+                                      fontSize: 14,
                                       color: AppColors().appGreyColor,
                                     ),
                                   ),
@@ -517,8 +521,7 @@ class BookingScreen extends GetView<BookingController> {
                   children: <Widget>[
                     const Text(
                       "Service",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontWeight: FontWeight.bold),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -570,6 +573,7 @@ class BookingScreen extends GetView<BookingController> {
                                   hint: Text(
                                     "Pick Service",
                                     style: TextStyle(
+                                      fontSize: 14,
                                       color: AppColors().appGreyColor,
                                     ),
                                   ),
@@ -603,7 +607,7 @@ class BookingScreen extends GetView<BookingController> {
             children: <Widget>[
               const Text(
                 "Farm Area",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(fontWeight: FontWeight.bold),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -695,7 +699,7 @@ class BookingScreen extends GetView<BookingController> {
 
                       if (value) {
                         controller.clearForm();
-                         
+
                         await AppNavService().pushNamed(
                           destination: AppRoutes().bookingPaymentScreen,
                           arguments: <String, dynamic>{"id": id},

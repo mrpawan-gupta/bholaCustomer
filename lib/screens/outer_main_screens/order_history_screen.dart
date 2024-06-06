@@ -157,7 +157,7 @@ class OrderHistoryScreen extends GetView<OrderHistoryController> {
             final int length = itemList.length;
             final bool isLast = index == length - 1;
             return Padding(
-              padding: EdgeInsets.only(bottom: isLast ? 32.0 : 16.0),
+              padding: EdgeInsets.only(bottom: isLast ? 16.0 : 16.0),
               child: Card(
                 margin: EdgeInsets.zero,
                 elevation: 4,
@@ -176,6 +176,8 @@ class OrderHistoryScreen extends GetView<OrderHistoryController> {
                       destination: AppRoutes().bookingDetailsScreen,
                       arguments: <String, dynamic>{"id": item.sId ?? ""},
                     );
+
+                    controller.pagingControllerNewOrder.refresh();
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),

@@ -372,9 +372,13 @@ class BookingDetailsScreen extends GetView<BookingDetailsController> {
                       borderRadius: BorderRadius.circular(12.0),
                       onTap: () async {
                         final String id = controller.rxBookingId.value;
-                        await controller.cancelBookingAPICall(id: id);
 
-                        await controller.getBookingAPICall();
+                        bool value = false;
+                        value = await controller.cancelBookingAPICall(id: id);
+
+                        if (value) {
+                          AppNavService().pop();
+                        } else {}
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),

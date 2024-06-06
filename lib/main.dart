@@ -10,7 +10,6 @@ import "package:customer/utils/app_fonts.dart";
 import "package:customer/utils/app_keyboard_manager.dart";
 import "package:customer/utils/app_loader.dart";
 import "package:customer/utils/app_logger.dart";
-import "package:customer/utils/app_overlay.dart";
 import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/localization/app_translations.dart";
 import "package:firebase_core/firebase_core.dart";
@@ -77,8 +76,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       builder: (BuildContext context, Widget? child) {
         final Locale locale = AppStorageService().getUserLangFromStorage();
-        return AppLoader().globalLoaderOverlay(
-          child: AppOverlay().globalOverlaySupport(
+        return MediaQuery(
+          data: context.mediaQuery.copyWith(textScaler: TextScaler.noScaling),
+          child: AppLoader().globalLoaderOverlay(
             child: AppKeyboardManager().globalKeyboardDismisser(
               child: UpgradeAlert(
                 navigatorKey: Get.key,

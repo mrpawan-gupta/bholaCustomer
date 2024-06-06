@@ -449,12 +449,15 @@ class AddedQuotesScreen extends GetView<AddedQuotesController> {
                                     borderRadius: BorderRadius.circular(12.0),
                                     onTap: () async {
                                       final String id = item.sId ?? "";
-                                      await controller.cancelBookingAPICall(
-                                        id: id,
-                                      );
 
-                                      controller.pagingControllerNewOrder
-                                          .refresh();
+                                      bool value = false;
+                                      value = await controller
+                                          .cancelBookingAPICall(id: id);
+
+                                      if (value) {
+                                        controller.pagingControllerNewOrder
+                                            .refresh();
+                                      } else {}
                                     },
                                     child: Padding(
                                       padding: const EdgeInsets.all(16.0),

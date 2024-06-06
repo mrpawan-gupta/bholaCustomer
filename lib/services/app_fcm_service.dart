@@ -2,7 +2,7 @@ import "dart:developer";
 
 import "package:customer/models/fcm_data.dart";
 import "package:customer/services/app_nav_service.dart";
-import "package:customer/utils/app_constants.dart";
+import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_logger.dart";
 import "package:customer/utils/app_pretty_print_json.dart";
 import "package:customer/utils/app_routes.dart";
@@ -10,7 +10,6 @@ import "package:firebase_messaging/firebase_messaging.dart";
 import "package:flutter/material.dart";
 import "package:flutter_local_notifications/flutter_local_notifications.dart";
 import "package:get/get.dart";
-import "package:overlay_support/overlay_support.dart";
 
 class AppFCMService extends GetxService {
   factory AppFCMService() {
@@ -82,34 +81,20 @@ class AppFCMService extends GetxService {
         final AppleNotification? apple = message.notification?.apple;
 
         if (notification != null && (android != null || apple != null)) {
-          OverlaySupportEntry overlaySupportEntry = OverlaySupportEntry.empty();
-          overlaySupportEntry = showSimpleNotification(
-            const SizedBox(),
-            context: Get.context,
-            elevation: AppConstants().elevation,
-            foreground: Theme.of(Get.context!).scaffoldBackgroundColor,
-            background: Theme.of(Get.context!).colorScheme.primary,
-            subtitle: ListTile(
-              dense: true,
-              title: Text(
-                notification.title ?? "",
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-              subtitle: Text(
-                notification.body ?? "",
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-              onTap: () async {
-                overlaySupportEntry.dismiss();
-                final Map<String, dynamic> payload = message.data;
-                final String stringPayload = payload.toString();
-                await onTapForegoundOrBackground(stringPayload);
-              },
-            ),
-            duration: const Duration(seconds: 5),
-            slideDismissDirection: DismissDirection.horizontal,
+          Get.snackbar(
+            notification.title ?? "",
+            notification.body ?? "",
+            snackPosition: SnackPosition.TOP,
+            backgroundColor: AppColors().appPrimaryColor.withOpacity(0.64),
+            duration: const Duration(seconds: 4),
+            isDismissible: true,
+            dismissDirection: DismissDirection.horizontal,
+            colorText: Colors.white,
+            onTap: (GetSnackBar getSnackBar) async {
+              final Map<String, dynamic> payload = message.data;
+              final String stringPayload = payload.toString();
+              await onTapForegoundOrBackground(stringPayload);
+            },
           );
         } else {}
       },

@@ -29,7 +29,7 @@ class AppAnalyticsService extends GetxService {
     try {
       await analytics.logScreenView(
         screenName: current,
-        parameters: args ?? <String, dynamic>{},
+        parameters: Map<String, Object>.from(args ?? <String, dynamic>{}),
       );
       AppLogger().info(message: "logScreenView:: screen: $current args: $args");
     } on Exception catch (error, stackTrace) {
