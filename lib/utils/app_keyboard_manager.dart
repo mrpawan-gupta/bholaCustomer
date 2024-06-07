@@ -1,5 +1,5 @@
 import "package:flutter/widgets.dart";
-import "package:keyboard_dismisser/keyboard_dismisser.dart";
+import "package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart";
 
 class AppKeyboardManager {
   factory AppKeyboardManager() {
@@ -10,6 +10,9 @@ class AppKeyboardManager {
   static final AppKeyboardManager _singleton = AppKeyboardManager._internal();
 
   Widget globalKeyboardDismisser({required Widget child}) {
-    return KeyboardDismisser(child: child);
+    return KeyboardDismissOnTap(
+      dismissOnCapturedTaps: true,
+      child: child,
+    );
   }
 }

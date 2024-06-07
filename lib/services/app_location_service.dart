@@ -1,16 +1,11 @@
 import "dart:async";
 import "dart:developer";
 
-import "package:customer/models/vpn_api_io_response.dart";
-import "package:customer/services/app_api_service.dart";
 import "package:customer/services/app_firestore_user_db.dart";
 import "package:customer/services/app_perm_service.dart";
 import "package:customer/services/app_storage_service.dart";
 import "package:customer/utils/app_constants.dart";
 import "package:customer/utils/app_logger.dart";
-import "package:customer/utils/app_pretty_print_json.dart";
-import "package:dart_ipify/dart_ipify.dart";
-import "package:geolocator/geolocator.dart";
 import "package:get/get.dart";
 import "package:location/location.dart" as loc;
 
@@ -23,32 +18,30 @@ class AppLocationService extends GetxService {
   static final AppLocationService _singleton = AppLocationService._internal();
 
   bool hasAlreadyAskedForGPSWitPrompt = false;
-  // late Timer _timer;
+  late Timer _timer;
   (double, double, String) previousLocation = (0.0, 0.0, "");
 
-  // @override
-  // void onInit() {
-  //   super.onInit();
+  @override
+  void onInit() {
+    super.onInit();
 
-  //   _timer = Timer.periodic(
-  //     AppConstants().locationFetchDuration,
-  //     (Timer timer) async {
-  //       await automatedFunction();
-  //     },
-  //   );
-  // }
+    _timer = Timer.periodic(
+      AppConstants().locationFetchDuration,
+      (Timer timer) async {
+        await automatedFunction();
+      },
+    );
+  }
 
-  // @override
-  // void onClose() {
-  //   _timer.cancel();
+  @override
+  void onClose() {
+    _timer.cancel();
 
-  //   super.onClose();
-  // }
+    super.onClose();
+  }
 
   Future<void> automatedFunction() async {
     final (double, double, String) currentLocation = await decideAndSend();
-    AppLogger().info(message: "automatedFunction(): curr.: $currentLocation");
-    AppLogger().info(message: "automatedFunction(): prev.: $previousLocation");
 
     if (previousLocation != currentLocation) {
       final bool condition1 = !currentLocation.$1.isEqual(0.0);
@@ -125,10 +118,9 @@ class AppLocationService extends GetxService {
     final bool serviceEnable = await AppPermService().serviceLocation();
 
     if (hasPermission && serviceEnable) {
-      final Position data = await Geolocator.getCurrentPosition();
-      lat = data.latitude;
-      long = data.longitude;
-      AppLogger().info(message: "GPSWithPerm: lat: $lat long: $long");
+      final (double, double) data = await getLocation();
+      lat = data.$1;
+      long = data.$2;
     } else {}
     return Future<(double, double)>.value((lat, long));
   }
@@ -145,61 +137,34 @@ class AppLocationService extends GetxService {
     final bool serviceEnable = await loc.Location().serviceEnabled();
 
     if (hasPermission && serviceEnable) {
-      try {
-        final Position data = await Geolocator.getCurrentPosition();
-        lat = data.latitude;
-        long = data.longitude;
-        AppLogger().info(message: "GPSWithoutPerm: lat: $lat long: $long");
-      } on Exception catch (error, stackTrace) {
-        AppLogger().error(
-          message: "Exception caught",
-          error: error,
-          stackTrace: stackTrace,
-        );
-      } finally {}
+      final (double, double) data = await getLocation();
+      lat = data.$1;
+      long = data.$2;
     } else {}
     return Future<(double, double)>.value((lat, long));
   }
 
   Future<(double, double)> fetchLocationFromIPAddress() async {
+    const double lat = 0.0;
+    const double long = 0.0;
+    return Future<(double, double)>.value((lat, long));
+  }
+
+  Future<(double, double)> getLocation() async {
     double lat = 0.0;
     double long = 0.0;
-
-    final String ip = await Ipify.ipv64();
-    AppLogger().info(message: "fetchLocationFromIPAddress(): ip: $ip");
-
-    if (ip.isEmpty) {
-    } else {
-      try {
-        final Map<String, dynamic> query = <String, dynamic>{
-          "key": AppConstants().vpnAPIKey,
-        };
-        final Response<dynamic> response = await AppAPIService().get(
-          "https://vpnapi.io/api/$ip",
-          query: query,
-        );
-
-        if (response.isOk && response.body is Map<String, dynamic>) {
-          final String temp = AppPrettyPrintJSON().prettyPrint(response.body);
-          log("fetchLocationFromIPAddress(): response.body: $temp");
-
-          VPNAPIIOResponse model = VPNAPIIOResponse();
-          model = VPNAPIIOResponse.fromJson(response.body);
-
-          final String strLatitude = model.location?.latitude ?? "0.0";
-          final String strLongitude = model.location?.longitude ?? "0.0";
-
-          lat = double.tryParse(strLatitude) ?? 0.0;
-          long = double.tryParse(strLongitude) ?? 0.0;
-        } else {}
-      } on Exception catch (error, stackTrace) {
-        AppLogger().error(
-          message: "Exception caught",
-          error: error,
-          stackTrace: stackTrace,
-        );
-      } finally {}
-    }
+    try {
+      final loc.LocationData data = await loc.Location().getLocation();
+      lat = data.latitude ?? 0.0;
+      long = data.longitude ?? 0.0;
+      AppLogger().info(message: "getLocation(): lat: $lat long: $long");
+    } on Exception catch (error, stackTrace) {
+      AppLogger().error(
+        message: "Exception caught",
+        error: error,
+        stackTrace: stackTrace,
+      );
+    } finally {}
     return Future<(double, double)>.value((lat, long));
   }
 

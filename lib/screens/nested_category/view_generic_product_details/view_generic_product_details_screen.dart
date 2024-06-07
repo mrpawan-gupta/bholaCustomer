@@ -1,4 +1,5 @@
 import "package:customer/common_functions/date_time_functions.dart";
+import "package:customer/common_widgets/app_bottom_indicator.dart";
 import "package:customer/common_widgets/common_image_widget.dart";
 import "package:customer/controllers/nested_category/view_generic_product_details_controller.dart";
 import "package:customer/models/generic_product_details_model.dart";
@@ -14,7 +15,6 @@ import "package:flutter/material.dart";
 import "package:flutter_rating_bar/flutter_rating_bar.dart";
 import "package:gauge_indicator/gauge_indicator.dart";
 import "package:get/get.dart";
-import "package:page_view_dot_indicator/page_view_dot_indicator.dart";
 import "package:pod_player/pod_player.dart";
 import "package:read_more_text/read_more_text.dart";
 
@@ -100,11 +100,9 @@ class ViewGenericProductDetailsScreen
             ),
           ),
           const SizedBox(height: 16),
-          PageViewDotIndicator(
-            currentItem: controller.rxCurrentIndex.value,
-            count: 2,
-            selectedColor: AppColors().appPrimaryColor,
-            unselectedColor: AppColors().appGreyColor,
+          AppBottomIndicator(
+            length: 2,
+            index: controller.rxCurrentIndex.value,
           ),
           const SizedBox(height: 16),
         ],
