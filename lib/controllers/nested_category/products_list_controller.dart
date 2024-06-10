@@ -210,13 +210,14 @@ class ProductsListController extends GetxController {
       } else {}
     } else {}
 
-    if (filterIsCategoryApplied().value) {
-      query.addAll(
-        <String, dynamic>{
-          "categoryId": rxFilterSelectedCategory.value.sId ?? "",
-          "categoryName": rxFilterSelectedCategory.value.name ?? "",
-        },
-      );
+    if ((rxFilterSelectedCategory.value.sId ?? "").isNotEmpty) {
+      final String id = rxFilterSelectedCategory.value.sId ?? "";
+      query.addAll(<String, dynamic>{"categoryId": id});
+    } else {}
+
+    if (rxTempSelectedCategoryId.value.isNotEmpty) {
+      final String id = rxTempSelectedCategoryId.value;
+      query.addAll(<String, dynamic>{"categoryId": id});
     } else {}
 
     await AppAPIService().functionGet(
@@ -287,13 +288,11 @@ class ProductsListController extends GetxController {
   RxBool filterIsPriceApplied() {
     final bool condition1 = rxFilterMinRange.value != defaultMinRange;
     final bool condition2 = rxFilterMaxRange.value != defaultMaxRange;
-
     return (condition1 || condition2).obs;
   }
 
   RxBool filterIsSortByApplied() {
     final bool condition1 = rxFilterSelectedSortBy.value.isNotEmpty;
-
     return condition1.obs;
   }
 
@@ -302,7 +301,6 @@ class ProductsListController extends GetxController {
       rxFilterSelectedCategory.value.toJson(),
       Categories().toJson(),
     );
-
     return condition1.obs;
   }
 
@@ -312,15 +310,11 @@ class ProductsListController extends GetxController {
       filterIsSortByApplied().value,
       filterIsCategoryApplied().value,
     ];
-
-    final int count = tempList.where((bool e) => e == true).toList().length;
-
-    return count.obs;
+    return tempList.where((bool e) => e == true).toList().length.obs;
   }
 
   RxMap<int, String> filterList() {
     final Map<int, String> tempList = <int, String>{};
-
     if (filterIsPriceApplied().value) {
       tempList.addAll(
         <int, String>{
@@ -342,7 +336,6 @@ class ProductsListController extends GetxController {
         },
       );
     }
-
     return tempList.obs;
   }
 
@@ -361,7 +354,6 @@ class ProductsListController extends GetxController {
       default:
         break;
     }
-
     return;
   }
 }

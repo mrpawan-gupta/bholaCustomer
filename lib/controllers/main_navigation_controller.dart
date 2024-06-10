@@ -12,10 +12,20 @@ import "package:customer/utils/app_whatsapp.dart";
 import "package:get/get.dart";
 import "package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart";
 
-class MainNavigationController extends GetxController {
-  final PersistentTabController tabController = PersistentTabController();
-  final RxInt previousIndex = 0.obs;
+Future<void> tabControllerFunction(int value) async {
+  final MainNavigationController find = Get.find<MainNavigationController>();
+  final PersistentTabController tabController = find.tabController;
 
+  if (value != 3) {
+    tabController.jumpToTab(value);
+  } else {
+    await AppWhatsApp().openWhatsApp();
+    tabController.jumpToPreviousTab();
+  }
+  return Future<void>.value();
+}
+
+class MainNavigationController extends GetxController {
   final Rx<GetUserByIdData> rxUserInfo = GetUserByIdData().obs;
 
   late Timer _timer;
@@ -25,7 +35,10 @@ class MainNavigationController extends GetxController {
     AppAssetsImages().bottomNavDrone,
     AppAssetsImages().bottomNavJCB,
   ].obs;
+
   RxString timerCurrent = AppAssetsImages().bottomNavTruck.obs;
+
+  final PersistentTabController tabController = PersistentTabController();
 
   @override
   void onInit() {
@@ -37,6 +50,8 @@ class MainNavigationController extends GetxController {
       ..put(BookingController())
       ..put(HelpController())
       ..put(OrderHistoryController());
+
+    initAndReInitFunction();
 
     _timer = Timer.periodic(
       const Duration(seconds: 5),
@@ -50,19 +65,11 @@ class MainNavigationController extends GetxController {
         } else {}
       },
     );
-
-    tabController.addListener(tabControllerFunction);
-
-    initAndReInitFunction();
   }
 
   @override
   void onClose() {
     _timer.cancel();
-
-    tabController
-      ..removeListener(tabControllerFunction)
-      ..dispose();
 
     super.onClose();
   }
@@ -77,13 +84,11 @@ class MainNavigationController extends GetxController {
     return;
   }
 
-  Future<void> tabControllerFunction() async {
-    if (tabController.index != 3) {
-      previousIndex(tabController.index);
-    } else {
-      tabController.jumpToTab(previousIndex.value);
-      await AppWhatsApp().openWhatsApp();
-    }
-    return Future<void>.value();
+  int getCurrentIndex() {
+    return tabController.index;
+  }
+
+  void jumpToTab(int index) {
+    return tabController.jumpToTab(index);
   }
 }

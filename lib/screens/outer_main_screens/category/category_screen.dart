@@ -1,3 +1,4 @@
+import "package:customer/controllers/main_navigation_controller.dart";
 import "package:customer/controllers/outer_main_controllers/category_controller.dart";
 import "package:customer/models/featured_model.dart";
 import "package:customer/screens/outer_main_screens/category/my_utils/common_category_title_bar.dart";
@@ -45,10 +46,12 @@ class CategoryScreen extends GetView<CategoryController> {
             child: CommonHorizontalGridView(
               pagingController: controller.pagingControllerServices,
               onTap: (Categories item) async {
-                await AppNavService().pushNamed(
-                  destination: AppRoutes().productListingScreen,
-                  arguments: <String, dynamic>{"id": item.sId ?? ""},
-                );
+                // await AppNavService().pushNamed(
+                //   destination: AppRoutes().productListingScreen,
+                //   arguments: <String, dynamic>{"id": item.sId ?? ""},
+                // );
+
+                await tabControllerFunction(2);
               },
               type: "rental categories list",
             ),

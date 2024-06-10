@@ -6,6 +6,7 @@ import "package:customer/models/product_model.dart";
 import "package:customer/services/app_api_service.dart";
 import "package:customer/utils/app_logger.dart";
 import "package:customer/utils/app_snackbar.dart";
+import "package:flutter/foundation.dart";
 import "package:get/get.dart";
 import "package:infinite_scroll_pagination/infinite_scroll_pagination.dart";
 
@@ -18,14 +19,16 @@ class HomeController extends GetxController {
   final PagingController<int, Categories> pagingControllerCategories =
       PagingController<int, Categories>(firstPageKey: 1);
 
+  ValueNotifier<PagingState<int, Categories>> valueNotifierCategories =
+      ValueNotifier<PagingState<int, Categories>>(
+    const PagingState<int, Categories>(),
+  );
+
   final PagingController<int, Banners> pagingControllerBanners =
       PagingController<int, Banners>(firstPageKey: 1);
 
-  final PagingController<int, Products> pagingControllerCattleFeed =
-      PagingController<int, Products>(firstPageKey: 1);
-
-  final PagingController<int, Products> pagingControllerFertilizer =
-      PagingController<int, Products>(firstPageKey: 1);
+  final List<PagingController<int, Products>> pagingControllerDynamic =
+      <PagingController<int, Products>>[];
 
   @override
   void onInit() {
@@ -34,8 +37,18 @@ class HomeController extends GetxController {
     pagingControllerServices.addPageRequestListener(_fetchPageServices);
     pagingControllerCategories.addPageRequestListener(_fetchPageCategories);
     pagingControllerBanners.addPageRequestListener(_fetchPageBanners);
-    pagingControllerCattleFeed.addPageRequestListener(_fetchPageCattleFeed);
-    pagingControllerFertilizer.addPageRequestListener(_fetchPageFertilizer);
+
+    for (int i = 0; i < pagingControllerDynamic.length; i++) {
+      pagingControllerDynamic[i].addPageRequestListener(
+        (int pageKey) async {
+          await _fetchPageDynamic(
+            pageKey,
+            pagingControllerDynamic[i],
+            pagingControllerCategories.itemList?[i].name ?? "",
+          );
+        },
+      );
+    }
   }
 
   @override
@@ -52,13 +65,19 @@ class HomeController extends GetxController {
       ..removePageRequestListener(_fetchPageBanners)
       ..dispose();
 
-    pagingControllerCattleFeed
-      ..removePageRequestListener(_fetchPageCattleFeed)
-      ..dispose();
-
-    pagingControllerFertilizer
-      ..removePageRequestListener(_fetchPageFertilizer)
-      ..dispose();
+    for (int i = 0; i < pagingControllerDynamic.length; i++) {
+      pagingControllerDynamic[i]
+        ..removePageRequestListener(
+          (int pageKey) async {
+            await _fetchPageDynamic(
+              pageKey,
+              pagingControllerDynamic[i],
+              pagingControllerCategories.itemList?[i].name ?? "",
+            );
+          },
+        )
+        ..dispose();
+    }
 
     super.onClose();
   }
@@ -88,6 +107,14 @@ class HomeController extends GetxController {
       isLastPage
           ? pagingControllerCategories.appendLastPage(newItems)
           : pagingControllerCategories.appendPage(newItems, pageKey + 1);
+
+      if (isLastPage) {
+        final List<Categories> categoriesList =
+            pagingControllerCategories.itemList ?? <Categories>[];
+        initPagingControllerDynamic(categoriesList);
+      } else {}
+
+      valueNotifierCategories.value = pagingControllerCategories.value;
     } on Exception catch (error, stackTrace) {
       AppLogger().error(
         message: "Exception caught",
@@ -95,6 +122,7 @@ class HomeController extends GetxController {
         stackTrace: stackTrace,
       );
       pagingControllerCategories.error = error;
+      valueNotifierCategories.value = pagingControllerCategories.value;
     } finally {}
     return Future<void>.value();
   }
@@ -113,42 +141,6 @@ class HomeController extends GetxController {
         stackTrace: stackTrace,
       );
       pagingControllerBanners.error = error;
-    } finally {}
-    return Future<void>.value();
-  }
-
-  Future<void> _fetchPageCattleFeed(int pageKey) async {
-    try {
-      final List<Products> newItems = await _apiCallCattleFeed(pageKey);
-      final bool isLastPage = newItems.length < pageSize;
-      isLastPage
-          ? pagingControllerCattleFeed.appendLastPage(newItems)
-          : pagingControllerCattleFeed.appendPage(newItems, pageKey + 1);
-    } on Exception catch (error, stackTrace) {
-      AppLogger().error(
-        message: "Exception caught",
-        error: error,
-        stackTrace: stackTrace,
-      );
-      pagingControllerCattleFeed.error = error;
-    } finally {}
-    return Future<void>.value();
-  }
-
-  Future<void> _fetchPageFertilizer(int pageKey) async {
-    try {
-      final List<Products> newItems = await _apiCallFertilizer(pageKey);
-      final bool isLastPage = newItems.length < pageSize;
-      isLastPage
-          ? pagingControllerFertilizer.appendLastPage(newItems)
-          : pagingControllerFertilizer.appendPage(newItems, pageKey + 1);
-    } on Exception catch (error, stackTrace) {
-      AppLogger().error(
-        message: "Exception caught",
-        error: error,
-        stackTrace: stackTrace,
-      );
-      pagingControllerFertilizer.error = error;
     } finally {}
     return Future<void>.value();
   }
@@ -235,38 +227,61 @@ class HomeController extends GetxController {
     return completer.future;
   }
 
-  Future<List<Products>> _apiCallCattleFeed(int pageKey) async {
-    final Completer<List<Products>> completer = Completer<List<Products>>();
+  void initPagingControllerDynamic(List<Categories> categories) {
+    for (int i = 0; i < categories.length; i++) {
+      final PagingController<int, Products> pagingController =
+          PagingController<int, Products>(firstPageKey: 1);
 
-    await AppAPIService().functionGet(
-      types: Types.order,
-      endPoint: "product",
-      query: <String, dynamic>{
-        "page": pageKey,
-        "limit": pageSize,
-        "sortBy": "createdAt",
-        "sortOrder": "desc",
-        "categoryName": "Cattle Feed",
-      },
-      successCallback: (Map<String, dynamic> json) {
-        AppLogger().info(message: json["message"]);
+      pagingControllerDynamic.add(pagingController);
+    }
 
-        ProductModel model = ProductModel();
-        model = ProductModel.fromJson(json);
+    for (int i = 0; i < pagingControllerDynamic.length; i++) {
+      final PagingController<int, Products> pagingController =
+          pagingControllerDynamic[i];
 
-        completer.complete(model.data?.products ?? <Products>[]);
-      },
-      failureCallback: (Map<String, dynamic> json) {
-        AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
+      pagingController.addPageRequestListener(
+        (int pageKey) async {
+          await _fetchPageDynamic(
+            pageKey,
+            pagingController,
+            categories[i].sId ?? "",
+          );
+        },
+      );
+    }
 
-        completer.complete(<Products>[]);
-      },
-      needLoader: false,
-    );
-    return completer.future;
+    return;
   }
 
-  Future<List<Products>> _apiCallFertilizer(int pageKey) async {
+  Future<void> _fetchPageDynamic(
+    int pageKey,
+    PagingController<int, Products> pagingController,
+    String categoryId,
+  ) async {
+    try {
+      final List<Products> newItems = await _apiCallDynamic(
+        pageKey,
+        categoryId,
+      );
+      final bool isLastPage = newItems.length < pageSize;
+      isLastPage
+          ? pagingController.appendLastPage(newItems)
+          : pagingController.appendPage(newItems, pageKey + 1);
+    } on Exception catch (error, stackTrace) {
+      AppLogger().error(
+        message: "Exception caught",
+        error: error,
+        stackTrace: stackTrace,
+      );
+      pagingController.error = error;
+    } finally {}
+    return Future<void>.value();
+  }
+
+  Future<List<Products>> _apiCallDynamic(
+    int pageKey,
+    String categoryId,
+  ) async {
     final Completer<List<Products>> completer = Completer<List<Products>>();
 
     await AppAPIService().functionGet(
@@ -277,7 +292,7 @@ class HomeController extends GetxController {
         "limit": pageSize,
         "sortBy": "createdAt",
         "sortOrder": "desc",
-        "categoryName": "Fertilizer",
+        "categoryId": categoryId,
       },
       successCallback: (Map<String, dynamic> json) {
         AppLogger().info(message: json["message"]);

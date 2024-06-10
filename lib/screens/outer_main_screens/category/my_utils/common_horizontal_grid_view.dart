@@ -110,7 +110,7 @@ class CommonHorizontalGridView extends StatelessWidget {
         Text(
           item.name ?? "",
           style: const TextStyle(fontWeight: FontWeight.bold),
-          maxLines: 2,
+          maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
       ],

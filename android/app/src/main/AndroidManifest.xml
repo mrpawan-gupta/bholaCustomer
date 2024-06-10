@@ -15,12 +15,8 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
-    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
 
     <queries>
-        <package android:name="com.ahinsaaggregator.admin" />
-        <package android:name="com.ahinsaaggregator.customer" />
-        <package android:name="com.ahinsaaggregator.vendor" />
         <intent>
             <action android:name="android.intent.action.VIEW"/>
             <data android:scheme="http"/>
@@ -88,7 +84,6 @@
                 <data android:scheme="https" android:host="dev.bhola.org.in" />
                 <data android:scheme="https" android:host="bhola.org.in" />
             </intent-filter>
-
             <!-- Deep Link -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

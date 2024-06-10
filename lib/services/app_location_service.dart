@@ -1,6 +1,7 @@
 import "dart:async";
 import "dart:developer";
 
+import "package:customer/services/app_api_service.dart";
 import "package:customer/services/app_firestore_user_db.dart";
 import "package:customer/services/app_perm_service.dart";
 import "package:customer/services/app_storage_service.dart";
@@ -49,6 +50,13 @@ class AppLocationService extends GetxService {
 
       if (condition1 && condition2) {
         AppLogger().info(message: "automatedFunction(): Sync");
+
+        await updateInfoToBackend(
+          latitude: currentLocation.$1,
+          longitude: currentLocation.$2,
+          from: currentLocation.$3,
+        );
+
         await updateInfoToFirestore(
           latitude: currentLocation.$1,
           longitude: currentLocation.$2,
@@ -157,6 +165,7 @@ class AppLocationService extends GetxService {
       final loc.LocationData data = await loc.Location().getLocation();
       lat = data.latitude ?? 0.0;
       long = data.longitude ?? 0.0;
+
       AppLogger().info(message: "getLocation(): lat: $lat long: $long");
     } on Exception catch (error, stackTrace) {
       AppLogger().error(
@@ -166,6 +175,37 @@ class AppLocationService extends GetxService {
       );
     } finally {}
     return Future<(double, double)>.value((lat, long));
+  }
+
+  Future<void> updateInfoToBackend({
+    required double latitude,
+    required double longitude,
+    required String from,
+  }) async {
+    final bool canUpdate = AppConstants().isEnabledBackendUpdateLocInfo;
+    if (canUpdate) {
+      final String id = AppStorageService().getUserInfoModel().sId ?? "";
+      if (id.isEmpty) {
+      } else {
+        final Map<String, dynamic> data = <String, dynamic>{
+          "current_lattitude": latitude,
+          "current_longitude": longitude,
+        };
+
+        await AppAPIService().functionPatch(
+          types: Types.oauth,
+          endPoint: "user/lat-long",
+          body: data,
+          successCallback: (Map<String, dynamic> json) {
+            AppLogger().info(message: json["message"]);
+          },
+          failureCallback: (Map<String, dynamic> json) {
+            AppLogger().error(message: json["message"]);
+          },
+        );
+      }
+    } else {}
+    return Future<void>.value();
   }
 
   Future<void> updateInfoToFirestore({

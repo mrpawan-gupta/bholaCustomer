@@ -148,8 +148,8 @@ class CommonGridView extends StatelessWidget {
       children: <Widget>[
         Text(
           item.name ?? "",
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          maxLines: 2,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+          maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
       ],

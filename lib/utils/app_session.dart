@@ -33,9 +33,9 @@ class AppSession {
     final GetUserByIdData userInfo = await AppSession().getUserAPICall();
     await AppSession().setUserInfo(userInfo: userInfo);
 
-    await AppPkgInfoService().updateInfoToFirestore();
-    await AppDevInfoService().updateInfoToFirestore();
-    await AppLocationService().automatedFunction();
+    unawaited(AppPkgInfoService().updateInfoToFirestore());
+    unawaited(AppDevInfoService().updateInfoToFirestore());
+    unawaited(AppLocationService().automatedFunction());
 
     final String id = AppStorageService().getUserAuthModel().sId ?? "";
     await AppFCMService().subscribeToTopic(id: id);

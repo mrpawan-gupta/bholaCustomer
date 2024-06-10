@@ -52,6 +52,7 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
                               destination: AppRoutes().settingsMainScreen,
                               arguments: <String, dynamic>{},
                             );
+
                             controller.initAndReInitFunction();
                           },
                         ),
@@ -67,10 +68,10 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
           body: WillPopScope(
             onWillPop: () async {
               bool value = false;
-              if (controller.tabController.index == 0) {
+              if (controller.getCurrentIndex() == 0) {
                 value = true;
               } else {
-                controller.tabController.jumpToTab(0);
+                controller.jumpToTab(0);
               }
               return Future<bool>.value(value);
             },
@@ -113,6 +114,8 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
               },
               navBarOverlap: const NavBarOverlap.none(),
               handleAndroidBackButtonPress: false,
+              gestureNavigationEnabled: true,
+              onTabChanged: tabControllerFunction,
             ),
           ),
         );
@@ -150,6 +153,7 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
         title: title,
         activeForegroundColor: AppColors().appPrimaryColor,
         inactiveForegroundColor: AppColors().appGrey,
+        iconSize: itemIndex != 2 ? 28 : 56,
       ),
     );
   }

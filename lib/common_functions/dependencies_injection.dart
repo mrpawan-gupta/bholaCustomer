@@ -1,3 +1,5 @@
+import "dart:async";
+
 import "package:customer/main.dart";
 import "package:customer/services/app_analytics_service.dart";
 import "package:customer/services/app_api_service.dart";
@@ -8,6 +10,7 @@ import "package:customer/services/app_firestore_user_db.dart";
 import "package:customer/services/app_internet_connection_checker_service.dart";
 import "package:customer/services/app_location_service.dart";
 import "package:customer/services/app_nav_service.dart";
+import "package:customer/services/app_performance.dart";
 import "package:customer/services/app_perm_service.dart";
 import "package:customer/services/app_pkg_info_service.dart";
 import "package:customer/services/app_remote_config.dart";
@@ -18,6 +21,7 @@ import "package:get/get.dart";
 
 void injectDependencies() {
   Get
+    ..put(AppPerformance())
     ..put(AppStorageService())
     ..put(AppNavService())
     ..put(AppAPIService())
@@ -42,10 +46,14 @@ Future<void> initDependencies() async {
   await AppFCMService().setupInteractedMessage();
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
-  await AppFCMService().getToken();
-  await AppFCMService().getInitialMessage();
+  // await AppFCMService().getToken();
+  // await AppFCMService().getInitialMessage();
 
-  await AppPkgInfoService().initPkgInformation();
-  await AppDevInfoService().initDevInformation();
+  // await AppPkgInfoService().initPkgInformation();
+  // await AppDevInfoService().initDevInformation();
+
+  unawaited(AppPkgInfoService().initPkgInformation());
+  unawaited(AppDevInfoService().initDevInformation());
+
   return Future<void>.value();
 }

@@ -1,3 +1,4 @@
+import "package:customer/controllers/main_navigation_controller.dart";
 import "package:customer/controllers/outer_main_controllers/home_controller.dart";
 import "package:customer/models/banner_model.dart";
 import "package:customer/models/featured_model.dart";
@@ -11,6 +12,7 @@ import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_routes.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
+import "package:infinite_scroll_pagination/infinite_scroll_pagination.dart";
 import "package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart";
 
 class HomeScreen extends GetView<HomeController> {
@@ -33,9 +35,12 @@ class HomeScreen extends GetView<HomeController> {
                   controller
                     ..pagingControllerServices.refresh()
                     ..pagingControllerCategories.refresh()
-                    ..pagingControllerBanners.refresh()
-                    ..pagingControllerCattleFeed.refresh()
-                    ..pagingControllerFertilizer.refresh();
+                    ..pagingControllerBanners.refresh();
+
+                  for (final PagingController<int, Products> e
+                      in controller.pagingControllerDynamic) {
+                    e.refresh();
+                  }
                 },
                 child: SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
@@ -53,9 +58,7 @@ class HomeScreen extends GetView<HomeController> {
                         const SizedBox(height: 32),
                         banners(),
                         const SizedBox(height: 32),
-                        cattleFeedWidget(),
-                        const SizedBox(height: 32),
-                        fertilizerWidget(),
+                        dynamicWidget(),
                         // const SizedBox(height: 32),
                         // const SizedBox(height: 32),
                       ],
@@ -92,10 +95,12 @@ class HomeScreen extends GetView<HomeController> {
         CommonHorizontalListView(
           pagingController: controller.pagingControllerServices,
           onTap: (Categories item) async {
-            await AppNavService().pushNamed(
-              destination: AppRoutes().productListingScreen,
-              arguments: <String, dynamic>{"id": item.sId ?? ""},
-            );
+            // await AppNavService().pushNamed(
+            //   destination: AppRoutes().productListingScreen,
+            //   arguments: <String, dynamic>{"id": item.sId ?? ""},
+            // );
+
+            await tabControllerFunction(2);
           },
           type: "rental categories list",
         ),
@@ -150,79 +155,85 @@ class HomeScreen extends GetView<HomeController> {
     );
   }
 
-  Widget cattleFeedWidget() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: CommonHomeTitleBar(
-            title: "🌾 Cattle Feed",
-            isViewAllNeeded: true,
-            onTapViewAll: () async {
-              await AppNavService().pushNamed(
-                destination: AppRoutes().productListingScreen,
-                arguments: <String, dynamic>{},
-              );
-            },
-          ),
-        ),
-        Divider(
-          color: AppColors().appGrey,
-          indent: 16,
-          endIndent: 16,
-        ),
-        const SizedBox(height: 8),
-        CommonHorizontalListViewProducts(
-          pagingController: controller.pagingControllerCattleFeed,
-          onTap: (Products item) async {
-            await AppNavService().pushNamed(
-              destination: AppRoutes().viewGenericProductDetailsScreen,
-              arguments: <String, dynamic>{"id": item.sId ?? ""},
-            );
-          },
-          type: "Cattle Feed list",
-        ),
-      ],
+  Widget dynamicWidget() {
+    return ValueListenableBuilder<PagingState<int, Categories>>(
+      valueListenable: controller.valueNotifierCategories,
+      builder: (
+        BuildContext context,
+        PagingState<int, Categories> value,
+        Widget? child,
+      ) {
+        return valueListenableBuilderAdapter();
+      },
     );
   }
 
-  Widget fertilizerWidget() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: CommonHomeTitleBar(
-            title: "🌾 Fertilizer",
-            isViewAllNeeded: true,
-            onTapViewAll: () async {
+  Widget valueListenableBuilderAdapter() {
+    final List<PagingController<int, Products>> dynamicList =
+        controller.pagingControllerDynamic;
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: dynamicList.length,
+      padding: EdgeInsets.zero,
+      physics: const NeverScrollableScrollPhysics(),
+      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+      itemBuilder: (BuildContext context, int i) {
+        final PagingController<int, Products> pagingController = dynamicList[i];
+        final List<Categories> categoriesList =
+            controller.pagingControllerCategories.itemList ?? <Categories>[];
+        final Categories categories = categoriesList[i];
+        final bool isLast = i == dynamicList.length - 1;
+        return listViewAdapter(
+          pagingController,
+          categories,
+          isLast: isLast,
+        );
+      },
+    );
+  }
+
+  Widget listViewAdapter(
+    PagingController<int, Products> pagingController,
+    Categories category, {
+    required bool isLast,
+  }) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: isLast ? 0.0 : 16.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: CommonHomeTitleBar(
+              title: "🌾 ${category.name ?? ""}",
+              isViewAllNeeded: true,
+              onTapViewAll: () async {
+                await AppNavService().pushNamed(
+                  destination: AppRoutes().productListingScreen,
+                  arguments: <String, dynamic>{},
+                );
+              },
+            ),
+          ),
+          Divider(
+            color: AppColors().appGrey,
+            indent: 16,
+            endIndent: 16,
+          ),
+          const SizedBox(height: 8),
+          CommonHorizontalListViewProducts(
+            pagingController: pagingController,
+            onTap: (Products item) async {
               await AppNavService().pushNamed(
-                destination: AppRoutes().productListingScreen,
-                arguments: <String, dynamic>{},
+                destination: AppRoutes().viewGenericProductDetailsScreen,
+                arguments: <String, dynamic>{"id": item.sId ?? ""},
               );
             },
+            type: "${category.name ?? ""} list",
           ),
-        ),
-        Divider(
-          color: AppColors().appGrey,
-          indent: 16,
-          endIndent: 16,
-        ),
-        const SizedBox(height: 8),
-        CommonHorizontalListViewProducts(
-          pagingController: controller.pagingControllerFertilizer,
-          onTap: (Products item) async {
-            await AppNavService().pushNamed(
-              destination: AppRoutes().viewGenericProductDetailsScreen,
-              arguments: <String, dynamic>{"id": item.sId ?? ""},
-            );
-          },
-          type: "Fertilizer list",
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

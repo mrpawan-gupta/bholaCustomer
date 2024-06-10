@@ -8,10 +8,10 @@ import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_constants.dart";
 import "package:customer/utils/app_in_app_browser.dart";
+import "package:customer/utils/app_open_store.dart";
 import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/app_whatsapp.dart";
 import "package:customer/utils/localization/app_language_keys.dart";
-import "package:external_app_launcher/external_app_launcher.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 
@@ -61,15 +61,7 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
                   const SizedBox(height: 16),
                   settingsItems1(
                     itemName: "Try our Vendor App",
-                    onTap: () async {
-                      await LaunchApp.openApp(
-                        androidPackageName: "com.ahinsaaggregator.vendor",
-                        iosUrlScheme: "ahinsaaggregatorVendor://",
-                        appStoreLink:
-                            "itms-apps://itunes.apple.com/us/app/pulse-secure/id945832041",
-                        openStore: true,
-                      );
-                    },
+                    onTap: AppOpenStore().openStoreForVendor,
                   ),
                   const SizedBox(height: 16),
                   settingsItems2(
