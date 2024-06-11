@@ -4,6 +4,6 @@ import "package:get/get.dart";
 class ViewGenericProductDetailsBinding extends Bindings {
   @override
   void dependencies() {
-    Get.create (ViewGenericProductDetailsController.new);
+    Get.create(ViewGenericProductDetailsController.new);
   }
 }

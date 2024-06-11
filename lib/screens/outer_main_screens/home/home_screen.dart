@@ -37,10 +37,7 @@ class HomeScreen extends GetView<HomeController> {
                     ..pagingControllerCategories.refresh()
                     ..pagingControllerBanners.refresh();
 
-                  for (final PagingController<int, Products> e
-                      in controller.pagingControllerDynamic) {
-                    e.refresh();
-                  }
+                  controller.pagingControllerDynamic.clear();
                 },
                 child: SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
@@ -183,11 +180,7 @@ class HomeScreen extends GetView<HomeController> {
             controller.pagingControllerCategories.itemList ?? <Categories>[];
         final Categories categories = categoriesList[i];
         final bool isLast = i == dynamicList.length - 1;
-        return listViewAdapter(
-          pagingController,
-          categories,
-          isLast: isLast,
-        );
+        return listViewAdapter(pagingController, categories, isLast: isLast);
       },
     );
   }

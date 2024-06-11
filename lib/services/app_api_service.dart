@@ -1,5 +1,6 @@
 import "dart:async";
 import "dart:developer";
+import "dart:io";
 
 import "package:customer/services/app_internet_connection_checker_service.dart";
 import "package:customer/services/app_storage_service.dart";
@@ -11,19 +12,6 @@ import "package:customer/utils/localization/app_translations.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
-
-/* 
-  Sample:
-
-  await AppAPIService().functionGet(
-    endPoint: "users/1",
-    query: <String, dynamic>{}, 
-    body: <String, dynamic>{},
-    successCallback: (Map<String, dynamic> json) {},
-    failureCallback: (Map<String, dynamic> json) {},
-    needLoader: true,
-  );
- */
 
 enum Types { oauth, rental, order }
 
@@ -45,9 +33,8 @@ class AppAPIService extends GetConnect {
   void onInit() {
     super.onInit();
 
-    timeout = const Duration(minutes: 1);
+    timeout = const Duration(minutes: 10);
     maxAuthRetries = 3;
-
     AppLogger().info(message: "AppAPIService: onInit(): ${timeout.inSeconds}");
   }
 
@@ -71,7 +58,6 @@ class AppAPIService extends GetConnect {
                 },
               )
             : <String, dynamic>{};
-
     return parsedQuery;
   }
 
@@ -122,7 +108,21 @@ class AppAPIService extends GetConnect {
                 : contentTypeMultiPartFormData,
             headers: headers,
             query: getValidQuery(query),
-          ).timeout(const Duration(minutes: 1));
+          ).timeout(
+            const Duration(minutes: 10),
+            onTimeout: () async {
+              if (needLoader) {
+                AppLoader().hideLoader();
+              } else {}
+
+              failureCallback(<String, dynamic>{"message": "Request Timeout"});
+
+              return const Response<dynamic>(
+                statusCode: 408,
+                statusText: "Request Timeout",
+              );
+            },
+          );
 
           await postAPICallProcedure(
             response: response,
@@ -133,6 +133,30 @@ class AppAPIService extends GetConnect {
           if (needLoader) {
             AppLoader().hideLoader();
           } else {}
+        } on TimeoutException catch (error, stackTrace) {
+          AppLogger().error(
+            message: "Exception caught: ${error.message}",
+            error: error,
+            stackTrace: stackTrace,
+          );
+
+          if (needLoader) {
+            AppLoader().hideLoader();
+          } else {}
+
+          failureCallback(<String, dynamic>{"message": error.message});
+        } on SocketException catch (error, stackTrace) {
+          AppLogger().error(
+            message: "Exception caught: ${error.message}",
+            error: error,
+            stackTrace: stackTrace,
+          );
+
+          if (needLoader) {
+            AppLoader().hideLoader();
+          } else {}
+
+          failureCallback(<String, dynamic>{"message": error.message});
         } on Exception catch (error, stackTrace) {
           AppLogger().error(
             message: "Exception caught",
@@ -203,7 +227,21 @@ class AppAPIService extends GetConnect {
                 : contentTypeMultiPartFormData,
             headers: headers,
             query: getValidQuery(query),
-          ).timeout(const Duration(minutes: 1));
+          ).timeout(
+            const Duration(minutes: 10),
+            onTimeout: () async {
+              if (needLoader) {
+                AppLoader().hideLoader();
+              } else {}
+
+              failureCallback(<String, dynamic>{"message": "Request Timeout"});
+
+              return const Response<dynamic>(
+                statusCode: 408,
+                statusText: "Request Timeout",
+              );
+            },
+          );
 
           await postAPICallProcedure(
             response: response,
@@ -214,6 +252,30 @@ class AppAPIService extends GetConnect {
           if (needLoader) {
             AppLoader().hideLoader();
           } else {}
+        } on TimeoutException catch (error, stackTrace) {
+          AppLogger().error(
+            message: "Exception caught: ${error.message}",
+            error: error,
+            stackTrace: stackTrace,
+          );
+
+          if (needLoader) {
+            AppLoader().hideLoader();
+          } else {}
+
+          failureCallback(<String, dynamic>{"message": error.message});
+        } on SocketException catch (error, stackTrace) {
+          AppLogger().error(
+            message: "Exception caught: ${error.message}",
+            error: error,
+            stackTrace: stackTrace,
+          );
+
+          if (needLoader) {
+            AppLoader().hideLoader();
+          } else {}
+
+          failureCallback(<String, dynamic>{"message": error.message});
         } on Exception catch (error, stackTrace) {
           AppLogger().error(
             message: "Exception caught",
@@ -284,7 +346,21 @@ class AppAPIService extends GetConnect {
                 : contentTypeMultiPartFormData,
             headers: headers,
             query: getValidQuery(query),
-          ).timeout(const Duration(minutes: 1));
+          ).timeout(
+            const Duration(minutes: 10),
+            onTimeout: () async {
+              if (needLoader) {
+                AppLoader().hideLoader();
+              } else {}
+
+              failureCallback(<String, dynamic>{"message": "Request Timeout"});
+
+              return const Response<dynamic>(
+                statusCode: 408,
+                statusText: "Request Timeout",
+              );
+            },
+          );
 
           await postAPICallProcedure(
             response: response,
@@ -295,6 +371,30 @@ class AppAPIService extends GetConnect {
           if (needLoader) {
             AppLoader().hideLoader();
           } else {}
+        } on TimeoutException catch (error, stackTrace) {
+          AppLogger().error(
+            message: "Exception caught: ${error.message}",
+            error: error,
+            stackTrace: stackTrace,
+          );
+
+          if (needLoader) {
+            AppLoader().hideLoader();
+          } else {}
+
+          failureCallback(<String, dynamic>{"message": error.message});
+        } on SocketException catch (error, stackTrace) {
+          AppLogger().error(
+            message: "Exception caught: ${error.message}",
+            error: error,
+            stackTrace: stackTrace,
+          );
+
+          if (needLoader) {
+            AppLoader().hideLoader();
+          } else {}
+
+          failureCallback(<String, dynamic>{"message": error.message});
         } on Exception catch (error, stackTrace) {
           AppLogger().error(
             message: "Exception caught",
@@ -365,7 +465,21 @@ class AppAPIService extends GetConnect {
                 : contentTypeMultiPartFormData,
             headers: headers,
             query: getValidQuery(query),
-          ).timeout(const Duration(minutes: 1));
+          ).timeout(
+            const Duration(minutes: 10),
+            onTimeout: () async {
+              if (needLoader) {
+                AppLoader().hideLoader();
+              } else {}
+
+              failureCallback(<String, dynamic>{"message": "Request Timeout"});
+
+              return const Response<dynamic>(
+                statusCode: 408,
+                statusText: "Request Timeout",
+              );
+            },
+          );
 
           await postAPICallProcedure(
             response: response,
@@ -376,6 +490,30 @@ class AppAPIService extends GetConnect {
           if (needLoader) {
             AppLoader().hideLoader();
           } else {}
+        } on TimeoutException catch (error, stackTrace) {
+          AppLogger().error(
+            message: "Exception caught: ${error.message}",
+            error: error,
+            stackTrace: stackTrace,
+          );
+
+          if (needLoader) {
+            AppLoader().hideLoader();
+          } else {}
+
+          failureCallback(<String, dynamic>{"message": error.message});
+        } on SocketException catch (error, stackTrace) {
+          AppLogger().error(
+            message: "Exception caught: ${error.message}",
+            error: error,
+            stackTrace: stackTrace,
+          );
+
+          if (needLoader) {
+            AppLoader().hideLoader();
+          } else {}
+
+          failureCallback(<String, dynamic>{"message": error.message});
         } on Exception catch (error, stackTrace) {
           AppLogger().error(
             message: "Exception caught",
@@ -445,7 +583,21 @@ class AppAPIService extends GetConnect {
                 : contentTypeMultiPartFormData,
             headers: headers,
             query: getValidQuery(query),
-          ).timeout(const Duration(minutes: 1));
+          ).timeout(
+            const Duration(minutes: 10),
+            onTimeout: () async {
+              if (needLoader) {
+                AppLoader().hideLoader();
+              } else {}
+
+              failureCallback(<String, dynamic>{"message": "Request Timeout"});
+
+              return const Response<dynamic>(
+                statusCode: 408,
+                statusText: "Request Timeout",
+              );
+            },
+          );
 
           await postAPICallProcedure(
             response: response,
@@ -456,6 +608,30 @@ class AppAPIService extends GetConnect {
           if (needLoader) {
             AppLoader().hideLoader();
           } else {}
+        } on TimeoutException catch (error, stackTrace) {
+          AppLogger().error(
+            message: "Exception caught: ${error.message}",
+            error: error,
+            stackTrace: stackTrace,
+          );
+
+          if (needLoader) {
+            AppLoader().hideLoader();
+          } else {}
+
+          failureCallback(<String, dynamic>{"message": error.message});
+        } on SocketException catch (error, stackTrace) {
+          AppLogger().error(
+            message: "Exception caught: ${error.message}",
+            error: error,
+            stackTrace: stackTrace,
+          );
+
+          if (needLoader) {
+            AppLoader().hideLoader();
+          } else {}
+
+          failureCallback(<String, dynamic>{"message": error.message});
         } on Exception catch (error, stackTrace) {
           AppLogger().error(
             message: "Exception caught",
@@ -517,7 +693,6 @@ class AppAPIService extends GetConnect {
         : body is List<dynamic>
             ? (body).toString()
             : body ?? "";
-
     log("endPoint: $endPoint");
     log("fullURL: $fullURL");
     log("headers: $pretyHeaders");

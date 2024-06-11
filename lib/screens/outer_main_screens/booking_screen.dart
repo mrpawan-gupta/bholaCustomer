@@ -611,18 +611,43 @@ class BookingScreen extends GetView<BookingController> {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12.0),
-                  color: AppColors().appPrimaryColor,
-                ),
-                child: Text(
-                  "${controller.rxFarmArea.value} Acre",
-                  style: TextStyle(color: AppColors().appWhiteColor),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
+              Row(
+                children: <Widget>[
+                  IconButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: () {
+                      if (controller.rxFarmArea.value > 0) {
+                        controller.rxFarmArea(controller.rxFarmArea.value - 1);
+                      } else {}
+                    },
+                    icon: const Icon(Icons.remove_circle, size: 32),
+                    color: AppColors().appPrimaryColor,
+                  ),
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12.0),
+                      color: AppColors().appPrimaryColor,
+                    ),
+                    child: Text(
+                      "${controller.rxFarmArea.value} Acre",
+                      style: TextStyle(color: AppColors().appWhiteColor),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  IconButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: () {
+                      if (controller.rxFarmArea.value < 100) {
+                        controller.rxFarmArea(controller.rxFarmArea.value + 1);
+                      } else {}
+                    },
+                    icon: const Icon(Icons.add_circle, size: 32),
+                    color: AppColors().appPrimaryColor,
+                  ),
+                ],
               ),
             ],
           ),

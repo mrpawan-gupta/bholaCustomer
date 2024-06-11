@@ -72,6 +72,7 @@ class Bookings {
     this.crop,
     this.farmArea,
     this.customer,
+    this.vendor,
   });
 
   Bookings.fromJson(Map<String, dynamic> json) {
@@ -97,6 +98,7 @@ class Bookings {
     farmArea = json["farmArea"];
     customer =
         json["customer"] != null ? Customer.fromJson(json["customer"]) : null;
+    vendor = json["vendor"] != null ? Vendor.fromJson(json["vendor"]) : null;
   }
 
   String? sId;
@@ -111,6 +113,7 @@ class Bookings {
   String? crop;
   int? farmArea;
   Customer? customer;
+  Vendor? vendor;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -133,6 +136,9 @@ class Bookings {
     data["farmArea"] = farmArea;
     if (customer != null) {
       data["customer"] = customer!.toJson();
+    }
+    if (vendor != null) {
+      data["vendor"] = vendor!.toJson();
     }
     return data;
   }
@@ -239,19 +245,27 @@ class DeliveryAddress {
 }
 
 class Customer {
-  Customer({this.sId, this.phoneNumber, this.firstName, this.lastName});
+  Customer({
+    this.sId,
+    this.phoneNumber,
+    this.firstName,
+    this.lastName,
+    this.email,
+  });
 
   Customer.fromJson(Map<String, dynamic> json) {
     sId = json["_id"];
     phoneNumber = json["phoneNumber"];
     firstName = json["firstName"];
     lastName = json["lastName"];
+    email = json["email"];
   }
 
   String? sId;
   String? phoneNumber;
   String? firstName;
   String? lastName;
+  String? email;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -259,6 +273,41 @@ class Customer {
     data["phoneNumber"] = phoneNumber;
     data["firstName"] = firstName;
     data["lastName"] = lastName;
+    data["email"] = email;
+    return data;
+  }
+}
+
+class Vendor {
+  Vendor({
+    this.sId,
+    this.phoneNumber,
+    this.firstName,
+    this.lastName,
+    this.email,
+  });
+
+  Vendor.fromJson(Map<String, dynamic> json) {
+    sId = json["_id"];
+    phoneNumber = json["phoneNumber"];
+    firstName = json["firstName"];
+    lastName = json["lastName"];
+    email = json["email"];
+  }
+
+  String? sId;
+  String? phoneNumber;
+  String? firstName;
+  String? lastName;
+  String? email;
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data["_id"] = sId;
+    data["phoneNumber"] = phoneNumber;
+    data["firstName"] = firstName;
+    data["lastName"] = lastName;
+    data["email"] = email;
     return data;
   }
 }

@@ -1,7 +1,9 @@
 import "package:cached_network_image/cached_network_image.dart";
+// import "package:customer/services/app_api_service.dart";
 import "package:customer/utils/app_assets_images.dart";
 import "package:customer/utils/app_logger.dart";
 import "package:flutter/material.dart";
+import "package:get/get.dart";
 
 enum ImageType { user, image, video }
 
@@ -19,33 +21,26 @@ class CommonImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return FadeInImage(
       height: double.infinity,
       width: double.infinity,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: imageUrl.isEmpty
-              ? assetImage(imageType) as ImageProvider
-              : CachedNetworkImageProvider(
-                  imageUrl,
-                  errorListener: (Object error) {
-                    AppLogger().error(
-                      message: "Exception caught",
-                      error: error,
-                    );
-                  },
-                ) as ImageProvider,
-          fit: fit,
-          isAntiAlias: true,
-          onError: (Object error, StackTrace? stackTrace) {
-            AppLogger().error(
-              message: "Exception caught",
-              error: error,
-              stackTrace: stackTrace,
-            );
-          },
-        ),
-      ),
+      fit: fit,
+      image: imageUrl.isURL
+          ? CachedNetworkImageProvider(
+              imageUrl,
+              // headers: AppAPIService().getHeaders(),
+              errorListener: (Object error) {
+                AppLogger().error(
+                  message: "Exception caught",
+                  error: error,
+                );
+              },
+            ) as ImageProvider
+          : assetImage(imageType) as ImageProvider,
+      placeholderFit: fit,
+      placeholder: assetImage(imageType) as ImageProvider,
+      fadeInDuration: const Duration(seconds: 1),
+      fadeOutDuration: const Duration(seconds: 1),
     );
   }
 
