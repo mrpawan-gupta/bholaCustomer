@@ -1,3 +1,5 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import "package:customer/common_widgets/app_elevated_button.dart";
 import "package:customer/common_widgets/app_text_button.dart";
 import "package:customer/common_widgets/app_text_field.dart";
@@ -13,6 +15,7 @@ import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/app_snackbar.dart";
 import "package:customer/utils/app_whatsapp.dart";
 import "package:customer/utils/localization/app_language_keys.dart";
+import "package:dropdown_search/dropdown_search.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
@@ -459,50 +462,71 @@ class BookingScreen extends GetView<BookingController> {
                           children: <Widget>[
                             const SizedBox(width: 16 + 8),
                             Expanded(
-                              child: DropdownButtonHideUnderline(
-                                child: DropdownButton<Categories>(
-                                  value: mapEquals(
-                                    controller.rxSelectedCategory.value
-                                        .toJson(),
-                                    Categories().toJson(),
-                                  )
-                                      ? null
-                                      : controller.rxSelectedCategory.value,
-                                  items: controller.categoriesList.map(
-                                    (
-                                      Categories value,
-                                    ) {
-                                      return DropdownMenuItem<Categories>(
-                                        value: value,
-                                        child: Text(value.name ?? ""),
-                                      );
-                                    },
-                                  ).toList(),
-                                  onChanged: (
-                                    Categories? value,
-                                  ) async {
-                                    if (value != null) {
-                                      controller.rxSelectedCategory(value);
+                              // child: DropdownButtonHideUnderline(
+                              //   child: DropdownButton<Categories>(
+                              //     value: mapEquals(
+                              //       controller.rxSelectedCategory.value
+                              //           .toJson(),
+                              //       Categories().toJson(),
+                              //     )
+                              //         ? null
+                              //         : controller.rxSelectedCategory.value,
+                              //     items: controller.categoriesList.map(
+                              //       (
+                              //         Categories value,
+                              //       ) {
+                              //         return DropdownMenuItem<Categories>(
+                              //           value: value,
+                              //           child: Text(value.name ?? ""),
+                              //         );
+                              //       },
+                              //     ).toList(),
+                              //     onChanged: (
+                              //       Categories? value,
+                              //     ) async {
+                              //       if (value != null) {
+                              //         controller.rxSelectedCategory(value);
 
-                                      controller.rxSelectedService(Services());
-                                      controller.servicesList.clear();
+                              //         controller.rxSelectedService(Services());
+                              //         controller.servicesList.clear();
 
-                                      await controller.getServicesAPI();
-                                    } else {}
-                                  },
-                                  isExpanded: true,
-                                  icon: Icon(
-                                    Icons.keyboard_arrow_down,
-                                    color: AppColors().appPrimaryColor,
-                                  ),
-                                  hint: Text(
-                                    "Pick Category",
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: AppColors().appGreyColor,
-                                    ),
-                                  ),
-                                ),
+                              //         await controller.getServicesAPI();
+                              //       } else {}
+                              //     },
+                              //     isExpanded: true,
+                              //     icon: Icon(
+                              //       Icons.keyboard_arrow_down,
+                              //       color: AppColors().appPrimaryColor,
+                              //     ),
+                              //     hint: Text(
+                              //       "Pick Category",
+                              //       style: TextStyle(
+                              //         fontSize: 14,
+                              //         color: AppColors().appGreyColor,
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
+                              child: customDropDownForCategories(
+                                selectedItem: mapEquals(
+                                  controller.rxSelectedCategory.value.toJson(),
+                                  Categories().toJson(),
+                                )
+                                    ? null
+                                    : controller.rxSelectedCategory.value,
+                                items: controller.categoriesList,
+                                onChanged: (
+                                  Categories? value,
+                                ) async {
+                                  if (value != null) {
+                                    controller.rxSelectedCategory(value);
+
+                                    controller.rxSelectedService(Services());
+                                    controller.servicesList.clear();
+
+                                    await controller.getServicesAPI();
+                                  } else {}
+                                },
                               ),
                             ),
                             const SizedBox(width: 16),
@@ -540,44 +564,60 @@ class BookingScreen extends GetView<BookingController> {
                           children: <Widget>[
                             const SizedBox(width: 16 + 8),
                             Expanded(
-                              child: DropdownButtonHideUnderline(
-                                child: DropdownButton<Services>(
-                                  value: mapEquals(
-                                    controller.rxSelectedService.value.toJson(),
-                                    Services().toJson(),
-                                  )
-                                      ? null
-                                      : controller.rxSelectedService.value,
-                                  items: controller.servicesList.map(
-                                    (
-                                      Services value,
-                                    ) {
-                                      return DropdownMenuItem<Services>(
-                                        value: value,
-                                        child: Text(value.name ?? ""),
-                                      );
-                                    },
-                                  ).toList(),
-                                  onChanged: (
-                                    Services? value,
-                                  ) {
-                                    if (value != null) {
-                                      controller.rxSelectedService(value);
-                                    } else {}
-                                  },
-                                  isExpanded: true,
-                                  icon: Icon(
-                                    Icons.keyboard_arrow_down,
-                                    color: AppColors().appPrimaryColor,
-                                  ),
-                                  hint: Text(
-                                    "Pick Service",
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: AppColors().appGreyColor,
-                                    ),
-                                  ),
-                                ),
+                              // child: DropdownButtonHideUnderline(
+                              //   child: DropdownButton<Services>(
+                              //     value: mapEquals(
+                              //       controller.rxSelectedService.value.toJson(),
+                              //       Services().toJson(),
+                              //     )
+                              //         ? null
+                              //         : controller.rxSelectedService.value,
+                              //     items: controller.servicesList.map(
+                              //       (
+                              //         Services value,
+                              //       ) {
+                              //         return DropdownMenuItem<Services>(
+                              //           value: value,
+                              //           child: Text(value.name ?? ""),
+                              //         );
+                              //       },
+                              //     ).toList(),
+                              //     onChanged: (
+                              //       Services? value,
+                              //     ) {
+                              //       if (value != null) {
+                              //         controller.rxSelectedService(value);
+                              //       } else {}
+                              //     },
+                              //     isExpanded: true,
+                              //     icon: Icon(
+                              //       Icons.keyboard_arrow_down,
+                              //       color: AppColors().appPrimaryColor,
+                              //     ),
+                              //     hint: Text(
+                              //       "Pick Service",
+                              //       style: TextStyle(
+                              //         fontSize: 14,
+                              //         color: AppColors().appGreyColor,
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
+                              child: customDropDownForServices(
+                                selectedItem: mapEquals(
+                                  controller.rxSelectedService.value.toJson(),
+                                  Services().toJson(),
+                                )
+                                    ? null
+                                    : controller.rxSelectedService.value,
+                                items: controller.servicesList,
+                                onChanged: (
+                                  Services? value,
+                                ) {
+                                  if (value != null) {
+                                    controller.rxSelectedService(value);
+                                  } else {}
+                                },
                               ),
                             ),
                             const SizedBox(width: 16),
@@ -1006,7 +1046,6 @@ class BookingScreen extends GetView<BookingController> {
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.0),
                   child: Text(
-                    // ignore: lines_longer_than_80_chars
                     "The selected service is currently not available in your area. Try Selecting the different service or contact the support team.",
                     maxLines: 5,
                     overflow: TextOverflow.ellipsis,
@@ -1050,5 +1089,77 @@ class BookingScreen extends GetView<BookingController> {
       isScrollControlled: true,
     );
     return Future<void>.value();
+  }
+
+  Widget customDropDownForCategories({
+    required Categories? selectedItem,
+    required List<Categories> items,
+    required Function(Categories? value) onChanged,
+  }) {
+    return DropdownSearch<Categories>(
+      selectedItem: selectedItem,
+      items: items,
+      itemAsString: (Categories item) {
+        return item.name ?? "";
+      },
+      onChanged: onChanged,
+      dropdownButtonProps: DropdownButtonProps(
+        icon: Icon(
+          Icons.keyboard_arrow_down,
+          color: AppColors().appPrimaryColor,
+          size: 24,
+        ),
+        padding: EdgeInsets.zero,
+        alignment: Alignment.centerRight,
+      ),
+      popupProps: const PopupProps<Categories>.menu(
+        showSearchBox: true,
+        fit: FlexFit.loose,
+        searchDelay: Duration.zero,
+      ),
+      dropdownDecoratorProps: DropDownDecoratorProps(
+        dropdownSearchDecoration: InputDecoration(
+          hintText: "Select",
+          hintStyle: TextStyle(fontSize: 14, color: AppColors().appGreyColor),
+          border: InputBorder.none,
+        ),
+      ),
+    );
+  }
+
+  Widget customDropDownForServices({
+    required Services? selectedItem,
+    required List<Services> items,
+    required Function(Services? value) onChanged,
+  }) {
+    return DropdownSearch<Services>(
+      selectedItem: selectedItem,
+      items: items,
+      itemAsString: (Services item) {
+        return item.name ?? "";
+      },
+      onChanged: onChanged,
+      dropdownButtonProps: DropdownButtonProps(
+        icon: Icon(
+          Icons.keyboard_arrow_down,
+          color: AppColors().appPrimaryColor,
+          size: 24,
+        ),
+        padding: EdgeInsets.zero,
+        alignment: Alignment.centerRight,
+      ),
+      popupProps: const PopupProps<Services>.menu(
+        showSearchBox: true,
+        fit: FlexFit.loose,
+        searchDelay: Duration.zero,
+      ),
+      dropdownDecoratorProps: DropDownDecoratorProps(
+        dropdownSearchDecoration: InputDecoration(
+          hintText: "Select",
+          hintStyle: TextStyle(fontSize: 14, color: AppColors().appGreyColor),
+          border: InputBorder.none,
+        ),
+      ),
+    );
   }
 }

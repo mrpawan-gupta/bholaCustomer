@@ -189,7 +189,6 @@ class BookingController extends GetxController {
       "scheduleDate": rxDate.value,
       "approxStartTime": rxStartTime.value,
       "approxEndTime": rxEndTime.value,
-      "crop": rxCropName.value,
       "vehicleCategory": categoriesList[getSelectedCategoryIndex()].sId ?? "",
       "deliveryAddress": rxAddressList[getSelectedAddressIndex()].sId ?? "",
       "services": <Map<String, dynamic>>[
@@ -199,6 +198,10 @@ class BookingController extends GetxController {
         }
       ],
     };
+
+    if (rxCropName.value.isNotEmpty) {
+      body.addAll(<String, dynamic>{"crop": rxCropName.value});
+    } else {}
 
     await AppAPIService().functionPost(
       types: Types.rental,
@@ -270,8 +273,12 @@ class BookingController extends GetxController {
 
     final bool cond01 = searchController.value.text.isNotEmpty;
     final bool cond02 = getSelectedAddressIndex() != -1;
-    final bool cond03 = cropNameController.value.text.isNotEmpty;
-    final bool cond04 = rxCropName.value.isNotEmpty;
+
+    // final bool cond03 = cropNameController.value.text.isNotEmpty;
+    // final bool cond04 = rxCropName.value.isNotEmpty;
+    const bool cond03 = true;
+    const bool cond04 = true;
+
     final bool cond05 = startTimeController.value.text.isNotEmpty;
     final bool cond06 = rxStartTime.value.isNotEmpty;
     final bool cond07 = endTimeController.value.text.isNotEmpty;
@@ -296,8 +303,10 @@ class BookingController extends GetxController {
       reason = "Please select your location.";
     } else if (!cond02) {
       reason = "Please select your location from saved addresses.";
+      // ignore: dead_code
     } else if (!cond03) {
       reason = "Please enter your crop name.";
+      // ignore: dead_code
     } else if (!cond04) {
       reason = "Please enter your valid crop name.";
     } else if (!cond05) {
