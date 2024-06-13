@@ -35,6 +35,7 @@ class AppAPIService extends GetConnect {
 
     timeout = const Duration(minutes: 10);
     maxAuthRetries = 3;
+
     AppLogger().info(message: "AppAPIService: onInit(): ${timeout.inSeconds}");
   }
 
@@ -42,9 +43,13 @@ class AppAPIService extends GetConnect {
     final String auth = AppStorageService().getUserAuthModel().token ?? "";
     final Locale locale = AppStorageService().getUserLangFromStorage();
     final String actLng = AppTranslations().localeToDashString(locale: locale);
+
     return <String, String>{
       "Authorization": "Bearer $auth",
       "Accept-Language": actLng,
+      "Connection": "Keep-Alive",
+      "Keep-Alive": "timeout=600, max=1000",
+      "Accept-Encoding": "gzip, deflate, br",
     };
   }
 

@@ -17,6 +17,7 @@ class AppNetCheckService extends GetxService {
   late StreamSubscription<InternetConnectionStatus> subscription;
 
   bool isInitial = true;
+  bool hasConnectionSynchronous = false;
 
   @override
   void onInit() {
@@ -25,6 +26,7 @@ class AppNetCheckService extends GetxService {
     subscription = instance.onStatusChange.listen(
       (InternetConnectionStatus event) {
         final bool hasConnection = event == InternetConnectionStatus.connected;
+        hasConnectionSynchronous = hasConnection;
         if (isInitial) {
           isInitial = false;
         } else {

@@ -78,8 +78,8 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
                   children: <Widget>[
                     Container(
                       clipBehavior: Clip.antiAliasWithSaveLayer,
-                      height: 64 + 4,
-                      width: 64 + 4,
+                      height: 56,
+                      width: 56,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12.0),
                       ),
@@ -105,7 +105,7 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
                           const SizedBox(height: 4),
                           Text(
                             item.sId ?? "",
-                            style: const TextStyle(),
+                            style: const TextStyle(fontSize: 10),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -125,7 +125,7 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
                             const Text(
-                              "Customer Information:",
+                              "Customer Info:",
                               style: TextStyle(),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
@@ -164,7 +164,7 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
                             const Text(
-                              "Vendor Information:",
+                              "Vendor Info:",
                               style: TextStyle(),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
@@ -316,7 +316,7 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           const Text(
-                            "Service Name",
+                            "Serv. Name",
                             style: TextStyle(),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -340,7 +340,7 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           const Text(
-                            "Service Price",
+                            "Serv. Price",
                             style: TextStyle(),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -364,7 +364,7 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           const Text(
-                            "Service Area",
+                            "Serv. Area",
                             style: TextStyle(),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,

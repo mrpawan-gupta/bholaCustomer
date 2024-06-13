@@ -13,6 +13,7 @@ import "package:customer/utils/app_routes.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart";
+import "package:transparent_image/transparent_image.dart";
 
 class MainNavigationScreen extends GetView<MainNavigationController> {
   const MainNavigationScreen({super.key});
@@ -112,7 +113,10 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
               navBarBuilder: (NavBarConfig navBarConfig) {
                 return Style13BottomNavBar(navBarConfig: navBarConfig);
               },
-              navBarOverlap: const NavBarOverlap.none(),
+              navBarOverlap: const NavBarOverlap.custom(
+                fullOverlapWhenNotOpaque: false,
+                overlap: kToolbarHeight / 2,
+              ),
               handleAndroidBackButtonPress: false,
               gestureNavigationEnabled: true,
               onTabChanged: tabControllerFunction,
@@ -132,20 +136,22 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
     return PersistentTabConfig(
       screen: screen,
       item: ItemConfig(
-        icon: Image.asset(
-          asset,
+        icon: FadeInImage(
+          image: AssetImage(asset),
+          placeholder: MemoryImage(kTransparentImage),
           fit: BoxFit.cover,
-          height: itemIndex != 2 ? 28 : 56,
-          width: itemIndex != 2 ? 28 : 56,
+          height: itemIndex != 2 ? kToolbarHeight / 2 : kToolbarHeight,
+          width: itemIndex != 2 ? kToolbarHeight / 2 : kToolbarHeight,
           color: itemIndex != 2
               ? AppColors().appPrimaryColor
               : AppColors().appWhiteColor,
         ),
-        inactiveIcon: Image.asset(
-          asset,
+        inactiveIcon: FadeInImage(
+          image: AssetImage(asset),
+          placeholder: MemoryImage(kTransparentImage),
           fit: BoxFit.cover,
-          height: itemIndex != 2 ? 28 : 56,
-          width: itemIndex != 2 ? 28 : 56,
+          height: itemIndex != 2 ? kToolbarHeight / 2 : kToolbarHeight,
+          width: itemIndex != 2 ? kToolbarHeight / 2 : kToolbarHeight,
           color: itemIndex != 2
               ? AppColors().appGreyColor
               : AppColors().appWhiteColor,
@@ -153,7 +159,6 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
         title: title,
         activeForegroundColor: AppColors().appPrimaryColor,
         inactiveForegroundColor: AppColors().appGrey,
-        iconSize: itemIndex != 2 ? 28 : 56,
       ),
     );
   }

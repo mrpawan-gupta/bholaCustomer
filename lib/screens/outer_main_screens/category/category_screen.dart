@@ -21,7 +21,7 @@ class CategoryScreen extends GetView<CategoryController> {
         featuredServicesWidget(),
         const SizedBox(height: 32),
         featuredCategoriesidget(),
-        // const SizedBox(height: 32),
+        const SizedBox(height: 32),
       ],
     );
   }

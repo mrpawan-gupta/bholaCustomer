@@ -32,12 +32,12 @@ class HomeScreen extends GetView<HomeController> {
                 color: AppColors().appPrimaryColor,
                 backgroundColor: AppColors().appWhiteColor,
                 onRefresh: () async {
+                  controller.pagingControllerDynamic.clear();
+
                   controller
                     ..pagingControllerServices.refresh()
                     ..pagingControllerCategories.refresh()
                     ..pagingControllerBanners.refresh();
-
-                  controller.pagingControllerDynamic.clear();
                 },
                 child: SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
@@ -56,8 +56,7 @@ class HomeScreen extends GetView<HomeController> {
                         banners(),
                         const SizedBox(height: 32),
                         dynamicWidget(),
-                        // const SizedBox(height: 32),
-                        // const SizedBox(height: 32),
+                        const SizedBox(height: 32),
                       ],
                     ),
                   ),

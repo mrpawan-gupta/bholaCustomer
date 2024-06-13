@@ -24,12 +24,11 @@ class AppRemoteConfig extends GetxService {
   Future<void> initFirebaseRemoteConfig() async {
     try {
       const Duration duration = Duration.zero;
-      
       final RemoteConfigSettings remoteConfigSettings = RemoteConfigSettings(
         fetchTimeout: duration,
         minimumFetchInterval: duration,
       );
-      
+
       await remoteConfig.setConfigSettings(remoteConfigSettings);
       await fetchAndActivate();
     } on Exception catch (error, stackTrace) {
@@ -65,27 +64,48 @@ class AppRemoteConfig extends GetxService {
 
     subscription = remoteConfig.onConfigUpdated.listen(
       (RemoteConfigUpdate event) async {
-        await remoteConfig.activate();
+        try {
+          await remoteConfig.activate();
 
-        if (event.updatedKeys.contains(paramBoolean)) {
-          final bool value = await getBool();
-          AppLogger().info(message: "$paramBoolean : $value");
-        } else {}
+          if (event.updatedKeys.contains(paramBoolean)) {
+            final bool value = await getBool();
+            AppLogger().info(message: "$paramBoolean : $value");
+          } else {}
 
-        if (event.updatedKeys.contains(paramJson)) {
-          final Map<String, dynamic> value = await getJson();
-          AppLogger().info(message: "$paramJson : $value");
-        } else {}
+          if (event.updatedKeys.contains(paramJson)) {
+            final Map<String, dynamic> value = await getJson();
+            AppLogger().info(message: "$paramJson : $value");
+          } else {}
 
-        if (event.updatedKeys.contains(paramNumber)) {
-          final double value = await getDouble();
-          AppLogger().info(message: "$paramNumber : $value");
-        } else {}
+          if (event.updatedKeys.contains(paramNumber)) {
+            final double value = await getDouble();
+            AppLogger().info(message: "$paramNumber : $value");
+          } else {}
 
-        if (event.updatedKeys.contains(paramString)) {
-          final String value = await getString();
-          AppLogger().info(message: "$paramString : $value");
-        } else {}
+          if (event.updatedKeys.contains(paramString)) {
+            final String value = await getString();
+            AppLogger().info(message: "$paramString : $value");
+          } else {}
+        } on Exception catch (error, stackTrace) {
+          AppLogger().error(
+            message: "Exception caught",
+            error: error,
+            stackTrace: stackTrace,
+          );
+        } finally {}
+      },
+      // ignore: always_specify_types
+      onError: (error, stackTrace) {
+        AppLogger().error(
+          message: "Exception caught",
+          error: error,
+          stackTrace: stackTrace,
+        );
+      },
+      cancelOnError: false,
+      onDone: () async {
+        AppLogger().info(message: "remoteConfig: subscription: onDone called");
+        await subscription.cancel();
       },
     );
   }

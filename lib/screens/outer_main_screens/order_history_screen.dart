@@ -157,7 +157,7 @@ class OrderHistoryScreen extends GetView<OrderHistoryController> {
             final int length = itemList.length;
             final bool isLast = index == length - 1;
             return Padding(
-              padding: EdgeInsets.only(bottom: isLast ? 16.0 : 16.0),
+              padding: EdgeInsets.only(bottom: isLast ? 32.0 : 16.0),
               child: Card(
                 margin: EdgeInsets.zero,
                 elevation: 4,
@@ -189,8 +189,8 @@ class OrderHistoryScreen extends GetView<OrderHistoryController> {
                           children: <Widget>[
                             Container(
                               clipBehavior: Clip.antiAliasWithSaveLayer,
-                              height: 64 + 4,
-                              width: 64 + 4,
+                              height: 56,
+                              width: 56,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12.0),
                               ),
@@ -216,7 +216,7 @@ class OrderHistoryScreen extends GetView<OrderHistoryController> {
                                   const SizedBox(height: 4),
                                   Text(
                                     item.sId ?? "",
-                                    style: const TextStyle(),
+                                    style: const TextStyle(fontSize: 10),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),

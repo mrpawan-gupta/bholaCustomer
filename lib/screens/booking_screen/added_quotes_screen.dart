@@ -202,8 +202,8 @@ class AddedQuotesScreen extends GetView<AddedQuotesController> {
                           children: <Widget>[
                             Container(
                               clipBehavior: Clip.antiAliasWithSaveLayer,
-                              height: 64 + 4,
-                              width: 64 + 4,
+                              height: 56,
+                              width: 56,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12.0),
                               ),
@@ -229,7 +229,7 @@ class AddedQuotesScreen extends GetView<AddedQuotesController> {
                                   const SizedBox(height: 4),
                                   Text(
                                     item.sId ?? "",
-                                    style: const TextStyle(),
+                                    style: const TextStyle(fontSize: 10),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),

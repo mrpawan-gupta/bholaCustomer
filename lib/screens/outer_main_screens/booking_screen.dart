@@ -61,7 +61,7 @@ class BookingScreen extends GetView<BookingController> {
         getQuoteButtonWidget(context),
         const SizedBox(height: 8),
         alreadyAddedQuoteButtonWidget(context),
-        // const SizedBox(height: 32),
+        const SizedBox(height: 32),
       ],
     );
   }
