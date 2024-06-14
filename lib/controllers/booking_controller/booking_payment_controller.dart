@@ -9,7 +9,7 @@ class BookingPaymentController extends GetxController {
 
     if (Get.arguments != null && Get.arguments is Map<String, dynamic>) {
       final Map<String, dynamic> arguments = Get.arguments;
-      if (arguments.containsKey("id") && arguments.containsKey("data")) {
+      if (arguments.containsKey("id")) {
         updateBookingId(arguments["id"]);
       } else {}
     } else {}

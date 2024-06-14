@@ -10,6 +10,7 @@ import "package:customer/screens/outer_main_screens/home/my_utils/common_horizon
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_routes.dart";
+import "package:customer/utils/app_snackbar.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:infinite_scroll_pagination/infinite_scroll_pagination.dart";
@@ -91,12 +92,15 @@ class HomeScreen extends GetView<HomeController> {
         CommonHorizontalListView(
           pagingController: controller.pagingControllerServices,
           onTap: (Categories item) async {
-            // await AppNavService().pushNamed(
-            //   destination: AppRoutes().productListingScreen,
-            //   arguments: <String, dynamic>{"id": item.sId ?? ""},
-            // );
-
-            await tabControllerFunction(2);
+            final bool isApproved = (item.status ?? "") == "Approved";
+            if (isApproved) {
+              await tabControllerFunction(2);
+            } else {
+              AppSnackbar().snackbarFailure(
+                title: "Oops!",
+                message: "Coming Soon!",
+              );
+            }
           },
           type: "rental categories list",
         ),
@@ -203,7 +207,7 @@ class HomeScreen extends GetView<HomeController> {
               onTapViewAll: () async {
                 await AppNavService().pushNamed(
                   destination: AppRoutes().productListingScreen,
-                  arguments: <String, dynamic>{},
+                  arguments: <String, dynamic>{"id": category.sId ?? ""},
                 );
               },
             ),

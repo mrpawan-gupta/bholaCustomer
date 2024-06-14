@@ -58,22 +58,25 @@ class FeaturedModelData {
 }
 
 class Categories {
-  Categories({this.sId, this.name, this.photo});
+  Categories({this.sId, this.name, this.photo, this.status});
 
   Categories.fromJson(Map<String, dynamic> json) {
     sId = json["_id"];
     name = json["name"];
     photo = json["photo"];
+    status = json["status"];
   }
   String? sId;
   String? name;
   String? photo;
+  String? status;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data["_id"] = sId;
     data["name"] = name;
     data["photo"] = photo;
+    data["status"] = status;
     return data;
   }
 }

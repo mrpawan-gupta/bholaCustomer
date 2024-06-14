@@ -1,7 +1,7 @@
 name: customer
 description: "A new Flutter project."
 publish_to: 'none'
-version: 1.0.5+6
+version: 1.0.6+7
 
 environment:
   sdk: '>=3.3.1 <4.0.0'
@@ -10,17 +10,17 @@ dependencies:
   after_layout: ^1.2.0
   app_links: ^6.1.1
   cached_network_image: ^3.3.1
-  cloud_firestore: ^5.0.0
+  cloud_firestore: ^5.0.1
   cupertino_icons: ^1.0.6
   device_info_plus: ^10.1.0
   dotted_border: ^2.1.0
   dropdown_search: ^5.0.6
-  firebase_analytics: ^11.0.0
-  firebase_core: ^3.0.0
-  firebase_crashlytics: ^4.0.0
-  firebase_messaging: ^15.0.0
-  firebase_performance: ^0.10.0
-  firebase_remote_config: ^5.0.0
+  firebase_analytics: ^11.0.1
+  firebase_core: ^3.1.0
+  firebase_crashlytics: ^4.0.1
+  firebase_messaging: ^15.0.1
+  firebase_performance: ^0.10.0+1
+  firebase_remote_config: ^5.0.1
   flutter:
     sdk: flutter
   flutter_cached_pdfview: ^0.4.2
@@ -35,7 +35,7 @@ dependencies:
   gauge_indicator: ^0.4.3
   get: ^4.6.6
   get_storage: ^2.1.1
-  google_fonts: ^4.0.4
+  google_fonts: ^6.2.1
   image_picker: ^1.1.2
   infinite_scroll_pagination: ^4.0.0
   internet_connection_checker: ^1.0.0+1
@@ -55,8 +55,10 @@ dependencies:
   persistent_bottom_nav_bar_v2: ^5.2.3
   photo_view: ^0.15.0
   pinput: ^4.0.0
-  place_picker: ^0.10.0
-  pod_player: ^0.2.0
+  place_picker:
+    git:
+      url: https://github.com/dharambudh1/locationpicker.git
+  pod_player: ^0.2.2
   read_more_text: ^0.0.5
   smart_auth: ^2.0.0
   syncfusion_flutter_sliders: ^20.4.54

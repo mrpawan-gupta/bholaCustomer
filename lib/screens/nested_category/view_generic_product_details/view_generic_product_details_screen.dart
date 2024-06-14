@@ -1,5 +1,6 @@
 import "package:customer/common_functions/date_time_functions.dart";
 import "package:customer/common_widgets/app_bottom_indicator.dart";
+import "package:customer/common_widgets/app_elevated_button.dart";
 import "package:customer/common_widgets/common_image_widget.dart";
 import "package:customer/controllers/nested_category/view_generic_product_details_controller.dart";
 import "package:customer/models/generic_product_details_model.dart";
@@ -10,6 +11,7 @@ import "package:customer/screens/nested_category/view_generic_product_details/co
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_routes.dart";
+import "package:customer/utils/app_snackbar.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:flutter_rating_bar/flutter_rating_bar.dart";
@@ -27,34 +29,43 @@ class ViewGenericProductDetailsScreen
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("Generic Product Details"),
+        title: const Text("Product Details"),
         surfaceTintColor: AppColors().appTransparentColor,
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Obx(
-            () {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  pageViewWidget(),
-                  const SizedBox(height: 16),
-                  basicInfoWidget(),
-                  const SizedBox(height: 16),
-                  moreInfoWidget(),
-                  const SizedBox(height: 16),
-                  advanceInfoWidget(),
-                  const SizedBox(height: 16),
-                  suggestedWidget(),
-                  const SizedBox(height: 16),
-                  ratingBarGraphWidget(),
-                  const SizedBox(height: 16),
-                  reviewsWidget(),
-                ],
-              );
-            },
-          ),
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: SingleChildScrollView(
+                child: Obx(
+                  () {
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        pageViewWidget(),
+                        const SizedBox(height: 16),
+                        basicInfoWidget(),
+                        const SizedBox(height: 16),
+                        moreInfoWidget(),
+                        const SizedBox(height: 16),
+                        advanceInfoWidget(),
+                        const SizedBox(height: 16),
+                        suggestedWidget(),
+                        const SizedBox(height: 16),
+                        ratingBarGraphWidget(),
+                        const SizedBox(height: 16),
+                        reviewsWidget(),
+                      ],
+                    );
+                  },
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            buttons(),
+            const SizedBox(height: 16),
+          ],
         ),
       ),
     );
@@ -657,6 +668,48 @@ class ViewGenericProductDetailsScreen
       minHeight: 8,
       borderRadius: BorderRadius.circular(100),
       valueColor: AlwaysStoppedAnimation<Color>(AppColors().appPrimaryColor),
+    );
+  }
+
+  Widget buttons() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Expanded(
+            child: SizedBox(
+              height: 50,
+              width: double.infinity,
+              child: AppElevatedButton(
+                text: "Add to Cart",
+                onPressed: () {
+                  AppSnackbar().snackbarFailure(
+                    title: "Oops!",
+                    message: "Coming Soon!",
+                  );
+                },
+              ),
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: SizedBox(
+              height: 50,
+              width: double.infinity,
+              child: AppElevatedButton(
+                text: "Buy Now",
+                onPressed: () {
+                  AppSnackbar().snackbarFailure(
+                    title: "Oops!",
+                    message: "Coming Soon!",
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
