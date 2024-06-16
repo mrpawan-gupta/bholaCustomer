@@ -80,22 +80,27 @@ class AppFCMService extends GetxService {
         final AndroidNotification? android = message.notification?.android;
         final AppleNotification? apple = message.notification?.apple;
 
-        if (notification != null && (android != null || apple != null)) {
-          Get.snackbar(
-            notification.title ?? "",
-            notification.body ?? "",
-            snackPosition: SnackPosition.TOP,
-            backgroundColor: AppColors().appPrimaryColor.withOpacity(0.64),
-            duration: const Duration(seconds: 4),
-            isDismissible: true,
-            dismissDirection: DismissDirection.horizontal,
-            colorText: Colors.white,
-            onTap: (GetSnackBar getSnackBar) async {
-              final Map<String, dynamic> payload = message.data;
-              final String stringPayload = payload.toString();
-              await onTapForegoundOrBackground(stringPayload);
-            },
-          );
+        final bool condition1 = notification != null;
+        final bool condition2 = android != null || apple != null;
+
+        if (condition1 && condition2) {
+          Get
+            ..closeAllSnackbars()
+            ..snackbar(
+              notification.title ?? "",
+              notification.body ?? "",
+              snackPosition: SnackPosition.TOP,
+              backgroundColor: AppColors().appPrimaryColor.withOpacity(0.64),
+              duration: const Duration(seconds: 4),
+              isDismissible: true,
+              dismissDirection: DismissDirection.horizontal,
+              colorText: Colors.white,
+              onTap: (GetSnackBar getSnackBar) async {
+                final Map<String, dynamic> payload = message.data;
+                final String stringPayload = payload.toString();
+                await onTapForegoundOrBackground(stringPayload);
+              },
+            );
         } else {}
       },
     );

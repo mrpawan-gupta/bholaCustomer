@@ -138,9 +138,7 @@ class ViewGenericProductDetailsController extends GetxController {
         GenericProduct productDetails = GenericProduct();
         productDetails = GenericProduct.fromJson(json);
 
-        updateProductDetailsData(
-          productDetails.data ?? GenericProductData(),
-        );
+        updateProductDetailsData(productDetails.data ?? GenericProductData());
 
         await initPodPlayerController();
 
@@ -227,16 +225,21 @@ class ViewGenericProductDetailsController extends GetxController {
   Future<List<Products>> _apiCallProducts(int pageKey) async {
     final Completer<List<Products>> completer = Completer<List<Products>>();
 
-    if (mapEquals(
-      rxProductDetailsData.value.toJson(),
-      GenericProductData().toJson(),
-    )) {
+    final Map<String, dynamic> map1 = rxProductDetailsData.value.toJson();
+    final Map<String, dynamic> map2 = GenericProductData().toJson();
+
+    final String category = rxProductDetailsData.value.category ?? "";
+
+    final bool condition1 = mapEquals(map1, map2);
+    final bool condition2 = category.isEmpty;
+    final bool finalCondition = condition1 || condition2;
+
+    if (finalCondition) {
       completer.complete(<Products>[]);
     } else {
       await AppAPIService().functionGet(
         types: Types.order,
-        endPoint:
-            "${rxProductId.value}/product/${rxProductDetailsData.value.category}",
+        endPoint: "${rxProductId.value}/product/$category",
         query: <String, dynamic>{
           "page": pageKey,
           "limit": pageSize,
@@ -250,8 +253,10 @@ class ViewGenericProductDetailsController extends GetxController {
           completer.complete(model.data?.products ?? <Products>[]);
         },
         failureCallback: (Map<String, dynamic> json) {
-          AppSnackbar()
-              .snackbarFailure(title: "Oops", message: json["message"]);
+          AppSnackbar().snackbarFailure(
+            title: "Oops",
+            message: json["message"],
+          );
 
           completer.complete(<Products>[]);
         },

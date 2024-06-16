@@ -1,5 +1,6 @@
 import "package:customer/common_widgets/app_elevated_button.dart";
 import "package:customer/controllers/login_screen_controllers/otp_screen_controller.dart";
+import "package:customer/services/app_sms_retriever_implementation.dart";
 import "package:customer/utils/app_assets_images.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_snackbar.dart";
@@ -57,8 +58,7 @@ class OTPScreen extends GetView<OTPScreenController> {
                   ),
                   const SizedBox(height: 32),
                   Pinput(
-                    androidSmsAutofillMethod:
-                        AndroidSmsAutofillMethod.smsRetrieverApi,
+                    smsRetriever: AppSMSRetrieverImplementation(),
                     length: 6,
                     autofocus: true,
                     controller: controller.otpController,
@@ -72,9 +72,6 @@ class OTPScreen extends GetView<OTPScreenController> {
                       LengthLimitingTextInputFormatter(6),
                       FilteringTextInputFormatter.singleLineFormatter,
                       FilteringTextInputFormatter.deny(RegExp(r"\s")),
-                    ],
-                    autofillHints: const <String>[
-                      AutofillHints.oneTimeCode,
                     ],
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     followingPinTheme: PinTheme(

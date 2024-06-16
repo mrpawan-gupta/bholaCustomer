@@ -41,7 +41,22 @@ class AppLocationService extends GetxService {
     super.onClose();
   }
 
+  Future<void> preProcedure() async {
+    final bool value0 = await loc.Location().isBackgroundModeEnabled();
+    AppLogger().info(message: "preProcedure(): value0: $value0");
+
+    if (value0) {
+      await loc.Location().enableBackgroundMode(enable: false);
+    } else {}
+
+    final bool value1 = await loc.Location().isBackgroundModeEnabled();
+    AppLogger().info(message: "preProcedure(): value1: $value1");
+    return Future<void>.value();
+  }
+
   Future<void> automatedFunction() async {
+    await preProcedure();
+
     final (double, double, String) currentLocation = await decideAndSend();
 
     if (previousLocation != currentLocation) {
