@@ -44,6 +44,7 @@ dependencies:
   loader_overlay: ^4.0.0
   location: ^6.0.2
   logger: ^2.3.0
+  lottie: ^3.1.2
   marquee: ^2.2.3
   media_info:
     git:
@@ -60,6 +61,7 @@ dependencies:
       url: https://github.com/dharambudh1/locationpicker.git
   pod_player: ^0.2.2
   read_more_text: ^0.0.5
+  simple_ripple_animation: ^0.0.9
   smart_auth: ^2.0.0
   syncfusion_flutter_sliders: ^20.4.54
   transparent_image: ^2.0.1
@@ -80,9 +82,10 @@ flutter:
   assets:
     - assets/
     - assets/images/
+    - assets/lotties/
 
 flutter_launcher_icons:
-  image_path: "assets/images/app_icon.png"
+  image_path: "assets/images/app_icon_customer.png"
   android: true
   ios: true
   remove_alpha_ios: true

@@ -18,7 +18,7 @@ class AppConstants {
   final Duration duration = const Duration(seconds: 4);
 
   final bool isEnabledAppLogger = kDebugMode;
-  final bool isEnabledBackendUpdateLocInfo = kReleaseMode;
+  final bool isEnabledBackendUpdateLocInfo = false;
   final bool isEnabledFirestoreUpdateLocInfo = false;
   final bool isEnabledFirestoreUpdatePkgInfo = kReleaseMode;
   final bool isEnabledFirestoreUpdateDevInfo = kReleaseMode;

@@ -6,10 +6,12 @@ import "package:customer/controllers/outer_main_controllers/help_controller.dart
 import "package:customer/controllers/outer_main_controllers/home_controller.dart";
 import "package:customer/controllers/outer_main_controllers/order_history_controller.dart";
 import "package:customer/models/get_user_by_id.dart";
+import "package:customer/services/app_perm_service.dart";
 import "package:customer/services/app_storage_service.dart";
 import "package:customer/utils/app_assets_images.dart";
 import "package:customer/utils/app_whatsapp.dart";
 import "package:get/get.dart";
+import "package:location/location.dart" as loc;
 import "package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart";
 
 Future<void> tabControllerFunction(int value) async {
@@ -27,6 +29,7 @@ Future<void> tabControllerFunction(int value) async {
 
 class MainNavigationController extends GetxController {
   final Rx<GetUserByIdData> rxUserInfo = GetUserByIdData().obs;
+  final RxBool rxIsLocationWorking = false.obs;
 
   late Timer _timer;
 
@@ -63,6 +66,8 @@ class MainNavigationController extends GetxController {
         } else if (timerCurrent.value == list[2]) {
           timerCurrent(list[0]);
         } else {}
+
+        unawaited(checkLocationFunction());
       },
     );
   }
@@ -76,11 +81,17 @@ class MainNavigationController extends GetxController {
 
   void initAndReInitFunction() {
     updateUserInfo(AppStorageService().getUserInfoModel());
+    unawaited(checkLocationFunction());
     return;
   }
 
   void updateUserInfo(GetUserByIdData value) {
     rxUserInfo(value);
+    return;
+  }
+
+  void updateIsLocationWorking({required bool value}) {
+    rxIsLocationWorking(value);
     return;
   }
 
@@ -90,5 +101,24 @@ class MainNavigationController extends GetxController {
 
   void jumpToTab(int index) {
     return tabController.jumpToTab(index);
+  }
+
+  Future<void> checkLocationFunction() async {
+    final loc.PermissionStatus status = await loc.Location().hasPermission();
+    final bool isGranted = status == loc.PermissionStatus.granted;
+    final bool isGrantedLimited = status == loc.PermissionStatus.grantedLimited;
+
+    final bool hasPermission = isGranted || isGrantedLimited;
+    final bool serviceEnable = await loc.Location().serviceEnabled();
+
+    final bool value = hasPermission && serviceEnable;
+    updateIsLocationWorking(value: value);
+    return Future<void>.value();
+  }
+
+  Future<void> requestLocationFunction() async {
+    await AppPermService().permissionLocation();
+    await AppPermService().serviceLocation();
+    return Future<void>.value();
   }
 }

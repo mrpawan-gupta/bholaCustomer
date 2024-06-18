@@ -13,6 +13,7 @@ import "package:customer/utils/app_routes.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart";
+import "package:simple_ripple_animation/simple_ripple_animation.dart";
 import "package:transparent_image/transparent_image.dart";
 
 class MainNavigationScreen extends GetView<MainNavigationController> {
@@ -26,7 +27,41 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
         return Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
-            centerTitle: false,
+            leading: Stack(
+              children: <Widget>[
+                Align(
+                  child: IconButton(
+                    icon: Icon(
+                      controller.rxIsLocationWorking.value
+                          ? Icons.location_on_outlined
+                          : Icons.location_off_outlined,
+                      color: controller.rxIsLocationWorking.value
+                          ? AppColors().appPrimaryColor
+                          : AppColors().appRedColor,
+                      size: 24,
+                    ),
+                    padding: EdgeInsets.zero,
+                    onPressed: () async {
+                      await controller.requestLocationFunction();
+                    },
+                  ),
+                ),
+                Align(
+                  child: RippleAnimation(
+                    color: controller.rxIsLocationWorking.value
+                        ? AppColors().appPrimaryColor
+                        : AppColors().appRedColor,
+                    delay: const Duration(seconds: 1),
+                    repeat: true,
+                    minRadius: 16,
+                    ripplesCount: 1,
+                    duration: const Duration(seconds: 5),
+                    child: const SizedBox(),
+                  ),
+                ),
+              ],
+            ),
+            centerTitle: true,
             title: helloWidget(data),
             actions: <Widget>[
               Padding(

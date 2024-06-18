@@ -1,6 +1,7 @@
 import "package:customer/bindings/booking_binding/added_quotes_binding.dart";
 import "package:customer/bindings/booking_binding/booking_details_binding.dart";
 import "package:customer/bindings/booking_binding/booking_payment_binding.dart";
+import "package:customer/bindings/login_screen_bindings/intro_slider_binding.dart";
 import "package:customer/bindings/login_screen_bindings/language_selection_binding.dart";
 import "package:customer/bindings/login_screen_bindings/notification_screen_binding.dart";
 import "package:customer/bindings/login_screen_bindings/otp_screen_binding.dart";
@@ -20,6 +21,7 @@ import "package:customer/bindings/settings_bindings/settings_main_binding.dart";
 import "package:customer/screens/booking_screen/added_quotes_screen.dart";
 import "package:customer/screens/booking_screen/booking_details_screen.dart";
 import "package:customer/screens/booking_screen/booking_payment_screen.dart";
+import "package:customer/screens/login_screen/intro_slider_screen.dart";
 import "package:customer/screens/login_screen/language_selection.dart";
 import "package:customer/screens/login_screen/notification_screen.dart";
 import "package:customer/screens/login_screen/otp_screen.dart";
@@ -48,6 +50,7 @@ class AppRoutes {
 
   final String splashScreen = "/";
   final String languageSelectionScreen = "/languageSelection";
+  final String introSliderScreen = "/introSliderScreen";
   final String notificationScreen = "/notificationScreen";
   final String phoneNoScreen = "/phoneNoScreen";
   final String otpScreen = "/otpScreen";
@@ -81,6 +84,11 @@ class AppRoutes {
       name: languageSelectionScreen,
       page: LanguageSelectionPage.new,
       binding: LanguageSelectionBinding(),
+    );
+    final GetPage<dynamic> introSliderRoute = GetPage<dynamic>(
+      name: introSliderScreen,
+      page: IntroSliderScreen.new,
+      binding: IntroSliderBinding(),
     );
     final GetPage<dynamic> notificationScreenRoute = GetPage<dynamic>(
       name: notificationScreen,
@@ -175,6 +183,7 @@ class AppRoutes {
     return <GetPage<dynamic>>[
       splashScreenRoute,
       languageSelectionRoute,
+      introSliderRoute,
       notificationScreenRoute,
       phoneNumberScreenRoute,
       otpScreenRoute,

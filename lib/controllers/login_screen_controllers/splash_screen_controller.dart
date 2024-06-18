@@ -32,7 +32,8 @@ class SplashScreenController extends GetxController {
   }
 
   Future<void> startupProcedure({required Function() showPopup}) async {
-    final String reason = await permissionValidate();
+    // final String reason = await permissionValidate();
+    const String reason = "";
     if (reason.isEmpty) {
       await furtherProcedure();
     } else {
@@ -61,7 +62,6 @@ class SplashScreenController extends GetxController {
             ? <String, dynamic>{}
             : <String, dynamic>{"id": arguments},
       );
-
       await AppSession().performSignIn();
     } else if (route.isNotEmpty && !hasLoggedIn) {
       await AppNavService().pushNamedAndRemoveUntil(

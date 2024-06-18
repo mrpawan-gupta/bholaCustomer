@@ -8,6 +8,9 @@ class AppAssetsImages {
   static final AppAssetsImages _singleton = AppAssetsImages._internal();
 
   final String appIcon = "assets/images/app_icon.png";
+  final String appIconAdmin = "assets/images/app_icon_admin.png";
+  final String appIconCustomer = "assets/images/app_icon_customer.png";
+  final String appIconVendor = "assets/images/app_icon_vendor.png";
   final String splash = "assets/images/splash.png";
   final String flag = "assets/images/flag.jpg";
 

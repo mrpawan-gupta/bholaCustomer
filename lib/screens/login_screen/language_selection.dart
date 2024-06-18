@@ -118,6 +118,7 @@ class LanguageSelectionPage extends GetView<LanguageSelectionController> {
                     onPressed: () async {
                       await AppNavService().pushNamed(
                         destination: AppRoutes().notificationScreen,
+                        // destination: AppRoutes().introSliderScreen,
                         arguments: <String, dynamic>{},
                       );
                     },
