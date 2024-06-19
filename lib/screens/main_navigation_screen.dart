@@ -10,10 +10,10 @@ import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_assets_images.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_routes.dart";
+import "package:customer/utils/app_whatsapp.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart";
-import "package:simple_ripple_animation/simple_ripple_animation.dart";
 import "package:transparent_image/transparent_image.dart";
 
 class MainNavigationScreen extends GetView<MainNavigationController> {
@@ -27,39 +27,39 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
         return Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
-            leading: Stack(
-              children: <Widget>[
-                Align(
-                  child: IconButton(
-                    icon: Icon(
-                      controller.rxIsLocationWorking.value
-                          ? Icons.location_on_outlined
-                          : Icons.location_off_outlined,
-                      color: controller.rxIsLocationWorking.value
-                          ? AppColors().appPrimaryColor
-                          : AppColors().appRedColor,
-                      size: 24,
+            leadingWidth: kToolbarHeight + 16,
+            leading: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: 48,
+                width: 48,
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                decoration: const BoxDecoration(shape: BoxShape.circle),
+                child: Stack(
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  children: <Widget>[
+                    CommonImageWidget(
+                      imageUrl: data.profile?.profilePhoto ?? "",
+                      fit: BoxFit.cover,
+                      imageType: ImageType.user,
                     ),
-                    padding: EdgeInsets.zero,
-                    onPressed: () async {
-                      await controller.requestLocationFunction();
-                    },
-                  ),
+                    Material(
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () async {
+                          await AppNavService().pushNamed(
+                            destination: AppRoutes().settingsMainScreen,
+                            arguments: <String, dynamic>{},
+                          );
+
+                          controller.initAndReInitFunction();
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-                Align(
-                  child: RippleAnimation(
-                    color: controller.rxIsLocationWorking.value
-                        ? AppColors().appPrimaryColor
-                        : AppColors().appRedColor,
-                    delay: const Duration(seconds: 1),
-                    repeat: true,
-                    minRadius: 16,
-                    ripplesCount: 1,
-                    duration: const Duration(seconds: 5),
-                    child: const SizedBox(),
-                  ),
-                ),
-              ],
+              ),
             ),
             centerTitle: true,
             title: helloWidget(data),
@@ -74,23 +74,22 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
                   child: Stack(
                     clipBehavior: Clip.antiAliasWithSaveLayer,
                     children: <Widget>[
-                      CommonImageWidget(
-                        imageUrl: data.profile?.profilePhoto ?? "",
-                        fit: BoxFit.cover,
-                        imageType: ImageType.user,
+                      Positioned(
+                        right: 0,
+                        child: FadeInImage(
+                          image: AssetImage(AppAssetsImages().bottomNavHelp),
+                          placeholder: MemoryImage(kTransparentImage),
+                          fit: BoxFit.cover,
+                          height: 48 - 8,
+                          width: 48 - 8,
+                          color: AppColors().appPrimaryColor,
+                        ),
                       ),
                       Material(
                         clipBehavior: Clip.antiAliasWithSaveLayer,
                         color: Colors.transparent,
                         child: InkWell(
-                          onTap: () async {
-                            await AppNavService().pushNamed(
-                              destination: AppRoutes().settingsMainScreen,
-                              arguments: <String, dynamic>{},
-                            );
-
-                            controller.initAndReInitFunction();
-                          },
+                          onTap: AppWhatsApp().openWhatsApp,
                         ),
                       ),
                     ],
@@ -104,6 +103,7 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
           body: WillPopScope(
             onWillPop: () async {
               bool value = false;
+
               if (controller.getCurrentIndex() == 0) {
                 value = true;
               } else {

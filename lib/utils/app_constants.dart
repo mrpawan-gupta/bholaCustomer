@@ -1,3 +1,6 @@
+// ignore_for_file: lines_longer_than_80_chars
+
+import "package:customer/utils/app_assets_lotties.dart";
 import "package:flutter/foundation.dart";
 
 class AppConstants {
@@ -9,6 +12,8 @@ class AppConstants {
   static final AppConstants _singleton = AppConstants._internal();
 
   final double elevation = 0.0;
+
+  final String baseURL = "https://${kReleaseMode ? "api" : "api"}.bhola.org.in";
 
   final String googleMapAPIKey = "AIzaSyAu0uQwt1solBKGQcExM9eJvU8rEPfbNNo";
   final String vpnAPIKey = "40f6cdcbaf9b4c139d4a276b9788dee6";
@@ -46,4 +51,39 @@ class AppConstants {
   final String idOfAdmin = "284882215";
   final String idOfCustomer = "284882215";
   final String idOfVendor = "284882215";
+
+  // Customer:
+  final String custNotificationLottie = AppAssetsLotties().lottieNotification;
+  final String custNotificationTitle = "Stay Updated with Bhola !!!";
+  final String custNotificationBody =
+      "Stay in the loop with real-time updates on your order status, new offers, personalized solutions, app updates, and more. To ensure you don't miss any important notifications, please enable notification access for Bhola.";
+
+  final String custLocationLottie = AppAssetsLotties().lottieLocation;
+  final String custLocationTitle = "Enable Location Services for Bhola";
+  final String custLocationBody =
+      "To help you select your farm location with ease and connect you with the nearest vendors, please enable location services for Bhola at all times. Bhola will use your location data in the background to provide you with the most relevant services based on your longitude and latitude.";
+
+  final String custCamMicStorageLottie = AppAssetsLotties().lottieCamera;
+  final String custCamMicStorageTitle = "Enhance Your Bhola Experience";
+  final String custCamMicStorageBody =
+      "Allow Bhola access to your gallery, camera, and microphone to personalize your profile, post reviews, and more. This enables you to add a profile picture and share your experiences with ease.";
+
+  // Vendor:
+  final String vendNotificationLottie = AppAssetsLotties().lottieNotification;
+  final String vendNotificationTitle = "Stay Updated with Bhola !!!";
+  final String vendNotificationBody =
+      "Keep track of new orders, order statuses, offers, payment updates, app updates, and more. Enable notification access for Bhola to stay informed and never miss out on important updates.";
+
+  final String vendLocationLottie = AppAssetsLotties().lottieLocation;
+  final String vendLocationTitle = "Enable Location Services for Bhola";
+  final String vendLocationBody =
+      "To select your equipment or shop location accurately and connect with nearby customers, please enable location services for Bhola at all times. Bhola will use your location data in the background to match you with relevant customers based on your longitude and latitude.";
+
+  final String vendCamMicStorageLottie = AppAssetsLotties().lottieCamera;
+  final String vendCamMicStorageTitle = "Optimize Your Bhola Profile";
+  final String vendCamMicStorageBody =
+      "Allow Bhola access to your gallery, camera, and microphone to enhance your profile, post reviews, submit KYC documents, and upload new product pictures. This helps you manage your profile and business efficiently.";
+
+  final String commonNote =
+      "Note: Your privacy and security are our top priorities. All data collected is used solely to improve your experience with Bhola.";
 }

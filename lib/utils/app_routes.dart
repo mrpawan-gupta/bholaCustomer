@@ -15,6 +15,7 @@ import "package:customer/bindings/outer_main_bindings/category_binding.dart";
 import "package:customer/bindings/outer_main_bindings/help_binding.dart";
 import "package:customer/bindings/outer_main_bindings/home_binding.dart";
 import "package:customer/bindings/outer_main_bindings/order_history_binding.dart";
+import "package:customer/bindings/settings_bindings/app_info_binding.dart";
 import "package:customer/bindings/settings_bindings/change_language_binding.dart";
 import "package:customer/bindings/settings_bindings/edit_profile_binding.dart";
 import "package:customer/bindings/settings_bindings/settings_main_binding.dart";
@@ -35,6 +36,7 @@ import "package:customer/screens/outer_main_screens/category/category_screen.dar
 import "package:customer/screens/outer_main_screens/help_screen.dart";
 import "package:customer/screens/outer_main_screens/home/home_screen.dart";
 import "package:customer/screens/outer_main_screens/order_history_screen.dart";
+import "package:customer/screens/settings_screens/app_info_screen.dart";
 import "package:customer/screens/settings_screens/change_language_screen.dart";
 import "package:customer/screens/settings_screens/edit_profile_screen.dart";
 import "package:customer/screens/settings_screens/settings_main_screen.dart";
@@ -69,6 +71,7 @@ class AppRoutes {
   final String settingsMainScreen = "/settingsMainScreen";
   final String editProfileScreen = "/editProfileScreen";
   final String changeLanguageScreen = "/changeLanguageScreen";
+  final String appInfoScreen = "/appInfoScreen";
 
   final String productListingScreen = "/productListingScreen";
   final String viewGenericProductDetailsScreen =
@@ -168,6 +171,11 @@ class AppRoutes {
       page: ChangeLanguageScreen.new,
       binding: ChangeLanguageBinding(),
     );
+    final GetPage<dynamic> appInfoRoute = GetPage<dynamic>(
+      name: appInfoScreen,
+      page: AppInfoScreen.new,
+      binding: AppInfoBinding(),
+    );
 
     final GetPage<dynamic> productListingRoute = GetPage<dynamic>(
       name: productListingScreen,
@@ -195,6 +203,7 @@ class AppRoutes {
       orderHistoryRoute,
       settingsMainRoute,
       changeLanguageRoute,
+      appInfoRoute,
       productListingRoute,
       editProfileRoute,
       bookingDetailsRoute,

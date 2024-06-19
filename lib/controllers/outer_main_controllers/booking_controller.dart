@@ -5,11 +5,13 @@ import "package:customer/models/featured_model.dart";
 import "package:customer/models/get_addresses_model.dart";
 import "package:customer/models/get_all_services.dart";
 import "package:customer/services/app_api_service.dart";
+import "package:customer/services/app_perm_service.dart";
 import "package:customer/utils/app_logger.dart";
 import "package:customer/utils/app_snackbar.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
+import "package:location/location.dart" as loc;
 import "package:place_picker/entities/location_result.dart";
 
 class BookingController extends GetxController {
@@ -54,7 +56,7 @@ class BookingController extends GetxController {
   Future<void> getAddressesAPI() async {
     await AppAPIService().functionGet(
       types: Types.oauth,
-      endPoint: "address",
+      endPoint: "address/0",
       successCallback: (Map<String, dynamic> json) {
         AppLogger().info(message: json["message"]);
 
@@ -384,5 +386,23 @@ class BookingController extends GetxController {
         return false;
       }
     }
+  }
+
+    Future<bool> checkLocationFunction() async {
+    final loc.PermissionStatus status = await loc.Location().hasPermission();
+    final bool isGranted = status == loc.PermissionStatus.granted;
+    final bool isGrantedLimited = status == loc.PermissionStatus.grantedLimited;
+
+    final bool hasPermission = isGranted || isGrantedLimited;
+    final bool serviceEnable = await loc.Location().serviceEnabled();
+
+    final bool value = hasPermission && serviceEnable;
+    return Future<bool>.value(value);
+  }
+
+  Future<void> requestLocationFunction() async {
+    await AppPermService().permissionLocation();
+    await AppPermService().serviceLocation();
+    return Future<void>.value();
   }
 }

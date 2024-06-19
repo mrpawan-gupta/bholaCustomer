@@ -59,7 +59,7 @@ class Address {
     this.city,
     this.country,
     this.user,
-    
+    this.primary,
     this.createdAt,
     this.updatedAt,
     this.iV,
@@ -73,7 +73,7 @@ class Address {
     city = json["city"];
     country = json["country"];
     user = json["user"];
-   
+    primary = json["primary"];
     createdAt = json["createdAt"];
     updatedAt = json["updatedAt"];
     iV = json["__v"];
@@ -85,7 +85,7 @@ class Address {
   String? city;
   String? country;
   String? user;
-   
+  bool? primary;
   String? createdAt;
   String? updatedAt;
   int? iV;
@@ -99,7 +99,7 @@ class Address {
     data["city"] = city;
     data["country"] = country;
     data["user"] = user;
-    
+    data["primary"] = primary;
     data["createdAt"] = createdAt;
     data["updatedAt"] = updatedAt;
     data["__v"] = iV;

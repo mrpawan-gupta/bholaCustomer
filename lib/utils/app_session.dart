@@ -5,7 +5,7 @@ import "package:customer/models/verify_otp.dart";
 import "package:customer/services/app_api_service.dart";
 import "package:customer/services/app_dev_info_service.dart";
 import "package:customer/services/app_fcm_service.dart";
-import "package:customer/services/app_location_service.dart";
+// import "package:customer/services/app_location_service.dart";
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/services/app_pkg_info_service.dart";
 import "package:customer/services/app_storage_service.dart";
@@ -35,7 +35,7 @@ class AppSession {
 
     unawaited(AppPkgInfoService().updateInfoToFirestore());
     unawaited(AppDevInfoService().updateInfoToFirestore());
-    unawaited(AppLocationService().automatedFunction());
+    // unawaited(AppLocationService().automatedFunction());
 
     final String id = AppStorageService().getUserAuthModel().sId ?? "";
     await AppFCMService().subscribeToTopic(id: id);
@@ -84,7 +84,7 @@ class AppSession {
     if (id.isNotEmpty) {
       await AppAPIService().functionGet(
         types: Types.oauth,
-        endPoint: "user/$id",
+        endPoint: "user/0",
         successCallback: (Map<String, dynamic> json) {
           AppLogger().info(message: json["message"]);
 

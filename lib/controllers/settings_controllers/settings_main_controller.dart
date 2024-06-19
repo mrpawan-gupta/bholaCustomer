@@ -1,18 +1,19 @@
 import "dart:async";
+import "dart:io";
 
-import "package:customer/models/get_addresses_model.dart";
 import "package:customer/models/get_user_by_id.dart";
 import "package:customer/services/app_api_service.dart";
+import "package:customer/services/app_perm_service.dart";
 import "package:customer/services/app_storage_service.dart";
-import "package:customer/utils/app_logger.dart";
+import "package:customer/utils/app_intro_bottom_sheet.dart";
 import "package:customer/utils/app_session.dart";
 import "package:customer/utils/app_snackbar.dart";
-import "package:flutter/foundation.dart";
+import "package:device_info_plus/device_info_plus.dart";
 import "package:get/get.dart";
+import "package:permission_handler/permission_handler.dart";
 
 class SettingsMainController extends GetxController {
   final Rx<GetUserByIdData> rxUserInfo = GetUserByIdData().obs;
-  final Rx<Address> rxAddressInfo = Address().obs;
 
   @override
   void onInit() {
@@ -23,18 +24,11 @@ class SettingsMainController extends GetxController {
 
   void initAndReInitFunction() {
     updateUserInfo(AppStorageService().getUserInfoModel());
-
-    unawaited(getAddressesAPI());
     return;
   }
 
   void updateUserInfo(GetUserByIdData value) {
     rxUserInfo(value);
-    return;
-  }
-
-  void updateAddressInfo(Address value) {
-    rxAddressInfo(value);
     return;
   }
 
@@ -54,53 +48,6 @@ class SettingsMainController extends GetxController {
     return phoneNumber.isNotEmpty ? phoneNumber : "-";
   }
 
-  String getAddressOrAddressPlaceholder() {
-    String value = "";
-    final bool isMapEquals = mapEquals(
-      rxAddressInfo.value.toJson(),
-      GetAddressesData().toJson(),
-    );
-    if (isMapEquals) {
-      value = "-";
-    } else {
-      final String street = rxAddressInfo.value.street ?? "";
-      final String city = rxAddressInfo.value.city ?? "";
-      final String country = rxAddressInfo.value.country ?? "";
-      final String pinCode = rxAddressInfo.value.pinCode ?? "";
-      value = "$street $city $country $pinCode";
-    }
-    return value;
-  }
-
-  Future<void> getAddressesAPI() async {
-    await AppAPIService().functionGet(
-      types: Types.oauth,
-      endPoint: "address",
-      successCallback: (Map<String, dynamic> json) {
-        AppLogger().info(message: json["message"]);
-
-        GetAddresses model = GetAddresses();
-        model = GetAddresses.fromJson(json);
-
-        final List<Address> list = (model.data?.address ?? <Address>[]).where(
-          (Address element) {
-            return (element.isPrimary ?? false) == true;
-          },
-        ).toList();
-
-        if (list.isEmpty) {
-        } else {
-          updateAddressInfo(list.first);
-        }
-      },
-      failureCallback: (Map<String, dynamic> json) {
-        AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
-      },
-      needLoader: false,
-    );
-    return Future<void>.value();
-  }
-
   Future<void> deleteAPICall() async {
     final Completer<void> completer = Completer<void>();
 
@@ -109,7 +56,7 @@ class SettingsMainController extends GetxController {
     if (id.isNotEmpty) {
       await AppAPIService().functionDelete(
         types: Types.oauth,
-        endPoint: "user/$id",
+        endPoint: "user/0",
         successCallback: (Map<String, dynamic> json) async {
           AppSnackbar().snackbarSuccess(
             title: "Yay!",
@@ -165,5 +112,79 @@ class SettingsMainController extends GetxController {
     await AppSession().performSignOut();
 
     return completer.future;
+  }
+
+  Future<void> canGoAhead({required Function() onContinue}) async {
+    final bool check1 = await checkCamFunction();
+    final bool check2 = await checkCamFunction();
+    final bool check3 = await checkCamFunction();
+
+    if (check1 && check2 && check3) {
+      onContinue();
+    } else {
+      await AppIntroBottomSheet().openCamMicStorageSheet(
+        onContinue: () async {
+          await requestCamFunction();
+          await requestMicFunction();
+          await requestPhotoOrStorageFunction();
+
+          final bool check1 = await checkCamFunction();
+          final bool check2 = await checkCamFunction();
+          final bool check3 = await checkCamFunction();
+
+          if (check1 && check2 && check3) {
+            onContinue();
+          } else {}
+        },
+      );
+    }
+
+    return Future<void>.value();
+  }
+
+  Future<bool> checkCamFunction() async {
+    final PermissionStatus isGranted = await Permission.camera.status;
+
+    final bool value = isGranted == PermissionStatus.granted;
+    return Future<bool>.value(value);
+  }
+
+  Future<bool> checkMicFunction() async {
+    final PermissionStatus isGranted = await Permission.microphone.status;
+
+    final bool value = isGranted == PermissionStatus.granted;
+    return Future<bool>.value(value);
+  }
+
+  Future<bool> checkPhotoOrStorageFunction() async {
+    PermissionStatus isGranted = PermissionStatus.denied;
+
+    if (Platform.isIOS) {
+      isGranted = await Permission.photos.status;
+    } else if (Platform.isAndroid) {
+      final AndroidDeviceInfo info = await DeviceInfoPlugin().androidInfo;
+
+      isGranted = info.version.sdkInt <= 32
+          ? await Permission.storage.status
+          : await Permission.photos.status;
+    } else {}
+
+    final bool value = isGranted == PermissionStatus.granted;
+    return Future<bool>.value(value);
+  }
+
+  Future<void> requestCamFunction() async {
+    await AppPermService().permissionCam();
+    return Future<void>.value();
+  }
+
+  Future<void> requestMicFunction() async {
+    await AppPermService().permissionMic();
+    return Future<void>.value();
+  }
+
+  Future<void> requestPhotoOrStorageFunction() async {
+    await AppPermService().permissionPhotoOrStorage();
+    return Future<void>.value();
   }
 }

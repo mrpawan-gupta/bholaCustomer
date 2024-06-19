@@ -11,6 +11,7 @@ import "package:customer/models/get_all_services.dart";
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_constants.dart";
+import "package:customer/utils/app_intro_bottom_sheet.dart";
 import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/app_snackbar.dart";
 import "package:customer/utils/app_whatsapp.dart";
@@ -109,7 +110,7 @@ class BookingScreen extends GetView<BookingController> {
                   Icons.location_on,
                   color: AppColors().appPrimaryColor,
                 ),
-                onPressed: showPlacePicker,
+                onPressed: reviewLocationPermissionStatus,
               ),
             ],
             suggestionsBuilder: (
@@ -831,6 +832,26 @@ class BookingScreen extends GetView<BookingController> {
         ],
       ),
     );
+  }
+
+  Future<void> reviewLocationPermissionStatus() async {
+    final bool try0 = await controller.checkLocationFunction();
+    if (try0 == true) {
+      await showPlacePicker();
+    } else {
+      await AppIntroBottomSheet().openLocationSheet(
+        onContinue: () async {
+          await controller.requestLocationFunction();
+
+          final bool try1 = await controller.checkLocationFunction();
+          if (try1 == true) {
+            await showPlacePicker();
+          } else {}
+        },
+      );
+    }
+
+    return Future<void>.value();
   }
 
   Future<void> showPlacePicker() async {

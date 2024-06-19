@@ -4,6 +4,7 @@ import "dart:io";
 
 import "package:customer/services/app_internet_connection_checker_service.dart";
 import "package:customer/services/app_storage_service.dart";
+import "package:customer/utils/app_constants.dart";
 import "package:customer/utils/app_loader.dart";
 import "package:customer/utils/app_logger.dart";
 import "package:customer/utils/app_pretty_print_json.dart";
@@ -23,7 +24,7 @@ class AppAPIService extends GetConnect {
   AppAPIService._internal();
   static final AppAPIService _singleton = AppAPIService._internal();
 
-  final String baseURL = "https://dev.bhola.org.in";
+  final String baseURL = AppConstants().baseURL;
   final String middleware = "api";
 
   final String contentTypeApplicationJson = "application/json";

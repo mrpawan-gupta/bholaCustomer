@@ -1,5 +1,6 @@
 import "dart:async";
 import "dart:developer";
+import "dart:io";
 
 import "package:customer/services/app_api_service.dart";
 import "package:customer/services/app_firestore_user_db.dart";
@@ -7,6 +8,7 @@ import "package:customer/services/app_perm_service.dart";
 import "package:customer/services/app_storage_service.dart";
 import "package:customer/utils/app_constants.dart";
 import "package:customer/utils/app_logger.dart";
+import "package:geolocator/geolocator.dart";
 import "package:get/get.dart";
 import "package:location/location.dart" as loc;
 
@@ -18,7 +20,7 @@ class AppLocationService extends GetxService {
   AppLocationService._internal();
   static final AppLocationService _singleton = AppLocationService._internal();
 
-  bool hasAlreadyAskedForGPSWitPrompt = false;
+  bool hasAlreadyAskedForGPSWitPrompt = true;
   late Timer _timer;
   (double, double, String) previousLocation = (0.0, 0.0, "");
 
@@ -176,12 +178,43 @@ class AppLocationService extends GetxService {
   Future<(double, double)> getLocation() async {
     double lat = 0.0;
     double long = 0.0;
+
     try {
-      final loc.LocationData data = await loc.Location().getLocation();
-      lat = data.latitude ?? 0.0;
-      long = data.longitude ?? 0.0;
+      final Position data = await Geolocator.getCurrentPosition().timeout(
+        const Duration(minutes: 10),
+        onTimeout: () async {
+          final Position position = Position(
+            longitude: 0.0,
+            latitude: 0.0,
+            timestamp: DateTime.now(),
+            accuracy: 0.0,
+            altitude: 0.0,
+            altitudeAccuracy: 0.0,
+            heading: 0.0,
+            headingAccuracy: 0.0,
+            speed: 0.0,
+            speedAccuracy: 0.0,
+          );
+          return Future<Position>.value(position);
+        },
+      );
+
+      lat = data.latitude;
+      long = data.longitude;
 
       AppLogger().info(message: "getLocation(): lat: $lat long: $long");
+    } on TimeoutException catch (error, stackTrace) {
+      AppLogger().error(
+        message: "Exception caught: ${error.message}",
+        error: error,
+        stackTrace: stackTrace,
+      );
+    } on SocketException catch (error, stackTrace) {
+      AppLogger().error(
+        message: "Exception caught: ${error.message}",
+        error: error,
+        stackTrace: stackTrace,
+      );
     } on Exception catch (error, stackTrace) {
       AppLogger().error(
         message: "Exception caught",
@@ -189,6 +222,7 @@ class AppLocationService extends GetxService {
         stackTrace: stackTrace,
       );
     } finally {}
+
     return Future<(double, double)>.value((lat, long));
   }
 
@@ -209,7 +243,7 @@ class AppLocationService extends GetxService {
 
         await AppAPIService().functionPatch(
           types: Types.oauth,
-          endPoint: "user/lat-long",
+          endPoint: "user/0/coordinates",
           body: data,
           successCallback: (Map<String, dynamic> json) {
             AppLogger().info(message: json["message"]);
@@ -217,6 +251,7 @@ class AppLocationService extends GetxService {
           failureCallback: (Map<String, dynamic> json) {
             AppLogger().error(message: json["message"]);
           },
+          needLoader: false,
         );
       }
     } else {}

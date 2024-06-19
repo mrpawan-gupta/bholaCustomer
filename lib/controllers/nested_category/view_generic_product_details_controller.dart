@@ -158,7 +158,7 @@ class ViewGenericProductDetailsController extends GetxController {
   Future<void> getAddressesAPI() async {
     await AppAPIService().functionGet(
       types: Types.oauth,
-      endPoint: "address",
+      endPoint: "address/0",
       successCallback: (Map<String, dynamic> json) {
         AppLogger().info(message: json["message"]);
 

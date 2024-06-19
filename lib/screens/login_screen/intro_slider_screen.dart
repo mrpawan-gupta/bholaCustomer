@@ -6,6 +6,7 @@ import "package:customer/common_widgets/app_text_button.dart";
 import "package:customer/controllers/login_screen_controllers/intro_slider_controller.dart";
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
+import "package:customer/utils/app_constants.dart";
 import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/app_snackbar.dart";
 import "package:flutter/material.dart";
@@ -94,7 +95,7 @@ class IntroSliderScreen extends GetView<IntroSliderController> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text(
-                  "Note: Your privacy and security are our top priorities. All data collected is used solely to improve your experience with Bhola.",
+                  AppConstants().commonNote,
                   style: Theme.of(Get.context!).textTheme.bodySmall,
                 ),
               ),

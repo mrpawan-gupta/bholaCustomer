@@ -1,3 +1,5 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import "package:customer/common_widgets/app_elevated_button.dart";
 import "package:customer/common_widgets/app_maybe_marquee.dart";
 import "package:customer/common_widgets/app_text_button.dart";
@@ -59,24 +61,48 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
                     onTap: openLegalPoliciesWidget,
                   ),
                   const SizedBox(height: 16),
-                  settingsItems1(
-                    itemName: "Try our Vendor App",
-                    onTap: AppOpenStore().openStoreForVendor,
-                  ),
-                  const SizedBox(height: 16),
-                  settingsItems2(
-                    itemName: "Delete Account",
+                  settingsItems(
+                    itemName: "App Info",
                     onTap: () async {
-                      await openDeleteAccountWidget(
-                        onPressedDelete: controller.deleteAPICall,
+                      await AppNavService().pushNamed(
+                        destination: AppRoutes().appInfoScreen,
+                        arguments: <String, dynamic>{},
                       );
                     },
                   ),
                   const SizedBox(height: 16),
-                  settingsItems2(
-                    itemName: "Logout",
-                    onTap: controller.signoutAPICall,
+                  settingsItems1(
+                    itemName: "Try our Customer App",
+                    onTap: AppOpenStore().openStoreForCustomer,
                   ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: settingsItems2(
+                          itemName: "Delete Account",
+                          onTap: () async {
+                            await openDeleteAccountWidget(
+                              onPressedDelete: controller.deleteAPICall,
+                            );
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: settingsItems2(
+                          itemName: "Logout",
+                          onTap: controller.signoutAPICall,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  noteWidget(),
                   const SizedBox(height: 16),
                 ],
               );
@@ -110,12 +136,12 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
                 color: Colors.transparent,
                 child: InkWell(
                   onTap: () async {
-                    await AppNavService().pushNamed(
-                      destination: AppRoutes().editProfileScreen,
-                      arguments: <String, dynamic>{},
-                    );
+                    // await AppNavService().pushNamed(
+                    //   destination: AppRoutes().editProfileScreen,
+                    //   arguments: <String, dynamic>{},
+                    // );
 
-                    controller.initAndReInitFunction();
+                    await canGoAhead();
                   },
                 ),
               ),
@@ -136,12 +162,12 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
         color: AppColors().appGreyColor.withOpacity(0.10),
         child: InkWell(
           onTap: () async {
-            await AppNavService().pushNamed(
-              destination: AppRoutes().editProfileScreen,
-              arguments: <String, dynamic>{},
-            );
+            // await AppNavService().pushNamed(
+            //   destination: AppRoutes().editProfileScreen,
+            //   arguments: <String, dynamic>{},
+            // );
 
-            controller.initAndReInitFunction();
+            await canGoAhead();
           },
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -167,12 +193,12 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
                 AppTextButton(
                   text: "Update Profile",
                   onPressed: () async {
-                    await AppNavService().pushNamed(
-                      destination: AppRoutes().editProfileScreen,
-                      arguments: <String, dynamic>{},
-                    );
+                    // await AppNavService().pushNamed(
+                    //   destination: AppRoutes().editProfileScreen,
+                    //   arguments: <String, dynamic>{},
+                    // );
 
-                    controller.initAndReInitFunction();
+                    await canGoAhead();
                   },
                 ),
 
@@ -291,32 +317,39 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
     required String itemName,
     required void Function() onTap,
   }) {
+    return Card(
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      elevation: 0,
+      margin: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: BorderSide(
+          color: AppColors().appRedColor,
+        ),
+      ),
+      color: AppColors().appTransparentColor,
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: MaybeMarqueeText(
+            text: itemName,
+            style: TextStyle(
+              color: AppColors().appRedColor,
+            ),
+            alignment: Alignment.center,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget noteWidget() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Card(
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        elevation: 0,
-        margin: EdgeInsets.zero,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-          side: BorderSide(
-            color: AppColors().appRedColor,
-          ),
-        ),
-        color: AppColors().appTransparentColor,
-        child: InkWell(
-          onTap: onTap,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: MaybeMarqueeText(
-              text: itemName,
-              style: TextStyle(
-                color: AppColors().appRedColor,
-              ),
-              alignment: Alignment.center,
-            ),
-          ),
-        ),
+      child: Text(
+        AppConstants().commonNote,
+        style: Theme.of(Get.context!).textTheme.bodySmall,
       ),
     );
   }
@@ -471,6 +504,21 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
       backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
       isScrollControlled: true,
     );
+    return Future<void>.value();
+  }
+
+  Future<void> canGoAhead() async {
+    await controller.canGoAhead(
+      onContinue: () async {
+        await AppNavService().pushNamed(
+          destination: AppRoutes().editProfileScreen,
+          arguments: <String, dynamic>{},
+        );
+
+        controller.initAndReInitFunction();
+      },
+    );
+
     return Future<void>.value();
   }
 }
