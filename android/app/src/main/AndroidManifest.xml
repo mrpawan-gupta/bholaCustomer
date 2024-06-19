@@ -105,7 +105,7 @@
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="high_importance_channel" />
         <meta-data android:name="com.google.android.geo.API_KEY"
-               android:value="AIzaSyAIi-Wjyn2iEjhj8BEGccXt8ts2P9zK_Gk"/>
+               android:value="AIzaSyAu0uQwt1solBKGQcExM9eJvU8rEPfbNNo"/>
         <meta-data
                 android:name="flutter_deeplinking_enabled"
                 android:value="true" />

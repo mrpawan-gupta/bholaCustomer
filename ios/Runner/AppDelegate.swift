@@ -10,7 +10,7 @@ import app_links
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
     
-    GMSServices.provideAPIKey("AIzaSyBWt3iU5forzjibY1YnAlGMh08oz9bzw-U")
+    GMSServices.provideAPIKey("AIzaSyAu0uQwt1solBKGQcExM9eJvU8rEPfbNNo")
 
     GeneratedPluginRegistrant.register(with: self)
 
