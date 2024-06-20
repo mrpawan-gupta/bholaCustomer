@@ -11,7 +11,6 @@ import "package:customer/services/app_perm_service.dart";
 import "package:customer/services/app_storage_service.dart";
 import "package:customer/utils/app_assets_images.dart";
 import "package:customer/utils/app_intro_bottom_sheet.dart";
-import "package:customer/utils/app_whatsapp.dart";
 import "package:get/get.dart";
 import "package:location/location.dart" as loc;
 import "package:permission_handler/permission_handler.dart";
@@ -21,12 +20,8 @@ Future<void> tabControllerFunction(int value) async {
   final MainNavigationController find = Get.find<MainNavigationController>();
   final PersistentTabController tabController = find.tabController;
 
-  if (value != 3) {
-    tabController.jumpToTab(value);
-  } else {
-    await AppWhatsApp().openWhatsApp();
-    tabController.jumpToPreviousTab();
-  }
+  // ignore: cascade_invocations
+  tabController.jumpToTab(value);
   return Future<void>.value();
 }
 

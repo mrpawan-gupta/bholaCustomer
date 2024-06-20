@@ -229,10 +229,11 @@ class AppFCMService extends GetxService {
   Future<void> subscribeToTopic({required String id}) async {
     if (id.isNotEmpty) {
       try {
-        final bool value = isValidTopic(id);
+        final String idWithSuffix = "${id}_customer";
+        final bool value = isValidTopic(idWithSuffix);
         value
-            ? await instance.subscribeToTopic(id)
-            : AppLogger().error(message: "$id must match the firebase regex.");
+            ? await instance.subscribeToTopic(idWithSuffix)
+            : AppLogger().error(message: "$idWithSuffix must match the regex.");
       } on Exception catch (error, stackTrace) {
         AppLogger().error(
           message: "Exception caught",
@@ -247,10 +248,11 @@ class AppFCMService extends GetxService {
   Future<void> unsubscribeFromTopic({required String id}) async {
     if (id.isNotEmpty) {
       try {
-        final bool value = isValidTopic(id);
+        final String idWithSuffix = "${id}_customer";
+        final bool value = isValidTopic(idWithSuffix);
         value
-            ? await instance.unsubscribeFromTopic(id)
-            : AppLogger().error(message: "$id must match the firebase regex.");
+            ? await instance.unsubscribeFromTopic(idWithSuffix)
+            : AppLogger().error(message: "$idWithSuffix must match the regex.");
       } on Exception catch (error, stackTrace) {
         AppLogger().error(
           message: "Exception caught",

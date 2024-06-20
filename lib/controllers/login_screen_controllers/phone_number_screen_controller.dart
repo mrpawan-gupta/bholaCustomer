@@ -107,7 +107,7 @@ class PhoneNumberScreenController extends GetxController {
       endPoint: "auth/send-otp",
       body: <String, dynamic>{
         "phoneNumber": "+91${rxPhoneNumber.value.trim()}",
-        // "appSignature": rxAppSignature.value.trim(),
+        "appSignature": rxAppSignature.value.trim(),
       },
       successCallback: (Map<String, dynamic> json) async {
         AppSnackbar().snackbarSuccess(

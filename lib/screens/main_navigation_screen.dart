@@ -136,7 +136,7 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
                   itemIndex: 3,
                   screen: const HelpScreen(),
                   asset: AppAssetsImages().bottomNavHelp,
-                  title: "Help",
+                  title: "Live",
                 ),
                 persistentTabConfig(
                   itemIndex: 4,
