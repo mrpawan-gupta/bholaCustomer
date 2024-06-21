@@ -6,13 +6,12 @@ import "package:customer/controllers/outer_main_controllers/help_controller.dart
 import "package:customer/controllers/outer_main_controllers/home_controller.dart";
 import "package:customer/controllers/outer_main_controllers/order_history_controller.dart";
 import "package:customer/models/get_user_by_id.dart";
-import "package:customer/services/app_location_service.dart";
 import "package:customer/services/app_perm_service.dart";
 import "package:customer/services/app_storage_service.dart";
 import "package:customer/utils/app_assets_images.dart";
+import "package:customer/utils/app_constants.dart";
 import "package:customer/utils/app_intro_bottom_sheet.dart";
 import "package:get/get.dart";
-import "package:location/location.dart" as loc;
 import "package:permission_handler/permission_handler.dart";
 import "package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart";
 
@@ -22,6 +21,7 @@ Future<void> tabControllerFunction(int value) async {
 
   // ignore: cascade_invocations
   tabController.jumpToTab(value);
+
   return Future<void>.value();
 }
 
@@ -107,8 +107,11 @@ class MainNavigationController extends GetxController {
   Future<void> reviewPermissionStatus() async {
     updateHasReviewed(value: true);
 
-    await reviewNotificationPermissionStatus();
-    await reviewLocationPermissionStatus();
+    final bool cond1 = AppConstants().isEnabledReviewNotificationPermInHome;
+
+    if (cond1) {
+      await reviewNotificationPermissionStatus();
+    } else {}
 
     return Future<void>.value();
   }
@@ -127,26 +130,6 @@ class MainNavigationController extends GetxController {
     return Future<void>.value();
   }
 
-  Future<void> reviewLocationPermissionStatus() async {
-    final bool try0 = await checkLocationFunction();
-    if (try0 == true) {
-      await AppLocationService().automatedFunction();
-    } else {
-      await AppIntroBottomSheet().openLocationSheet(
-        onContinue: () async {
-          await requestLocationFunction();
-
-          final bool try1 = await checkLocationFunction();
-          if (try1 == true) {
-            await AppLocationService().automatedFunction();
-          } else {}
-        },
-      );
-    }
-
-    return Future<void>.value();
-  }
-
   Future<bool> checkNotificationFunction() async {
     final PermissionStatus isGranted = await Permission.notification.status;
 
@@ -156,24 +139,6 @@ class MainNavigationController extends GetxController {
 
   Future<void> requestNotificationFunction() async {
     await AppPermService().permissionNotification();
-    return Future<void>.value();
-  }
-
-  Future<bool> checkLocationFunction() async {
-    final loc.PermissionStatus status = await loc.Location().hasPermission();
-    final bool isGranted = status == loc.PermissionStatus.granted;
-    final bool isGrantedLimited = status == loc.PermissionStatus.grantedLimited;
-
-    final bool hasPermission = isGranted || isGrantedLimited;
-    final bool serviceEnable = await loc.Location().serviceEnabled();
-
-    final bool value = hasPermission && serviceEnable;
-    return Future<bool>.value(value);
-  }
-
-  Future<void> requestLocationFunction() async {
-    await AppPermService().permissionLocation();
-    await AppPermService().serviceLocation();
     return Future<void>.value();
   }
 }

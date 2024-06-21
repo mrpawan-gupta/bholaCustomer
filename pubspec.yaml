@@ -1,7 +1,7 @@
 name: customer
 description: "A new Flutter project."
 publish_to: 'none'
-version: 1.0.8+9
+version: 1.0.9+10
 
 environment:
   sdk: '>=3.3.1 <4.0.0'
@@ -41,6 +41,7 @@ dependencies:
   infinite_scroll_pagination: ^4.0.0
   internet_connection_checker: ^1.0.0+1
   intl: ^0.18.1
+  is_first_run: ^1.0.0
   liquid_pull_to_refresh: ^3.0.1
   loader_overlay: ^4.0.0
   location: ^6.0.2

@@ -108,14 +108,14 @@ class ProductDetailsData {
   int? ratingCount;
   int? wishlistCount;
   String? unit;
-  int? price;
+  num? price;
   int? itemCode;
   int? sold;
   int? sizePerQuantity;
   String? saleAmount;
   String? salePercent;
-  int? discountPercent;
-  int? discountedPrice;
+  num? discountPercent;
+  num? discountedPrice;
   bool? isAddedInCart;
   bool? isAddedInWishlist;
   int? isAddedInPortfolio;

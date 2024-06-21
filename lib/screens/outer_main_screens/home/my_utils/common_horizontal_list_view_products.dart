@@ -154,8 +154,8 @@ class CommonHorizontalListViewProducts extends StatelessWidget {
   }
 
   Widget pricingWidget(Products item) {
-    final int price = item.price ?? 0;
-    final int discountedPrice = item.discountedPrice ?? 0;
+    final num price = item.price ?? 0;
+    final num discountedPrice = item.discountedPrice ?? 0;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,

@@ -12,7 +12,6 @@ import "package:customer/utils/app_constants.dart";
 import "package:customer/utils/app_in_app_browser.dart";
 import "package:customer/utils/app_open_store.dart";
 import "package:customer/utils/app_routes.dart";
-import "package:customer/utils/app_whatsapp.dart";
 import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
@@ -50,9 +49,12 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
                   ),
                   const SizedBox(height: 16),
                   settingsItems(
-                    itemName: "Help",
+                    itemName: "Connect with Us",
                     onTap: () async {
-                      await AppWhatsApp().openWhatsApp();
+                      await AppNavService().pushNamed(
+                        destination: AppRoutes().supportScreen,
+                        arguments: <String, dynamic>{},
+                      );
                     },
                   ),
                   const SizedBox(height: 16),

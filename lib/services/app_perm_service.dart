@@ -1,3 +1,5 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import "dart:io";
 
 import "package:customer/utils/app_logger.dart";
@@ -28,6 +30,76 @@ class AppPermService extends GetxService {
         } else {}
       }
       AppLogger().info(message: "Location perm: $hasLocationPermission");
+    } on Exception catch (error, stackTrace) {
+      AppLogger().error(
+        message: "Exception caught",
+        error: error,
+        stackTrace: stackTrace,
+      );
+    } finally {}
+
+    return Future<bool>.value(hasLocationPermission);
+  }
+
+  Future<bool> permissionLocation2() async {
+    bool hasLocationPermission = false;
+
+    try {
+      final bool cond1 = await permissionLocationFG();
+      final bool cond2 = await permissionLocationBG();
+      final bool finalCond = cond1 && cond2;
+      hasLocationPermission = finalCond;
+      AppLogger().info(message: "Location perm: $hasLocationPermission");
+    } on Exception catch (error, stackTrace) {
+      AppLogger().error(
+        message: "Exception caught",
+        error: error,
+        stackTrace: stackTrace,
+      );
+    } finally {}
+
+    return Future<bool>.value(hasLocationPermission);
+  }
+
+  Future<bool> permissionLocationFG() async {
+    bool hasLocationPermission = false;
+
+    try {
+      final PermissionStatus try0 = await Permission.location.status;
+      if (try0 == PermissionStatus.granted) {
+        hasLocationPermission = true;
+      } else {
+        final PermissionStatus try1 = await Permission.location.request();
+        if (try1 == PermissionStatus.granted) {
+          hasLocationPermission = true;
+        } else {}
+      }
+      AppLogger().info(message: "Location perm: $hasLocationPermission");
+    } on Exception catch (error, stackTrace) {
+      AppLogger().error(
+        message: "Exception caught",
+        error: error,
+        stackTrace: stackTrace,
+      );
+    } finally {}
+
+    return Future<bool>.value(hasLocationPermission);
+  }
+
+  Future<bool> permissionLocationBG() async {
+    bool hasLocationPermission = false;
+
+    try {
+      final PermissionStatus try0 = await Permission.locationAlways.status;
+      if (try0 == PermissionStatus.granted) {
+        hasLocationPermission = true;
+      } else {
+        final PermissionStatus try1 = await Permission.locationAlways.request();
+        if (try1 == PermissionStatus.granted) {
+          hasLocationPermission = true;
+        } else {}
+      }
+      AppLogger().info(message: "Location Always perm: $hasLocationPermission");
     } on Exception catch (error, stackTrace) {
       AppLogger().error(
         message: "Exception caught",

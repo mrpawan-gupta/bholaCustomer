@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_protected_member
+
 import "dart:async";
 
 import "package:customer/models/generic_product_details_model.dart";
@@ -142,7 +144,10 @@ class ViewGenericProductDetailsController extends GetxController {
 
         await initPodPlayerController();
 
-        pagingControllerProducts.refresh();
+        final bool hasListeners = pagingControllerProducts.hasListeners;
+        if (hasListeners) {
+          pagingControllerProducts.refresh();
+        } else {}
 
         completer.complete();
       },

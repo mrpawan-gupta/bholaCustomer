@@ -1,8 +1,12 @@
 import "package:customer/common_widgets/app_elevated_button.dart";
+import "package:customer/common_widgets/app_rich_text.dart";
 import "package:customer/controllers/login_screen_controllers/otp_screen_controller.dart";
+import "package:customer/services/app_nav_service.dart";
 import "package:customer/services/app_sms_retriever_implementation.dart";
 import "package:customer/utils/app_assets_images.dart";
 import "package:customer/utils/app_colors.dart";
+import "package:customer/utils/app_constants.dart";
+import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/app_snackbar.dart";
 import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/material.dart";
@@ -20,6 +24,16 @@ class OTPScreen extends GetView<OTPScreenController> {
       body: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(
+            leading: AppNavService().canPop()
+                ? Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CircleAvatar(
+                      backgroundColor: AppColors().appWhiteColor,
+                      child: const BackButton(),
+                    ),
+                  )
+                : const SizedBox(),
+            centerTitle: true,
             pinned: true,
             floating: true,
             expandedHeight: Get.height / 4,
@@ -31,6 +45,23 @@ class OTPScreen extends GetView<OTPScreenController> {
                 fit: BoxFit.cover,
               ),
             ),
+            actions: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CircleAvatar(
+                  backgroundColor: AppColors().appWhiteColor,
+                  child: IconButton(
+                    onPressed: () async {
+                      await AppNavService().pushNamed(
+                        destination: AppRoutes().supportScreen,
+                        arguments: <String, dynamic>{},
+                      );
+                    },
+                    icon: const Icon(Icons.support_agent),
+                  ),
+                ),
+              ),
+            ],
           ),
           SliverToBoxAdapter(
             child: Padding(
@@ -58,6 +89,9 @@ class OTPScreen extends GetView<OTPScreenController> {
                   ),
                   const SizedBox(height: 32),
                   Pinput(
+                    obscureText: true,
+                    pinAnimationType: PinAnimationType.none,
+                    isCursorAnimationEnabled: false,
                     smsRetriever: AppSMSRetrieverImplementation(),
                     length: 6,
                     autofocus: true,
@@ -75,8 +109,8 @@ class OTPScreen extends GetView<OTPScreenController> {
                     ],
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     followingPinTheme: PinTheme(
-                      height: 84,
-                      width: 72,
+                      height: kToolbarHeight,
+                      width: kToolbarHeight,
                       decoration: BoxDecoration(
                         color: AppColors().appWhiteColor,
                         borderRadius: BorderRadius.circular(8),
@@ -87,8 +121,8 @@ class OTPScreen extends GetView<OTPScreenController> {
                       ),
                     ),
                     defaultPinTheme: PinTheme(
-                      height: 84,
-                      width: 72,
+                      height: kToolbarHeight,
+                      width: kToolbarHeight,
                       decoration: BoxDecoration(
                         color: AppColors().appWhiteColor,
                         borderRadius: BorderRadius.circular(8),
@@ -144,7 +178,7 @@ class OTPScreen extends GetView<OTPScreenController> {
                             );
                     },
                   ),
-                  SizedBox(height: Get.height / 16),
+                  const SizedBox(height: 32),
                   AppElevatedButton(
                     text: AppLanguageKeys().strContinue.tr,
                     onPressed: () async {
@@ -158,6 +192,13 @@ class OTPScreen extends GetView<OTPScreenController> {
                         );
                       }
                     },
+                  ),
+                  const SizedBox(height: 32),
+                  const AppRichText(),
+                  const SizedBox(height: 32),
+                  Text(
+                    AppConstants().commonNote,
+                    style: Theme.of(Get.context!).textTheme.bodySmall,
                   ),
                   const SizedBox(height: 32),
                   const SizedBox(height: 32),

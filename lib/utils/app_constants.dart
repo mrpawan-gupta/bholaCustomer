@@ -30,6 +30,9 @@ class AppConstants {
 
   final Duration locationFetchDuration = const Duration(minutes: 5);
 
+  final bool isEnabledReviewNotificationPermInHome = true;
+  final bool isEnabledReviewLocationPermInHome = false;
+
   final String samplePDFThumb =
       "https://drive.usercontent.google.com/u/0/uc?id=1lANuruz2k7cpKGxLz4aIf2w7PtA153qO&export=pdf";
   final String samplePDFView =

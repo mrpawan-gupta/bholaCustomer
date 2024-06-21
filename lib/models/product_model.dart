@@ -107,7 +107,7 @@ class Products {
   String? description;
   String? unit;
   bool? isDeleted;
-  int? price;
+  num? price;
   Category? category;
   int? itemCode;
   int? quantity;
@@ -119,8 +119,8 @@ class Products {
   String? createdAt;
   String? updatedAt;
   int? iV;
-  int? discountPercent;
-  int? discountedPrice;
+  num? discountPercent;
+  num? discountedPrice;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

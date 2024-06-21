@@ -12,6 +12,7 @@ import "package:customer/services/app_storage_service.dart";
 import "package:customer/utils/app_loader.dart";
 import "package:customer/utils/app_logger.dart";
 import "package:customer/utils/app_routes.dart";
+import "package:is_first_run/is_first_run.dart";
 
 class AppSession {
   factory AppSession() {
@@ -25,6 +26,26 @@ class AppSession {
     final bool hasUserAuth = AppStorageService().getUserAuth().isNotEmpty;
     final bool hasUserInfo = AppStorageService().getUserInfo().isNotEmpty;
     return hasUserAuth && hasUserInfo;
+  }
+
+  Future<String> initialRoute() async {
+    String initialRouteBasedOnFirstCall = AppRoutes().phoneNoScreen;
+
+    try {
+      final bool isFirstCall = await IsFirstRun.isFirstCall();
+
+      initialRouteBasedOnFirstCall = isFirstCall
+          // ? AppRoutes().introSliderScreen
+          ? AppRoutes().phoneNoScreen
+          : AppRoutes().phoneNoScreen;
+    } on Exception catch (error, stackTrace) {
+      AppLogger().error(
+        message: "Exception caught",
+        error: error,
+        stackTrace: stackTrace,
+      );
+    } finally {}
+    return Future<String>.value(initialRouteBasedOnFirstCall);
   }
 
   Future<void> performSignIn() async {

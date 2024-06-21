@@ -1,8 +1,12 @@
 import "package:customer/common_widgets/app_elevated_button.dart";
+import "package:customer/common_widgets/app_rich_text.dart";
 import "package:customer/common_widgets/app_text_field.dart";
 import "package:customer/controllers/login_screen_controllers/phone_number_screen_controller.dart";
+import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_assets_images.dart";
 import "package:customer/utils/app_colors.dart";
+import "package:customer/utils/app_constants.dart";
+import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/app_snackbar.dart";
 import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/material.dart";
@@ -18,6 +22,16 @@ class PhoneNumberScreen extends GetView<PhoneNumberScreenController> {
       body: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(
+            leading: AppNavService().canPop()
+                ? Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CircleAvatar(
+                      backgroundColor: AppColors().appWhiteColor,
+                      child: const BackButton(),
+                    ),
+                  )
+                : const SizedBox(),
+            centerTitle: true,
             pinned: true,
             floating: true,
             expandedHeight: Get.height / 4,
@@ -29,6 +43,23 @@ class PhoneNumberScreen extends GetView<PhoneNumberScreenController> {
                 fit: BoxFit.cover,
               ),
             ),
+            actions: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CircleAvatar(
+                  backgroundColor: AppColors().appWhiteColor,
+                  child: IconButton(
+                    onPressed: () async {
+                      await AppNavService().pushNamed(
+                        destination: AppRoutes().supportScreen,
+                        arguments: <String, dynamic>{},
+                      );
+                    },
+                    icon: const Icon(Icons.support_agent),
+                  ),
+                ),
+              ),
+            ],
           ),
           SliverToBoxAdapter(
             child: Padding(
@@ -137,7 +168,7 @@ class PhoneNumberScreen extends GetView<PhoneNumberScreenController> {
                       ),
                     ),
                   ),
-                  SizedBox(height: Get.height / 8),
+                  const SizedBox(height: 32),
                   AppElevatedButton(
                     text: AppLanguageKeys().strContinue.tr,
                     onPressed: () async {
@@ -151,6 +182,13 @@ class PhoneNumberScreen extends GetView<PhoneNumberScreenController> {
                         );
                       }
                     },
+                  ),
+                  const SizedBox(height: 32),
+                  const AppRichText(),
+                  const SizedBox(height: 32),
+                  Text(
+                    AppConstants().commonNote,
+                    style: Theme.of(Get.context!).textTheme.bodySmall,
                   ),
                   const SizedBox(height: 32),
                   const SizedBox(height: 32),

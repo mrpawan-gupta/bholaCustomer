@@ -177,8 +177,8 @@ class Services {
   }
 
   Service? service;
-  int? price;
-  int? area;
+  num? price;
+  num? area;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

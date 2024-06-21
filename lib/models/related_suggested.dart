@@ -114,9 +114,9 @@ class Products {
   String? description;
   String? unit;
   bool? isDeleted;
-  int? price;
-  int? discountedPrice;
-  int? discountPercent;
+  num? price;
+  num? discountedPrice;
+  num? discountPercent;
   Category? category;
   int? itemCode;
   int? quantity;

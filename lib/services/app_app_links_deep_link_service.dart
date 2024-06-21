@@ -36,12 +36,20 @@ class AppAppLinksDeepLinkService extends GetxService {
   Future<void> initDeepLinks() async {
     final Uri appLink = await _appLinks.getInitialLink() ?? Uri();
     AppLogger().info(message: "appLinks: uri: $appLink");
-    await furtherProcedure(uri: appLink);
+
+    if (appLink.toString().isNotEmpty) {
+      await furtherProcedure(uri: appLink);
+    } else {}
 
     subscription = _appLinks.uriLinkStream.listen(
       (Uri event) async {
-        AppLogger().info(message: "uriLinkStream: uri: $event");
-        await furtherProcedure(uri: event);
+        final Uri appLink = event;
+
+        AppLogger().info(message: "uriLinkStream: uri: $appLink");
+
+        if (appLink.toString().isNotEmpty) {
+          await furtherProcedure(uri: appLink);
+        } else {}
       },
       // ignore: always_specify_types
       onError: (error, stackTrace) {
@@ -92,7 +100,8 @@ class AppAppLinksDeepLinkService extends GetxService {
 
     if (route.isEmpty && !hasLoggedIn) {
       await AppNavService().pushNamedAndRemoveUntil(
-        destination: AppRoutes().languageSelectionScreen,
+        // destination: AppRoutes().languageSelectionScreen,
+        destination: await AppSession().initialRoute(),
         arguments: <String, dynamic>{},
       );
     } else if (route.isEmpty && hasLoggedIn) {
@@ -108,7 +117,8 @@ class AppAppLinksDeepLinkService extends GetxService {
       await AppSession().performSignIn();
     } else if (route.isNotEmpty && !hasLoggedIn) {
       await AppNavService().pushNamedAndRemoveUntil(
-        destination: AppRoutes().languageSelectionScreen,
+        // destination: AppRoutes().languageSelectionScreen,
+        destination: await AppSession().initialRoute(),
         arguments: arguments.isEmpty
             ? <String, dynamic>{}
             : <String, dynamic>{"id": arguments},

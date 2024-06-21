@@ -21,6 +21,16 @@ class LanguageSelectionPage extends GetView<LanguageSelectionController> {
       body: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(
+            leading: AppNavService().canPop()
+                ? Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CircleAvatar(
+                      backgroundColor: AppColors().appWhiteColor,
+                      child: const BackButton(),
+                    ),
+                  )
+                : const SizedBox(),
+            centerTitle: true,
             pinned: true,
             floating: true,
             expandedHeight: Get.height / 4,
@@ -32,6 +42,23 @@ class LanguageSelectionPage extends GetView<LanguageSelectionController> {
                 fit: BoxFit.cover,
               ),
             ),
+            actions: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CircleAvatar(
+                  backgroundColor: AppColors().appWhiteColor,
+                  child: IconButton(
+                    onPressed: () async {
+                      await AppNavService().pushNamed(
+                        destination: AppRoutes().supportScreen,
+                        arguments: <String, dynamic>{},
+                      );
+                    },
+                    icon: const Icon(Icons.support_agent),
+                  ),
+                ),
+              ),
+            ],
           ),
           SliverToBoxAdapter(
             child: Padding(

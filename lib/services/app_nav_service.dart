@@ -42,6 +42,11 @@ class AppNavService extends GetxService {
     return;
   }
 
+  bool canPop() {
+    final bool can = Get.key.currentState?.canPop() ?? false;
+    return can;
+  }
+
   Future<void> observer(Routing? routing) async {
     if (routing != null) {
       previousRoute = routing.previous;

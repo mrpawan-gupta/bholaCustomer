@@ -74,7 +74,7 @@ class CommonGridView extends StatelessWidget {
   }
 
   Widget productImage(Products item) {
-    final int discountPercent = item.discountPercent ?? 0;
+    final num discountPercent = item.discountPercent ?? 0;
 
     return Expanded(
       child: Column(
@@ -194,8 +194,8 @@ class CommonGridView extends StatelessWidget {
   }
 
   Widget pricingWidget(Products item) {
-    final int price = item.price ?? 0;
-    final int discountedPrice = item.discountedPrice ?? 0;
+    final num price = item.price ?? 0;
+    final num discountedPrice = item.discountedPrice ?? 0;
 
     return Column(
       mainAxisSize: MainAxisSize.min,

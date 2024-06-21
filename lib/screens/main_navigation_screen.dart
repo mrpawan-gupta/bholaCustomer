@@ -10,7 +10,6 @@ import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_assets_images.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_routes.dart";
-import "package:customer/utils/app_whatsapp.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart";
@@ -64,37 +63,29 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
             centerTitle: true,
             title: helloWidget(data),
             actions: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  height: 48,
-                  width: 48,
-                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                  decoration: const BoxDecoration(shape: BoxShape.circle),
-                  child: Stack(
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    children: <Widget>[
-                      Positioned(
-                        right: 0,
-                        child: FadeInImage(
-                          image: AssetImage(AppAssetsImages().bottomNavHelp),
-                          placeholder: MemoryImage(kTransparentImage),
-                          fit: BoxFit.cover,
-                          height: 48 - 8,
-                          width: 48 - 8,
-                          color: AppColors().appPrimaryColor,
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CircleAvatar(
+                      backgroundColor: AppColors().appPrimaryColor,
+                      child: IconButton(
+                        onPressed: () async {
+                          await AppNavService().pushNamed(
+                            destination: AppRoutes().supportScreen,
+                            arguments: <String, dynamic>{},
+                          );
+                        },
+                        icon: Icon(
+                          Icons.support_agent,
+                          color: AppColors().appWhiteColor,
                         ),
                       ),
-                      Material(
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                        color: Colors.transparent,
-                        child: InkWell(
-                          onTap: AppWhatsApp().openWhatsApp,
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
+                  const SizedBox(width: 8),
+                ],
               ),
             ],
             surfaceTintColor: AppColors().appTransparentColor,
@@ -103,7 +94,6 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
           body: WillPopScope(
             onWillPop: () async {
               bool value = false;
-
               if (controller.getCurrentIndex() == 0) {
                 value = true;
               } else {
