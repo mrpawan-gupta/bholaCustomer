@@ -104,14 +104,14 @@ class Bookings {
   String? sId;
   VehicleCategory? vehicleCategory;
   List<Services>? services;
-  int? amount;
+  num? amount;
   DeliveryAddress? deliveryAddress;
   String? scheduleDate;
   String? approxStartTime;
   String? approxEndTime;
   String? status;
   String? crop;
-  int? farmArea;
+  num? farmArea;
   Customer? customer;
   Vendor? vendor;
 

@@ -38,16 +38,16 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
                   const SizedBox(height: 16),
                   userInfo(),
                   const SizedBox(height: 16),
-                  settingsItems(
-                    itemName: "Change Language",
-                    onTap: () async {
-                      await AppNavService().pushNamed(
-                        destination: AppRoutes().changeLanguageScreen,
-                        arguments: <String, dynamic>{},
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 16),
+                  // settingsItems(
+                  //   itemName: "Change Language",
+                  //   onTap: () async {
+                  //     await AppNavService().pushNamed(
+                  //       destination: AppRoutes().changeLanguageScreen,
+                  //       arguments: <String, dynamic>{},
+                  //     );
+                  //   },
+                  // ),
+                  // const SizedBox(height: 16),
                   settingsItems(
                     itemName: "Connect with Us",
                     onTap: () async {

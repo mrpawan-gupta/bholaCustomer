@@ -39,11 +39,7 @@ class IntroSliderScreen extends GetView<IntroSliderController> {
                       final int initialPage = controller.rxInitialPage.value;
                       if (initialPage == 0) {
                       } else {
-                        await controller.pageController.animateToPage(
-                          initialPage - 1,
-                          duration: const Duration(seconds: 1),
-                          curve: Curves.linear,
-                        );
+                        controller.pageController.jumpToPage(initialPage - 1);
                       }
                     },
                     text: controller.rxInitialPage.value != 0 ? "Previous" : "",
@@ -64,11 +60,7 @@ class IntroSliderScreen extends GetView<IntroSliderController> {
                             arguments: <String, dynamic>{},
                           );
                         } else {
-                          await controller.pageController.animateToPage(
-                            initialPage + 1,
-                            duration: const Duration(seconds: 1),
-                            curve: Curves.linear,
-                          );
+                          controller.pageController.jumpToPage(initialPage + 1);
                         }
                       } else {
                         AppSnackbar().snackbarFailure(

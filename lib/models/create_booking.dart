@@ -63,8 +63,8 @@ class Booking {
     sId = json["_id"];
   }
   List<CreateBookingDataServices>? services;
-  int? amount;
-  int? farmArea;
+  num? amount;
+  num? farmArea;
   String? sId;
 
   Map<String, dynamic> toJson() {
