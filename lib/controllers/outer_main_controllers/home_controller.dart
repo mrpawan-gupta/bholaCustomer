@@ -107,11 +107,14 @@ class HomeController extends GetxController {
       isLastPage
           ? pagingControllerCategories.appendLastPage(newItems)
           : pagingControllerCategories.appendPage(newItems, pageKey + 1);
+      valueNotifierCategories.value = pagingControllerCategories.value;
 
       if (isLastPage) {
         final List<Categories> categoriesList =
             pagingControllerCategories.itemList ?? <Categories>[];
-        initPagingControllerDynamic(categoriesList);
+        if (categoriesList.isNotEmpty) {
+          await initPagingControllerDynamic(categoriesList);
+        } else {}
       } else {}
 
       valueNotifierCategories.value = pagingControllerCategories.value;
@@ -227,18 +230,18 @@ class HomeController extends GetxController {
     return completer.future;
   }
 
-  void initPagingControllerDynamic(List<Categories> categories) {
+  Future<void> initPagingControllerDynamic(List<Categories> categories) async {
+    final Completer<void> completer = Completer<void>();
+
     for (int i = 0; i < categories.length; i++) {
       final PagingController<int, Products> pagingController =
           PagingController<int, Products>(firstPageKey: 1);
-
       pagingControllerDynamic.add(pagingController);
     }
 
     for (int i = 0; i < pagingControllerDynamic.length; i++) {
       final PagingController<int, Products> pagingController =
           pagingControllerDynamic[i];
-
       pagingController.addPageRequestListener(
         (int pageKey) async {
           await _fetchPageDynamic(
@@ -250,7 +253,9 @@ class HomeController extends GetxController {
       );
     }
 
-    return;
+    completer.complete();
+
+    return completer.future;
   }
 
   Future<void> _fetchPageDynamic(

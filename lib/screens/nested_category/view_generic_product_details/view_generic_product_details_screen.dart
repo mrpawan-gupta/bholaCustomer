@@ -643,21 +643,18 @@ class ViewGenericProductDetailsScreen
   Widget gaugeWidget({required double value}) {
     return SizedBox(
       height: 50,
-      child: AnimatedRadialGauge(
-        duration: const Duration(seconds: 1),
+      child: RadialGauge(
         value: value,
         axis: const GaugeAxis(
           max: 180,
           pointer: GaugePointer.circle(color: Colors.black, radius: 8),
         ),
-        builder: (BuildContext context, Widget? child, double value) {
-          return Center(
-            child: Text(
-              "$value%",
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-          );
-        },
+        child: Center(
+          child: Text(
+            "$value%",
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
       ),
     );
   }

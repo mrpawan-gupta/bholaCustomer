@@ -47,14 +47,25 @@
 //   }
 
 //   Future<void> checkAndEnableBackgrounsLocation() async {
-//     final PermissionStatus isGranted = await Permission.locationAlways.status;
+//     try {
+//       final PermissionStatus status1 = await Permission.location.status;
+//       final PermissionStatus status2 = await Permission.locationAlways.status;
 
-//     final bool value = isGranted == PermissionStatus.granted;
+//       final bool cond1 = status1 == PermissionStatus.granted;
+//       final bool cond2 = status2 == PermissionStatus.granted;
+//       final bool cond3 = await loc.Location().serviceEnabled();
+//       final bool cond4 = await loc.Location().isBackgroundModeEnabled();
+//       final bool fCond = cond1 && cond2 && cond3 && !cond4;
 
-//     if (value) {
-//       await loc.Location().enableBackgroundMode();
-//     } else {}
-
+//       final bool res = await loc.Location().enableBackgroundMode(enable: fCond);
+//       AppLogger().info(message: "BackgrounsLocation(): res: $res");
+//     } on Exception catch (error, stackTrace) {
+//       AppLogger().error(
+//         message: "Exception caught",
+//         error: error,
+//         stackTrace: stackTrace,
+//       );
+//     } finally {}
 //     return Future<void>.value();
 //   }
 
@@ -159,7 +170,6 @@
 //     final loc.PermissionStatus status = await loc.Location().hasPermission();
 //     final bool isGranted = status == loc.PermissionStatus.granted;
 //     final bool isGrantedLimited = status == loc.PermissionStatus.grantedLimited;
-
 //     final bool hasPermission = isGranted || isGrantedLimited;
 //     final bool serviceEnable = await loc.Location().serviceEnabled();
 
@@ -203,7 +213,6 @@
 
 //       lat = data.latitude;
 //       long = data.longitude;
-
 //       AppLogger().info(message: "getLocation(): lat: $lat long: $long");
 //     } on TimeoutException catch (error, stackTrace) {
 //       AppLogger().error(
@@ -224,7 +233,6 @@
 //         stackTrace: stackTrace,
 //       );
 //     } finally {}
-
 //     return Future<(double, double)>.value((lat, long));
 //   }
 

@@ -27,8 +27,7 @@ class AppBottomIndicator extends StatelessWidget {
   Widget _indicator(bool pos) {
     return SizedBox(
       height: 10,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 150),
+      child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 4.0),
         height: pos ? 10 : 8.0,
         width: pos ? 12 : 8.0,
