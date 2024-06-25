@@ -140,7 +140,7 @@ class ProductsListController extends GetxController {
     final Completer<List<Banners>> completer = Completer<List<Banners>>();
     await AppAPIService().functionGet(
       types: Types.order,
-      endPoint: "banners",
+      endPoint: "banner",
       query: <String, dynamic>{
         "page": pageKey,
         "limit": pageSize,
@@ -246,7 +246,7 @@ class ProductsListController extends GetxController {
   Future<void> getCategoriesAPI() async {
     await AppAPIService().functionGet(
       types: Types.order,
-      endPoint: "category",
+      endPoint: "productcategory",
       query: <String, dynamic>{
         "page": 1,
         "limit": 1000,

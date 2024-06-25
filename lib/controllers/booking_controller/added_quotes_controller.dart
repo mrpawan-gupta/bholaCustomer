@@ -90,7 +90,7 @@ class AddedQuotesController extends GetxController {
     } else {
       await AppAPIService().functionGet(
         types: Types.rental,
-        endPoint: "vehicleCategories",
+        endPoint: "vehiclecategory",
         query: <String, dynamic>{
           "page": pageKey,
           "limit": pageSize,
@@ -135,6 +135,8 @@ class AddedQuotesController extends GetxController {
       "page": pageKey,
       "limit": pageSize,
       "status": "Created",
+      "sortBy": "createdAt",
+      "sortOrder": "desc",
     };
 
     final String id = rxSelectedCategory.value.sId ?? "";
@@ -147,7 +149,7 @@ class AddedQuotesController extends GetxController {
 
     await AppAPIService().functionGet(
       types: Types.rental,
-      endPoint: "user/booking/history/Customer",
+      endPoint: "booking/history/Customer",
       query: query,
       successCallback: (Map<String, dynamic> json) {
         AppLogger().info(message: json["message"]);
@@ -171,7 +173,7 @@ class AddedQuotesController extends GetxController {
     final Completer<bool> completer = Completer<bool>();
     await AppAPIService().functionPatch(
       types: Types.rental,
-      endPoint: "accept/booking/$id",
+      endPoint: "booking/$id/status",
       body: <String, String>{"status": "BookingConfirm"},
       successCallback: (Map<String, dynamic> json) {
         AppSnackbar().snackbarSuccess(title: "Yay!", message: json["message"]);

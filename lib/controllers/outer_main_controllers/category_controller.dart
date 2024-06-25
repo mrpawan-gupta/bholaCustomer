@@ -77,7 +77,7 @@ class CategoryController extends GetxController {
     final Completer<List<Categories>> completer = Completer<List<Categories>>();
     await AppAPIService().functionGet(
       types: Types.rental,
-      endPoint: "vehicleCategories",
+      endPoint: "vehiclecategory",
       query: <String, dynamic>{
         "page": pageKey,
         "limit": pageSize,
@@ -104,7 +104,7 @@ class CategoryController extends GetxController {
     final Completer<List<Categories>> completer = Completer<List<Categories>>();
     await AppAPIService().functionGet(
       types: Types.order,
-      endPoint: "category",
+      endPoint: "productcategory",
       query: <String, dynamic>{
         "page": pageKey,
         "limit": pageSize,

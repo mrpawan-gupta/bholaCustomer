@@ -192,7 +192,7 @@ class ViewGenericProductDetailsController extends GetxController {
   Future<void> getRatingSummaryAPI() async {
     await AppAPIService().functionGet(
       types: Types.order,
-      endPoint: "product/${rxProductId.value}/ratingSummary",
+      endPoint: "product/${rxProductId.value}/ratings/summary",
       successCallback: (Map<String, dynamic> json) {
         AppLogger().info(message: json["message"]);
 
@@ -244,7 +244,7 @@ class ViewGenericProductDetailsController extends GetxController {
     } else {
       await AppAPIService().functionGet(
         types: Types.order,
-        endPoint: "${rxProductId.value}/product/$category",
+        endPoint: "product/${rxProductId.value}/category/$category",
         query: <String, dynamic>{
           "page": pageKey,
           "limit": pageSize,

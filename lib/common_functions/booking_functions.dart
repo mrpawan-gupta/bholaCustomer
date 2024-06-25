@@ -1,12 +1,13 @@
 import "dart:ui";
 
+import "package:intl/intl.dart";
 import "package:customer/models/featured_model.dart";
 import "package:customer/utils/app_colors.dart";
-import "package:intl/intl.dart";
 
 // From: Back-End
 // const CREATED = 'Created';
 // const BOOKINGCONFIRM = 'BookingConfirm';
+// const BOOKINGACCEPTED = 'BookingAccepted';
 // const PAYMENTDONE = 'PaymentDone';
 // const WORKINPROGRESS = 'WorkInProgress';
 // const COMPLETED = 'Completed';
@@ -21,6 +22,9 @@ String getBookingStatusString({required String status}) {
       break;
     case "BookingConfirm":
       value = "Booking Confirm";
+      break;
+    case "BookingAccepted":
+      value = "Booking Accepted";
       break;
     case "PaymentDone":
       value = "Payment Done";
@@ -48,6 +52,9 @@ Color getBorderColor({required String status}) {
       value = AppColors().appGrey;
       break;
     case "BookingConfirm":
+      value = AppColors().appPrimaryColor;
+      break;
+    case "BookingAccepted":
       value = AppColors().appPrimaryColor;
       break;
     case "PaymentDone":

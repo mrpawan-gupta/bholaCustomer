@@ -129,7 +129,7 @@ class BookingController extends GetxController {
   Future<void> getCategoriesAPI() async {
     await AppAPIService().functionGet(
       types: Types.rental,
-      endPoint: "vehicleCategories",
+      endPoint: "vehiclecategory",
       query: <String, dynamic>{
         "page": 1,
         "limit": 1000,
@@ -157,7 +157,7 @@ class BookingController extends GetxController {
   Future<void> getServicesAPI() async {
     await AppAPIService().functionGet(
       types: Types.rental,
-      endPoint: "services",
+      endPoint: "service",
       query: <String, dynamic>{
         "page": 1,
         "limit": 1000,
@@ -230,7 +230,7 @@ class BookingController extends GetxController {
     final Completer<bool> completer = Completer<bool>();
     await AppAPIService().functionPatch(
       types: Types.rental,
-      endPoint: "accept/booking/$id",
+      endPoint: "booking/$id/status",
       body: <String, String>{"status": "BookingConfirm"},
       successCallback: (Map<String, dynamic> json) {
         AppSnackbar().snackbarSuccess(title: "Yay!", message: json["message"]);
@@ -388,7 +388,7 @@ class BookingController extends GetxController {
     }
   }
 
-    Future<bool> checkLocationFunction() async {
+  Future<bool> checkLocationFunction() async {
     final loc.PermissionStatus status = await loc.Location().hasPermission();
     final bool isGranted = status == loc.PermissionStatus.granted;
     final bool isGrantedLimited = status == loc.PermissionStatus.grantedLimited;

@@ -98,7 +98,7 @@ class BookingDetailsController extends GetxController {
     final Completer<bool> completer = Completer<bool>();
     await AppAPIService().functionPatch(
       types: Types.rental,
-      endPoint: "accept/booking/$id",
+      endPoint: "booking/$id/status",
       body: <String, String>{"status": "BookingConfirm"},
       successCallback: (Map<String, dynamic> json) {
         AppSnackbar().snackbarSuccess(title: "Yay!", message: json["message"]);
@@ -142,7 +142,7 @@ class BookingDetailsController extends GetxController {
 
     await AppAPIService().functionPost(
       types: Types.rental,
-      endPoint: "review/booking/$id",
+      endPoint: "booking/$id/review",
       isForFileUpload: true,
       formData: FormData(
         <String, dynamic>{"star": rating, "review": review},

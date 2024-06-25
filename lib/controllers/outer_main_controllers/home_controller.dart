@@ -152,7 +152,7 @@ class HomeController extends GetxController {
     final Completer<List<Categories>> completer = Completer<List<Categories>>();
     await AppAPIService().functionGet(
       types: Types.rental,
-      endPoint: "vehicleCategories",
+      endPoint: "vehiclecategory",
       query: <String, dynamic>{
         "page": pageKey,
         "limit": pageSize,
@@ -179,7 +179,7 @@ class HomeController extends GetxController {
     final Completer<List<Categories>> completer = Completer<List<Categories>>();
     await AppAPIService().functionGet(
       types: Types.order,
-      endPoint: "category",
+      endPoint: "productcategory",
       query: <String, dynamic>{
         "page": pageKey,
         "limit": pageSize,
@@ -206,7 +206,7 @@ class HomeController extends GetxController {
     final Completer<List<Banners>> completer = Completer<List<Banners>>();
     await AppAPIService().functionGet(
       types: Types.order,
-      endPoint: "banners",
+      endPoint: "banner",
       query: <String, dynamic>{
         "page": pageKey,
         "limit": pageSize,

@@ -90,7 +90,7 @@ class OrderHistoryController extends GetxController {
     } else {
       await AppAPIService().functionGet(
         types: Types.rental,
-        endPoint: "vehicleCategories",
+        endPoint: "vehiclecategory",
         query: <String, dynamic>{
           "page": pageKey,
           "limit": pageSize,
@@ -135,6 +135,8 @@ class OrderHistoryController extends GetxController {
       "page": pageKey,
       "limit": pageSize,
       "status": "Completed",
+      "sortBy": "createdAt",
+      "sortOrder": "desc",
     };
 
     final String id = rxSelectedCategory.value.sId ?? "";
@@ -147,7 +149,7 @@ class OrderHistoryController extends GetxController {
 
     await AppAPIService().functionGet(
       types: Types.rental,
-      endPoint: "user/booking/history/Customer",
+      endPoint: "booking/history/Customer",
       query: query,
       successCallback: (Map<String, dynamic> json) {
         AppLogger().info(message: json["message"]);
