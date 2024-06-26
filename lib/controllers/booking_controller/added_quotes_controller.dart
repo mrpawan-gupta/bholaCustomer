@@ -94,6 +94,7 @@ class AddedQuotesController extends GetxController {
         query: <String, dynamic>{
           "page": pageKey,
           "limit": pageSize,
+          "status": "Approved",
         },
         successCallback: (Map<String, dynamic> json) {
           AppLogger().info(message: json["message"]);

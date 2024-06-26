@@ -56,6 +56,7 @@ class ViewGenericProductDetailsScreen
                         ratingBarGraphWidget(),
                         const SizedBox(height: 16),
                         reviewsWidget(),
+                        const SizedBox(height: 16),
                       ],
                     );
                   },

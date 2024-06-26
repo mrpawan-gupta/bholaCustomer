@@ -248,6 +248,9 @@ class ViewGenericProductDetailsController extends GetxController {
         query: <String, dynamic>{
           "page": pageKey,
           "limit": pageSize,
+          "sortBy": "createdAt",
+          "sortOrder": "desc",
+          "status": "Approved",
         },
         successCallback: (Map<String, dynamic> json) {
           AppLogger().info(message: json["message"]);

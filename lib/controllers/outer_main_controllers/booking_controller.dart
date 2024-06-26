@@ -133,6 +133,7 @@ class BookingController extends GetxController {
       query: <String, dynamic>{
         "page": 1,
         "limit": 1000,
+        "status": "Approved",
       },
       successCallback: (Map<String, dynamic> json) {
         AppLogger().info(message: json["message"]);
@@ -162,6 +163,7 @@ class BookingController extends GetxController {
         "page": 1,
         "limit": 1000,
         "categoryId": categoriesList[getSelectedCategoryIndex()].sId ?? "",
+        "status": "Approved",
       },
       successCallback: (Map<String, dynamic> json) {
         AppLogger().info(message: json["message"]);

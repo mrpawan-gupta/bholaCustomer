@@ -1,11 +1,11 @@
 // ignore_for_file: lines_longer_than_80_chars
 
 // import "dart:async";
-// import "dart:developer";
+// // import "dart:developer";
 // import "dart:io";
 
 // import "package:customer/services/app_api_service.dart";
-// import "package:customer/services/app_firestore_user_db.dart";
+// // import "package:customer/services/app_firestore_user_db.dart";
 // import "package:customer/services/app_perm_service.dart";
 // import "package:customer/services/app_storage_service.dart";
 // import "package:customer/utils/app_constants.dart";
@@ -87,11 +87,11 @@
 //           from: currentLocation.$3,
 //         );
 
-//         await updateInfoToFirestore(
-//           latitude: currentLocation.$1,
-//           longitude: currentLocation.$2,
-//           from: currentLocation.$3,
-//         );
+//         // await updateInfoToFirestore(
+//         //   latitude: currentLocation.$1,
+//         //   longitude: currentLocation.$2,
+//         //   from: currentLocation.$3,
+//         // );
 
 //         previousLocation = currentLocation;
 //       } else {
@@ -268,32 +268,32 @@
 //     return Future<void>.value();
 //   }
 
-//   Future<void> updateInfoToFirestore({
-//     required double latitude,
-//     required double longitude,
-//     required String from,
-//   }) async {
-//     final bool canUpdate = AppConstants().isEnabledFirestoreUpdateLocInfo;
-//     if (canUpdate) {
-//       final String id = AppStorageService().getUserInfoModel().sId ?? "";
-//       if (id.isEmpty) {
-//       } else {
-//         final Map<String, dynamic> data = <String, dynamic>{
-//           "location": <String, Object>{
-//             "latitude": latitude,
-//             "longitude": longitude,
-//             "from": from,
-//           },
-//         };
+//   // Future<void> updateInfoToFirestore({
+//   //   required double latitude,
+//   //   required double longitude,
+//   //   required String from,
+//   // }) async {
+//   //   final bool canUpdate = AppConstants().isEnabledFirestoreUpdateLocInfo;
+//   //   if (canUpdate) {
+//   //     final String id = AppStorageService().getUserInfoModel().sId ?? "";
+//   //     if (id.isEmpty) {
+//   //     } else {
+//   //       final Map<String, dynamic> data = <String, dynamic>{
+//   //         "location": <String, Object>{
+//   //           "latitude": latitude,
+//   //           "longitude": longitude,
+//   //           "from": from,
+//   //         },
+//   //       };
 
-//         await AppFirestoreUserDB().updateOrSetUser(
-//           id: id,
-//           data: data,
-//           successCallback: log,
-//           failureCallback: log,
-//         );
-//       }
-//     } else {}
-//     return Future<void>.value();
-//   }
+//   //       await AppFirestoreUserDB().updateOrSetUser(
+//   //         id: id,
+//   //         data: data,
+//   //         successCallback: log,
+//   //         failureCallback: log,
+//   //       );
+//   //     }
+//   //   } else {}
+//   //   return Future<void>.value();
+//   // }
 // }

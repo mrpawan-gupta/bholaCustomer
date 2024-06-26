@@ -1,139 +1,141 @@
-import "dart:async";
-import "dart:convert";
+// ignore_for_file: lines_longer_than_80_chars
 
-import "package:customer/utils/app_logger.dart";
-import "package:firebase_remote_config/firebase_remote_config.dart";
-import "package:get/get.dart";
+// import "dart:async";
+// import "dart:convert";
 
-class AppRemoteConfig extends GetxService {
-  factory AppRemoteConfig() {
-    return _singleton;
-  }
+// import "package:customer/utils/app_logger.dart";
+// import "package:firebase_remote_config/firebase_remote_config.dart";
+// import "package:get/get.dart";
 
-  AppRemoteConfig._internal();
-  static final AppRemoteConfig _singleton = AppRemoteConfig._internal();
+// class AppRemoteConfig extends GetxService {
+//   factory AppRemoteConfig() {
+//     return _singleton;
+//   }
 
-  final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
-  late StreamSubscription<RemoteConfigUpdate> subscription;
+//   AppRemoteConfig._internal();
+//   static final AppRemoteConfig _singleton = AppRemoteConfig._internal();
 
-  final String paramBoolean = "param_boolean";
-  final String paramJson = "param_json";
-  final String paramNumber = "param_number";
-  final String paramString = "param_string";
+//   final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
+//   late StreamSubscription<RemoteConfigUpdate> subscription;
 
-  Future<void> initFirebaseRemoteConfig() async {
-    try {
-      const Duration duration = Duration.zero;
-      final RemoteConfigSettings remoteConfigSettings = RemoteConfigSettings(
-        fetchTimeout: duration,
-        minimumFetchInterval: duration,
-      );
+//   final String paramBoolean = "param_boolean";
+//   final String paramJson = "param_json";
+//   final String paramNumber = "param_number";
+//   final String paramString = "param_string";
 
-      await remoteConfig.setConfigSettings(remoteConfigSettings);
-      await fetchAndActivate();
-    } on Exception catch (error, stackTrace) {
-      AppLogger().error(
-        message: "Exception caught",
-        error: error,
-        stackTrace: stackTrace,
-      );
-    } finally {}
-    return Future<void>.value();
-  }
+//   Future<void> initFirebaseRemoteConfig() async {
+//     try {
+//       const Duration duration = Duration.zero;
+//       final RemoteConfigSettings remoteConfigSettings = RemoteConfigSettings(
+//         fetchTimeout: duration,
+//         minimumFetchInterval: duration,
+//       );
 
-  Future<bool> fetchAndActivate() async {
-    bool activate = false;
-    try {
-      activate = await remoteConfig.fetchAndActivate();
-      AppLogger().info(message: "fetchAndActivate: $activate");
-    } on Exception catch (error, stackTrace) {
-      AppLogger().error(
-        message: "Exception caught",
-        error: error,
-        stackTrace: stackTrace,
-      );
-    } finally {}
-    return Future<bool>.value(activate);
-  }
+//       await remoteConfig.setConfigSettings(remoteConfigSettings);
+//       await fetchAndActivate();
+//     } on Exception catch (error, stackTrace) {
+//       AppLogger().error(
+//         message: "Exception caught",
+//         error: error,
+//         stackTrace: stackTrace,
+//       );
+//     } finally {}
+//     return Future<void>.value();
+//   }
 
-  @override
-  Future<void> onInit() async {
-    super.onInit();
+//   Future<bool> fetchAndActivate() async {
+//     bool activate = false;
+//     try {
+//       activate = await remoteConfig.fetchAndActivate();
+//       AppLogger().info(message: "fetchAndActivate: $activate");
+//     } on Exception catch (error, stackTrace) {
+//       AppLogger().error(
+//         message: "Exception caught",
+//         error: error,
+//         stackTrace: stackTrace,
+//       );
+//     } finally {}
+//     return Future<bool>.value(activate);
+//   }
 
-    await initFirebaseRemoteConfig();
+//   @override
+//   Future<void> onInit() async {
+//     super.onInit();
 
-    subscription = remoteConfig.onConfigUpdated.listen(
-      (RemoteConfigUpdate event) async {
-        try {
-          await remoteConfig.activate();
+//     await initFirebaseRemoteConfig();
 
-          if (event.updatedKeys.contains(paramBoolean)) {
-            final bool value = await getBool();
-            AppLogger().info(message: "$paramBoolean : $value");
-          } else {}
+//     subscription = remoteConfig.onConfigUpdated.listen(
+//       (RemoteConfigUpdate event) async {
+//         try {
+//           await remoteConfig.activate();
 
-          if (event.updatedKeys.contains(paramJson)) {
-            final Map<String, dynamic> value = await getJson();
-            AppLogger().info(message: "$paramJson : $value");
-          } else {}
+//           if (event.updatedKeys.contains(paramBoolean)) {
+//             final bool value = await getBool();
+//             AppLogger().info(message: "$paramBoolean : $value");
+//           } else {}
 
-          if (event.updatedKeys.contains(paramNumber)) {
-            final double value = await getDouble();
-            AppLogger().info(message: "$paramNumber : $value");
-          } else {}
+//           if (event.updatedKeys.contains(paramJson)) {
+//             final Map<String, dynamic> value = await getJson();
+//             AppLogger().info(message: "$paramJson : $value");
+//           } else {}
 
-          if (event.updatedKeys.contains(paramString)) {
-            final String value = await getString();
-            AppLogger().info(message: "$paramString : $value");
-          } else {}
-        } on Exception catch (error, stackTrace) {
-          AppLogger().error(
-            message: "Exception caught",
-            error: error,
-            stackTrace: stackTrace,
-          );
-        } finally {}
-      },
-      // ignore: always_specify_types
-      onError: (error, stackTrace) {
-        AppLogger().error(
-          message: "Exception caught",
-          error: error,
-          stackTrace: stackTrace,
-        );
-      },
-      cancelOnError: false,
-      onDone: () async {
-        AppLogger().info(message: "remoteConfig: subscription: onDone called");
-        await subscription.cancel();
-      },
-    );
-  }
+//           if (event.updatedKeys.contains(paramNumber)) {
+//             final double value = await getDouble();
+//             AppLogger().info(message: "$paramNumber : $value");
+//           } else {}
 
-  @override
-  void onClose() {
-    unawaited(subscription.cancel());
+//           if (event.updatedKeys.contains(paramString)) {
+//             final String value = await getString();
+//             AppLogger().info(message: "$paramString : $value");
+//           } else {}
+//         } on Exception catch (error, stackTrace) {
+//           AppLogger().error(
+//             message: "Exception caught",
+//             error: error,
+//             stackTrace: stackTrace,
+//           );
+//         } finally {}
+//       },
+//       // ignore: always_specify_types
+//       onError: (error, stackTrace) {
+//         AppLogger().error(
+//           message: "Exception caught",
+//           error: error,
+//           stackTrace: stackTrace,
+//         );
+//       },
+//       cancelOnError: false,
+//       onDone: () async {
+//         AppLogger().info(message: "remoteConfig: subscription: onDone called");
+//         await subscription.cancel();
+//       },
+//     );
+//   }
 
-    super.onClose();
-  }
+//   @override
+//   void onClose() {
+//     unawaited(subscription.cancel());
 
-  Future<bool> getBool() async {
-    final bool value = remoteConfig.getBool(paramBoolean);
-    return Future<bool>.value(value);
-  }
+//     super.onClose();
+//   }
 
-  Future<Map<String, dynamic>> getJson() async {
-    final String value = remoteConfig.getString(paramJson);
-    return Future<Map<String, dynamic>>.value(jsonDecode(value));
-  }
+//   Future<bool> getBool() async {
+//     final bool value = remoteConfig.getBool(paramBoolean);
+//     return Future<bool>.value(value);
+//   }
 
-  Future<double> getDouble() async {
-    final double value = remoteConfig.getDouble(paramNumber);
-    return Future<double>.value(value);
-  }
+//   Future<Map<String, dynamic>> getJson() async {
+//     final String value = remoteConfig.getString(paramJson);
+//     return Future<Map<String, dynamic>>.value(jsonDecode(value));
+//   }
 
-  Future<String> getString() async {
-    final String value = remoteConfig.getString(paramString);
-    return Future<String>.value(value);
-  }
-}
+//   Future<double> getDouble() async {
+//     final double value = remoteConfig.getDouble(paramNumber);
+//     return Future<double>.value(value);
+//   }
+
+//   Future<String> getString() async {
+//     final String value = remoteConfig.getString(paramString);
+//     return Future<String>.value(value);
+//   }
+// }

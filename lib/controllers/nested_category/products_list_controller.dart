@@ -145,6 +145,7 @@ class ProductsListController extends GetxController {
         "page": pageKey,
         "limit": pageSize,
         "appType": "Customer",
+        "isActive": true,
       },
       successCallback: (Map<String, dynamic> json) {
         AppLogger().info(message: json["message"]);
@@ -170,6 +171,9 @@ class ProductsListController extends GetxController {
     final Map<String, dynamic> query = <String, dynamic>{
       "page": pageKey,
       "limit": pageSize,
+      "sortBy": "createdAt",
+      "sortOrder": "desc",
+      "status": "Approved",
     };
 
     if (rxSearchQuery.isNotEmpty) {
@@ -250,6 +254,7 @@ class ProductsListController extends GetxController {
       query: <String, dynamic>{
         "page": 1,
         "limit": 1000,
+        "status": "Approved",
       },
       successCallback: (Map<String, dynamic> json) {
         AppLogger().info(message: json["message"]);

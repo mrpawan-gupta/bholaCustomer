@@ -156,6 +156,7 @@ class HomeController extends GetxController {
       query: <String, dynamic>{
         "page": pageKey,
         "limit": pageSize,
+        "status": "Approved",
       },
       successCallback: (Map<String, dynamic> json) {
         AppLogger().info(message: json["message"]);
@@ -183,6 +184,7 @@ class HomeController extends GetxController {
       query: <String, dynamic>{
         "page": pageKey,
         "limit": pageSize,
+        "status": "Approved",
       },
       successCallback: (Map<String, dynamic> json) {
         AppLogger().info(message: json["message"]);
@@ -210,7 +212,8 @@ class HomeController extends GetxController {
       query: <String, dynamic>{
         "page": pageKey,
         "limit": pageSize,
-        "appType": "Vendor",
+        "appType": "Customer",
+        "isActive": true,
       },
       successCallback: (Map<String, dynamic> json) {
         AppLogger().info(message: json["message"]);
@@ -298,6 +301,7 @@ class HomeController extends GetxController {
         "sortBy": "createdAt",
         "sortOrder": "desc",
         "categoryId": categoryId,
+        "status": "Approved",
       },
       successCallback: (Map<String, dynamic> json) {
         AppLogger().info(message: json["message"]);

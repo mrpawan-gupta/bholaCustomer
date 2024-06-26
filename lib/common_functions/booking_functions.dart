@@ -1,8 +1,8 @@
 import "dart:ui";
 
-import "package:intl/intl.dart";
 import "package:customer/models/featured_model.dart";
 import "package:customer/utils/app_colors.dart";
+import "package:intl/intl.dart";
 
 // From: Back-End
 // const CREATED = 'Created';

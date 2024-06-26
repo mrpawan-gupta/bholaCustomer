@@ -1,4 +1,3 @@
-import "package:flutter/foundation.dart";
 import "package:logger/logger.dart";
 
 class AppLogger {
@@ -12,44 +11,32 @@ class AppLogger {
   final Logger logger = Logger();
 
   void trace({required String message, Object? error, StackTrace? stackTrace}) {
-    if (kDebugMode) {
-      logger.t(message, error: error, stackTrace: stackTrace);
-    } else {}
+    logger.t(message, error: error, stackTrace: stackTrace);
     return;
   }
 
   void debug({required String message, Object? error, StackTrace? stackTrace}) {
-    if (kDebugMode) {
-      logger.d(message, error: error, stackTrace: stackTrace);
-    } else {}
+    logger.d(message, error: error, stackTrace: stackTrace);
     return;
   }
 
   void info({required String message, Object? error, StackTrace? stackTrace}) {
-    if (kDebugMode) {
-      logger.i(message, error: error, stackTrace: stackTrace);
-    } else {}
+    logger.i(message, error: error, stackTrace: stackTrace);
     return;
   }
 
   void warn({required String message, Object? error, StackTrace? stackTrace}) {
-    if (kDebugMode) {
-      logger.w(message, error: error, stackTrace: stackTrace);
-    } else {}
+    logger.w(message, error: error, stackTrace: stackTrace);
     return;
   }
 
   void error({required String message, Object? error, StackTrace? stackTrace}) {
-    if (kDebugMode) {
-      logger.e(message, error: error, stackTrace: stackTrace);
-    } else {}
+    logger.e(message, error: error, stackTrace: stackTrace);
     return;
   }
 
   void fatal({required String message, Object? error, StackTrace? stackTrace}) {
-    if (kDebugMode) {
-      logger.f(message, error: error, stackTrace: stackTrace);
-    } else {}
+    logger.f(message, error: error, stackTrace: stackTrace);
     return;
   }
 }
