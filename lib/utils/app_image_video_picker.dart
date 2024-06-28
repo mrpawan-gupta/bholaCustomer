@@ -10,6 +10,7 @@ import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:image_picker/image_picker.dart";
 import "package:media_info/media_info.dart";
+import "package:path_provider/path_provider.dart";
 import "package:transparent_image/transparent_image.dart";
 import "package:video_thumbnail/video_thumbnail.dart";
 
@@ -64,6 +65,7 @@ class AppImageVideoPicker {
                   );
                 } else {
                   Map<String, dynamic> info = <String, dynamic>{};
+
                   info = await _mediaInfo.getMediaInfo(filePath);
 
                   AppLogger().info(message: "getMediaInfo: $info");
@@ -88,6 +90,7 @@ class AppImageVideoPicker {
             },
           ),
           ListTile(
+            dense: true,
             leading: Icon(
               isForVideo
                   ? Icons.video_collection_outlined
@@ -116,6 +119,7 @@ class AppImageVideoPicker {
                   );
                 } else {
                   Map<String, dynamic> info = <String, dynamic>{};
+
                   info = await _mediaInfo.getMediaInfo(filePath);
 
                   AppLogger().info(message: "getMediaInfo: $info");
@@ -188,12 +192,43 @@ class AppImageVideoPicker {
     }
     return Future<String>.value(filePath);
   }
+}
 
-  Future<Uint8List> generateThumbnail({required String path}) async {
-    final Uint8List value = await VideoThumbnail.thumbnailData(
+Future<Uint8List> generateThumbnail({required String path}) async {
+  Uint8List value = kTransparentImage;
+
+  try {
+    value = await VideoThumbnail.thumbnailData(
           video: path,
         ) ??
         kTransparentImage;
-    return Future<Uint8List>.value(value);
-  }
+  } on Exception catch (error, stackTrace) {
+    AppLogger().error(
+      message: "Exception caught",
+      error: error,
+      stackTrace: stackTrace,
+    );
+  } finally {}
+
+  return Future<Uint8List>.value(value);
+}
+
+Future<String> thumbnailFile({required String path}) async {
+  String value = "";
+
+  try {
+    value = await VideoThumbnail.thumbnailFile(
+          video: path,
+          thumbnailPath: (await getTemporaryDirectory()).path,
+        ) ??
+        "";
+  } on Exception catch (error, stackTrace) {
+    AppLogger().error(
+      message: "Exception caught",
+      error: error,
+      stackTrace: stackTrace,
+    );
+  } finally {}
+
+  return Future<String>.value(value);
 }

@@ -1,6 +1,7 @@
 import "package:customer/bindings/booking_binding/added_quotes_binding.dart";
 import "package:customer/bindings/booking_binding/booking_details_binding.dart";
 import "package:customer/bindings/booking_binding/booking_payment_binding.dart";
+import "package:customer/bindings/cart_binding/cart_binding.dart";
 import "package:customer/bindings/login_screen_bindings/intro_slider_binding.dart";
 // import "package:customer/bindings/login_screen_bindings/language_selection_binding.dart";
 import "package:customer/bindings/login_screen_bindings/otp_screen_binding.dart";
@@ -19,9 +20,11 @@ import "package:customer/bindings/settings_bindings/change_language_binding.dart
 import "package:customer/bindings/settings_bindings/edit_profile_binding.dart";
 import "package:customer/bindings/settings_bindings/settings_main_binding.dart";
 import "package:customer/bindings/settings_bindings/support_binding.dart";
+import "package:customer/bindings/wish_list_binding/wish_list_binding.dart";
 import "package:customer/screens/booking_screen/added_quotes_screen.dart";
 import "package:customer/screens/booking_screen/booking_details_screen.dart";
 import "package:customer/screens/booking_screen/booking_payment_screen.dart";
+import "package:customer/screens/cart_screen/cart_screen.dart";
 import "package:customer/screens/login_screen/intro_slider_screen.dart";
 // import "package:customer/screens/login_screen/language_selection.dart";
 import "package:customer/screens/login_screen/otp_screen.dart";
@@ -40,6 +43,7 @@ import "package:customer/screens/settings_screens/change_language_screen.dart";
 import "package:customer/screens/settings_screens/edit_profile_screen.dart";
 import "package:customer/screens/settings_screens/settings_main_screen.dart";
 import "package:customer/screens/settings_screens/support_screen.dart";
+import "package:customer/screens/wish_list_screen/wish_list_screen.dart";
 import "package:get/get.dart";
 
 class AppRoutes {
@@ -76,6 +80,9 @@ class AppRoutes {
   final String productListingScreen = "/productListingScreen";
   final String viewGenericProductDetailsScreen =
       "/viewGenericProductDetailsScreen";
+
+  final String wishListScreen = "/wishListScreen";
+  final String cartScreen = "/cartScreen";
 
   List<GetPage<dynamic>> getPages() {
     final GetPage<dynamic> splashScreenRoute = GetPage<dynamic>(
@@ -188,6 +195,17 @@ class AppRoutes {
       binding: ViewGenericProductDetailsBinding(),
     );
 
+    final GetPage<dynamic> wishListRoute = GetPage<dynamic>(
+      name: wishListScreen,
+      page: WishListScreen.new,
+      binding: WishListBinding(),
+    );
+    final GetPage<dynamic> cartRoute = GetPage<dynamic>(
+      name: cartScreen,
+      page: CartScreen.new,
+      binding: CartBinding(),
+    );
+
     return <GetPage<dynamic>>[
       splashScreenRoute,
       // languageSelectionRoute,
@@ -210,6 +228,8 @@ class AppRoutes {
       bookingPaymentRoute,
       viewGenericProductDetailsRoute,
       addedQuotesRoute,
+      wishListRoute,
+      cartRoute,
     ];
   }
 }

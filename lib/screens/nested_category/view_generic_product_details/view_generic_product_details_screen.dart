@@ -11,7 +11,6 @@ import "package:customer/screens/nested_category/view_generic_product_details/co
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_routes.dart";
-import "package:customer/utils/app_snackbar.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:flutter_rating_bar/flutter_rating_bar.dart";
@@ -670,44 +669,53 @@ class ViewGenericProductDetailsScreen
   }
 
   Widget buttons() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Expanded(
-            child: SizedBox(
-              height: 50,
-              width: double.infinity,
-              child: AppElevatedButton(
-                text: "Add to Cart",
-                onPressed: () {
-                  AppSnackbar().snackbarFailure(
-                    title: "Oops!",
-                    message: "Coming Soon!",
-                  );
-                },
+    return Obx(
+      () {
+        final GenericProductData data = controller.rxProductDetailsData.value;
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Expanded(
+                child: SizedBox(
+                  height: 50,
+                  width: double.infinity,
+                  child: AppElevatedButton(
+                    text: "Add to Wish List",
+                    onPressed: () async {
+                      await controller.addToWishListAPICall(id: data.sId ?? "");
+
+                      await AppNavService().pushNamed(
+                        destination: AppRoutes().wishListScreen,
+                        arguments: <String, dynamic>{},
+                      );
+                    },
+                  ),
+                ),
               ),
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: SizedBox(
-              height: 50,
-              width: double.infinity,
-              child: AppElevatedButton(
-                text: "Buy Now",
-                onPressed: () {
-                  AppSnackbar().snackbarFailure(
-                    title: "Oops!",
-                    message: "Coming Soon!",
-                  );
-                },
+              const SizedBox(width: 16),
+              Expanded(
+                child: SizedBox(
+                  height: 50,
+                  width: double.infinity,
+                  child: AppElevatedButton(
+                    text: "Add to Cart",
+                    onPressed: () async {
+                      await controller.addToCartAPICall(id: data.sId ?? "");
+
+                      await AppNavService().pushNamed(
+                        destination: AppRoutes().cartScreen,
+                        arguments: <String, dynamic>{},
+                      );
+                    },
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

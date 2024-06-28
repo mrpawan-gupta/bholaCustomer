@@ -73,6 +73,54 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
                       child: IconButton(
                         onPressed: () async {
                           await AppNavService().pushNamed(
+                            destination: AppRoutes().wishListScreen,
+                            arguments: <String, dynamic>{},
+                          );
+                        },
+                        icon: Icon(
+                          Icons.shopping_basket,
+                          color: AppColors().appWhiteColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                ],
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CircleAvatar(
+                      backgroundColor: AppColors().appPrimaryColor,
+                      child: IconButton(
+                        onPressed: () async {
+                          await AppNavService().pushNamed(
+                            destination: AppRoutes().cartScreen,
+                            arguments: <String, dynamic>{},
+                          );
+                        },
+                        icon: Icon(
+                          Icons.shopping_cart,
+                          color: AppColors().appWhiteColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                ],
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CircleAvatar(
+                      backgroundColor: AppColors().appPrimaryColor,
+                      child: IconButton(
+                        onPressed: () async {
+                          await AppNavService().pushNamed(
                             destination: AppRoutes().supportScreen,
                             arguments: <String, dynamic>{},
                           );

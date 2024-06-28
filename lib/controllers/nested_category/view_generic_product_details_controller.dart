@@ -274,4 +274,46 @@ class ViewGenericProductDetailsController extends GetxController {
 
     return completer.future;
   }
+
+  Future<bool> addToCartAPICall({required String id}) async {
+    final Completer<bool> completer = Completer<bool>();
+
+    await AppAPIService().functionPost(
+      types: Types.order,
+      endPoint: "cart",
+      body: <String, dynamic>{"productId": id, "quantity": "1"},
+      successCallback: (Map<String, dynamic> json) {
+        AppSnackbar().snackbarSuccess(title: "Yay!", message: json["message"]);
+
+        completer.complete(true);
+      },
+      failureCallback: (Map<String, dynamic> json) {
+        AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
+
+        completer.complete(false);
+      },
+    );
+    return completer.future;
+  }
+
+  Future<bool> addToWishListAPICall({required String id}) async {
+    final Completer<bool> completer = Completer<bool>();
+
+    await AppAPIService().functionPost(
+      types: Types.order,
+      endPoint: "wishlist",
+      body: <String, dynamic>{"productId": id},
+      successCallback: (Map<String, dynamic> json) {
+        AppSnackbar().snackbarSuccess(title: "Yay!", message: json["message"]);
+
+        completer.complete(true);
+      },
+      failureCallback: (Map<String, dynamic> json) {
+        AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
+
+        completer.complete(false);
+      },
+    );
+    return completer.future;
+  }
 }
