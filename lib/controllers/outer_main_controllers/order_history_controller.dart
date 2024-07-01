@@ -135,7 +135,7 @@ class OrderHistoryController extends GetxController {
     final Map<String, dynamic> query = <String, dynamic>{
       "page": pageKey,
       "limit": pageSize,
-      "status": "Completed",
+      "status": "Completed,Cancelled",
       "sortBy": "createdAt",
       "sortOrder": "desc",
     };

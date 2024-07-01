@@ -197,7 +197,6 @@ class Reviews {
   Reviews({
     this.customer,
     this.review,
-    this.star,
     this.photos,
     this.isDeleted,
     this.sId,
@@ -205,12 +204,12 @@ class Reviews {
     this.customerFirstName,
     this.customerLastName,
     this.customerProfilePhoto,
+    this.star,
   });
 
   Reviews.fromJson(Map<String, dynamic> json) {
     customer = json["customer"];
     review = json["review"];
-    star = json["star"];
     photos = (json["photos"] as List<dynamic>).cast<String>();
     isDeleted = json["isDeleted"];
     sId = json["_id"];
@@ -218,11 +217,10 @@ class Reviews {
     customerFirstName = json["customerFirstName"];
     customerLastName = json["customerLastName"];
     customerProfilePhoto = json["customerProfilePhoto"];
+    star = json["star"];
   }
-
   String? customer;
   String? review;
-  num? star;
   List<String>? photos;
   bool? isDeleted;
   String? sId;
@@ -230,12 +228,12 @@ class Reviews {
   String? customerFirstName;
   String? customerLastName;
   String? customerProfilePhoto;
+  num? star;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data["customer"] = customer;
     data["review"] = review;
-    data["star"] = star;
     data["photos"] = photos;
     data["isDeleted"] = isDeleted;
     data["_id"] = sId;
@@ -243,6 +241,7 @@ class Reviews {
     data["customerFirstName"] = customerFirstName;
     data["customerLastName"] = customerLastName;
     data["customerProfilePhoto"] = customerProfilePhoto;
+    data["star"] = star;
     return data;
   }
 }

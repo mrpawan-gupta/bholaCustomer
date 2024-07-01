@@ -1,7 +1,7 @@
 import "package:customer/controllers/wish_list_controller/wish_list_controller.dart";
 import "package:customer/models/featured_model.dart";
 import "package:customer/models/wish_list_model.dart";
-import "package:customer/screens/cart_screen/my_utils/common_grid_view.dart";
+import "package:customer/screens/wish_list_screen/common_grid_view.dart";
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_routes.dart";

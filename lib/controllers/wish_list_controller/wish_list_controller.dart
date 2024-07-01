@@ -107,6 +107,7 @@ class WishListController extends GetxController {
       },
       needLoader: false,
     );
+
     return completer.future;
   }
 
@@ -165,6 +166,7 @@ class WishListController extends GetxController {
         completer.complete(false);
       },
     );
+
     return completer.future;
   }
 
@@ -185,6 +187,7 @@ class WishListController extends GetxController {
         completer.complete(false);
       },
     );
+
     return completer.future;
   }
 }

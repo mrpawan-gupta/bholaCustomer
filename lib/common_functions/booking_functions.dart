@@ -18,25 +18,25 @@ String getBookingStatusString({required String status}) {
 
   switch (status) {
     case "Created":
-      value = "Created";
+      value = "Booking - Created";
       break;
     case "BookingConfirm":
-      value = "Booking Confirm";
+      value = "Booking - Confirmed";
       break;
     case "BookingAccepted":
-      value = "Booking Accepted";
+      value = "Booking - Accepted";
       break;
     case "PaymentDone":
-      value = "Payment Done";
+      value = "Booking - Payment Done";
       break;
     case "WorkInProgress":
-      value = "Work In Progress";
+      value = "Booking - Work In Progress";
       break;
     case "Completed":
-      value = "Completed";
+      value = "Booking - Completed";
       break;
     case "Cancelled":
-      value = "Cancelled";
+      value = "Booking - Cancelled";
       break;
     default:
       break;

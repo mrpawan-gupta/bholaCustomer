@@ -26,7 +26,7 @@ class BookingDetailsController extends GetxController {
     unawaited(getBookingAPICall());
   }
 
-  bool isVisibleDeleteButton() {
+  bool isVisibleConfirmAndCancelButton() {
     final String allowRoute = AppRoutes().addedQuotesScreen;
     final bool isAllowedRoute = AppNavService().previousRoute == allowRoute;
 
@@ -36,8 +36,18 @@ class BookingDetailsController extends GetxController {
     return isAllowedRoute && isStatusCorrect;
   }
 
+  bool isVisibleCancelButton() {
+    final String allowRoute = AppRoutes().mainNavigationScreen;
+    final bool isAllowedRoute = AppNavService().previousRoute == allowRoute;
+
+    final String status = rxBookings.value.status ?? "";
+    final bool isStatusCorrect = status == "BookingConfirm";
+
+    return isAllowedRoute && isStatusCorrect;
+  }
+
   bool isVisibleReviewRating() {
-    final String allowRoute = AppRoutes().addedQuotesScreen;
+    final String allowRoute = AppRoutes().mainNavigationScreen;
     final bool isAllowedRoute = AppNavService().previousRoute == allowRoute;
 
     final String status = rxBookings.value.status ?? "";
@@ -157,6 +167,7 @@ class BookingDetailsController extends GetxController {
 
         completer.complete(false);
       },
+      needLoader: false,
     );
     return completer.future;
   }

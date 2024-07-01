@@ -97,7 +97,7 @@ class LanguageSelectionPage extends GetView<LanguageSelectionController> {
                               i == controller.rxAllAppLocalsLength.value - 1;
                           return Padding(
                             padding: EdgeInsets.only(
-                              bottom: isLast ? 0.0 : 16.0,
+                              bottom: isLast ? 16.0 : 0.0,
                             ),
                             child: InkWell(
                               borderRadius: BorderRadius.circular(32),

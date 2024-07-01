@@ -1,6 +1,8 @@
 import "package:customer/common_functions/date_time_functions.dart";
 import "package:customer/common_widgets/app_bottom_indicator.dart";
 import "package:customer/common_widgets/app_elevated_button.dart";
+import "package:customer/common_widgets/app_review_rating_widget.dart";
+import "package:customer/common_widgets/app_text_button.dart";
 import "package:customer/common_widgets/common_image_widget.dart";
 import "package:customer/controllers/nested_category/view_generic_product_details_controller.dart";
 import "package:customer/models/generic_product_details_model.dart";
@@ -251,6 +253,8 @@ class ViewGenericProductDetailsScreen
         children: <Widget>[
           CommonGenericProductTitleBar(
             title: "Product Description",
+            onTapReviewRating: () {},
+            isReviewRatingNeeded: false,
             onTapViewAll: () {},
             isViewAllNeeded: false,
           ),
@@ -280,6 +284,8 @@ class ViewGenericProductDetailsScreen
               children: <Widget>[
                 CommonGenericProductTitleBar(
                   title: "Delivery Address",
+                  onTapReviewRating: () {},
+                  isReviewRatingNeeded: false,
                   onTapViewAll: () {},
                   isViewAllNeeded: false,
                 ),
@@ -376,8 +382,10 @@ class ViewGenericProductDetailsScreen
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: CommonGenericProductTitleBar(
             title: "Suggested",
+            onTapReviewRating: () {},
+            isReviewRatingNeeded: false,
             onTapViewAll: () {},
-            isViewAllNeeded: true,
+            isViewAllNeeded: false,
           ),
         ),
         const SizedBox(height: 8),
@@ -406,28 +414,12 @@ class ViewGenericProductDetailsScreen
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    const Expanded(
-                      child: Text(
-                        "Ratings",
-                        style: TextStyle(
-                          fontSize: 16 + 4,
-                          fontWeight: FontWeight.w700,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    InkWell(
-                      borderRadius: BorderRadius.circular(100.0),
-                      onTap: () {},
-                      child: Icon(
-                        Icons.edit,
-                        color: AppColors().appPrimaryColor,
-                      ),
-                    ),
-                  ],
+                CommonGenericProductTitleBar(
+                  title: "Ratings",
+                  onTapReviewRating: () {},
+                  isReviewRatingNeeded: false,
+                  onTapViewAll: () {},
+                  isViewAllNeeded: false,
                 ),
                 const SizedBox(height: 8),
                 Card(
@@ -551,7 +543,19 @@ class ViewGenericProductDetailsScreen
   Widget reviewsWidget() {
     final GenericProductData data = controller.rxProductDetailsData.value;
     return data.reviews?.isEmpty ?? true
-        ? const SizedBox()
+        ? Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: AppTextButton(
+                  text: "Add Review Rating",
+                  onPressed: addReviewRatingFunction,
+                ),
+              ),
+            ],
+          )
         : Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -560,6 +564,8 @@ class ViewGenericProductDetailsScreen
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: CommonGenericProductTitleBar(
                   title: "Reviews",
+                  onTapReviewRating: addReviewRatingFunction,
+                  isReviewRatingNeeded: true,
                   onTapViewAll: () {},
                   isViewAllNeeded: true,
                 ),
@@ -666,6 +672,28 @@ class ViewGenericProductDetailsScreen
       borderRadius: BorderRadius.circular(100),
       valueColor: AlwaysStoppedAnimation<Color>(AppColors().appPrimaryColor),
     );
+  }
+
+  Future<void> addReviewRatingFunction() async {
+    final (double, String)? result = await Get.bottomSheet(
+      const AppReviewRatingWidget(),
+      backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
+      isScrollControlled: true,
+    );
+
+    if (result != null) {
+      final String id = controller.rxProductId.value;
+
+      await controller.addReviewRatingAPICall(
+        id: id,
+        rating: result.$1.toInt(),
+        review: result.$2,
+      );
+
+      controller.initReinit();
+    } else {}
+
+    return Future<void>.value();
   }
 
   Widget buttons() {

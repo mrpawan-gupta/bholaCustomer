@@ -502,14 +502,16 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
 
   Widget decideActionButtonWidget() {
     final Bookings item = controller.rxBookings.value;
-    final bool isVisibleDeleteButton = controller.isVisibleDeleteButton();
+    final bool isVisibleConfirmAndCancelButton =
+        controller.isVisibleConfirmAndCancelButton();
+    final bool isVisibleCancelButton = controller.isVisibleCancelButton();
     final bool isVisibleReviewRating = controller.isVisibleReviewRating();
 
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        if (isVisibleDeleteButton)
+        if (isVisibleConfirmAndCancelButton)
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Row(
@@ -563,6 +565,58 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
                 ),
                 const SizedBox(width: 8),
                 const SizedBox(width: 8),
+                Expanded(
+                  child: Card(
+                    margin: EdgeInsets.zero,
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                      side: BorderSide(
+                        color: AppColors().appRedColor,
+                      ),
+                    ),
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    surfaceTintColor: AppColors().appWhiteColor,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(12.0),
+                      onTap: () async {
+                        final String id = controller.rxBookingId.value;
+
+                        bool value = false;
+                        value = await controller.cancelBookingAPICall(id: id);
+
+                        if (value) {
+                          AppNavService().pop();
+                        } else {}
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Center(
+                          child: Text(
+                            "Cancel Booking",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: AppColors().appRedColor,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )
+        else
+          const SizedBox(),
+        if (isVisibleCancelButton)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
                 Expanded(
                   child: Card(
                     margin: EdgeInsets.zero,
