@@ -64,17 +64,15 @@ class ReviewRatingController extends GetxController {
   Future<List<Reviews>> _apiCallReviews(int pageKey) async {
     final Completer<List<Reviews>> completer = Completer<List<Reviews>>();
 
-    final Map<String, dynamic> query = <String, dynamic>{
-      "page": pageKey,
-      "limit": pageSize,
-      "sortBy": "createdAt",
-      "sortOrder": "desc",
-    };
-
     await AppAPIService().functionGet(
       types: Types.order,
       endPoint: "product/${rxProductId.value}/reviews",
-      query: query,
+      query: <String, dynamic>{
+        "page": pageKey,
+        "limit": pageSize,
+        "sortBy": "createdAt",
+        "sortOrder": "desc",
+      },
       successCallback: (Map<String, dynamic> json) {
         AppLogger().info(message: json["message"]);
 
@@ -90,6 +88,7 @@ class ReviewRatingController extends GetxController {
       },
       needLoader: false,
     );
+
     return completer.future;
   }
 }

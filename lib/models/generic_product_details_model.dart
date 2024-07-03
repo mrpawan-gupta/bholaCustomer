@@ -194,5 +194,3 @@ class Ratings {
     return data;
   }
 }
-
-

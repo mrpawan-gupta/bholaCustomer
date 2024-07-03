@@ -116,9 +116,11 @@ class ViewGenericProductDetailsScreen
             ),
           ),
           const SizedBox(height: 16),
-          AppBottomIndicator(
-            length: 2,
-            index: controller.rxCurrentIndex.value,
+          Align(
+            child: AppBottomIndicator(
+              length: 2,
+              index: controller.rxCurrentIndex.value,
+            ),
           ),
           const SizedBox(height: 16),
         ],
@@ -577,11 +579,8 @@ class ViewGenericProductDetailsScreen
                 },
                 itemBuilder: (BuildContext context, int index) {
                   final Reviews item = data.reviews?[index] ?? Reviews();
-                  return reviewsListAdapter(
-                    item: item,
-                    onPressedEdit: (Reviews item) {},
-                    onPressedDelete: (Reviews item) {},
-                  );
+
+                  return reviewsListAdapter(item: item);
                 },
               ),
             ],
