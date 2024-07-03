@@ -5,6 +5,7 @@ import "package:customer/controllers/nested_category/view_generic_product_detail
 import "package:customer/models/generic_product_details_model.dart";
 import "package:customer/models/rating_summary.dart";
 import "package:customer/models/related_suggested.dart";
+import "package:customer/models/review_rating_model.dart";
 import "package:customer/screens/nested_category/view_generic_product_details/common_generic_product_title_bar.dart";
 import "package:customer/screens/nested_category/view_generic_product_details/common_horizontal_list_view_products.dart";
 import "package:customer/screens/review_rating_screen/my_utils/common_list_view.dart";
@@ -557,7 +558,7 @@ class ViewGenericProductDetailsScreen
                   onTapViewAll: () async {
                     await AppNavService().pushNamed(
                       destination: AppRoutes().reviewRatingScreen,
-                      arguments: <String, dynamic>{},
+                      arguments: <String, dynamic>{"id": data.sId ?? ""},
                     );
                   },
                   isViewAllNeeded: true,

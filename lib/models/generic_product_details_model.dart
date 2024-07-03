@@ -1,3 +1,5 @@
+import "package:customer/models/review_rating_model.dart";
+
 class GenericProduct {
   GenericProduct({
     this.success,
@@ -193,55 +195,4 @@ class Ratings {
   }
 }
 
-class Reviews {
-  Reviews({
-    this.customer,
-    this.review,
-    this.photos,
-    this.isDeleted,
-    this.sId,
-    this.date,
-    this.customerFirstName,
-    this.customerLastName,
-    this.customerProfilePhoto,
-    this.star,
-  });
 
-  Reviews.fromJson(Map<String, dynamic> json) {
-    customer = json["customer"];
-    review = json["review"];
-    photos = (json["photos"] as List<dynamic>).cast<String>();
-    isDeleted = json["isDeleted"];
-    sId = json["_id"];
-    date = json["date"];
-    customerFirstName = json["customerFirstName"];
-    customerLastName = json["customerLastName"];
-    customerProfilePhoto = json["customerProfilePhoto"];
-    star = json["star"];
-  }
-  String? customer;
-  String? review;
-  List<String>? photos;
-  bool? isDeleted;
-  String? sId;
-  String? date;
-  String? customerFirstName;
-  String? customerLastName;
-  String? customerProfilePhoto;
-  num? star;
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data["customer"] = customer;
-    data["review"] = review;
-    data["photos"] = photos;
-    data["isDeleted"] = isDeleted;
-    data["_id"] = sId;
-    data["date"] = date;
-    data["customerFirstName"] = customerFirstName;
-    data["customerLastName"] = customerLastName;
-    data["customerProfilePhoto"] = customerProfilePhoto;
-    data["star"] = star;
-    return data;
-  }
-}

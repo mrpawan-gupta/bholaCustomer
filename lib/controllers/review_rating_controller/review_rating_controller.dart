@@ -1,9 +1,9 @@
-// ignore_for_file: lines_longer_than_80_chars
-
 import "dart:async";
 
-import "package:customer/models/generic_product_details_model.dart";
+import "package:customer/models/review_rating_model.dart";
+import "package:customer/services/app_api_service.dart";
 import "package:customer/utils/app_logger.dart";
+import "package:customer/utils/app_snackbar.dart";
 import "package:get/get.dart";
 import "package:infinite_scroll_pagination/infinite_scroll_pagination.dart";
 
@@ -64,116 +64,32 @@ class ReviewRatingController extends GetxController {
   Future<List<Reviews>> _apiCallReviews(int pageKey) async {
     final Completer<List<Reviews>> completer = Completer<List<Reviews>>();
 
-    final List<Reviews> tempList = <Reviews>[];
-    if (pageKey == 1) {
-      tempList.addAll(
-        <Reviews>[
-          Reviews(
-            customerProfilePhoto:
-                "https://randomuser.me/api/portraits/thumb/men/75.jpg",
-            customerFirstName: "Dharam",
-            customerLastName: "Budh",
-            date: DateTime.now().toString(),
-            star: 1,
-            review:
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-          ),
-          Reviews(
-            customerProfilePhoto:
-                "https://randomuser.me/api/portraits/thumb/men/75.jpg",
-            customerFirstName: "Dharam",
-            customerLastName: "Budh",
-            date: DateTime.now().toString(),
-            star: 1,
-            review:
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-          ),
-          Reviews(
-            customerProfilePhoto:
-                "https://randomuser.me/api/portraits/thumb/men/75.jpg",
-            customerFirstName: "Dharam",
-            customerLastName: "Budh",
-            date: DateTime.now().toString(),
-            star: 1,
-            review:
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-          ),
-          Reviews(
-            customerProfilePhoto:
-                "https://randomuser.me/api/portraits/thumb/men/75.jpg",
-            customerFirstName: "Dharam",
-            customerLastName: "Budh",
-            date: DateTime.now().toString(),
-            star: 1,
-            review:
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-          ),
-          Reviews(
-            customerProfilePhoto:
-                "https://randomuser.me/api/portraits/thumb/men/75.jpg",
-            customerFirstName: "Dharam",
-            customerLastName: "Budh",
-            date: DateTime.now().toString(),
-            star: 1,
-            review:
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-          ),
-          Reviews(
-            customerProfilePhoto:
-                "https://randomuser.me/api/portraits/thumb/men/75.jpg",
-            customerFirstName: "Dharam",
-            customerLastName: "Budh",
-            date: DateTime.now().toString(),
-            star: 1,
-            review:
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-          ),
-          Reviews(
-            customerProfilePhoto:
-                "https://randomuser.me/api/portraits/thumb/men/75.jpg",
-            customerFirstName: "Dharam",
-            customerLastName: "Budh",
-            date: DateTime.now().toString(),
-            star: 1,
-            review:
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-          ),
-          Reviews(
-            customerProfilePhoto:
-                "https://randomuser.me/api/portraits/thumb/men/75.jpg",
-            customerFirstName: "Dharam",
-            customerLastName: "Budh",
-            date: DateTime.now().toString(),
-            star: 1,
-            review:
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-          ),
-          Reviews(
-            customerProfilePhoto:
-                "https://randomuser.me/api/portraits/thumb/men/75.jpg",
-            customerFirstName: "Dharam",
-            customerLastName: "Budh",
-            date: DateTime.now().toString(),
-            star: 1,
-            review:
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-          ),
-          Reviews(
-            customerProfilePhoto:
-                "https://randomuser.me/api/portraits/thumb/men/75.jpg",
-            customerFirstName: "Dharam",
-            customerLastName: "Budh",
-            date: DateTime.now().toString(),
-            star: 1,
-            review:
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-          ),
-        ],
-      );
-    } else {}
+    final Map<String, dynamic> query = <String, dynamic>{
+      "page": pageKey,
+      "limit": pageSize,
+      "sortBy": "createdAt",
+      "sortOrder": "desc",
+    };
 
-    completer.complete(tempList);
+    await AppAPIService().functionGet(
+      types: Types.order,
+      endPoint: "product/${rxProductId.value}/reviews",
+      query: query,
+      successCallback: (Map<String, dynamic> json) {
+        AppLogger().info(message: json["message"]);
 
+        ReviewRatingModel model = ReviewRatingModel();
+        model = ReviewRatingModel.fromJson(json);
+
+        completer.complete(model.data?.reviews ?? <Reviews>[]);
+      },
+      failureCallback: (Map<String, dynamic> json) {
+        AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
+
+        completer.complete(<Reviews>[]);
+      },
+      needLoader: false,
+    );
     return completer.future;
   }
 }
