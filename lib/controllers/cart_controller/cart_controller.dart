@@ -1,6 +1,5 @@
 import "dart:async";
 
-import "package:customer/models/coupon_list_model.dart";
 import "package:customer/models/get_addresses_model.dart";
 import "package:customer/models/get_all_carts_model.dart";
 import "package:customer/models/get_user_by_id.dart";
@@ -16,8 +15,6 @@ class CartController extends GetxController {
   final Rx<Address> rxAddressInfo = Address().obs;
 
   final Rx<Carts> rxCart = Carts().obs;
-
-  final RxList<Coupons> rxCouponList = <Coupons>[].obs;
   final RxList<Items> rxItemsList = <Items>[].obs;
 
   @override
@@ -29,11 +26,10 @@ class CartController extends GetxController {
 
   void initReinit() {
     updateUserInfo(AppStorageService().getUserInfoModel());
+
     unawaited(getAddressesAPI());
 
-    unawaited(getAllCouponAPICall(needLoader: true));
     unawaited(getAllCartsItemsAPICall(needLoader: true));
-
     return;
   }
 
@@ -49,11 +45,6 @@ class CartController extends GetxController {
 
   void updateCart(Carts value) {
     rxCart(value);
-    return;
-  }
-
-  void updateCouponList(List<Coupons> value) {
-    rxCouponList(value);
     return;
   }
 
@@ -111,38 +102,6 @@ class CartController extends GetxController {
         AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
       },
       needLoader: false,
-    );
-    return Future<void>.value();
-  }
-
-  Future<void> getAllCouponAPICall({required bool needLoader}) async {
-    await AppAPIService().functionGet(
-      types: Types.order,
-      endPoint: "coupon",
-      query: <String, dynamic>{
-        "page": 1,
-        "limit": 1000,
-        "status": "Approved",
-      },
-      successCallback: (Map<String, dynamic> json) {
-        AppLogger().info(message: json["message"]);
-
-        CouponListModel model = CouponListModel();
-        model = CouponListModel.fromJson(json);
-
-        final List<Coupons> tempList = model.data?.coupons ?? <Coupons>[];
-
-        if (tempList.isNotEmpty) {
-          rxCouponList
-            ..clear()
-            ..addAll(tempList)
-            ..refresh();
-        } else {}
-      },
-      failureCallback: (Map<String, dynamic> json) {
-        AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
-      },
-      needLoader: needLoader,
     );
     return Future<void>.value();
   }
@@ -207,7 +166,53 @@ class CartController extends GetxController {
       types: Types.order,
       endPoint: "cart/${rxCart.value.sId ?? ""}/item/$id",
       successCallback: (Map<String, dynamic> json) {
-        AppSnackbar().snackbarSuccess(title: "Oops", message: json["message"]);
+        AppSnackbar().snackbarSuccess(title: "Yay!", message: json["message"]);
+
+        completer.complete(true);
+      },
+      failureCallback: (Map<String, dynamic> json) {
+        AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
+
+        completer.complete(false);
+      },
+      needLoader: false,
+    );
+
+    return completer.future;
+  }
+
+  Future<bool> applyCouponAPICall({required String code}) async {
+    final Completer<bool> completer = Completer<bool>();
+
+    await AppAPIService().functionPost(
+      types: Types.order,
+      endPoint: "coupon/apply",
+      body: <String, dynamic>{"code": code},
+      successCallback: (Map<String, dynamic> json) {
+        AppSnackbar().snackbarSuccess(title: "Yay!", message: json["message"]);
+
+        completer.complete(true);
+      },
+      failureCallback: (Map<String, dynamic> json) {
+        AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
+
+        completer.complete(false);
+      },
+      needLoader: false,
+    );
+
+    return completer.future;
+  }
+
+  Future<bool> removeCouponAPICall({required String code}) async {
+    final Completer<bool> completer = Completer<bool>();
+
+    await AppAPIService().functionPost(
+      types: Types.order,
+      endPoint: "coupon/remove",
+      body: <String, dynamic>{"code": code},
+      successCallback: (Map<String, dynamic> json) {
+        AppSnackbar().snackbarSuccess(title: "Yay!", message: json["message"]);
 
         completer.complete(true);
       },

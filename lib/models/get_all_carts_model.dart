@@ -1,3 +1,5 @@
+import "package:customer/models/coupon_list_model.dart";
+
 class GetAllCartsModel {
   GetAllCartsModel({this.success, this.data, this.statusCode, this.message});
 
@@ -62,13 +64,11 @@ class Carts {
     this.sId,
     this.user,
     this.items,
-    this.isCouponApplied,
+    this.coupon,
     this.totalQuantity,
     this.totalItems,
     this.totalPriceWithDiscount,
     this.totalPriceWithoutDiscount,
-    this.couponCode,
-    this.couponAmount,
     this.deliveryAmount,
     this.status,
     this.createdAt,
@@ -84,13 +84,11 @@ class Carts {
         items!.add(Items.fromJson(v));
       }
     }
-    isCouponApplied = json["isCouponApplied"];
+    coupon = json["coupon"] != null ? Coupons.fromJson(json["coupon"]) : null;
     totalQuantity = json["totalQuantity"];
     totalItems = json["totalItems"];
     totalPriceWithDiscount = json["totalPriceWithDiscount"];
     totalPriceWithoutDiscount = json["totalPriceWithoutDiscount"];
-    couponCode = json["couponCode"];
-    couponAmount = json["couponAmount"];
     deliveryAmount = json["deliveryAmount"];
     status = json["status"];
     createdAt = json["createdAt"];
@@ -100,14 +98,12 @@ class Carts {
   String? sId;
   String? user;
   List<Items>? items;
-  bool? isCouponApplied;
-  num? totalQuantity;
-  num? totalItems;
-  num? totalPriceWithDiscount;
-  num? totalPriceWithoutDiscount;
-  String? couponCode;
-  num? couponAmount;
-  num? deliveryAmount;
+  Coupons? coupon;
+  int? totalQuantity;
+  int? totalItems;
+  int? totalPriceWithDiscount;
+  int? totalPriceWithoutDiscount;
+  int? deliveryAmount;
   String? status;
   String? createdAt;
   String? updatedAt;
@@ -119,13 +115,13 @@ class Carts {
     if (items != null) {
       data["items"] = items!.map((Items v) => v.toJson()).toList();
     }
-    data["isCouponApplied"] = isCouponApplied;
+    if (coupon != null) {
+      data["coupon"] = coupon!.toJson();
+    }
     data["totalQuantity"] = totalQuantity;
     data["totalItems"] = totalItems;
     data["totalPriceWithDiscount"] = totalPriceWithDiscount;
     data["totalPriceWithoutDiscount"] = totalPriceWithoutDiscount;
-    data["couponCode"] = couponCode;
-    data["couponAmount"] = couponAmount;
     data["deliveryAmount"] = deliveryAmount;
     data["status"] = status;
     data["createdAt"] = createdAt;
@@ -165,9 +161,9 @@ class Items {
   String? productName;
   String? categoryName;
   String? productImage;
-  num? price;
-  num? quantity;
-  num? totalPrice;
+  int? price;
+  int? quantity;
+  int? totalPrice;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

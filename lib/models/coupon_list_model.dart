@@ -3,15 +3,13 @@ class CouponListModel {
 
   CouponListModel.fromJson(Map<String, dynamic> json) {
     success = json["success"];
-    data = json["data"] != null
-        ? CouponListModelData.fromJson(json["data"])
-        : null;
+    data = json["data"] != null ? Data.fromJson(json["data"]) : null;
     statusCode = json["statusCode"];
     message = json["message"];
   }
 
   bool? success;
-  CouponListModelData? data;
+  Data? data;
   int? statusCode;
   String? message;
 
@@ -27,10 +25,10 @@ class CouponListModel {
   }
 }
 
-class CouponListModelData {
-  CouponListModelData({this.coupons, this.totalcounts, this.limit, this.page});
+class Data {
+  Data({this.coupons, this.totalcounts, this.limit, this.page});
 
-  CouponListModelData.fromJson(Map<String, dynamic> json) {
+  Data.fromJson(Map<String, dynamic> json) {
     if (json["coupons"] != null) {
       coupons = <Coupons>[];
       for (final dynamic v in json["coupons"] as List<dynamic>) {
@@ -63,36 +61,36 @@ class Coupons {
   Coupons({
     this.sId,
     this.code,
-    this.amount,
-    this.discount,
     this.couponType,
     this.isActive,
+    this.discountPercent,
+    this.maxamount,
   });
 
   Coupons.fromJson(Map<String, dynamic> json) {
     sId = json["_id"];
     code = json["code"];
-    amount = json["amount"];
-    discount = json["discount"];
     couponType = json["couponType"];
     isActive = json["isActive"];
+    discountPercent = json["discountPercent"];
+    maxamount = json["maxamount"];
   }
 
   String? sId;
   String? code;
-  int? amount;
-  int? discount;
   String? couponType;
   bool? isActive;
+  int? discountPercent;
+  int? maxamount;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data["_id"] = sId;
     data["code"] = code;
-    data["amount"] = amount;
-    data["discount"] = discount;
     data["couponType"] = couponType;
     data["isActive"] = isActive;
+    data["discountPercent"] = discountPercent;
+    data["maxamount"] = maxamount;
     return data;
   }
 }

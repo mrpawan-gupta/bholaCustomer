@@ -236,8 +236,8 @@ class ViewGenericProductDetailsController extends GetxController {
 
     final Map<String, dynamic> map1 = rxProductDetailsData.value.toJson();
     final Map<String, dynamic> map2 = GenericProductData().toJson();
-
     final String category = rxProductDetailsData.value.category ?? "";
+
     final bool condition1 = mapEquals(map1, map2);
     final bool condition2 = category.isEmpty;
     final bool finalCondition = condition1 || condition2;
@@ -274,6 +274,7 @@ class ViewGenericProductDetailsController extends GetxController {
         needLoader: false,
       );
     }
+
     return completer.future;
   }
 
@@ -295,6 +296,7 @@ class ViewGenericProductDetailsController extends GetxController {
         completer.complete(false);
       },
     );
+
     return completer.future;
   }
 
@@ -316,35 +318,7 @@ class ViewGenericProductDetailsController extends GetxController {
         completer.complete(false);
       },
     );
-    return completer.future;
-  }
 
-  Future<bool> addReviewRatingAPICall({
-    required String id,
-    required int rating,
-    required String review,
-  }) async {
-    final Completer<bool> completer = Completer<bool>();
-
-    await AppAPIService().functionPost(
-      types: Types.rental,
-      endPoint: "booking/$id/review",
-      isForFileUpload: true,
-      formData: FormData(
-        <String, dynamic>{"star": rating, "review": review},
-      ),
-      successCallback: (Map<String, dynamic> json) {
-        AppSnackbar().snackbarSuccess(title: "Yay!", message: json["message"]);
-
-        completer.complete(true);
-      },
-      failureCallback: (Map<String, dynamic> json) {
-        AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
-
-        completer.complete(false);
-      },
-      needLoader: false,
-    );
     return completer.future;
   }
 }

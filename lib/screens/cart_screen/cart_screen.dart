@@ -2,11 +2,13 @@ import "dart:async";
 
 import "package:customer/common_widgets/app_text_button.dart";
 import "package:customer/controllers/cart_controller/cart_controller.dart";
+import "package:customer/models/coupon_list_model.dart";
 import "package:customer/models/get_all_carts_model.dart";
 import "package:customer/screens/cart_screen/my_utils/common_list_view.dart";
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_routes.dart";
+import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 
@@ -42,6 +44,8 @@ class CartScreen extends GetWidget<CartController> {
                         const Divider(indent: 16, endIndent: 16),
                         const SizedBox(height: 8),
                         orderPaymentWidget(),
+                        const SizedBox(height: 8),
+                        couponInfo(),
                         const SizedBox(height: 8),
                         const Divider(indent: 16, endIndent: 16),
                         const SizedBox(height: 8),
@@ -171,7 +175,7 @@ class CartScreen extends GetWidget<CartController> {
   }
 
   Widget couponWidget() {
-    // final Carts item = controller.rxCart.value;
+    final Carts item = controller.rxCart.value;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
@@ -184,18 +188,64 @@ class CartScreen extends GetWidget<CartController> {
             margin: EdgeInsets.zero,
             color: AppColors().appTransparentColor,
             surfaceTintColor: AppColors().appTransparentColor,
-            shape: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+            shape: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(
+                color: (item.coupon?.code ?? "").isNotEmpty
+                    ? AppColors().appPrimaryColor
+                    : AppColors().appBlackColor,
+              ),
+            ),
             child: ListTile(
               dense: true,
               contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-              title: const Text(
-                "Apply Coupon",
-                style: TextStyle(fontWeight: FontWeight.bold),
+              title: Text(
+                (item.coupon?.code ?? "").isNotEmpty
+                    ? "Coupon applied: ${item.coupon?.code ?? ""}"
+                    : "Apply Coupon",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: (item.coupon?.code ?? "").isNotEmpty
+                      ? AppColors().appPrimaryColor
+                      : AppColors().appBlackColor,
+                ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
-              trailing: const Icon(Icons.arrow_forward_ios),
-              onTap: () {},
+              trailing: Icon(
+                Icons.arrow_forward_ios,
+                color: (item.coupon?.code ?? "").isNotEmpty
+                    ? AppColors().appPrimaryColor
+                    : AppColors().appBlackColor,
+              ),
+              onTap: () async {
+                final dynamic result = await AppNavService().pushNamed(
+                  destination: AppRoutes().couponScreen,
+                  arguments: item.coupon == null
+                      ? <String, dynamic>{}
+                      : <String, dynamic>{"id": item.coupon?.sId ?? ""},
+                );
+
+                if (result != null && result is Coupons) {
+                  final Map<String, dynamic> map1 = result.toJson();
+                  final Map<String, dynamic> map2 = Coupons().toJson();
+                  final bool isForApplying = !mapEquals(map1, map2);
+
+                  final String code = isForApplying
+                      ? (result.code ?? "")
+                      : (controller.rxCart.value.coupon?.code ?? "");
+
+                  final bool value = isForApplying
+                      ? await controller.applyCouponAPICall(code: code)
+                      : await controller.removeCouponAPICall(code: code);
+
+                  if (value) {
+                    unawaited(
+                      controller.getAllCartsItemsAPICall(needLoader: false),
+                    );
+                  } else {}
+                } else {}
+              },
             ),
           ),
         ],
@@ -325,6 +375,99 @@ class CartScreen extends GetWidget<CartController> {
     );
   }
 
+  Widget couponInfo() {
+    final Carts item = controller.rxCart.value;
+    if (item.coupon == null) {
+      return const SizedBox();
+    } else {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const SizedBox(height: 8),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                const Text(
+                  "Coupon code:",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(width: 4),
+                Expanded(
+                  child: Text(
+                    item.coupon?.code ?? "",
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.end,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 4),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                const Text(
+                  "Coupon discount percent:",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(width: 4),
+                Expanded(
+                  child: Text(
+                    "${item.coupon?.discountPercent ?? 0}%",
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.end,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 4),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                const Text(
+                  "Coupon max amount:",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(width: 4),
+                Expanded(
+                  child: Text(
+                    "₹${item.coupon?.maxamount ?? 0}",
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.end,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+          ],
+        ),
+      );
+    }
+  }
+
   Widget orderPaymentWidget2() {
     final Carts item = controller.rxCart.value;
     return Padding(
@@ -403,10 +546,7 @@ class CartScreen extends GetWidget<CartController> {
                 ),
                 SizedBox(
                   height: 24,
-                  child: AppTextButton(
-                    text: "View Details",
-                    onPressed: () {},
-                  ),
+                  child: AppTextButton(text: "View Details", onPressed: () {}),
                 ),
               ],
             ),
