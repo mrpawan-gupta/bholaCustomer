@@ -20,6 +20,26 @@ class WishListScreen extends GetWidget<WishListController> {
         centerTitle: true,
         title: const Text("Wish List"),
         surfaceTintColor: AppColors().appTransparentColor,
+        actions: <Widget>[
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              IconButton(
+                onPressed: () async {
+                  await AppNavService().pushNamed(
+                    destination: AppRoutes().cartScreen,
+                    arguments: <String, dynamic>{},
+                  );
+                },
+                icon: Icon(
+                  Icons.shopping_cart,
+                  color: AppColors().appPrimaryColor,
+                ),
+              ),
+              const SizedBox(width: 8),
+            ],
+          ),
+        ],
       ),
       body: SafeArea(
         child: Column(

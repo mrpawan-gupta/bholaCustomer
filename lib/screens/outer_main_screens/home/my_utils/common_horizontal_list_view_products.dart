@@ -21,7 +21,7 @@ class CommonHorizontalListViewProducts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: Get.height / 4.56,
+      height: Get.height / 6,
       width: double.infinity,
       child: PagedGridView<int, Products>(
         shrinkWrap: true,
@@ -34,7 +34,7 @@ class CommonHorizontalListViewProducts extends StatelessWidget {
           crossAxisCount: 1,
           mainAxisSpacing: 16,
           crossAxisSpacing: 16,
-          childAspectRatio: 1.72 / 1,
+          childAspectRatio: 1.40 / 1,
         ),
         builderDelegate: PagedChildBuilderDelegate<Products>(
           noItemsFoundIndicatorBuilder: (BuildContext context) {

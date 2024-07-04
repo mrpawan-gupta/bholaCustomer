@@ -66,72 +66,40 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: CircleAvatar(
-                      backgroundColor: AppColors().appPrimaryColor,
-                      child: IconButton(
-                        onPressed: () async {
-                          await AppNavService().pushNamed(
-                            destination: AppRoutes().supportScreen,
-                            arguments: <String, dynamic>{},
-                          );
-                        },
-                        icon: Icon(
-                          Icons.support_agent,
-                          color: AppColors().appWhiteColor,
-                        ),
-                      ),
+                  IconButton(
+                    onPressed: () async {
+                      await AppNavService().pushNamed(
+                        destination: AppRoutes().wishListScreen,
+                        arguments: <String, dynamic>{},
+                      );
+                    },
+                    icon: Icon(
+                      Icons.favorite,
+                      color: AppColors().appRedColor,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () async {
+                      await AppNavService().pushNamed(
+                        destination: AppRoutes().cartScreen,
+                        arguments: <String, dynamic>{},
+                      );
+                    },
+                    icon: Icon(
+                      Icons.shopping_cart,
+                      color: AppColors().appPrimaryColor,
                     ),
                   ),
                   const SizedBox(width: 8),
                 ],
               ),
             ],
-            surfaceTintColor: AppColors().appTransparentColor,
-            bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(kToolbarHeight + 16),
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: commonAppBarBottom(
-                          iconData: Icons.shopping_basket_outlined,
-                          name: "Wish List",
-                          onTap: () async {
-                            await AppNavService().pushNamed(
-                              destination: AppRoutes().wishListScreen,
-                              arguments: <String, dynamic>{},
-                            );
-                          },
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: commonAppBarBottom(
-                          iconData: Icons.shopping_cart_outlined,
-                          name: "My Cart",
-                          onTap: () async {
-                            await AppNavService().pushNamed(
-                              destination: AppRoutes().cartScreen,
-                              arguments: <String, dynamic>{},
-                            );
-                          },
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                ],
-              ),
+            surfaceTintColor: AppColors().appWhiteColor,
+            bottom: const PreferredSize(
+              preferredSize: Size.zero,
+              child: Divider(height: 0),
             ),
           ),
-
           // ignore: deprecated_member_use
           body: WillPopScope(
             onWillPop: () async {
@@ -236,54 +204,6 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
       style: const TextStyle(fontSize: 16 + 4, fontWeight: FontWeight.w700),
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
-    );
-  }
-
-  Widget commonAppBarBottom({
-    required IconData iconData,
-    required String name,
-    required Function() onTap,
-  }) {
-    return Card(
-      margin: EdgeInsets.zero,
-      elevation: 4,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0),
-        side: BorderSide(
-          color: AppColors().appPrimaryColor,
-        ),
-      ),
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      surfaceTintColor: AppColors().appWhiteColor,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(12.0),
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Center(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Icon(
-                  iconData,
-                  color: AppColors().appPrimaryColor,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  name,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: AppColors().appPrimaryColor,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

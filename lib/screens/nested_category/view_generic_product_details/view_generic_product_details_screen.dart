@@ -31,6 +31,38 @@ class ViewGenericProductDetailsScreen
         centerTitle: true,
         title: const Text("Product Details"),
         surfaceTintColor: AppColors().appTransparentColor,
+        actions: <Widget>[
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              IconButton(
+                onPressed: () async {
+                  await AppNavService().pushNamed(
+                    destination: AppRoutes().wishListScreen,
+                    arguments: <String, dynamic>{},
+                  );
+                },
+                icon: Icon(
+                  Icons.favorite,
+                  color: AppColors().appRedColor,
+                ),
+              ),
+              IconButton(
+                onPressed: () async {
+                  await AppNavService().pushNamed(
+                    destination: AppRoutes().cartScreen,
+                    arguments: <String, dynamic>{},
+                  );
+                },
+                icon: Icon(
+                  Icons.shopping_cart,
+                  color: AppColors().appPrimaryColor,
+                ),
+              ),
+              const SizedBox(width: 8),
+            ],
+          ),
+        ],
       ),
       body: SafeArea(
         child: Obx(

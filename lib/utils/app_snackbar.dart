@@ -1,3 +1,5 @@
+import "dart:async";
+
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_constants.dart";
 import "package:customer/utils/app_logger.dart";
@@ -60,19 +62,27 @@ class AppSnackbar {
         break;
     }
 
-    Get
-      ..closeAllSnackbars()
-      ..snackbar(
-        title,
-        message,
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: color.withOpacity(0.64),
-        duration: AppConstants().duration,
-        isDismissible: true,
-        dismissDirection: DismissDirection.horizontal,
-        colorText: Colors.white,
-        onTap: (GetSnackBar getSnackBar) async {},
-      );
+    unawaited(
+      Get.closeCurrentSnackbar().whenComplete(
+        () {
+          Get.snackbar(
+            title,
+            message,
+            snackPosition: SnackPosition.TOP,
+            snackStyle: SnackStyle.FLOATING,
+            backgroundColor: color.withOpacity(0.64),
+            duration: AppConstants().duration,
+            isDismissible: true,
+            dismissDirection: DismissDirection.horizontal,
+            colorText: Colors.white,
+            onTap: (GetSnackBar getSnackBar) async {},
+            instantInit: false,
+          );
+
+          return;
+        },
+      ),
+    );
 
     return;
   }

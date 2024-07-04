@@ -1,10 +1,10 @@
 import "package:customer/common_widgets/app_elevated_button.dart";
-import "package:customer/common_widgets/app_no_item_found.dart";
 import "package:customer/common_widgets/app_text_button.dart";
 import "package:customer/common_widgets/common_image_widget.dart";
 import "package:customer/models/wish_list_model.dart";
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
+import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/material.dart";
 import "package:flutter_rating_bar/flutter_rating_bar.dart";
@@ -39,14 +39,60 @@ class CommonGridView extends StatelessWidget {
         crossAxisCount: 2,
         mainAxisSpacing: 16,
         crossAxisSpacing: 16,
-        childAspectRatio: 1 / 1.88,
+        childAspectRatio: 1 / 1.80,
       ),
       builderDelegate: PagedChildBuilderDelegate<WishListItems>(
         noItemsFoundIndicatorBuilder: (BuildContext context) {
-          return AppNoItemFoundWidget(
-            title: "No items found",
-            message: "The $type is currently empty.",
-            onTryAgain: pagingController.refresh,
+          // return AppNoItemFoundWidget(
+          //   title: "No items found",
+          //   message: "The $type is currently empty.",
+          //   onTryAgain: pagingController.refresh,
+          // );
+          return SizedBox(
+            height: Get.height / 1.5,
+            width: Get.width,
+            child: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  const SizedBox(height: 16),
+                  Icon(
+                    Icons.favorite,
+                    color: AppColors().appRedColor,
+                    size: 48,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    "Your wishlist is empty!",
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    "Explore more & shortlist some items!",
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    height: 50,
+                    width: 100,
+                    child: AppTextButton(
+                      text: "Start Shopping",
+                      onPressed: () async {
+                        await AppNavService().pushNamed(
+                          destination: AppRoutes().productListingScreen,
+                          arguments: <String, dynamic>{},
+                        );
+
+                        pagingController.refresh();
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                ],
+              ),
+            ),
           );
         },
         itemBuilder: (BuildContext context, WishListItems item, int index) {

@@ -22,44 +22,115 @@ class CartScreen extends GetWidget<CartController> {
         centerTitle: true,
         title: const Text("Cart"),
         surfaceTintColor: AppColors().appTransparentColor,
+        actions: <Widget>[
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              IconButton(
+                onPressed: () async {
+                  await AppNavService().pushNamed(
+                    destination: AppRoutes().wishListScreen,
+                    arguments: <String, dynamic>{},
+                  );
+                },
+                icon: Icon(
+                  Icons.favorite,
+                  color: AppColors().appRedColor,
+                ),
+              ),
+              const SizedBox(width: 8),
+            ],
+          ),
+        ],
       ),
       body: SafeArea(
         child: Obx(
           () {
-            return Column(
-              children: <Widget>[
-                Expanded(
-                  child: SingleChildScrollView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        listView(),
-                        const SizedBox(height: 00),
-                        addressWidget(),
-                        const SizedBox(height: 16),
-                        couponWidget(),
-                        const SizedBox(height: 8),
-                        const Divider(indent: 16, endIndent: 16),
-                        const SizedBox(height: 8),
-                        orderPaymentWidget(),
-                        const SizedBox(height: 8),
-                        couponInfo(),
-                        const SizedBox(height: 8),
-                        const Divider(indent: 16, endIndent: 16),
-                        const SizedBox(height: 8),
-                        orderPaymentWidget2(),
-                        const SizedBox(height: 16),
-                      ],
+            return controller.rxItemsList.isEmpty
+                ? SizedBox(
+                    height: Get.height / 1.5,
+                    width: Get.width,
+                    child: Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          const SizedBox(height: 16),
+                          Icon(
+                            Icons.shopping_cart,
+                            color: AppColors().appPrimaryColor,
+                            size: 48,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            "Your cart is empty!",
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            "Looks like you haven't made your choice yet!",
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                          const SizedBox(height: 16),
+                          SizedBox(
+                            height: 50,
+                            width: 100,
+                            child: AppTextButton(
+                              text: "Start Shopping",
+                              onPressed: () async {
+                                await AppNavService().pushNamed(
+                                  destination: AppRoutes().productListingScreen,
+                                  arguments: <String, dynamic>{},
+                                );
+
+                                unawaited(
+                                  controller.getAllCartsItemsAPICall(
+                                    needLoader: false,
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                        ],
+                      ),
                     ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                buttons(),
-                const SizedBox(height: 16),
-              ],
-            );
+                  )
+                : Column(
+                    children: <Widget>[
+                      Expanded(
+                        child: SingleChildScrollView(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              listView(),
+                              const SizedBox(height: 00),
+                              addressWidget(),
+                              const SizedBox(height: 16),
+                              couponWidget(),
+                              const SizedBox(height: 8),
+                              const Divider(indent: 16, endIndent: 16),
+                              const SizedBox(height: 8),
+                              orderPaymentWidget(),
+                              const SizedBox(height: 8),
+                              couponInfo(),
+                              const SizedBox(height: 8),
+                              const Divider(indent: 16, endIndent: 16),
+                              const SizedBox(height: 8),
+                              orderPaymentWidget2(),
+                              const SizedBox(height: 16),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      buttons(),
+                      const SizedBox(height: 16),
+                    ],
+                  );
           },
         ),
       ),

@@ -30,7 +30,7 @@ class CommonGridView extends StatelessWidget {
         crossAxisCount: 2,
         mainAxisSpacing: 16,
         crossAxisSpacing: 16,
-        childAspectRatio: 1 / 1.80,
+        childAspectRatio: 1 / 1.56,
       ),
       builderDelegate: PagedChildBuilderDelegate<Products>(
         noItemsFoundIndicatorBuilder: (BuildContext context) {
