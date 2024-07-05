@@ -64,14 +64,13 @@ class RelatedSuggestedData {
 
 class Products {
   Products({
+    this.cumulativeRating,
     this.sId,
     this.name,
     this.description,
     this.unit,
     this.isDeleted,
     this.price,
-    this.discountedPrice,
-    this.discountPercent,
     this.category,
     this.itemCode,
     this.quantity,
@@ -80,21 +79,24 @@ class Products {
     this.photo,
     this.video,
     this.status,
-    this.cumulativeRating,
     this.createdAt,
     this.updatedAt,
     this.iV,
+    this.discountPercent,
+    this.discountedPrice,
+    this.isInWishList,
+    this.isInCartList,
+    this.cartItemQty,
   });
 
   Products.fromJson(Map<String, dynamic> json) {
+    cumulativeRating = json["cumulativeRating"];
     sId = json["_id"];
     name = json["name"];
     description = json["description"];
     unit = json["unit"];
     isDeleted = json["isDeleted"];
     price = json["price"];
-    discountedPrice = json["discountedPrice"];
-    discountPercent = json["discountPercent"];
     category =
         json["category"] != null ? Category.fromJson(json["category"]) : null;
     itemCode = json["itemCode"];
@@ -104,19 +106,22 @@ class Products {
     photo = json["photo"];
     video = json["video"];
     status = json["status"];
-    cumulativeRating = json["cumulativeRating"];
     createdAt = json["createdAt"];
     updatedAt = json["updatedAt"];
     iV = json["__v"];
+    discountPercent = json["discountPercent"];
+    discountedPrice = json["discountedPrice"];
+    isInWishList = json["isInWishList"];
+    isInCartList = json["isInCartList"];
+    cartItemQty = json["cartItemQty"];
   }
+  double? cumulativeRating;
   String? sId;
   String? name;
   String? description;
   String? unit;
   bool? isDeleted;
   num? price;
-  num? discountedPrice;
-  num? discountPercent;
   Category? category;
   int? itemCode;
   int? quantity;
@@ -125,21 +130,24 @@ class Products {
   String? photo;
   String? video;
   String? status;
-  double? cumulativeRating;
   String? createdAt;
   String? updatedAt;
   int? iV;
+  num? discountPercent;
+  num? discountedPrice;
+  bool? isInWishList;
+  bool? isInCartList;
+  num? cartItemQty;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data["cumulativeRating"] = cumulativeRating;
     data["_id"] = sId;
     data["name"] = name;
     data["description"] = description;
     data["unit"] = unit;
     data["isDeleted"] = isDeleted;
     data["price"] = price;
-    data["discountedPrice"] = discountedPrice;
-    data["discountPercent"] = discountPercent;
     if (category != null) {
       data["category"] = category!.toJson();
     }
@@ -150,10 +158,14 @@ class Products {
     data["photo"] = photo;
     data["video"] = video;
     data["status"] = status;
-    data["cumulativeRating"] = cumulativeRating;
     data["createdAt"] = createdAt;
     data["updatedAt"] = updatedAt;
     data["__v"] = iV;
+    data["discountPercent"] = discountPercent;
+    data["discountedPrice"] = discountedPrice;
+    data["isInWishList"] = isInWishList;
+    data["isInCartList"] = isInCartList;
+    data["cartItemQty"] = cartItemQty;
     return data;
   }
 }

@@ -361,6 +361,10 @@ class ProductsListScreen extends GetView<ProductsListController> {
                   arguments: <String, dynamic>{"id": item.sId ?? ""},
                 );
               },
+              onTapAddToWish: (Products item, {required bool isLiked}) {},
+              onTapAddToCart: (Products item) {},
+              incQty: (Products item) {},
+              decQty: (Products item) {},
               type: "product list",
             ),
           ),

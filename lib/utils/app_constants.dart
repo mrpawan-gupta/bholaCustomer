@@ -13,7 +13,8 @@ class AppConstants {
 
   final double elevation = 0.0;
 
-  final String baseURL = "https://${kReleaseMode ? "api" : "dev"}.bhola.org.in";
+  // final String baseURL = "https://${kReleaseMode ? "api" : "dev"}.bhola.org.in";
+  final String baseURL = "https://${kReleaseMode ? "dev" : "dev"}.bhola.org.in";
 
   final String googleMapAPIKey = "AIzaSyAu0uQwt1solBKGQcExM9eJvU8rEPfbNNo";
   final String vpnAPIKey = "40f6cdcbaf9b4c139d4a276b9788dee6";

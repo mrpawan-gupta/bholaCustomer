@@ -109,14 +109,9 @@ class HomeController extends GetxController {
           : pagingControllerCategories.appendPage(newItems, pageKey + 1);
       valueNotifierCategories.value = pagingControllerCategories.value;
 
-      if (isLastPage) {
-        final List<Categories> categoriesList =
-            pagingControllerCategories.itemList ?? <Categories>[];
-        if (categoriesList.isNotEmpty) {
-          await initPagingControllerDynamic(categoriesList);
-        } else {}
-      } else {}
-
+      List<Categories> categoriesList = <Categories>[];
+      categoriesList = pagingControllerCategories.itemList ?? <Categories>[];
+      await initPagingControllerDynamic(categoriesList);
       valueNotifierCategories.value = pagingControllerCategories.value;
     } on Exception catch (error, stackTrace) {
       AppLogger().error(
@@ -235,6 +230,12 @@ class HomeController extends GetxController {
 
   Future<void> initPagingControllerDynamic(List<Categories> categories) async {
     final Completer<void> completer = Completer<void>();
+
+    // Important Code: Do Not Remove
+    pagingControllerDynamic.clear();
+    const Duration debounce = Duration(milliseconds: 400);
+    await Future<void>.delayed(debounce);
+    //
 
     for (int i = 0; i < categories.length; i++) {
       final PagingController<int, Products> pagingController =

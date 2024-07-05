@@ -5,23 +5,32 @@ import "package:customer/utils/app_colors.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:infinite_scroll_pagination/infinite_scroll_pagination.dart";
+import "package:like_button/like_button.dart";
 
 class CommonHorizontalListViewProducts extends StatelessWidget {
   const CommonHorizontalListViewProducts({
     required this.pagingController,
     required this.onTap,
+    required this.onTapAddToWish,
+    required this.onTapAddToCart,
+    required this.incQty,
+    required this.decQty,
     required this.type,
     super.key,
   });
 
   final PagingController<int, Products> pagingController;
   final Function(Products item) onTap;
+  final Function(Products item, {required bool isLiked}) onTapAddToWish;
+  final Function(Products item) onTapAddToCart;
+  final Function(Products item) incQty;
+  final Function(Products item) decQty;
   final String type;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: Get.height / 6,
+      height: Get.height / 3.64,
       width: double.infinity,
       child: PagedGridView<int, Products>(
         shrinkWrap: true,
@@ -34,7 +43,7 @@ class CommonHorizontalListViewProducts extends StatelessWidget {
           crossAxisCount: 1,
           mainAxisSpacing: 16,
           crossAxisSpacing: 16,
-          childAspectRatio: 1.40 / 1,
+          childAspectRatio: 2.16 / 1,
         ),
         builderDelegate: PagedChildBuilderDelegate<Products>(
           noItemsFoundIndicatorBuilder: (BuildContext context) {
@@ -45,14 +54,14 @@ class CommonHorizontalListViewProducts extends StatelessWidget {
             );
           },
           itemBuilder: (BuildContext context, Products item, int index) {
-            return listAdapter(item);
+            return listAdapter(item, index);
           },
         ),
       ),
     );
   }
 
-  Widget listAdapter(Products item) {
+  Widget listAdapter(Products item, int index) {
     return InkWell(
       borderRadius: BorderRadius.circular(12.0),
       onTap: () async {
@@ -62,17 +71,23 @@ class CommonHorizontalListViewProducts extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           productImage(item),
-          const SizedBox(height: 8),
-          productNameWidget(item),
           const SizedBox(height: 4),
-          pricingWidget(item),
+          const SizedBox(height: 4),
+          productNameAndDetailsWidget(item),
+          const SizedBox(height: 4),
+          priceAndLikeRow(item),
+          const SizedBox(height: 4),
+          const SizedBox(height: 4),
+          bottomButton(item),
         ],
       ),
     );
   }
 
   Widget productImage(Products item) {
+    final num discountPercent = item.discountPercent ?? 0;
     final double cumulativeRating = item.cumulativeRating ?? 0.0;
+
     return Expanded(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -82,10 +97,13 @@ class CommonHorizontalListViewProducts extends StatelessWidget {
             child: Stack(
               children: <Widget>[
                 Card(
-                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                  elevation: 4,
                   margin: EdgeInsets.zero,
-                  color: AppColors().appWhiteColor,
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    side: BorderSide(color: AppColors().appPrimaryColor),
+                  ),
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
                   surfaceTintColor: AppColors().appWhiteColor,
                   child: CommonImageWidget(
                     imageUrl: item.photo ?? "",
@@ -93,7 +111,7 @@ class CommonHorizontalListViewProducts extends StatelessWidget {
                     imageType: ImageType.image,
                   ),
                 ),
-                if (cumulativeRating != 0.0)
+                if (discountPercent != 0)
                   Positioned(
                     top: 0,
                     right: 0,
@@ -110,7 +128,34 @@ class CommonHorizontalListViewProducts extends StatelessWidget {
                         ),
                       ),
                       child: Text(
-                        "$cumulativeRating★",
+                        "${item.discountPercent ?? ""}% off",
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: AppColors().appWhiteColor,
+                        ),
+                      ),
+                    ),
+                  )
+                else
+                  const SizedBox(),
+                if (cumulativeRating != 0.0)
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 2,
+                        horizontal: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors().appPrimaryColor,
+                        borderRadius: const BorderRadius.only(
+                          topRight: Radius.circular(8),
+                          bottomLeft: Radius.circular(8),
+                        ),
+                      ),
+                      child: Text(
+                        "$cumulativeRating ★",
                         style: TextStyle(
                           fontSize: 12,
                           color: AppColors().appWhiteColor,
@@ -138,13 +183,29 @@ class CommonHorizontalListViewProducts extends StatelessWidget {
     );
   }
 
-  Widget productNameWidget(Products item) {
+  Widget productNameAndDetailsWidget(Products item) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
           item.name ?? "",
+          style: const TextStyle(fontWeight: FontWeight.bold),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+        Text(
+          item.category?.name ?? "",
+          style: TextStyle(
+            fontSize: 10,
+            fontWeight: FontWeight.bold,
+            color: AppColors().appGrey,
+          ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+        Text(
+          "${item.quantity ?? ""} ${item.unit ?? ""}",
           style: const TextStyle(fontWeight: FontWeight.bold),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
@@ -156,52 +217,208 @@ class CommonHorizontalListViewProducts extends StatelessWidget {
   Widget pricingWidget(Products item) {
     final num price = item.price ?? 0;
     final num discountedPrice = item.discountedPrice ?? 0;
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         if (discountedPrice == 0)
-          Text(
-            "₹$price",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: AppColors().appPrimaryColor,
-            ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                "₹$price",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: AppColors().appPrimaryColor,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              Text(
+                "",
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors().appGrey,
+                  decoration: TextDecoration.lineThrough,
+                  decorationColor: AppColors().appGreyColor,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
           )
         else
-          Row(
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Flexible(
-                child: Text(
-                  "₹$discountedPrice",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: AppColors().appPrimaryColor,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+              Text(
+                "₹$discountedPrice",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: AppColors().appPrimaryColor,
                 ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
-              const SizedBox(width: 8),
-              Flexible(
-                child: Text(
-                  "₹$price",
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    decoration: TextDecoration.lineThrough,
-                    decorationColor: AppColors().appGreyColor,
-                    color: AppColors().appGreyColor,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+              Text(
+                "₹$price",
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors().appGrey,
+                  decoration: TextDecoration.lineThrough,
+                  decorationColor: AppColors().appGreyColor,
                 ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),
       ],
+    );
+  }
+
+  Widget likeButton(Products item) {
+    final bool isInWishList = item.isInWishList ?? false;
+
+    return LikeButton(
+      size: 24,
+      isLiked: isInWishList,
+      onTap: (bool isLiked) {
+        onTapAddToWish(item, isLiked: isLiked);
+
+        return Future<bool>.value(!isInWishList);
+      },
+    );
+  }
+
+  Widget priceAndLikeRow(Products item) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Expanded(child: pricingWidget(item)),
+        likeButton(item),
+      ],
+    );
+  }
+
+  Widget bottomButton(Products item) {
+    final bool isInCartList = item.isInCartList ?? false;
+
+    return SizedBox(
+      height: 32,
+      child: isInCartList
+          ? Card(
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              elevation: 0,
+              margin: EdgeInsets.zero,
+              color: AppColors().appPrimaryColor,
+              surfaceTintColor: AppColors().appWhiteColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50.0),
+              ),
+              child: InkWell(
+                onTap: () async {},
+                child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(50.0),
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(50.0),
+                          onTap: () async {
+                            if ((item.quantity ?? 0) > 0) {
+                              decQty(item);
+                            } else {}
+                          },
+                          child: ColoredBox(
+                            color: AppColors().appWhiteColor.withOpacity(0.16),
+                            child: Icon(
+                              Icons.remove,
+                              color: AppColors().appWhiteColor,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          "${item.cartItemQty ?? 0}",
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors().appWhiteColor,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(50.0),
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(50.0),
+                          onTap: () async {
+                            if ((item.quantity ?? 0) < 100) {
+                              incQty(item);
+                            } else {}
+                          },
+                          child: ColoredBox(
+                            color: AppColors().appWhiteColor.withOpacity(0.16),
+                            child: Icon(
+                              Icons.add,
+                              color: AppColors().appWhiteColor,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            )
+          : Card(
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              elevation: 0,
+              margin: EdgeInsets.zero,
+              color: AppColors().appPrimaryColor,
+              surfaceTintColor: AppColors().appWhiteColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50.0),
+              ),
+              child: InkWell(
+                onTap: () {
+                  onTapAddToCart(item);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Expanded(
+                        child: Text(
+                          "Add to Cart",
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors().appWhiteColor,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
     );
   }
 }

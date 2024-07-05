@@ -76,6 +76,9 @@ class Products {
     this.iV,
     this.discountPercent,
     this.discountedPrice,
+    this.isInWishList,
+    this.isInCartList,
+    this.cartItemQty,
   });
 
   Products.fromJson(Map<String, dynamic> json) {
@@ -100,6 +103,9 @@ class Products {
     iV = json["__v"];
     discountPercent = json["discountPercent"];
     discountedPrice = json["discountedPrice"];
+    isInWishList = json["isInWishList"];
+    isInCartList = json["isInCartList"];
+    cartItemQty = json["cartItemQty"];
   }
   double? cumulativeRating;
   String? sId;
@@ -121,6 +127,9 @@ class Products {
   int? iV;
   num? discountPercent;
   num? discountedPrice;
+  bool? isInWishList;
+  bool? isInCartList;
+  num? cartItemQty;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -146,6 +155,9 @@ class Products {
     data["__v"] = iV;
     data["discountPercent"] = discountPercent;
     data["discountedPrice"] = discountedPrice;
+    data["isInWishList"] = isInWishList;
+    data["isInCartList"] = isInCartList;
+    data["cartItemQty"] = cartItemQty;
     return data;
   }
 }

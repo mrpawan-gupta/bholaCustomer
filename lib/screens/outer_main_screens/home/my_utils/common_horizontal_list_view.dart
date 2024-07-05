@@ -79,10 +79,13 @@ class CommonHorizontalListView extends StatelessWidget {
             child: Stack(
               children: <Widget>[
                 Card(
-                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                  elevation: 4,
                   margin: EdgeInsets.zero,
-                  color: AppColors().appWhiteColor,
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    side: BorderSide(color: AppColors().appPrimaryColor),
+                  ),
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
                   surfaceTintColor: AppColors().appWhiteColor,
                   child: CommonImageWidget(
                     imageUrl: item.photo ?? "",

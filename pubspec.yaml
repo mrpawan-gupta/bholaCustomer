@@ -43,6 +43,7 @@ dependencies:
   internet_connection_checker: ^1.0.0+1
   intl: ^0.18.1
   is_first_run: ^1.0.0
+  like_button: ^2.0.5
   liquid_pull_to_refresh: ^3.0.1
   loader_overlay: ^4.0.0
   location: ^6.0.2

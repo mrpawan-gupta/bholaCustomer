@@ -33,8 +33,6 @@ class HomeScreen extends GetView<HomeController> {
                 color: AppColors().appPrimaryColor,
                 backgroundColor: AppColors().appWhiteColor,
                 onRefresh: () async {
-                  controller.pagingControllerDynamic.clear();
-
                   controller
                     ..pagingControllerServices.refresh()
                     ..pagingControllerCategories.refresh()
@@ -53,9 +51,9 @@ class HomeScreen extends GetView<HomeController> {
                         featuredServicesWidget(),
                         const SizedBox(height: 32),
                         featuredCategoriesWidget(),
-                        const SizedBox(height: 32),
+                        const SizedBox(height: 16),
                         banners(),
-                        const SizedBox(height: 32),
+                        const SizedBox(height: 16),
                         dynamicWidget(),
                         const SizedBox(height: 32),
                       ],
@@ -226,6 +224,10 @@ class HomeScreen extends GetView<HomeController> {
                 arguments: <String, dynamic>{"id": item.sId ?? ""},
               );
             },
+            onTapAddToWish: (Products item, {required bool isLiked}) {},
+            onTapAddToCart: (Products item) {},
+            incQty: (Products item) {},
+            decQty: (Products item) {},
             type: "${category.name ?? ""} list",
           ),
         ],

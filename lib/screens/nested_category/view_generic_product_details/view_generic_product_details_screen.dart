@@ -430,6 +430,10 @@ class ViewGenericProductDetailsScreen
               arguments: <String, dynamic>{"id": item.sId ?? ""},
             );
           },
+          onTapAddToWish: (Products item, {required bool isLiked}) {},
+          onTapAddToCart: (Products item) {},
+          incQty: (Products item) {},
+          decQty: (Products item) {},
           type: "Suggested list",
         ),
         const SizedBox(height: 16),
