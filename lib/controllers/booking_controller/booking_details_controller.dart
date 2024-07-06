@@ -145,7 +145,7 @@ class BookingDetailsController extends GetxController {
 
   Future<bool> addReviewRatingAPICall({
     required String id,
-    required int rating,
+    required num rating,
     required String review,
   }) async {
     final Completer<bool> completer = Completer<bool>();
@@ -153,10 +153,7 @@ class BookingDetailsController extends GetxController {
     await AppAPIService().functionPost(
       types: Types.rental,
       endPoint: "booking/$id/review",
-      isForFileUpload: true,
-      formData: FormData(
-        <String, dynamic>{"star": rating, "review": review},
-      ),
+      body: <String, dynamic>{"star": rating, "review": review},
       successCallback: (Map<String, dynamic> json) {
         AppSnackbar().snackbarSuccess(title: "Yay!", message: json["message"]);
 

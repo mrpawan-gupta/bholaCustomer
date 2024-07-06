@@ -686,22 +686,27 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
                     child: InkWell(
                       borderRadius: BorderRadius.circular(12.0),
                       onTap: () async {
-                        final (double, String)? result = await Get.bottomSheet(
-                          const AppReviewRatingWidget(),
+                        final (num, String)? result = await Get.bottomSheet(
+                          const AppReviewRatingWidget(
+                            initialReview: "",
+                            initialRating: 1.0,
+                          ),
                           backgroundColor:
                               Theme.of(Get.context!).scaffoldBackgroundColor,
                           isScrollControlled: true,
                         );
 
                         if (result != null) {
-                          final String id = controller.rxBookingId.value;
-                          await controller.addReviewRatingAPICall(
-                            id: id,
-                            rating: result.$1.toInt(),
+                          bool value = false;
+                          value = await controller.addReviewRatingAPICall(
+                            id: item.sId ?? "",
+                            rating: result.$1,
                             review: result.$2,
                           );
 
-                          await controller.getBookingAPICall();
+                          if (value) {
+                            await controller.getBookingAPICall();
+                          } else {}
                         } else {}
                       },
                       child: Padding(

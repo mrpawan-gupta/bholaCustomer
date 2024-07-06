@@ -48,6 +48,18 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
                   //   },
                   // ),
                   // const SizedBox(height: 16),
+
+                  settingsItems(
+                    itemName: "Manage Addresses",
+                    onTap: () async {
+                      await AppNavService().pushNamed(
+                        destination: AppRoutes().addressesListScreen,
+                        arguments: <String, dynamic>{},
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 16),
+
                   settingsItems(
                     itemName: "Connect with Us",
                     onTap: () async {

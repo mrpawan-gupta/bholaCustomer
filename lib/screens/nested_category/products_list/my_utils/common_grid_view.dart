@@ -50,11 +50,12 @@ class CommonGridView extends StatelessWidget {
         },
         itemBuilder: (BuildContext context, Products item, int index) {
           final int length = (pagingController.itemList ?? <Products>[]).length;
-          final bool isLast = index == length - 1;
+          final bool isLast1 = index == length - 1;
+          final bool isLast2 = index == length - 2;
           return Column(
             children: <Widget>[
               Expanded(child: listAdapter(item, index)),
-              SizedBox(height: isLast ? 16 : 0),
+              SizedBox(height: isLast1 || isLast2 ? 16 : 0),
             ],
           );
         },

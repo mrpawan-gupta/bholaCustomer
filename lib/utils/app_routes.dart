@@ -1,3 +1,4 @@
+import "package:customer/bindings/address_binding/addresses_list_binding.dart";
 import "package:customer/bindings/booking_binding/added_quotes_binding.dart";
 import "package:customer/bindings/booking_binding/booking_details_binding.dart";
 import "package:customer/bindings/booking_binding/booking_payment_binding.dart";
@@ -22,6 +23,7 @@ import "package:customer/bindings/settings_bindings/edit_profile_binding.dart";
 import "package:customer/bindings/settings_bindings/settings_main_binding.dart";
 import "package:customer/bindings/settings_bindings/support_binding.dart";
 import "package:customer/bindings/wish_list_binding/wish_list_binding.dart";
+import "package:customer/screens/address_screen/addresses_list_screen.dart";
 import "package:customer/screens/booking_screen/added_quotes_screen.dart";
 import "package:customer/screens/booking_screen/booking_details_screen.dart";
 import "package:customer/screens/booking_screen/booking_payment_screen.dart";
@@ -86,6 +88,7 @@ class AppRoutes {
   final String cartScreen = "/cartScreen";
   final String reviewRatingScreen = "/reviewRatingScreen";
   final String couponScreen = "/couponScreen";
+  final String addressesListScreen = "/addressesListScreen";
 
   List<GetPage<dynamic>> getPages() {
     final GetPage<dynamic> splashScreenRoute = GetPage<dynamic>(
@@ -216,6 +219,12 @@ class AppRoutes {
       binding: CouponBinding(),
     );
 
+    final GetPage<dynamic> addressesListRoute = GetPage<dynamic>(
+      name: addressesListScreen,
+      page: AddressesListScreen.new,
+      binding: AddressesListBinding(),
+    );
+
     return <GetPage<dynamic>>[
       splashScreenRoute,
       introSliderRoute,
@@ -241,6 +250,7 @@ class AppRoutes {
       cartRoute,
       reviewRatingRoute,
       couponRoute,
+      addressesListRoute,
     ];
   }
 }

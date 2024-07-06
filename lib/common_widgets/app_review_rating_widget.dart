@@ -10,7 +10,14 @@ import "package:flutter_rating_bar/flutter_rating_bar.dart";
 import "package:get/get.dart";
 
 class AppReviewRatingWidget extends StatefulWidget {
-  const AppReviewRatingWidget({super.key});
+  const AppReviewRatingWidget({
+    required this.initialReview,
+    required this.initialRating,
+    super.key,
+  });
+
+  final String initialReview;
+  final num initialRating;
 
   @override
   State<AppReviewRatingWidget> createState() => _AppReviewRatingWidgetState();
@@ -19,16 +26,23 @@ class AppReviewRatingWidget extends StatefulWidget {
 class _AppReviewRatingWidgetState extends State<AppReviewRatingWidget> {
   final TextEditingController _reviewController = TextEditingController();
   final RxString _rxReview = "".obs;
-  final RxDouble _rating = 1.0.obs;
+  final Rx<num> _rxRating = 1.obs;
 
   @override
   void initState() {
     super.initState();
+
+    _reviewController.text = widget.initialReview;
+    _rxReview(widget.initialReview);
+    _rxRating(widget.initialRating);
   }
 
   @override
   void dispose() {
     _reviewController.dispose();
+    _rxReview.close();
+    _rxRating.close();
+
     super.dispose();
   }
 
@@ -55,13 +69,15 @@ class _AppReviewRatingWidgetState extends State<AppReviewRatingWidget> {
             RatingBar.builder(
               minRating: 1.0,
               maxRating: 5.0,
-              initialRating: _rating.value,
+              initialRating: _rxRating.value.toDouble(),
               itemSize: 32,
               unratedColor: AppColors().appGrey,
               itemBuilder: (BuildContext context, int index) {
                 return Icon(Icons.star, color: AppColors().appOrangeColor);
               },
-              onRatingUpdate: _rating,
+              onRatingUpdate: (double value) {
+                _rxRating(value.toInt());
+              },
             ),
             const SizedBox(height: 16),
             const Text(
@@ -120,10 +136,11 @@ class _AppReviewRatingWidgetState extends State<AppReviewRatingWidget> {
                 child: AppElevatedButton(
                   text: "Send Ratings & Reviews",
                   onPressed: () {
-                    final (double, String) result = (
-                      _rating.value,
+                    final (num, String) result = (
+                      _rxRating.value,
                       _rxReview.value,
                     );
+
                     AppNavService().pop(result);
                   },
                 ),
