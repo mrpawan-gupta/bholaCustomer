@@ -1,3 +1,5 @@
+import "dart:async";
+
 import "package:customer/common_widgets/app_bottom_indicator.dart";
 import "package:customer/common_widgets/app_elevated_button.dart";
 import "package:customer/common_widgets/common_image_widget.dart";
@@ -596,8 +598,13 @@ class ViewGenericProductDetailsScreen
                   onTapViewAll: () async {
                     await AppNavService().pushNamed(
                       destination: AppRoutes().reviewRatingScreen,
-                      arguments: <String, dynamic>{"id": data.sId ?? ""},
+                      arguments: <String, dynamic>{
+                        "id": data.sId ?? "",
+                        "route": AppRoutes().viewGenericProductDetailsScreen,
+                      },
                     );
+
+                    unawaited(controller.getProductDetailsAPICall());
                   },
                   isViewAllNeeded: true,
                 ),
@@ -616,7 +623,14 @@ class ViewGenericProductDetailsScreen
                 itemBuilder: (BuildContext context, int index) {
                   final Reviews item = data.reviews?[index] ?? Reviews();
 
-                  return reviewsListAdapter(item: item);
+                  return reviewsListAdapter(
+                    item: item,
+                    onTap: (Reviews item) {},
+                    onPressedEdit: (Reviews item) async {},
+                    onPressedDelete: (Reviews item) async {},
+                    type: "reviews list",
+                    needMoreOptionsButton: false,
+                  );
                 },
               ),
             ],
@@ -666,11 +680,6 @@ class ViewGenericProductDetailsScreen
                 text: "Add to Wish List",
                 onPressed: () async {
                   await controller.addToWishListAPICall(id: data.sId ?? "");
-
-                  await AppNavService().pushNamed(
-                    destination: AppRoutes().wishListScreen,
-                    arguments: <String, dynamic>{},
-                  );
                 },
               ),
             ),
@@ -684,11 +693,6 @@ class ViewGenericProductDetailsScreen
                 text: "Add to Cart",
                 onPressed: () async {
                   await controller.addToCartAPICall(id: data.sId ?? "");
-
-                  await AppNavService().pushNamed(
-                    destination: AppRoutes().cartScreen,
-                    arguments: <String, dynamic>{},
-                  );
                 },
               ),
             ),

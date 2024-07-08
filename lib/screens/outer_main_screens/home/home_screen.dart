@@ -100,7 +100,20 @@ class HomeScreen extends GetView<HomeController> {
               );
             }
           },
+          needViewAll: true,
+          onTapViewAll: (Categories item) async {
+            final bool isApproved = (item.status ?? "") == "Approved";
+            if (isApproved) {
+              await tabControllerFunction(2);
+            } else {
+              AppSnackbar().snackbarFailure(
+                title: "Oops!",
+                message: "Coming Soon!",
+              );
+            }
+          },
           type: "rental categories list",
+          itemString: "Categories",
         ),
       ],
     );
@@ -133,7 +146,15 @@ class HomeScreen extends GetView<HomeController> {
               arguments: <String, dynamic>{"id": item.sId ?? ""},
             );
           },
-          type: "product categories list",
+          needViewAll: true,
+          onTapViewAll: (Categories item) async {
+            await AppNavService().pushNamed(
+              destination: AppRoutes().productListingScreen,
+              arguments: <String, dynamic>{"id": item.sId ?? ""},
+            );
+          },
+          type: "product services list",
+          itemString: "Services",
         ),
       ],
     );

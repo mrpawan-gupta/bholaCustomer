@@ -73,9 +73,14 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
                         arguments: <String, dynamic>{},
                       );
                     },
-                    icon: Icon(
-                      Icons.favorite,
-                      color: AppColors().appRedColor,
+                    icon: Badge(
+                      label: const Text("3"),
+                      textColor: AppColors().appWhiteColor,
+                      backgroundColor: AppColors().appPrimaryColor,
+                      child: Icon(
+                        Icons.favorite,
+                        color: AppColors().appRedColor,
+                      ),
                     ),
                   ),
                   IconButton(
@@ -85,9 +90,14 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
                         arguments: <String, dynamic>{},
                       );
                     },
-                    icon: Icon(
-                      Icons.shopping_cart,
-                      color: AppColors().appPrimaryColor,
+                    icon: Badge(
+                      label: const Text("3"),
+                      textColor: AppColors().appWhiteColor,
+                      backgroundColor: AppColors().appPrimaryColor,
+                      child: Icon(
+                        Icons.shopping_cart,
+                        color: AppColors().appPrimaryColor,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 8),

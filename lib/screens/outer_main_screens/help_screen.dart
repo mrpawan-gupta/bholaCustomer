@@ -1,8 +1,9 @@
 // ignore_for_file: lines_longer_than_80_chars
 
 import "package:customer/common_functions/booking_functions.dart";
-import "package:customer/common_widgets/app_no_item_found.dart";
+import "package:customer/common_widgets/app_text_button.dart";
 import "package:customer/common_widgets/common_image_widget.dart";
+import "package:customer/controllers/main_navigation_controller.dart";
 import "package:customer/controllers/outer_main_controllers/help_controller.dart";
 import "package:customer/models/featured_model.dart";
 import "package:customer/models/new_order_model.dart";
@@ -145,10 +146,53 @@ class HelpScreen extends GetView<HelpController> {
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         builderDelegate: PagedChildBuilderDelegate<Bookings>(
           noItemsFoundIndicatorBuilder: (BuildContext context) {
-            return AppNoItemFoundWidget(
-              title: "No items found",
-              message: "The order history list is currently empty.",
-              onTryAgain: controller.pagingControllerNewOrder.refresh,
+            // return AppNoItemFoundWidget(
+            //   title: "No items found",
+            //   message: "The order history list is currently empty.",
+            //   onTryAgain: controller.pagingControllerNewOrder.refresh,
+            // );
+            return SizedBox(
+              height: Get.height / 1.5,
+              width: Get.width,
+              child: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    const SizedBox(height: 16),
+                    Icon(
+                      Icons.fire_truck,
+                      color: AppColors().appPrimaryColor,
+                      size: 48,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      "Your live order list is empty!",
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      "Explore more & shortlist some rental services!",
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      height: 50,
+                      width: 100,
+                      child: AppTextButton(
+                        text: "Start Booking",
+                        onPressed: () async {
+                          await tabControllerFunction(2);
+
+                          controller.pagingControllerNewOrder.refresh();
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                  ],
+                ),
+              ),
             );
           },
           itemBuilder: (BuildContext context, Bookings item, int index) {

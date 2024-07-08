@@ -1,4 +1,5 @@
 import "package:customer/controllers/review_rating_controller/review_rating_controller.dart";
+import "package:customer/models/review_rating_model.dart";
 import "package:customer/screens/review_rating_screen/my_utils/common_list_view.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:flutter/material.dart";
@@ -36,7 +37,14 @@ class ReviewRatingScreen extends GetView<ReviewRatingController> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        CommonListView(pagingController: controller.pagingControllerReviews),
+        CommonListView(
+          pagingController: controller.pagingControllerReviews,
+          onTap: (Reviews item) {},
+          onPressedEdit: (Reviews item) async {},
+          onPressedDelete: (Reviews item) async {},
+          type: "reviews list",
+          needMoreOptionsButton: false,
+        ),
         const SizedBox(height: 16),
       ],
     );

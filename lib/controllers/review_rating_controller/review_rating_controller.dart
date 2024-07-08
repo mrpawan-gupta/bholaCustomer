@@ -3,6 +3,7 @@ import "dart:async";
 import "package:customer/models/review_rating_model.dart";
 import "package:customer/services/app_api_service.dart";
 import "package:customer/utils/app_logger.dart";
+import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/app_snackbar.dart";
 import "package:get/get.dart";
 import "package:infinite_scroll_pagination/infinite_scroll_pagination.dart";
@@ -11,6 +12,7 @@ class ReviewRatingController extends GetxController {
   final int pageSize = 10;
 
   final RxString rxProductId = "".obs;
+  final RxString rxRoute = "".obs;
 
   final PagingController<int, Reviews> pagingControllerReviews =
       PagingController<int, Reviews>(firstPageKey: 1);
@@ -23,6 +25,10 @@ class ReviewRatingController extends GetxController {
       final Map<String, dynamic> arguments = Get.arguments;
       if (arguments.containsKey("id")) {
         updateProductId(arguments["id"]);
+      } else {}
+
+      if (arguments.containsKey("route")) {
+        updateRoute(arguments["route"]);
       } else {}
     } else {}
 
@@ -40,6 +46,11 @@ class ReviewRatingController extends GetxController {
 
   void updateProductId(String value) {
     rxProductId(value);
+    return;
+  }
+
+  void updateRoute(String value) {
+    rxRoute(value);
     return;
   }
 
@@ -66,7 +77,7 @@ class ReviewRatingController extends GetxController {
 
     await AppAPIService().functionGet(
       types: Types.order,
-      endPoint: "product/${rxProductId.value}/reviews",
+      endPoint: decideEndPointForGet(),
       query: <String, dynamic>{
         "page": pageKey,
         "limit": pageSize,
@@ -90,5 +101,19 @@ class ReviewRatingController extends GetxController {
     );
 
     return completer.future;
+  }
+
+  String decideEndPointForGet() {
+    String endPoint = "";
+
+    final String allowRoute1 = AppRoutes().viewGenericProductDetailsScreen;
+
+    final bool isAllowedRoute1 = rxRoute.value == allowRoute1;
+
+    if (isAllowedRoute1) {
+      endPoint = "product/${rxProductId.value}/reviews";
+    } else {}
+
+    return endPoint;
   }
 }

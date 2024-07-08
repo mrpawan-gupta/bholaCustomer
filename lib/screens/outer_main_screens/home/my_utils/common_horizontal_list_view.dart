@@ -10,18 +10,24 @@ class CommonHorizontalListView extends StatelessWidget {
   const CommonHorizontalListView({
     required this.pagingController,
     required this.onTap,
+    required this.onTapViewAll,
     required this.type,
+    required this.itemString,
+    required this.needViewAll,
     super.key,
   });
 
   final PagingController<int, Categories> pagingController;
   final Function(Categories item) onTap;
+  final Function(Categories item) onTapViewAll;
   final String type;
+  final String itemString;
+  final bool needViewAll;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: Get.height / 7,
+      height: needViewAll ? Get.height / 4.80 : Get.height / 5.96,
       width: double.infinity,
       child: PagedGridView<int, Categories>(
         shrinkWrap: true,
@@ -30,11 +36,11 @@ class CommonHorizontalListView extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         physics: const ScrollPhysics(),
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 1,
           mainAxisSpacing: 16,
           crossAxisSpacing: 16,
-          childAspectRatio: 1.16 / 1,
+          childAspectRatio: needViewAll ? 1.64 / 1 : 1.32 / 1,
         ),
         builderDelegate: PagedChildBuilderDelegate<Categories>(
           noItemsFoundIndicatorBuilder: (BuildContext context) {
@@ -62,8 +68,12 @@ class CommonHorizontalListView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           productImage(item),
-          const SizedBox(height: 8),
-          productNameWidget(item),
+          const SizedBox(height: 4),
+          const SizedBox(height: 4),
+          productNameAndDetailsWidget(item),
+          SizedBox(height: needViewAll ? 4 : 0),
+          SizedBox(height: needViewAll ? 4 : 0),
+          if (needViewAll) bottomButton(item) else const SizedBox(),
         ],
       ),
     );
@@ -111,9 +121,10 @@ class CommonHorizontalListView extends StatelessWidget {
     );
   }
 
-  Widget productNameWidget(Categories item) {
+  Widget productNameAndDetailsWidget(Categories item) {
     return Column(
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
           item.name ?? "",
@@ -121,7 +132,74 @@ class CommonHorizontalListView extends StatelessWidget {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
+        Row(
+          children: <Widget>[
+            Text(
+              "100",
+              style: TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.bold,
+                color: AppColors().appPrimaryColor,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            Flexible(
+              child: Text(
+                " $itemString available",
+                style: TextStyle(
+                  fontSize: 10,
+                  color: AppColors().appGrey,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ),
       ],
+    );
+  }
+
+  Widget bottomButton(Categories item) {
+    return SizedBox(
+      height: 32,
+      child: Card(
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        elevation: 0,
+        margin: EdgeInsets.zero,
+        color: AppColors().appPrimaryColor,
+        surfaceTintColor: AppColors().appWhiteColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(50.0),
+        ),
+        child: InkWell(
+          onTap: () async {
+            onTapViewAll(item);
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Expanded(
+                  child: Text(
+                    "View All",
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors().appWhiteColor,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

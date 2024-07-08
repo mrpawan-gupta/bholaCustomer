@@ -57,7 +57,10 @@ class CategoryScreen extends GetView<CategoryController> {
                   );
                 }
               },
+              needViewAll: false,
+              onTapViewAll: (Categories item) async {},
               type: "rental categories list",
+              itemString: "Categories",
             ),
           ),
         ],
@@ -90,7 +93,10 @@ class CategoryScreen extends GetView<CategoryController> {
                   arguments: <String, dynamic>{"id": item.sId ?? ""},
                 );
               },
-              type: "product categories list",
+              needViewAll: false,
+              onTapViewAll: (Categories item) async {},
+              type: "product services list",
+              itemString: "Services",
             ),
           ),
         ],

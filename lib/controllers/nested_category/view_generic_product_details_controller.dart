@@ -295,6 +295,7 @@ class ViewGenericProductDetailsController extends GetxController {
 
         completer.complete(false);
       },
+      needLoader: false,
     );
 
     return completer.future;
@@ -317,8 +318,11 @@ class ViewGenericProductDetailsController extends GetxController {
 
         completer.complete(false);
       },
+      needLoader: false,
     );
 
     return completer.future;
   }
+
+
 }

@@ -231,11 +231,11 @@ class HomeController extends GetxController {
   Future<void> initPagingControllerDynamic(List<Categories> categories) async {
     final Completer<void> completer = Completer<void>();
 
-    // Important Code: Do Not Remove
-    pagingControllerDynamic.clear();
-    const Duration debounce = Duration(milliseconds: 400);
-    await Future<void>.delayed(debounce);
-    //
+    if (pagingControllerDynamic.isNotEmpty) {
+      pagingControllerDynamic.clear();
+      const Duration debounce = Duration(milliseconds: 400);
+      await Future<void>.delayed(debounce);
+    } else {}
 
     for (int i = 0; i < categories.length; i++) {
       final PagingController<int, Products> pagingController =
