@@ -5,13 +5,15 @@ import "package:customer/utils/app_colors.dart";
 import "package:flutter/material.dart";
 import "package:infinite_scroll_pagination/infinite_scroll_pagination.dart";
 
+enum Types { categories, services }
+
 class CommonHorizontalGridView extends StatelessWidget {
   const CommonHorizontalGridView({
     required this.pagingController,
     required this.onTap,
     required this.onTapViewAll,
     required this.type,
-    required this.itemString,
+    required this.itemType,
     required this.needViewAll,
     super.key,
   });
@@ -20,7 +22,7 @@ class CommonHorizontalGridView extends StatelessWidget {
   final Function(Categories item) onTap;
   final Function(Categories item) onTapViewAll;
   final String type;
-  final String itemString;
+  final Types itemType;
   final bool needViewAll;
 
   @override
@@ -130,7 +132,11 @@ class CommonHorizontalGridView extends StatelessWidget {
         Row(
           children: <Widget>[
             Text(
-              "100",
+              itemType == Types.categories
+                  ? "${item.productCount ?? 0}"
+                  : itemType == Types.services
+                      ? "${item.vehicleCount ?? 0}"
+                      : "",
               style: TextStyle(
                 fontSize: 10,
                 fontWeight: FontWeight.bold,
@@ -141,10 +147,11 @@ class CommonHorizontalGridView extends StatelessWidget {
             ),
             Flexible(
               child: Text(
-                " $itemString available",
+                " ${itemType.name} available",
                 style: TextStyle(
                   fontSize: 10,
-                  color: AppColors().appGrey,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors().appGreyColor,
                 ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,

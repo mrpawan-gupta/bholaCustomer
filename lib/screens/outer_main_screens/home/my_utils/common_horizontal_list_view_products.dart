@@ -86,7 +86,7 @@ class CommonHorizontalListViewProducts extends StatelessWidget {
 
   Widget productImage(Products item) {
     final num discountPercent = item.discountPercent ?? 0;
-    final double cumulativeRating = item.cumulativeRating ?? 0.0;
+    final num cumulativeRating = item.cumulativeRating ?? 0.0;
 
     return Expanded(
       child: Column(
@@ -308,7 +308,7 @@ class CommonHorizontalListViewProducts extends StatelessWidget {
   }
 
   Widget bottomButton(Products item) {
-    final bool isInCartList = item.isInCartList ?? false;
+    final bool isInCartList = (item.cartQty ?? 0) > 0;
 
     return SizedBox(
       height: 32,
@@ -349,7 +349,7 @@ class CommonHorizontalListViewProducts extends StatelessWidget {
                       ),
                       Expanded(
                         child: Text(
-                          "${item.cartItemQty ?? 0}",
+                          "${item.cartQty ?? 0}",
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,

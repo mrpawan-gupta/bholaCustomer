@@ -5,6 +5,7 @@ import "dart:async";
 import "package:customer/models/generic_product_details_model.dart";
 import "package:customer/models/get_addresses_model.dart";
 import "package:customer/models/get_user_by_id.dart";
+import "package:customer/models/product_model.dart";
 import "package:customer/models/rating_summary.dart";
 import "package:customer/models/related_suggested.dart";
 import "package:customer/services/app_api_service.dart";

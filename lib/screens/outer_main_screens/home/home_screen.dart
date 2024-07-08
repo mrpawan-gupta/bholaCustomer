@@ -112,8 +112,8 @@ class HomeScreen extends GetView<HomeController> {
               );
             }
           },
-          type: "rental categories list",
-          itemString: "Categories",
+          type: "rental services list",
+          itemType: Types.services,
         ),
       ],
     );
@@ -153,8 +153,8 @@ class HomeScreen extends GetView<HomeController> {
               arguments: <String, dynamic>{"id": item.sId ?? ""},
             );
           },
-          type: "product services list",
-          itemString: "Services",
+          type: "product categories list",
+          itemType: Types.categories,
         ),
       ],
     );

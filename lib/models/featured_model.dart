@@ -58,18 +58,29 @@ class FeaturedModelData {
 }
 
 class Categories {
-  Categories({this.sId, this.name, this.photo, this.status});
+  Categories({
+    this.sId,
+    this.name,
+    this.photo,
+    this.status,
+    this.vehicleCount,
+    this.productCount,
+  });
 
   Categories.fromJson(Map<String, dynamic> json) {
     sId = json["_id"];
     name = json["name"];
     photo = json["photo"];
     status = json["status"];
+    vehicleCount = json["vehicleCount"];
+    productCount = json["productCount"];
   }
   String? sId;
   String? name;
   String? photo;
   String? status;
+  num? vehicleCount;
+  num? productCount;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -77,6 +88,8 @@ class Categories {
     data["name"] = name;
     data["photo"] = photo;
     data["status"] = status;
+    data["vehicleCount"] = vehicleCount;
+    data["productCount"] = productCount;
     return data;
   }
 }
