@@ -1,43 +1,15 @@
+// ignore_for_file: lines_longer_than_80_chars
+
+import "package:customer/common_widgets/app_elevated_button.dart";
+import "package:customer/common_widgets/app_text_button.dart";
 import "package:customer/controllers/address_controller/addresses_list_controller.dart";
+import "package:customer/models/get_addresses_model.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 
 class AddressesListScreen extends GetView<AddressesListController> {
-  AddressesListScreen({super.key});
-
-  final List<Map<String, String>> addresses = [
-    {
-      "title": "Home",
-      "address":
-      "There are many variations of passages of Lorem Ipsum available There are many variations of passages of Lorem Ipsum available",
-      "phone": "7666206574",
-    },
-    {
-      "title": "Pg",
-      "address":
-      "There are many variations of passages of Lorem Ipsum available",
-      "phone": "7666206574",
-    },
-    {
-      "title": "Sunrise",
-      "address":
-      "There are many variations of passages of Lorem Ipsum available",
-      "phone": "7666206574",
-    },
-    {
-      "title": "Office",
-      "address":
-      "There are many variations of passages of Lorem Ipsum available",
-      "phone": "7666206574",
-    },
-    {
-      "title": "Surya",
-      "address":
-      "There are many variations of passages of Lorem Ipsum available",
-      "phone": "7666206574",
-    },
-  ];
+  const AddressesListScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -48,96 +20,122 @@ class AddressesListScreen extends GetView<AddressesListController> {
         surfaceTintColor: AppColors().appTransparentColor,
       ),
       body: SafeArea(
-        child: ListView.builder(
-          itemCount: addresses.length,
-          itemBuilder: (context, index) {
-            final address = addresses[index];
-            return Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16.0),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.maps_home_work_outlined, size: 25.0),
-                        const SizedBox(width: 10.0),
-                        Text(
-                          address["title"]!,
-                          style: const TextStyle(
-                              fontSize: 15.0, fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 5.0),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16.0),
-                    child: Text(
-                      address["address"]!,
-                      style: const TextStyle(fontSize: 16.0),
-                    ),
-                  ),
-                  const SizedBox(height: 5.0),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16.0),
-                    child: Text(
-                      'Phone number: ${address['phone']}',
-                      style: const TextStyle(fontSize: 16.0),
-                    ),
-                  ),
-                  const SizedBox(height: 5.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      TextButton(
-                        onPressed: () {
-                          // Handle edit action
-                        },
-                        child: const Text(
-                          "EDIT",
-                          style: TextStyle(color: Colors.orange),
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          // Handle delete action
-                        },
-                        child: const Text(
-                          "DELETE",
-                          style: TextStyle(color: Colors.orange),
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          // Handle share action
-                        },
-                        child: const Text(
-                          "SHARE",
-                          style: TextStyle(color: Colors.orange),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Divider(),
-                ],
-              ),
-            );
-          },
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Expanded(child: SingleChildScrollView(child: listView())),
+            const SizedBox(height: 16),
+            button(),
+            const SizedBox(height: 16),
+          ],
         ),
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: ElevatedButton(
-          onPressed: () {
+    );
+  }
 
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.green,
-          ),
-          child: const Text("ADD NEW ADDRESS"),
+  Widget listView() {
+    return ListView.separated(
+      shrinkWrap: true,
+      itemCount: controller.rxAddressInfo.length,
+      padding: EdgeInsets.zero,
+      physics: const ScrollPhysics(),
+      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+      separatorBuilder: (BuildContext context, int index) {
+        return const Divider(indent: 54, endIndent: 56);
+      },
+      itemBuilder: (BuildContext context, int index) {
+        final Address item = controller.rxAddressInfo[index];
+        return listAdapter(item);
+      },
+    );
+  }
+
+  Widget listAdapter(Address item) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        const SizedBox(width: 16),
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Icon(
+              (item.isPrimary ?? false)
+                  ? Icons.home_outlined
+                  : Icons.location_on_outlined,
+            ),
+          ],
         ),
+        const SizedBox(width: 16),
+        Expanded(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                (item.isPrimary ?? false) ? "Primary" : "Other",
+                style: const TextStyle(fontWeight: FontWeight.bold),
+                maxLines: 5,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                "${item.street ?? ""} ${item.city ?? ""} ${item.country ?? ""} ${item.pinCode ?? ""}",
+                style: TextStyle(color: AppColors().appGrey),
+                maxLines: 5,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 8),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  SizedBox(
+                    height: 24,
+                    width: 54,
+                    child: AppTextButton(text: "Edit", onPressed: () {}),
+                  ),
+                  const SizedBox(width: 8),
+                  SizedBox(
+                    height: 24,
+                    width: 54,
+                    child: AppTextButton(text: "Delete", onPressed: () {}),
+                  ),
+                  const SizedBox(width: 8),
+                  SizedBox(
+                    height: 24,
+                    width: 54,
+                    child: AppTextButton(text: "Share", onPressed: () {}),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+            ],
+          ),
+        ),
+        const SizedBox(width: 16),
+      ],
+    );
+  }
+
+  Widget button() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          SizedBox(
+            height: 50,
+            width: double.infinity,
+            child: AppElevatedButton(
+              text: "Add new address",
+              onPressed: () async {},
+            ),
+          ),
+        ],
       ),
     );
   }
