@@ -2,6 +2,7 @@ import "dart:async";
 
 import "package:customer/common_widgets/app_text_button.dart";
 import "package:customer/controllers/cart_controller/cart_controller.dart";
+import "package:customer/controllers/main_navigation_controller.dart";
 import "package:customer/models/coupon_list_model.dart";
 import "package:customer/models/get_all_carts_model.dart";
 import "package:customer/screens/cart_screen/my_utils/common_list_view.dart";
@@ -17,123 +18,134 @@ class CartScreen extends GetWidget<CartController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text("Cart"),
-        surfaceTintColor: AppColors().appTransparentColor,
-        actions: <Widget>[
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              IconButton(
-                onPressed: () async {
-                  await AppNavService().pushNamed(
-                    destination: AppRoutes().wishListScreen,
-                    arguments: <String, dynamic>{},
-                  );
-                },
-                icon: Icon(
-                  Icons.favorite,
-                  color: AppColors().appRedColor,
-                ),
-              ),
-              const SizedBox(width: 8),
-            ],
-          ),
-        ],
-      ),
-      body: SafeArea(
-        child: Obx(
-          () {
-            return controller.rxItemsList.isEmpty
-                ? SizedBox(
-                    height: Get.height / 1.5,
-                    width: Get.width,
-                    child: Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          const SizedBox(height: 16),
-                          Icon(
-                            Icons.shopping_cart,
-                            color: AppColors().appPrimaryColor,
-                            size: 48,
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            "Your cart is empty!",
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.titleLarge,
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            "Looks like you haven't made your choice yet!",
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                          const SizedBox(height: 16),
-                          SizedBox(
-                            height: 50,
-                            width: 100,
-                            child: AppTextButton(
-                              text: "Start Shopping",
-                              onPressed: () async {
-                                await AppNavService().pushNamed(
-                                  destination: AppRoutes().productListingScreen,
-                                  arguments: <String, dynamic>{},
-                                );
-
-                                unawaited(
-                                  controller.getAllCartsItemsAPICall(
-                                    needLoader: false,
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                        ],
+    return Obx(
+      () {
+        return Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            title: const Text("Cart"),
+            surfaceTintColor: AppColors().appTransparentColor,
+            actions: <Widget>[
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  IconButton(
+                    onPressed: () async {
+                      await AppNavService().pushNamed(
+                        destination: AppRoutes().wishListScreen,
+                        arguments: <String, dynamic>{},
+                      );
+                    },
+                    icon: Badge(
+                      isLabelVisible: rxWishListCount.value != 0,
+                      label: Text("${rxWishListCount.value}"),
+                      textColor: AppColors().appWhiteColor,
+                      backgroundColor: AppColors().appPrimaryColor,
+                      child: Icon(
+                        Icons.favorite,
+                        color: AppColors().appRedColor,
                       ),
                     ),
-                  )
-                : Column(
-                    children: <Widget>[
-                      Expanded(
-                        child: SingleChildScrollView(
-                          physics: const AlwaysScrollableScrollPhysics(),
+                  ),
+                  const SizedBox(width: 8),
+                ],
+              ),
+            ],
+          ),
+          body: SafeArea(
+            child: Obx(
+              () {
+                return controller.rxItemsList.isEmpty
+                    ? SizedBox(
+                        height: Get.height / 1.5,
+                        width: Get.width,
+                        child: Center(
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              listView(),
-                              const SizedBox(height: 00),
-                              addressWidget(),
                               const SizedBox(height: 16),
-                              couponWidget(),
-                              const SizedBox(height: 8),
-                              const Divider(indent: 16, endIndent: 16),
-                              const SizedBox(height: 8),
-                              orderPaymentWidget(),
-                              const SizedBox(height: 8),
-                              couponInfo(),
-                              const SizedBox(height: 8),
-                              const Divider(indent: 16, endIndent: 16),
-                              const SizedBox(height: 8),
-                              orderPaymentWidget2(),
+                              Icon(
+                                Icons.shopping_cart,
+                                color: AppColors().appPrimaryColor,
+                                size: 48,
+                              ),
+                              const SizedBox(height: 16),
+                              Text(
+                                "Your cart is empty!",
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context).textTheme.titleLarge,
+                              ),
+                              const SizedBox(height: 16),
+                              Text(
+                                "Looks like you haven't made your choice yet!",
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context).textTheme.titleMedium,
+                              ),
+                              const SizedBox(height: 16),
+                              SizedBox(
+                                height: 50,
+                                width: 100,
+                                child: AppTextButton(
+                                  text: "Start Shopping",
+                                  onPressed: () async {
+                                    await AppNavService().pushNamed(
+                                      destination:
+                                          AppRoutes().productListingScreen,
+                                      arguments: <String, dynamic>{},
+                                    );
+
+                                    unawaited(
+                                      controller.getAllCartsItemsAPICall(
+                                        needLoader: false,
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
                               const SizedBox(height: 16),
                             ],
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 16),
-                      buttons(),
-                      const SizedBox(height: 16),
-                    ],
-                  );
-          },
-        ),
-      ),
+                      )
+                    : Column(
+                        children: <Widget>[
+                          Expanded(
+                            child: SingleChildScrollView(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  listView(),
+                                  const SizedBox(height: 00),
+                                  addressWidget(),
+                                  const SizedBox(height: 16),
+                                  couponWidget(),
+                                  const SizedBox(height: 8),
+                                  const Divider(indent: 16, endIndent: 16),
+                                  const SizedBox(height: 8),
+                                  orderPaymentWidget(),
+                                  const SizedBox(height: 8),
+                                  couponInfo(),
+                                  const SizedBox(height: 8),
+                                  const Divider(indent: 16, endIndent: 16),
+                                  const SizedBox(height: 8),
+                                  orderPaymentWidget2(),
+                                  const SizedBox(height: 16),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          buttons(),
+                          const SizedBox(height: 16),
+                        ],
+                      );
+              },
+            ),
+          ),
+        );
+      },
     );
   }
 

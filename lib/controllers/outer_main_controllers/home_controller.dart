@@ -6,7 +6,6 @@ import "package:customer/models/product_model.dart";
 import "package:customer/services/app_api_service.dart";
 import "package:customer/utils/app_logger.dart";
 import "package:customer/utils/app_snackbar.dart";
-import "package:flutter/foundation.dart";
 import "package:get/get.dart";
 import "package:infinite_scroll_pagination/infinite_scroll_pagination.dart";
 
@@ -19,16 +18,13 @@ class HomeController extends GetxController {
   final PagingController<int, Categories> pagingControllerCategories =
       PagingController<int, Categories>(firstPageKey: 1);
 
-  ValueNotifier<PagingState<int, Categories>> valueNotifierCategories =
-      ValueNotifier<PagingState<int, Categories>>(
-    const PagingState<int, Categories>(),
-  );
-
   final PagingController<int, Banners> pagingControllerBanners =
       PagingController<int, Banners>(firstPageKey: 1);
 
-  final List<PagingController<int, Products>> pagingControllerDynamic =
-      <PagingController<int, Products>>[];
+  final RxList<Categories> rxProductCategoriesList = <Categories>[].obs;
+
+  final RxList<PagingController<int, Products>> rxPagingControllerDynamic =
+      <PagingController<int, Products>>[].obs;
 
   @override
   void onInit() {
@@ -38,17 +34,19 @@ class HomeController extends GetxController {
     pagingControllerCategories.addPageRequestListener(_fetchPageCategories);
     pagingControllerBanners.addPageRequestListener(_fetchPageBanners);
 
-    for (int i = 0; i < pagingControllerDynamic.length; i++) {
-      pagingControllerDynamic[i].addPageRequestListener(
+    for (int i = 0; i < rxPagingControllerDynamic.length; i++) {
+      rxPagingControllerDynamic[i].addPageRequestListener(
         (int pageKey) async {
           await _fetchPageDynamic(
             pageKey,
-            pagingControllerDynamic[i],
+            rxPagingControllerDynamic[i],
             pagingControllerCategories.itemList?[i].name ?? "",
           );
         },
       );
     }
+
+    unawaited(apiCallCategoriesWithoutPagination());
   }
 
   @override
@@ -65,13 +63,13 @@ class HomeController extends GetxController {
       ..removePageRequestListener(_fetchPageBanners)
       ..dispose();
 
-    for (int i = 0; i < pagingControllerDynamic.length; i++) {
-      pagingControllerDynamic[i]
+    for (int i = 0; i < rxPagingControllerDynamic.length; i++) {
+      rxPagingControllerDynamic[i]
         ..removePageRequestListener(
           (int pageKey) async {
             await _fetchPageDynamic(
               pageKey,
-              pagingControllerDynamic[i],
+              rxPagingControllerDynamic[i],
               pagingControllerCategories.itemList?[i].name ?? "",
             );
           },
@@ -80,6 +78,18 @@ class HomeController extends GetxController {
     }
 
     super.onClose();
+  }
+
+  void updateProductCategoriesList(List<Categories> value) {
+    rxProductCategoriesList(value);
+    return;
+  }
+
+  void updatePagingControllerDynamic(
+    List<PagingController<int, Products>> value,
+  ) {
+    rxPagingControllerDynamic(value);
+    return;
   }
 
   Future<void> _fetchPageServices(int pageKey) async {
@@ -107,12 +117,6 @@ class HomeController extends GetxController {
       isLastPage
           ? pagingControllerCategories.appendLastPage(newItems)
           : pagingControllerCategories.appendPage(newItems, pageKey + 1);
-      valueNotifierCategories.value = pagingControllerCategories.value;
-
-      List<Categories> categoriesList = <Categories>[];
-      categoriesList = pagingControllerCategories.itemList ?? <Categories>[];
-      await initPagingControllerDynamic(categoriesList);
-      valueNotifierCategories.value = pagingControllerCategories.value;
     } on Exception catch (error, stackTrace) {
       AppLogger().error(
         message: "Exception caught",
@@ -120,7 +124,6 @@ class HomeController extends GetxController {
         stackTrace: stackTrace,
       );
       pagingControllerCategories.error = error;
-      valueNotifierCategories.value = pagingControllerCategories.value;
     } finally {}
     return Future<void>.value();
   }
@@ -199,6 +202,39 @@ class HomeController extends GetxController {
     return completer.future;
   }
 
+  Future<void> apiCallCategoriesWithoutPagination() async {
+    await AppAPIService().functionGet(
+      types: Types.order,
+      endPoint: "productcategory",
+      query: <String, dynamic>{
+        "page": 1,
+        "limit": 3,
+        "status": "Approved",
+      },
+      successCallback: (Map<String, dynamic> json) async {
+        AppLogger().info(message: json["message"]);
+
+        FeaturedModel model = FeaturedModel();
+        model = FeaturedModel.fromJson(json);
+
+        rxProductCategoriesList.clear();
+        rxPagingControllerDynamic.clear();
+
+        updateProductCategoriesList(model.data?.categories ?? <Categories>[]);
+        await initPagingControllerDynamic();
+
+        rxProductCategoriesList.refresh();
+        rxPagingControllerDynamic.refresh();
+      },
+      failureCallback: (Map<String, dynamic> json) {
+        AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
+      },
+      needLoader: false,
+    );
+
+    return Future<void>.value();
+  }
+
   Future<List<Banners>> _apiCallBanners(int pageKey) async {
     final Completer<List<Banners>> completer = Completer<List<Banners>>();
     await AppAPIService().functionGet(
@@ -228,38 +264,27 @@ class HomeController extends GetxController {
     return completer.future;
   }
 
-  Future<void> initPagingControllerDynamic(List<Categories> categories) async {
-    final Completer<void> completer = Completer<void>();
+  Future<void> initPagingControllerDynamic() async {
+    const Duration debounce = Duration(milliseconds: 400);
+    await Future<void>.delayed(debounce);
 
-    if (pagingControllerDynamic.isNotEmpty) {
-      pagingControllerDynamic.clear();
-      const Duration debounce = Duration(milliseconds: 400);
-      await Future<void>.delayed(debounce);
-    } else {}
-
-    for (int i = 0; i < categories.length; i++) {
+    for (int i = 0; i < rxProductCategoriesList.length; i++) {
       final PagingController<int, Products> pagingController =
           PagingController<int, Products>(firstPageKey: 1);
-      pagingControllerDynamic.add(pagingController);
+      rxPagingControllerDynamic.add(pagingController);
     }
 
-    for (int i = 0; i < pagingControllerDynamic.length; i++) {
+    for (int i = 0; i < rxPagingControllerDynamic.length; i++) {
       final PagingController<int, Products> pagingController =
-          pagingControllerDynamic[i];
+          rxPagingControllerDynamic[i];
       pagingController.addPageRequestListener(
         (int pageKey) async {
-          await _fetchPageDynamic(
-            pageKey,
-            pagingController,
-            categories[i].sId ?? "",
-          );
+          final String id = rxProductCategoriesList[i].sId ?? "";
+          await _fetchPageDynamic(pageKey, pagingController, id);
         },
       );
     }
-
-    completer.complete();
-
-    return completer.future;
+    return Future<void>.value();
   }
 
   Future<void> _fetchPageDynamic(

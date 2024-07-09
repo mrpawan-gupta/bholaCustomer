@@ -74,7 +74,8 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
                       );
                     },
                     icon: Badge(
-                      label: const Text("3"),
+                      isLabelVisible: rxWishListCount.value != 0,
+                      label: Text("${rxWishListCount.value}"),
                       textColor: AppColors().appWhiteColor,
                       backgroundColor: AppColors().appPrimaryColor,
                       child: Icon(
@@ -91,7 +92,8 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
                       );
                     },
                     icon: Badge(
-                      label: const Text("3"),
+                      isLabelVisible: rxCartListCount.value != 0,
+                      label: Text("${rxCartListCount.value}"),
                       textColor: AppColors().appWhiteColor,
                       backgroundColor: AppColors().appPrimaryColor,
                       child: Icon(

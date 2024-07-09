@@ -1,3 +1,5 @@
+import "dart:async";
+
 import "package:customer/controllers/main_navigation_controller.dart";
 import "package:customer/controllers/outer_main_controllers/home_controller.dart";
 import "package:customer/models/banner_model.dart";
@@ -37,6 +39,8 @@ class HomeScreen extends GetView<HomeController> {
                     ..pagingControllerServices.refresh()
                     ..pagingControllerCategories.refresh()
                     ..pagingControllerBanners.refresh();
+
+                  unawaited(controller.apiCallCategoriesWithoutPagination());
                 },
                 child: SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
@@ -44,19 +48,23 @@ class HomeScreen extends GetView<HomeController> {
                     constraints: BoxConstraints(
                       minHeight: constraints.maxHeight,
                     ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        featuredServicesWidget(),
-                        const SizedBox(height: 32),
-                        featuredCategoriesWidget(),
-                        const SizedBox(height: 16),
-                        banners(),
-                        const SizedBox(height: 16),
-                        dynamicWidget(),
-                        const SizedBox(height: 32),
-                      ],
+                    child: Obx(
+                      () {
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            featuredServicesWidget(),
+                            const SizedBox(height: 32),
+                            featuredCategoriesWidget(),
+                            const SizedBox(height: 16),
+                            banners(),
+                            const SizedBox(height: 16),
+                            dynamicWidget(),
+                            const SizedBox(height: 32),
+                          ],
+                        );
+                      },
                     ),
                   ),
                 ),
@@ -175,41 +183,29 @@ class HomeScreen extends GetView<HomeController> {
   }
 
   Widget dynamicWidget() {
-    return ValueListenableBuilder<PagingState<int, Categories>>(
-      valueListenable: controller.valueNotifierCategories,
-      builder: (
-        BuildContext context,
-        PagingState<int, Categories> value,
-        Widget? child,
-      ) {
-        return valueListenableBuilderAdapter();
-      },
-    );
-  }
-
-  Widget valueListenableBuilderAdapter() {
-    final List<PagingController<int, Products>> dynamicList =
-        controller.pagingControllerDynamic;
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: dynamicList.length,
-      padding: EdgeInsets.zero,
-      physics: const NeverScrollableScrollPhysics(),
-      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-      itemBuilder: (BuildContext context, int i) {
-        final PagingController<int, Products> pagingController = dynamicList[i];
-        final List<Categories> categoriesList =
-            controller.pagingControllerCategories.itemList ?? <Categories>[];
-        final Categories categories = categoriesList[i];
-        final bool isLast = i == dynamicList.length - 1;
-        return listViewAdapter(pagingController, categories, isLast: isLast);
-      },
-    );
+    final RxList<Categories> productList = controller.rxProductCategoriesList;
+    final RxList<PagingController<int, Products>> dynamicList =
+        controller.rxPagingControllerDynamic;
+    return dynamicList.isEmpty
+        ? const SizedBox()
+        : ListView.builder(
+            shrinkWrap: true,
+            itemCount: productList.length,
+            padding: EdgeInsets.zero,
+            physics: const NeverScrollableScrollPhysics(),
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            itemBuilder: (BuildContext context, int i) {
+              final PagingController<int, Products> paging = dynamicList[i];
+              final Categories products = productList[i];
+              final bool isLast = i == productList.length - 1;
+              return listViewAdapter(paging, products, isLast: isLast);
+            },
+          );
   }
 
   Widget listViewAdapter(
-    PagingController<int, Products> pagingController,
-    Categories category, {
+    PagingController<int, Products> paging,
+    Categories products, {
     required bool isLast,
   }) {
     return Padding(
@@ -221,12 +217,12 @@ class HomeScreen extends GetView<HomeController> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: CommonHomeTitleBar(
-              title: "🌾 ${category.name ?? ""}",
+              title: "🌾 ${products.name ?? ""}",
               isViewAllNeeded: true,
               onTapViewAll: () async {
                 await AppNavService().pushNamed(
                   destination: AppRoutes().productListingScreen,
-                  arguments: <String, dynamic>{"id": category.sId ?? ""},
+                  arguments: <String, dynamic>{"id": products.sId ?? ""},
                 );
               },
             ),
@@ -238,7 +234,7 @@ class HomeScreen extends GetView<HomeController> {
           ),
           const SizedBox(height: 8),
           CommonHorizontalListViewProducts(
-            pagingController: pagingController,
+            pagingController: paging,
             onTap: (Products item) async {
               await AppNavService().pushNamed(
                 destination: AppRoutes().viewGenericProductDetailsScreen,
@@ -249,7 +245,7 @@ class HomeScreen extends GetView<HomeController> {
             onTapAddToCart: (Products item) {},
             incQty: (Products item) {},
             decQty: (Products item) {},
-            type: "${category.name ?? ""} list",
+            type: "${products.name ?? ""} list",
           ),
         ],
       ),

@@ -3,6 +3,7 @@ import "dart:async";
 import "package:customer/common_widgets/app_bottom_indicator.dart";
 import "package:customer/common_widgets/app_elevated_button.dart";
 import "package:customer/common_widgets/common_image_widget.dart";
+import "package:customer/controllers/main_navigation_controller.dart";
 import "package:customer/controllers/nested_category/view_generic_product_details_controller.dart";
 import "package:customer/models/generic_product_details_model.dart";
 import "package:customer/models/product_model.dart";
@@ -28,83 +29,99 @@ class ViewGenericProductDetailsScreen
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text("Product Details"),
-        surfaceTintColor: AppColors().appTransparentColor,
-        actions: <Widget>[
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              IconButton(
-                onPressed: () async {
-                  await AppNavService().pushNamed(
-                    destination: AppRoutes().wishListScreen,
-                    arguments: <String, dynamic>{},
-                  );
-                },
-                icon: Icon(
-                  Icons.favorite,
-                  color: AppColors().appRedColor,
-                ),
-              ),
-              IconButton(
-                onPressed: () async {
-                  await AppNavService().pushNamed(
-                    destination: AppRoutes().cartScreen,
-                    arguments: <String, dynamic>{},
-                  );
-                },
-                icon: Icon(
-                  Icons.shopping_cart,
-                  color: AppColors().appPrimaryColor,
-                ),
-              ),
-              const SizedBox(width: 8),
-            ],
-          ),
-        ],
-      ),
-      body: SafeArea(
-        child: Obx(
-          () {
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        pageViewWidget(),
-                        const SizedBox(height: 16),
-                        basicInfoWidget(),
-                        const SizedBox(height: 16),
-                        moreInfoWidget(),
-                        const SizedBox(height: 16),
-                        advanceInfoWidget(),
-                        const SizedBox(height: 16),
-                        suggestedWidget(),
-                        const SizedBox(height: 16),
-                        ratingBarGraphWidget(),
-                        const SizedBox(height: 16),
-                        reviewsWidget(),
-                        const SizedBox(height: 16),
-                      ],
+    return Obx(
+      () {
+        return Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            title: const Text("Product Details"),
+            surfaceTintColor: AppColors().appTransparentColor,
+            actions: <Widget>[
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  IconButton(
+                    onPressed: () async {
+                      await AppNavService().pushNamed(
+                        destination: AppRoutes().wishListScreen,
+                        arguments: <String, dynamic>{},
+                      );
+                    },
+                    icon: Badge(
+                      isLabelVisible: rxWishListCount.value != 0,
+                      label: Text("${rxWishListCount.value}"),
+                      textColor: AppColors().appWhiteColor,
+                      backgroundColor: AppColors().appPrimaryColor,
+                      child: Icon(
+                        Icons.favorite,
+                        color: AppColors().appRedColor,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 16),
-                buttons(),
-                const SizedBox(height: 16),
-              ],
-            );
-          },
-        ),
-      ),
+                  IconButton(
+                    onPressed: () async {
+                      await AppNavService().pushNamed(
+                        destination: AppRoutes().cartScreen,
+                        arguments: <String, dynamic>{},
+                      );
+                    },
+                    icon: Badge(
+                      isLabelVisible: rxCartListCount.value != 0,
+                      label: Text("${rxCartListCount.value}"),
+                      textColor: AppColors().appWhiteColor,
+                      backgroundColor: AppColors().appPrimaryColor,
+                      child: Icon(
+                        Icons.shopping_cart,
+                        color: AppColors().appPrimaryColor,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                ],
+              ),
+            ],
+          ),
+          body: SafeArea(
+            child: Obx(
+              () {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            pageViewWidget(),
+                            const SizedBox(height: 16),
+                            basicInfoWidget(),
+                            const SizedBox(height: 16),
+                            moreInfoWidget(),
+                            const SizedBox(height: 16),
+                            advanceInfoWidget(),
+                            const SizedBox(height: 16),
+                            suggestedWidget(),
+                            const SizedBox(height: 16),
+                            ratingBarGraphWidget(),
+                            const SizedBox(height: 16),
+                            reviewsWidget(),
+                            const SizedBox(height: 16),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    buttons(),
+                    const SizedBox(height: 16),
+                  ],
+                );
+              },
+            ),
+          ),
+        );
+      },
     );
   }
 

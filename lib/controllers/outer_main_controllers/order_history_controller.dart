@@ -6,6 +6,7 @@ import "package:customer/models/new_order_model.dart";
 import "package:customer/services/app_api_service.dart";
 import "package:customer/utils/app_logger.dart";
 import "package:customer/utils/app_snackbar.dart";
+import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:infinite_scroll_pagination/infinite_scroll_pagination.dart";
 
@@ -17,6 +18,11 @@ class OrderHistoryController extends GetxController {
 
   final PagingController<int, Bookings> pagingControllerNewOrder =
       PagingController<int, Bookings>(firstPageKey: 1);
+
+  ValueNotifier<PagingState<int, Bookings>> valueNotifierNewOrder =
+      ValueNotifier<PagingState<int, Bookings>>(
+    const PagingState<int, Bookings>(),
+  );
 
   final Rx<Categories> rxSelectedCategory = Categories().obs;
 
@@ -71,6 +77,7 @@ class OrderHistoryController extends GetxController {
       isLastPage
           ? pagingControllerNewOrder.appendLastPage(newItems)
           : pagingControllerNewOrder.appendPage(newItems, pageKey + 1);
+      valueNotifierNewOrder.value = pagingControllerNewOrder.value;
     } on Exception catch (error, stackTrace) {
       AppLogger().error(
         message: "Exception caught",
@@ -78,6 +85,7 @@ class OrderHistoryController extends GetxController {
         stackTrace: stackTrace,
       );
       pagingControllerNewOrder.error = error;
+      valueNotifierNewOrder.value = pagingControllerNewOrder.value;
     } finally {}
     return Future<void>.value();
   }
@@ -92,8 +100,8 @@ class OrderHistoryController extends GetxController {
         types: Types.rental,
         endPoint: "vehiclecategory",
         query: <String, dynamic>{
-          "page": pageKey,
-          "limit": pageSize,
+          "page": 1,
+          "limit": 1000,
           "status": "Approved",
         },
         successCallback: (Map<String, dynamic> json) {

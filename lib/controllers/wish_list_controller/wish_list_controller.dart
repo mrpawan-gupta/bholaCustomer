@@ -1,10 +1,12 @@
 import "dart:async";
 
+import "package:customer/common_functions/booking_functions.dart";
 import "package:customer/models/featured_model.dart";
 import "package:customer/models/wish_list_model.dart";
 import "package:customer/services/app_api_service.dart";
 import "package:customer/utils/app_logger.dart";
 import "package:customer/utils/app_snackbar.dart";
+import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:infinite_scroll_pagination/infinite_scroll_pagination.dart";
 
@@ -16,6 +18,11 @@ class WishListController extends GetxController {
 
   final PagingController<int, WishListItems> pagingControllerWishList =
       PagingController<int, WishListItems>(firstPageKey: 1);
+
+  ValueNotifier<PagingState<int, WishListItems>> valueNotifierWishList =
+      ValueNotifier<PagingState<int, WishListItems>>(
+    const PagingState<int, WishListItems>(),
+  );
 
   final Rx<Categories> rxSelectedCategory = Categories().obs;
 
@@ -70,6 +77,7 @@ class WishListController extends GetxController {
       isLastPage
           ? pagingControllerWishList.appendLastPage(newItems)
           : pagingControllerWishList.appendPage(newItems, pageKey + 1);
+      valueNotifierWishList.value = pagingControllerWishList.value;
     } on Exception catch (error, stackTrace) {
       AppLogger().error(
         message: "Exception caught",
@@ -77,37 +85,53 @@ class WishListController extends GetxController {
         stackTrace: stackTrace,
       );
       pagingControllerWishList.error = error;
+      valueNotifierWishList.value = pagingControllerWishList.value;
     } finally {}
     return Future<void>.value();
   }
 
   Future<List<Categories>> _apiCallCategories(int pageKey) async {
     final Completer<List<Categories>> completer = Completer<List<Categories>>();
+    if (pageKey > 1) {
+      completer.complete(<Categories>[]);
+    } else {
+      await AppAPIService().functionGet(
+        types: Types.order,
+        endPoint: "productcategory",
+        query: <String, dynamic>{
+          "page": 1,
+          "limit": 1000,
+          "status": "Approved",
+        },
+        successCallback: (Map<String, dynamic> json) {
+          AppLogger().info(message: json["message"]);
 
-    await AppAPIService().functionGet(
-      types: Types.order,
-      endPoint: "productcategory",
-      query: <String, dynamic>{
-        "page": pageKey,
-        "limit": pageSize,
-        "status": "Approved",
-      },
-      successCallback: (Map<String, dynamic> json) {
-        AppLogger().info(message: json["message"]);
+          FeaturedModel model = FeaturedModel();
+          model = FeaturedModel.fromJson(json);
 
-        FeaturedModel model = FeaturedModel();
-        model = FeaturedModel.fromJson(json);
+          final (bool, Categories) result = checkAndGetCategoryObject(
+            list: pagingControllerCategories.itemList ?? <Categories>[],
+          );
+          final bool hasAlreadyAdded = result.$1;
+          final Categories allCategory = result.$2;
 
-        completer.complete(model.data?.categories ?? <Categories>[]);
-      },
-      failureCallback: (Map<String, dynamic> json) {
-        AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
+          if (hasAlreadyAdded) {
+          } else {
+            model.data?.categories?.insert(0, allCategory);
+            updateSelectedCategory(allCategory);
+          }
 
-        completer.complete(<Categories>[]);
-      },
-      needLoader: false,
-    );
+          completer.complete(model.data?.categories ?? <Categories>[]);
+        },
+        failureCallback: (Map<String, dynamic> json) {
+          AppSnackbar()
+              .snackbarFailure(title: "Oops", message: json["message"]);
 
+          completer.complete(<Categories>[]);
+        },
+        needLoader: false,
+      );
+    }
     return completer.future;
   }
 
