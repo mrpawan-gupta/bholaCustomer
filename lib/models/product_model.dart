@@ -79,6 +79,9 @@ class Products {
     this.isInPortfolio,
     this.isInWishList,
     this.cartQty,
+    this.cartId,
+    this.cartItemId,
+    this.vendorProductId,
   });
 
   Products.fromJson(Map<String, dynamic> json) {
@@ -103,9 +106,12 @@ class Products {
     iV = json["__v"];
     discountPercent = json["discountPercent"];
     discountedPrice = json["discountedPrice"];
-    isInPortfolio = json["is_in_portfolio"];
-    isInWishList = json["is_in_wish_list"];
+    isInPortfolio = json["isAddedInPortfolio"];
+    isInWishList = json["isAddedInWishlist"];
     cartQty = json["cart_qty"];
+    cartId = json["cart_id"];
+    cartItemId = json["cart_item_id"];
+    vendorProductId = json["vendor_product_id"];
   }
   num? cumulativeRating;
   String? sId;
@@ -130,6 +136,9 @@ class Products {
   bool? isInPortfolio;
   bool? isInWishList;
   num? cartQty;
+  String? cartId;
+  String? cartItemId;
+  String? vendorProductId;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -155,9 +164,12 @@ class Products {
     data["__v"] = iV;
     data["discountPercent"] = discountPercent;
     data["discountedPrice"] = discountedPrice;
-    data["is_in_portfolio"] = isInPortfolio;
-    data["is_in_wish_list"] = isInWishList;
+    data["isAddedInPortfolio"] = isInPortfolio;
+    data["isAddedInWishlist"] = isInWishList;
     data["cart_qty"] = cartQty;
+    data["cart_id"] = cartId;
+    data["cart_item_id"] = cartItemId;
+    data["vendor_product_id"] = vendorProductId;
     return data;
   }
 }

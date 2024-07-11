@@ -1,5 +1,8 @@
+// ignore_for_file: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member, lines_longer_than_80_chars
+
 import "dart:async";
 
+import "package:customer/common_functions/cart_list_and_wish_list_functions.dart";
 import "package:customer/controllers/main_navigation_controller.dart";
 import "package:customer/controllers/outer_main_controllers/home_controller.dart";
 import "package:customer/models/banner_model.dart";
@@ -55,11 +58,11 @@ class HomeScreen extends GetView<HomeController> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             featuredServicesWidget(),
-                            const SizedBox(height: 32),
+                            const SizedBox(height: 16),
                             featuredCategoriesWidget(),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: 0),
                             banners(),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: 0),
                             dynamicWidget(),
                             const SizedBox(height: 32),
                           ],
@@ -84,9 +87,12 @@ class HomeScreen extends GetView<HomeController> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: CommonHomeTitleBar(
-            title: "🚜 Featured Services",
-            isViewAllNeeded: false,
-            onTapViewAll: () {},
+            title: "🚜 Rental Categories",
+            onTapViewAll: () async {
+              await tabControllerFunction(2);
+            },
+            isViewAllNeeded: true,
+            itemType: Types.services,
           ),
         ),
         Divider(
@@ -135,9 +141,15 @@ class HomeScreen extends GetView<HomeController> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: CommonHomeTitleBar(
-            title: "🌾 Featured Categories",
-            isViewAllNeeded: false,
-            onTapViewAll: () {},
+            title: "🌾 Product Categories",
+            onTapViewAll: () async {
+              await AppNavService().pushNamed(
+                destination: AppRoutes().productListingScreen,
+                arguments: <String, dynamic>{},
+              );
+            },
+            isViewAllNeeded: true,
+            itemType: Types.categories,
           ),
         ),
         Divider(
@@ -153,6 +165,13 @@ class HomeScreen extends GetView<HomeController> {
               destination: AppRoutes().productListingScreen,
               arguments: <String, dynamic>{"id": item.sId ?? ""},
             );
+
+            controller
+              ..pagingControllerServices.refresh()
+              ..pagingControllerCategories.refresh()
+              ..pagingControllerBanners.refresh();
+
+            unawaited(controller.apiCallCategoriesWithoutPagination());
           },
           needViewAll: true,
           onTapViewAll: (Categories item) async {
@@ -160,6 +179,13 @@ class HomeScreen extends GetView<HomeController> {
               destination: AppRoutes().productListingScreen,
               arguments: <String, dynamic>{"id": item.sId ?? ""},
             );
+
+            controller
+              ..pagingControllerServices.refresh()
+              ..pagingControllerCategories.refresh()
+              ..pagingControllerBanners.refresh();
+
+            unawaited(controller.apiCallCategoriesWithoutPagination());
           },
           type: "product categories list",
           itemType: Types.categories,
@@ -169,16 +195,29 @@ class HomeScreen extends GetView<HomeController> {
   }
 
   Widget banners() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        CommonHorizontalListViewBanner(
-          pagingController: controller.pagingControllerBanners,
-          onTap: (Banners item) {},
-          type: "banners list",
-        ),
-      ],
+    return ValueListenableBuilder<PagingState<int, Banners>>(
+      valueListenable: controller.pagingControllerBanners,
+      builder: (
+        BuildContext context,
+        PagingState<int, Banners> value,
+        Widget? child,
+      ) {
+        return (value.itemList?.isEmpty ?? false)
+            ? const SizedBox(height: 16)
+            : Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  const SizedBox(height: 16),
+                  CommonHorizontalListViewBanner(
+                    pagingController: controller.pagingControllerBanners,
+                    onTap: (Banners item) {},
+                    type: "banners list",
+                  ),
+                  const SizedBox(height: 16),
+                ],
+              );
+      },
     );
   }
 
@@ -224,7 +263,15 @@ class HomeScreen extends GetView<HomeController> {
                   destination: AppRoutes().productListingScreen,
                   arguments: <String, dynamic>{"id": products.sId ?? ""},
                 );
+
+                controller
+                  ..pagingControllerServices.refresh()
+                  ..pagingControllerCategories.refresh()
+                  ..pagingControllerBanners.refresh();
+
+                unawaited(controller.apiCallCategoriesWithoutPagination());
               },
+              itemType: Types.categories,
             ),
           ),
           Divider(
@@ -240,11 +287,79 @@ class HomeScreen extends GetView<HomeController> {
                 destination: AppRoutes().viewGenericProductDetailsScreen,
                 arguments: <String, dynamic>{"id": item.sId ?? ""},
               );
+
+              controller
+                ..pagingControllerServices.refresh()
+                ..pagingControllerCategories.refresh()
+                ..pagingControllerBanners.refresh();
+
+              unawaited(controller.apiCallCategoriesWithoutPagination());
             },
-            onTapAddToWish: (Products item, {required bool isLiked}) {},
-            onTapAddToCart: (Products item) {},
-            incQty: (Products item) {},
-            decQty: (Products item) {},
+            onTapAddToWish: (Products item, {required bool isLiked}) async {
+              bool value = false;
+              value = isLiked
+                  ? await removeFromWishListAPICall(productId: item.sId ?? "")
+                  : await addToWishListAPICall(productId: item.sId ?? "");
+
+              if (value) {
+                item.isInWishList = !(item.isInWishList ?? false);
+                isLiked = item.isInWishList ?? false;
+                paging.notifyListeners();
+              } else {}
+            },
+            onTapAddToCart: (Products item) async {
+              (bool, String) value = (false, "");
+              value = await addToCartAPICall(productId: item.sId ?? "");
+
+              if (value.$1) {
+                item
+                  ..cartQty = 1
+                  ..cartItemId = value.$2;
+                paging.notifyListeners();
+              } else {}
+            },
+            incQty: (Products item) async {
+              final num newQty = (item.cartQty ?? 0) + 1;
+
+              bool value = false;
+              value = await updateCartAPICall(
+                itemId: item.cartItemId ?? "",
+                cartId: item.cartId ?? "",
+                qty: newQty,
+              );
+
+              if (value) {
+                item.cartQty = newQty;
+                paging.notifyListeners();
+              } else {}
+            },
+            decQty: (Products item) async {
+              final num newQty = (item.cartQty ?? 0) - 1;
+
+              bool value = false;
+              value = await updateCartAPICall(
+                itemId: item.cartItemId ?? "",
+                cartId: item.cartId ?? "",
+                qty: newQty,
+              );
+
+              if (value) {
+                item.cartQty = newQty;
+                paging.notifyListeners();
+              } else {}
+            },
+            onPressedDelete: (Products item) async {
+              bool value = false;
+              value = await removeFromCartAPICall(
+                itemId: item.cartItemId ?? "",
+                cartId: item.cartId ?? "",
+              );
+
+              if (value) {
+                item.cartQty = 0;
+                paging.notifyListeners();
+              } else {}
+            },
             type: "${products.name ?? ""} list",
           ),
         ],

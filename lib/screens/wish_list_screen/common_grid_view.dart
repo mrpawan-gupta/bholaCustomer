@@ -1,30 +1,28 @@
-import "package:customer/common_widgets/app_elevated_button.dart";
 import "package:customer/common_widgets/app_text_button.dart";
 import "package:customer/common_widgets/common_image_widget.dart";
 import "package:customer/models/wish_list_model.dart";
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_routes.dart";
-import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/material.dart";
-import "package:flutter_rating_bar/flutter_rating_bar.dart";
 import "package:get/get.dart";
 import "package:infinite_scroll_pagination/infinite_scroll_pagination.dart";
+import "package:like_button/like_button.dart";
 
 class CommonGridView extends StatelessWidget {
   const CommonGridView({
     required this.pagingController,
     required this.onTap,
-    required this.onPressedToCart,
-    required this.onPressedDelete,
+    required this.onTapAddToWish,
+    required this.onTapAddToCart,
     required this.type,
     super.key,
   });
 
   final PagingController<int, WishListItems> pagingController;
   final Function(WishListItems item) onTap;
-  final Function(WishListItems item) onPressedToCart;
-  final Function(WishListItems item) onPressedDelete;
+  final Function(WishListItems item, {required bool isLiked}) onTapAddToWish;
+  final Function(WishListItems item) onTapAddToCart;
   final String type;
 
   @override
@@ -39,7 +37,7 @@ class CommonGridView extends StatelessWidget {
         crossAxisCount: 2,
         mainAxisSpacing: 16,
         crossAxisSpacing: 16,
-        childAspectRatio: 1 / 1.80,
+        childAspectRatio: 1 / 1.64,
       ),
       builderDelegate: PagedChildBuilderDelegate<WishListItems>(
         noItemsFoundIndicatorBuilder: (BuildContext context) {
@@ -48,6 +46,7 @@ class CommonGridView extends StatelessWidget {
           //   message: "The $type is currently empty.",
           //   onTryAgain: pagingController.refresh,
           // );
+
           return SizedBox(
             height: Get.height / 1.5,
             width: Get.width,
@@ -96,87 +95,47 @@ class CommonGridView extends StatelessWidget {
           );
         },
         itemBuilder: (BuildContext context, WishListItems item, int index) {
-          return listAdapter(item);
+          final int length =
+              (pagingController.itemList ?? <WishListItems>[]).length;
+          final bool isLast1 = index == length - 1;
+          final bool isLast2 = index == length - 2;
+          return Column(
+            children: <Widget>[
+              Expanded(child: listAdapter(item, index)),
+              SizedBox(height: isLast1 || isLast2 ? 16 : 0),
+            ],
+          );
         },
       ),
     );
   }
 
-  Widget listAdapter(WishListItems item) {
+  Widget listAdapter(WishListItems item, int index) {
     return InkWell(
       borderRadius: BorderRadius.circular(12.0),
       onTap: () async {
         onTap(item);
       },
-      child: Padding(
-        padding: EdgeInsets.zero,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            productImage(item),
-            const SizedBox(height: 8),
-            productNameWidget(item),
-            const SizedBox(height: 4),
-            productDescriptionWidget(item),
-            const SizedBox(height: 4),
-            ratingBarWidget(item),
-            const SizedBox(height: 4),
-            pricingWidget(item),
-            const SizedBox(height: 4),
-            pricingWidget1(item),
-          ],
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          productImage(item),
+          const SizedBox(height: 4),
+          const SizedBox(height: 4),
+          productNameAndDetailsWidget(item),
+          const SizedBox(height: 4),
+          priceAndLikeRow(item),
+          const SizedBox(height: 4),
+          const SizedBox(height: 4),
+          bottomButton(item),
+        ],
       ),
-    );
-  }
-
-  Widget pricingWidget1(WishListItems item) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: SizedBox(
-                height: 32,
-                child: AppElevatedButton(
-                  text: "Move to Cart",
-                  onPressed: () async {
-                    onPressedToCart(item);
-                  },
-                ),
-              ),
-            ),
-            const SizedBox(width: 8),
-            SizedBox(
-              height: 32,
-              width: 32,
-              child: IconButton(
-                padding: EdgeInsets.zero,
-                onPressed: () async {
-                  await openMoreOptionsWidget(
-                    item: item,
-                    onPressedDelete: onPressedDelete,
-                  );
-                },
-                icon: CircleAvatar(
-                  backgroundColor: AppColors().appPrimaryColor,
-                  child: Icon(
-                    Icons.more_horiz,
-                    color: AppColors().appWhiteColor,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
     );
   }
 
   Widget productImage(WishListItems item) {
     final num discountPercent = item.discountPercent ?? 0;
+    final num cumulativeRating = item.cumulativeRating ?? 0.0;
 
     return Expanded(
       child: Column(
@@ -187,10 +146,13 @@ class CommonGridView extends StatelessWidget {
             child: Stack(
               children: <Widget>[
                 Card(
-                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                  elevation: 4,
                   margin: EdgeInsets.zero,
-                  color: AppColors().appWhiteColor,
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    side: BorderSide(color: AppColors().appPrimaryColor),
+                  ),
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
                   surfaceTintColor: AppColors().appWhiteColor,
                   child: CommonImageWidget(
                     imageUrl: item.photo ?? "",
@@ -215,7 +177,34 @@ class CommonGridView extends StatelessWidget {
                         ),
                       ),
                       child: Text(
-                        "Get upto ${item.discountPercent ?? ""}% off",
+                        "${item.discountPercent ?? ""}% off",
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: AppColors().appWhiteColor,
+                        ),
+                      ),
+                    ),
+                  )
+                else
+                  const SizedBox(),
+                if (cumulativeRating != 0.0)
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 2,
+                        horizontal: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors().appPrimaryColor,
+                        borderRadius: const BorderRadius.only(
+                          topRight: Radius.circular(8),
+                          bottomLeft: Radius.circular(8),
+                        ),
+                      ),
+                      child: Text(
+                        "$cumulativeRating ★",
                         style: TextStyle(
                           fontSize: 12,
                           color: AppColors().appWhiteColor,
@@ -243,7 +232,7 @@ class CommonGridView extends StatelessWidget {
     );
   }
 
-  Widget productNameWidget(WishListItems item) {
+  Widget productNameAndDetailsWidget(WishListItems item) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -254,42 +243,21 @@ class CommonGridView extends StatelessWidget {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
-      ],
-    );
-  }
-
-  Widget productDescriptionWidget(WishListItems item) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
         Text(
-          item.description ?? "",
-          maxLines: 2,
+          item.category?.name ?? "",
+          style: TextStyle(
+            fontSize: 10,
+            fontWeight: FontWeight.bold,
+            color: AppColors().appGrey,
+          ),
+          maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
-      ],
-    );
-  }
-
-  Widget ratingBarWidget(WishListItems item) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        RatingBar.builder(
-          ignoreGestures: true,
-          allowHalfRating: true,
-          initialRating: item.cumulativeRating ?? 0.0,
-          itemSize: 16,
-          unratedColor: AppColors().appGrey,
-          itemBuilder: (BuildContext context, int index) {
-            return Icon(
-              Icons.star,
-              color: AppColors().appOrangeColor,
-            );
-          },
-          onRatingUpdate: (double value) {},
+        Text(
+          "${item.quantity ?? ""} ${item.unit ?? ""}",
+          style: const TextStyle(fontWeight: FontWeight.bold),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
       ],
     );
@@ -304,43 +272,58 @@ class CommonGridView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         if (discountedPrice == 0)
-          Text(
-            "₹$price",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: AppColors().appPrimaryColor,
-            ),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                "₹$price",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: AppColors().appPrimaryColor,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              Text(
+                "",
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors().appGrey,
+                  decoration: TextDecoration.lineThrough,
+                  decorationColor: AppColors().appGreyColor,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
           )
         else
-          Row(
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Flexible(
-                child: Text(
-                  "₹$discountedPrice",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors().appPrimaryColor,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+              Text(
+                "₹$discountedPrice",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: AppColors().appPrimaryColor,
                 ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
-              const SizedBox(width: 4),
-              Flexible(
-                child: Text(
-                  "₹$price",
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    decoration: TextDecoration.lineThrough,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+              Text(
+                "₹$price",
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors().appGrey,
+                  decoration: TextDecoration.lineThrough,
+                  decorationColor: AppColors().appGreyColor,
                 ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),
@@ -348,109 +331,70 @@ class CommonGridView extends StatelessWidget {
     );
   }
 
-  Future<void> openMoreOptionsWidget({
-    required WishListItems item,
-    required Function(WishListItems item) onPressedDelete,
-  }) async {
-    await Get.bottomSheet(
-      Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          const SizedBox(height: 16),
-          Text(
-            AppLanguageKeys().strActionPerform.tr,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 16),
-          ListTile(
-            dense: true,
-            title: const Text("Delete"),
-            trailing: const Icon(Icons.delete),
-            onTap: () async {
-              AppNavService().pop();
+  Widget likeButton(WishListItems item) {
+    const bool isInWishList = true;
 
-              await openDeleteServiceWidget(
-                item: item,
-                onPressedDelete: onPressedDelete,
-              );
-            },
-          ),
-          const SizedBox(height: 48),
-        ],
-      ),
-      backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
-      isScrollControlled: true,
+    return LikeButton(
+      size: 24,
+      isLiked: isInWishList,
+      onTap: (bool isLiked) {
+        onTapAddToWish(item, isLiked: isLiked);
+
+        return Future<bool>.value(!isInWishList);
+      },
     );
-    return Future<void>.value();
   }
 
-  Future<void> openDeleteServiceWidget({
-    required WishListItems item,
-    required Function(WishListItems item) onPressedDelete,
-  }) async {
-    await Get.bottomSheet(
-      Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          const SizedBox(height: 16),
-          Text(
-            AppLanguageKeys().strActionPerform.tr,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 16),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
-            child: Text(
-              "Are you sure you want to delete? It is an irreversible process!",
-              maxLines: 5,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          const SizedBox(height: 16),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                SizedBox(
-                  height: 50,
-                  child: AppElevatedButton(
-                    text: "Do not delete product",
-                    onPressed: () {
-                      AppNavService().pop();
-                    },
-                  ),
-                ),
-                const SizedBox(height: 16),
-                SizedBox(
-                  height: 50,
-                  child: AppTextButton(
-                    text: "Delete product",
-                    onPressed: () async {
-                      AppNavService().pop();
+  Widget priceAndLikeRow(WishListItems item) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Expanded(child: pricingWidget(item)),
+        likeButton(item),
+      ],
+    );
+  }
 
-                      onPressedDelete(item);
-                    },
+  Widget bottomButton(WishListItems item) {
+    return SizedBox(
+      height: 32,
+      child: Card(
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        elevation: 0,
+        margin: EdgeInsets.zero,
+        color: AppColors().appPrimaryColor,
+        surfaceTintColor: AppColors().appWhiteColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(50.0),
+        ),
+        child: InkWell(
+          onTap: () {
+            onTapAddToCart(item);
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Expanded(
+                  child: Text(
+                    "Add to Cart",
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors().appWhiteColor,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 16),
-          const SizedBox(height: 48),
-        ],
+        ),
       ),
-      backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
-      isScrollControlled: true,
     );
-    return Future<void>.value();
   }
 }

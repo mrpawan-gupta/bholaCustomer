@@ -1,11 +1,9 @@
 import "package:customer/common_widgets/common_image_widget.dart";
 import "package:customer/models/banner_model.dart";
+import "package:customer/utils/app_colors.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:infinite_scroll_pagination/infinite_scroll_pagination.dart";
-
-final RxDouble defaultBannerHeight = 150.0.obs;
-final RxDouble defaultBannerWidth = double.infinity.obs;
 
 class CommonHorizontalListViewBanner extends StatelessWidget {
   const CommonHorizontalListViewBanner({
@@ -21,59 +19,52 @@ class CommonHorizontalListViewBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () {
-        return SizedBox(
-          height: defaultBannerHeight.value,
-          width: defaultBannerWidth.value,
-          child: PagedListView<int, Banners>(
-            shrinkWrap: true,
-            pagingController: pagingController,
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            physics: const ScrollPhysics(),
-            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            builderDelegate: PagedChildBuilderDelegate<Banners>(
-              noItemsFoundIndicatorBuilder: (BuildContext context) {
-                WidgetsBinding.instance.addPostFrameCallback(
-                  (Duration timeStamp) {
-                    defaultBannerHeight(0.0);
-                    defaultBannerWidth(0.0);
-                  },
-                );
-                return const SizedBox();
-              },
-              itemBuilder: (BuildContext context, Banners item, int i) {
-                final int length = pagingController.itemList?.length ?? 0;
-                final bool isLast = i == length - 1;
-                return Padding(
-                  padding: EdgeInsets.only(
-                    top: 16.0,
-                    bottom: 16.0,
-                    right: isLast ? 0.0 : 16.0,
+    return SizedBox(
+      height: Get.height / 8,
+      width: double.infinity,
+      child: PagedListView<int, Banners>(
+        shrinkWrap: true,
+        pagingController: pagingController,
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        physics: const ScrollPhysics(),
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        builderDelegate: PagedChildBuilderDelegate<Banners>(
+          noItemsFoundIndicatorBuilder: (BuildContext context) {
+            return const SizedBox();
+          },
+          itemBuilder: (BuildContext context, Banners item, int i) {
+            final int length = pagingController.itemList?.length ?? 0;
+            final bool isLast = i == length - 1;
+            return Padding(
+              padding: EdgeInsets.only(
+                right: isLast ? 0.0 : 16.0,
+              ),
+              child: SizedBox(
+                height: Get.height / 8,
+                width: Get.width / 1.5,
+                child: Card(
+                  margin: EdgeInsets.zero,
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    side: BorderSide(color: AppColors().appPrimaryColor),
                   ),
-                  child: SizedBox(
-                    height: defaultBannerHeight.value,
-                    width: defaultBannerHeight.value * 2,
-                    child: Card(
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      elevation: 0,
-                      margin: EdgeInsets.zero,
-                      child: Stack(
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                        children: <Widget>[
-                          stackWidget(item: item, index: i),
-                          materialWidget(item: item, index: i),
-                        ],
-                      ),
-                    ),
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  surfaceTintColor: AppColors().appWhiteColor,
+                  child: Stack(
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    children: <Widget>[
+                      stackWidget(item: item, index: i),
+                      materialWidget(item: item, index: i),
+                    ],
                   ),
-                );
-              },
-            ),
-          ),
-        );
-      },
+                ),
+              ),
+            );
+          },
+        ),
+      ),
     );
   }
 

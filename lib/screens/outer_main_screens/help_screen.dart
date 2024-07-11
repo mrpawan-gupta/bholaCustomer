@@ -10,6 +10,7 @@ import "package:customer/models/new_order_model.dart";
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_routes.dart";
+import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:infinite_scroll_pagination/infinite_scroll_pagination.dart";
@@ -62,14 +63,19 @@ class HelpScreen extends GetView<HelpController> {
 
   Widget chipSelection() {
     return ValueListenableBuilder<PagingState<int, Bookings>>(
-      valueListenable: controller.valueNotifierNewOrder,
+      valueListenable: controller.pagingControllerNewOrder,
       builder: (
         BuildContext context,
         PagingState<int, Bookings> value,
         Widget? child,
       ) {
-        return (value.itemList?.isEmpty ?? true)
-            ? const SizedBox()
+        final Map<String, dynamic> map1 =
+            controller.rxSelectedCategory.value.toJson();
+        final Map<String, dynamic> map2 = Categories().toJson();
+        final bool isMapEquals = mapEquals(map1, map2);
+        return (isMapEquals && (value.itemList?.isEmpty ?? false)) ||
+                isMapEquals && (value.itemList?.isEmpty ?? true)
+            ? const SizedBox(height: 16)
             : SizedBox(
                 height: 32 + 8,
                 width: double.infinity,

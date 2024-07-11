@@ -1,5 +1,6 @@
 import "dart:async";
 
+import "package:customer/common_functions/stream_functions.dart";
 import "package:customer/models/banner_model.dart";
 import "package:customer/models/featured_model.dart";
 import "package:customer/models/product_model.dart";
@@ -47,6 +48,25 @@ class HomeController extends GetxController {
     }
 
     unawaited(apiCallCategoriesWithoutPagination());
+
+    subscribeWish(
+      callback: () async {
+        pagingControllerServices.refresh();
+        pagingControllerCategories.refresh();
+        pagingControllerBanners.refresh();
+
+        unawaited(apiCallCategoriesWithoutPagination());
+      },
+    );
+    subscribeCart(
+      callback: () async {
+        pagingControllerServices.refresh();
+        pagingControllerCategories.refresh();
+        pagingControllerBanners.refresh();
+
+        unawaited(apiCallCategoriesWithoutPagination());
+      },
+    );
   }
 
   @override

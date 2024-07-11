@@ -1,52 +1,20 @@
 import "dart:async";
 
+import "package:customer/common_functions/cart_list_and_wish_list_functions.dart";
 import "package:customer/controllers/outer_main_controllers/booking_controller.dart";
 import "package:customer/controllers/outer_main_controllers/category_controller.dart";
 import "package:customer/controllers/outer_main_controllers/help_controller.dart";
 import "package:customer/controllers/outer_main_controllers/home_controller.dart";
 import "package:customer/controllers/outer_main_controllers/order_history_controller.dart";
 import "package:customer/models/get_user_by_id.dart";
-import "package:customer/models/wish_and_cart_count_model.dart";
-import "package:customer/services/app_api_service.dart";
 import "package:customer/services/app_perm_service.dart";
 import "package:customer/services/app_storage_service.dart";
 import "package:customer/utils/app_assets_images.dart";
 import "package:customer/utils/app_constants.dart";
 import "package:customer/utils/app_intro_bottom_sheet.dart";
-import "package:customer/utils/app_logger.dart";
-import "package:customer/utils/app_snackbar.dart";
 import "package:get/get.dart";
 import "package:permission_handler/permission_handler.dart";
 import "package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart";
-
-final Rx<num> rxWishListCount = 0.obs;
-final Rx<num> rxCartListCount = 0.obs;
-
-Future<void> wishListAndCartListAPICall() async {
-  await AppAPIService().functionGet(
-    types: Types.order,
-    endPoint: "wishlist/count",
-    query: <String, dynamic>{},
-    successCallback: (Map<String, dynamic> json) {
-      AppLogger().info(message: json["message"]);
-
-      WishAndCartCountModel model = WishAndCartCountModel();
-      model = WishAndCartCountModel.fromJson(json);
-
-      final int wishlistTotalCount = model.data?.wishlistTotalCount ?? 0;
-      final int cartTotalCount = model.data?.cartTotalCount ?? 0;
-
-      rxWishListCount(wishlistTotalCount);
-      rxCartListCount(cartTotalCount);
-    },
-    failureCallback: (Map<String, dynamic> json) {
-      AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
-    },
-    needLoader: false,
-  );
-
-  return Future<void>.value();
-}
 
 Future<void> tabControllerFunction(int value) async {
   final MainNavigationController find = Get.find<MainNavigationController>();
@@ -108,13 +76,6 @@ class MainNavigationController extends GetxController {
   }
 
   @override
-  void onReady() {
-    super.onReady();
-
-    unawaited(wishListAndCartListAPICall());
-  }
-
-  @override
   void onClose() {
     _timer.cancel();
 
@@ -123,6 +84,7 @@ class MainNavigationController extends GetxController {
 
   void initAndReInitFunction() {
     updateUserInfo(AppStorageService().getUserInfoModel());
+    unawaited(wishListAndCartListAPICall());
     return;
   }
 

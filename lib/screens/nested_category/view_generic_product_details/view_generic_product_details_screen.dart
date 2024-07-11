@@ -1,9 +1,12 @@
+// ignore_for_file: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member, lines_longer_than_80_chars
+
 import "dart:async";
 
+import "package:customer/common_functions/cart_list_and_wish_list_functions.dart";
+import "package:customer/common_functions/stream_functions.dart";
 import "package:customer/common_widgets/app_bottom_indicator.dart";
 import "package:customer/common_widgets/app_elevated_button.dart";
 import "package:customer/common_widgets/common_image_widget.dart";
-import "package:customer/controllers/main_navigation_controller.dart";
 import "package:customer/controllers/nested_category/view_generic_product_details_controller.dart";
 import "package:customer/models/generic_product_details_model.dart";
 import "package:customer/models/product_model.dart";
@@ -20,6 +23,7 @@ import "package:flutter/material.dart";
 import "package:flutter_rating_bar/flutter_rating_bar.dart";
 import "package:gauge_indicator/gauge_indicator.dart";
 import "package:get/get.dart";
+import "package:infinite_scroll_pagination/infinite_scroll_pagination.dart";
 import "package:pod_player/pod_player.dart";
 import "package:read_more_text/read_more_text.dart";
 
@@ -46,6 +50,8 @@ class ViewGenericProductDetailsScreen
                         destination: AppRoutes().wishListScreen,
                         arguments: <String, dynamic>{},
                       );
+
+                      functionWishSinkAdd();
                     },
                     icon: Badge(
                       isLabelVisible: rxWishListCount.value != 0,
@@ -64,6 +70,8 @@ class ViewGenericProductDetailsScreen
                         destination: AppRoutes().cartScreen,
                         arguments: <String, dynamic>{},
                       );
+
+                      functionCartSinkAdd();
                     },
                     icon: Badge(
                       isLabelVisible: rxCartListCount.value != 0,
@@ -101,9 +109,9 @@ class ViewGenericProductDetailsScreen
                             moreInfoWidget(),
                             const SizedBox(height: 16),
                             advanceInfoWidget(),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: 0),
                             suggestedWidget(),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: 0),
                             ratingBarGraphWidget(),
                             const SizedBox(height: 16),
                             reviewsWidget(),
@@ -428,35 +436,117 @@ class ViewGenericProductDetailsScreen
   }
 
   Widget suggestedWidget() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: CommonGenericProductTitleBar(
-            title: "Suggested",
-            onTapViewAll: () {},
-            isViewAllNeeded: false,
-          ),
-        ),
-        const SizedBox(height: 8),
-        CommonHorizontalListViewProducts(
-          pagingController: controller.pagingControllerProducts,
-          onTap: (Products item) async {
-            await AppNavService().pushNamed(
-              destination: AppRoutes().viewGenericProductDetailsScreen,
-              arguments: <String, dynamic>{"id": item.sId ?? ""},
-            );
-          },
-          onTapAddToWish: (Products item, {required bool isLiked}) {},
-          onTapAddToCart: (Products item) {},
-          incQty: (Products item) {},
-          decQty: (Products item) {},
-          type: "Suggested list",
-        ),
-        const SizedBox(height: 16),
-      ],
+    return ValueListenableBuilder<PagingState<int, Products>>(
+      valueListenable: controller.pagingControllerProducts,
+      builder: (
+        BuildContext context,
+        PagingState<int, Products> value,
+        Widget? child,
+      ) {
+        return (value.itemList?.isEmpty ?? false)
+            ? const SizedBox(height: 16)
+            : Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: CommonGenericProductTitleBar(
+                      title: "Suggested",
+                      onTapViewAll: () {},
+                      isViewAllNeeded: false,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  CommonHorizontalListViewProducts(
+                    pagingController: controller.pagingControllerProducts,
+                    onTap: (Products item) async {
+                      await AppNavService().pushNamed(
+                        destination:
+                            AppRoutes().viewGenericProductDetailsScreen,
+                        arguments: <String, dynamic>{"id": item.sId ?? ""},
+                      );
+
+                      unawaited(controller.getProductDetailsAPICall());
+                    },
+                    onTapAddToWish: (
+                      Products item, {
+                      required bool isLiked,
+                    }) async {
+                      bool value = false;
+                      value = isLiked
+                          ? await removeFromWishListAPICall(
+                              productId: item.sId ?? "",
+                            )
+                          : await addToWishListAPICall(
+                              productId: item.sId ?? "",
+                            );
+
+                      if (value) {
+                        item.isInWishList = !(item.isInWishList ?? false);
+                        isLiked = item.isInWishList ?? false;
+                        controller.pagingControllerProducts.notifyListeners();
+                      } else {}
+                    },
+                    onTapAddToCart: (Products item) async {
+                      (bool, String) value = (false, "");
+                      value = await addToCartAPICall(productId: item.sId ?? "");
+
+                      if (value.$1) {
+                        item
+                          ..cartQty = 1
+                          ..cartItemId = value.$2;
+                        controller.pagingControllerProducts.notifyListeners();
+                      } else {}
+                    },
+                    incQty: (Products item) async {
+                      final num newQty = (item.cartQty ?? 0) + 1;
+
+                      bool value = false;
+                      value = await updateCartAPICall(
+                        itemId: item.cartItemId ?? "",
+                        cartId: item.cartId ?? "",
+                        qty: newQty,
+                      );
+
+                      if (value) {
+                        item.cartQty = newQty;
+                        controller.pagingControllerProducts.notifyListeners();
+                      } else {}
+                    },
+                    decQty: (Products item) async {
+                      final num newQty = (item.cartQty ?? 0) - 1;
+
+                      bool value = false;
+                      value = await updateCartAPICall(
+                        itemId: item.cartItemId ?? "",
+                        cartId: item.cartId ?? "",
+                        qty: newQty,
+                      );
+
+                      if (value) {
+                        item.cartQty = newQty;
+                        controller.pagingControllerProducts.notifyListeners();
+                      } else {}
+                    },
+                    onPressedDelete: (Products item) async {
+                      bool value = false;
+                      value = await removeFromCartAPICall(
+                        itemId: item.cartItemId ?? "",
+                        cartId: item.cartId ?? "",
+                      );
+
+                      if (value) {
+                        item.cartQty = 0;
+                        controller.pagingControllerProducts.notifyListeners();
+                      } else {}
+                    },
+                    type: "Suggested list",
+                  ),
+                  const SizedBox(height: 16),
+                ],
+              );
+      },
     );
   }
 
@@ -684,6 +774,10 @@ class ViewGenericProductDetailsScreen
 
   Widget buttons() {
     final GenericProductData data = controller.rxProductDetailsData.value;
+
+    final bool isInWishList = data.isInWishList ?? false;
+    final bool isInCartList = (data.cartQty ?? 0) > 0;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Row(
@@ -694,9 +788,18 @@ class ViewGenericProductDetailsScreen
               height: 50,
               width: double.infinity,
               child: AppElevatedButton(
-                text: "Add to Wish List",
+                text: isInWishList ? "Go to Wish List" : "Add to Wish List",
                 onPressed: () async {
-                  await controller.addToWishListAPICall(id: data.sId ?? "");
+                  if (!isInWishList) {
+                    await addToWishListAPICall(productId: data.sId ?? "");
+                  } else {}
+
+                  await AppNavService().pushNamed(
+                    destination: AppRoutes().wishListScreen,
+                    arguments: <String, dynamic>{},
+                  );
+
+                  unawaited(controller.getProductDetailsAPICall());
                 },
               ),
             ),
@@ -707,9 +810,18 @@ class ViewGenericProductDetailsScreen
               height: 50,
               width: double.infinity,
               child: AppElevatedButton(
-                text: "Add to Cart",
+                text: isInCartList ? "Go to Cart List" : "Add to Cart List",
                 onPressed: () async {
-                  await controller.addToCartAPICall(id: data.sId ?? "");
+                  if (!isInCartList) {
+                    await addToCartAPICall(productId: data.sId ?? "");
+                  } else {}
+
+                  await AppNavService().pushNamed(
+                    destination: AppRoutes().cartScreen,
+                    arguments: <String, dynamic>{},
+                  );
+
+                  unawaited(controller.getProductDetailsAPICall());
                 },
               ),
             ),

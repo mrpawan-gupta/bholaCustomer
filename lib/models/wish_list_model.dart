@@ -69,6 +69,8 @@ class WishListItems {
     this.cumulativeRating,
     this.discountPercent,
     this.discountedPrice,
+    this.quantity,
+    this.unit,
   });
 
   WishListItems.fromJson(Map<String, dynamic> json) {
@@ -82,6 +84,8 @@ class WishListItems {
     cumulativeRating = json["cumulativeRating"];
     discountPercent = json["discountPercent"];
     discountedPrice = json["discountedPrice"];
+    quantity = json["quantity"];
+    unit = json["unit"];
   }
 
   String? sId;
@@ -93,6 +97,8 @@ class WishListItems {
   double? cumulativeRating;
   int? discountPercent;
   int? discountedPrice;
+  int? quantity;
+  String? unit;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -107,6 +113,8 @@ class WishListItems {
     data["cumulativeRating"] = cumulativeRating;
     data["discountPercent"] = discountPercent;
     data["discountedPrice"] = discountedPrice;
+    data["quantity"] = quantity;
+    data["unit"] = unit;
     return data;
   }
 }

@@ -1,14 +1,17 @@
 import "dart:async";
 
+import "package:customer/common_functions/cart_list_and_wish_list_functions.dart";
+import "package:customer/common_functions/stream_functions.dart";
+import "package:customer/common_widgets/app_elevated_button.dart";
 import "package:customer/common_widgets/app_text_button.dart";
 import "package:customer/controllers/cart_controller/cart_controller.dart";
-import "package:customer/controllers/main_navigation_controller.dart";
 import "package:customer/models/coupon_list_model.dart";
 import "package:customer/models/get_all_carts_model.dart";
 import "package:customer/screens/cart_screen/my_utils/common_list_view.dart";
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_routes.dart";
+import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
@@ -35,6 +38,8 @@ class CartScreen extends GetWidget<CartController> {
                         destination: AppRoutes().wishListScreen,
                         arguments: <String, dynamic>{},
                       );
+
+                      functionWishSinkAdd();
                     },
                     icon: Badge(
                       isLabelVisible: rxWishListCount.value != 0,
@@ -162,9 +167,10 @@ class CartScreen extends GetWidget<CartController> {
       },
       incQty: (Items item) async {
         bool value = false;
-        value = await controller.updateCartAPICall(
-          id: item.sId ?? "",
+        value = await updateCartAPICall(
+          itemId: item.sId ?? "",
           qty: (item.quantity ?? 0) + 1,
+          cartId: controller.rxCart.value.sId ?? "",
         );
 
         if (value) {
@@ -173,9 +179,10 @@ class CartScreen extends GetWidget<CartController> {
       },
       decQty: (Items item) async {
         bool value = false;
-        value = await controller.updateCartAPICall(
-          id: item.sId ?? "",
+        value = await updateCartAPICall(
+          itemId: item.sId ?? "",
           qty: (item.quantity ?? 0) - 1,
+          cartId: controller.rxCart.value.sId ?? "",
         );
 
         if (value) {
@@ -184,8 +191,9 @@ class CartScreen extends GetWidget<CartController> {
       },
       onPressedDelete: (Items item) async {
         bool value = false;
-        value = await controller.removeItemFromCartAPICall(
-          id: item.sId ?? "",
+        value = await removeFromCartAPICall(
+          itemId: item.sId ?? "",
+          cartId: controller.rxCart.value.sId ?? "",
         );
 
         if (value) {
@@ -402,7 +410,7 @@ class CartScreen extends GetWidget<CartController> {
                         height: 24,
                         child: AppTextButton(
                           text: "Know more",
-                          onPressed: () {},
+                          onPressed: openShowMoreWidget,
                         ),
                       ),
                     ),
@@ -629,7 +637,10 @@ class CartScreen extends GetWidget<CartController> {
                 ),
                 SizedBox(
                   height: 24,
-                  child: AppTextButton(text: "View Details", onPressed: () {}),
+                  child: AppTextButton(
+                    text: "View Details",
+                    onPressed: openShowMoreWidget,
+                  ),
                 ),
               ],
             ),
@@ -639,34 +650,65 @@ class CartScreen extends GetWidget<CartController> {
             flex: 2,
             child: SizedBox(
               height: kToolbarHeight,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(12),
-                  onTap: () async {},
-                  child: ColoredBox(
-                    color: AppColors().appPrimaryColor,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                        child: Text(
-                          "Proceed to Payment",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: AppColors().appWhiteColor,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+              child: AppElevatedButton(
+                text: "Proceed to Payment",
+                onPressed: () async {
+                  await AppNavService().pushNamed(
+                    destination: AppRoutes().bookingPaymentScreen,
+                    arguments: <String, dynamic>{"id": "123456"},
+                  );
+                },
               ),
             ),
           ),
         ],
       ),
     );
+  }
+
+  Future<void> openShowMoreWidget() async {
+    await Get.bottomSheet(
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          const SizedBox(height: 16),
+          Text(
+            AppLanguageKeys().strActionPerform.tr,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 16),
+          orderPaymentWidget(),
+          const SizedBox(height: 8),
+          couponInfo(),
+          const SizedBox(height: 8),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                SizedBox(
+                  height: 50,
+                  child: AppElevatedButton(
+                    text: "Okay",
+                    onPressed: () {
+                      AppNavService().pop();
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+          const SizedBox(height: 48),
+        ],
+      ),
+      backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
+      isScrollControlled: true,
+    );
+    return Future<void>.value();
   }
 }

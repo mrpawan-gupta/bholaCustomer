@@ -1,8 +1,13 @@
+import "package:customer/common_widgets/app_elevated_button.dart";
 import "package:customer/common_widgets/app_no_item_found.dart";
+import "package:customer/common_widgets/app_text_button.dart";
 import "package:customer/common_widgets/common_image_widget.dart";
 import "package:customer/models/product_model.dart";
+import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
+import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/material.dart";
+import "package:get/get.dart";
 import "package:infinite_scroll_pagination/infinite_scroll_pagination.dart";
 import "package:like_button/like_button.dart";
 
@@ -14,6 +19,7 @@ class CommonGridView extends StatelessWidget {
     required this.onTapAddToCart,
     required this.incQty,
     required this.decQty,
+    required this.onPressedDelete,
     required this.type,
     super.key,
   });
@@ -24,6 +30,7 @@ class CommonGridView extends StatelessWidget {
   final Function(Products item) onTapAddToCart;
   final Function(Products item) incQty;
   final Function(Products item) decQty;
+  final Function(Products item) onPressedDelete;
   final String type;
 
   @override
@@ -336,9 +343,14 @@ class CommonGridView extends StatelessWidget {
                         child: InkWell(
                           borderRadius: BorderRadius.circular(50.0),
                           onTap: () async {
-                            if ((item.quantity ?? 0) > 0) {
+                            if ((item.cartQty ?? 0) > 1) {
                               decQty(item);
-                            } else {}
+                            } else {
+                              await openDeleteCartItemWidget(
+                                item: item,
+                                onPressedDelete: onPressedDelete,
+                              );
+                            }
                           },
                           child: ColoredBox(
                             color: AppColors().appWhiteColor.withOpacity(0.16),
@@ -367,7 +379,7 @@ class CommonGridView extends StatelessWidget {
                         child: InkWell(
                           borderRadius: BorderRadius.circular(50.0),
                           onTap: () async {
-                            if ((item.quantity ?? 0) < 100) {
+                            if ((item.cartQty ?? 0) < 100) {
                               incQty(item);
                             } else {}
                           },
@@ -422,5 +434,71 @@ class CommonGridView extends StatelessWidget {
               ),
             ),
     );
+  }
+
+  Future<void> openDeleteCartItemWidget({
+    required Products item,
+    required Function(Products item) onPressedDelete,
+  }) async {
+    await Get.bottomSheet(
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          const SizedBox(height: 16),
+          Text(
+            AppLanguageKeys().strActionPerform.tr,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 16),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text(
+              "Are you sure you want to delete? It is an irreversible process!",
+              maxLines: 5,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                SizedBox(
+                  height: 50,
+                  child: AppElevatedButton(
+                    text: "Do not delete cart item",
+                    onPressed: () {
+                      AppNavService().pop();
+                    },
+                  ),
+                ),
+                const SizedBox(height: 16),
+                SizedBox(
+                  height: 50,
+                  child: AppTextButton(
+                    text: "Delete cart item",
+                    onPressed: () async {
+                      AppNavService().pop();
+
+                      onPressedDelete(item);
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+          const SizedBox(height: 48),
+        ],
+      ),
+      backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
+      isScrollControlled: true,
+    );
+    return Future<void>.value();
   }
 }

@@ -191,7 +191,11 @@ class CommonHorizontalListView extends StatelessWidget {
               children: <Widget>[
                 Expanded(
                   child: Text(
-                    "View All",
+                    itemType == Types.categories
+                        ? "View All"
+                        : itemType == Types.services
+                            ? "Book Now"
+                            : "",
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,

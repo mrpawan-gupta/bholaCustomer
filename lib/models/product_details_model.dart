@@ -4,7 +4,7 @@ class ProductDetails {
   ProductDetails.fromJson(Map<String, dynamic> json) {
     success = json["success"];
     data =
-    json["data"] != null ? ProductDetailsData.fromJson(json["data"]) : null;
+        json["data"] != null ? ProductDetailsData.fromJson(json["data"]) : null;
     statusCode = json["statusCode"];
     message = json["message"];
   }
@@ -53,6 +53,7 @@ class ProductDetailsData {
     this.itemCode,
     this.sizePerQuantity,
     this.sold,
+    this.vendorProductId,
   });
 
   ProductDetailsData.fromJson(Map<String, dynamic> json) {
@@ -92,6 +93,7 @@ class ProductDetailsData {
     isAddedInCart = json["isAddedInCart"];
     isAddedInWishlist = json["isAddedInWishlist"];
     isAddedInPortfolio = json["isAddedInPortfolio"];
+    vendorProductId = json["vendor_product_id"];
   }
   String? sId;
   String? name;
@@ -119,6 +121,7 @@ class ProductDetailsData {
   bool? isAddedInCart;
   bool? isAddedInWishlist;
   int? isAddedInPortfolio;
+  String? vendorProductId;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -152,10 +155,10 @@ class ProductDetailsData {
     data["isAddedInCart"] = isAddedInCart;
     data["isAddedInWishlist"] = isAddedInWishlist;
     data["isAddedInPortfolio"] = isAddedInPortfolio;
+    data["vendor_product_id"] = vendorProductId;
     return data;
   }
 }
-
 
 class Reviews {
   Reviews({

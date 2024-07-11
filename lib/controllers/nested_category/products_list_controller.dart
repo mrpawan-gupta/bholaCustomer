@@ -1,4 +1,5 @@
 import "dart:async";
+import "package:customer/common_functions/stream_functions.dart";
 import "package:customer/models/banner_model.dart";
 import "package:customer/models/featured_model.dart";
 import "package:customer/models/product_model.dart";
@@ -55,6 +56,9 @@ class ProductsListController extends GetxController {
     pagingControllerRecently.addPageRequestListener(_fetchPageRecently);
 
     unawaited(getCategoriesAPI());
+
+    subscribeWish(callback: pagingControllerRecently.refresh);
+    subscribeCart(callback: pagingControllerRecently.refresh);
   }
 
   @override

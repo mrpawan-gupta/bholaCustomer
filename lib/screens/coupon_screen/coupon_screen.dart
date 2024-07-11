@@ -123,52 +123,87 @@ class CouponScreen extends GetWidget<CouponController> {
   }
 
   Widget buttons() {
+    final bool condition = !controller.rxHadCoupon.value;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Expanded(
-            child: SizedBox(
-              height: 50,
-              width: double.infinity,
-              child: AppElevatedButton(
-                text: "Remove Coupon",
-                onPressed: () async {
-                  final Coupons value = Coupons();
-                  controller.updateSelectedCoupon(value);
+      child: condition
+          ? Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Expanded(
+                  child: SizedBox(
+                    height: 50,
+                    width: double.infinity,
+                    child: AppElevatedButton(
+                      text: "Apply Coupon",
+                      onPressed: () async {
+                        final String reason = controller.validate();
+                        if (reason.isEmpty) {
+                          final Coupons value =
+                              controller.rxSelectedCoupon.value;
+                          controller.updateSelectedCoupon(value);
 
-                  AppNavService().pop(controller.rxSelectedCoupon.value);
-                },
-              ),
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: SizedBox(
-              height: 50,
-              width: double.infinity,
-              child: AppElevatedButton(
-                text: "Apply Coupon",
-                onPressed: () async {
-                  final String reason = controller.validate();
-                  if (reason.isEmpty) {
-                    final Coupons value = controller.rxSelectedCoupon.value;
-                    controller.updateSelectedCoupon(value);
+                          AppNavService()
+                              .pop(controller.rxSelectedCoupon.value);
+                        } else {
+                          AppSnackbar().snackbarFailure(
+                            title: "Oops",
+                            message: reason,
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            )
+          : Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Expanded(
+                  child: SizedBox(
+                    height: 50,
+                    width: double.infinity,
+                    child: AppElevatedButton(
+                      text: "Remove Coupon",
+                      onPressed: () async {
+                        final Coupons value = Coupons();
+                        controller.updateSelectedCoupon(value);
 
-                    AppNavService().pop(controller.rxSelectedCoupon.value);
-                  } else {
-                    AppSnackbar().snackbarFailure(
-                      title: "Oops",
-                      message: reason,
-                    );
-                  }
-                },
-              ),
+                        AppNavService().pop(controller.rxSelectedCoupon.value);
+                      },
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: SizedBox(
+                    height: 50,
+                    width: double.infinity,
+                    child: AppElevatedButton(
+                      text: "Apply Coupon",
+                      onPressed: () async {
+                        final String reason = controller.validate();
+                        if (reason.isEmpty) {
+                          final Coupons value =
+                              controller.rxSelectedCoupon.value;
+                          controller.updateSelectedCoupon(value);
+
+                          AppNavService()
+                              .pop(controller.rxSelectedCoupon.value);
+                        } else {
+                          AppSnackbar().snackbarFailure(
+                            title: "Oops",
+                            message: reason,
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
     );
   }
 }

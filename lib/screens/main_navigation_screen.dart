@@ -1,3 +1,7 @@
+import "dart:async";
+
+import "package:customer/common_functions/cart_list_and_wish_list_functions.dart";
+import "package:customer/common_functions/stream_functions.dart";
 import "package:customer/common_widgets/common_image_widget.dart";
 import "package:customer/controllers/main_navigation_controller.dart";
 import "package:customer/models/get_user_by_id.dart";
@@ -72,6 +76,8 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
                         destination: AppRoutes().wishListScreen,
                         arguments: <String, dynamic>{},
                       );
+                      
+                      functionWishSinkAdd();
                     },
                     icon: Badge(
                       isLabelVisible: rxWishListCount.value != 0,
@@ -90,6 +96,8 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
                         destination: AppRoutes().cartScreen,
                         arguments: <String, dynamic>{},
                       );
+
+                      functionCartSinkAdd();
                     },
                     icon: Badge(
                       isLabelVisible: rxCartListCount.value != 0,

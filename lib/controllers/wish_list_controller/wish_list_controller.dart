@@ -1,12 +1,12 @@
 import "dart:async";
 
 import "package:customer/common_functions/booking_functions.dart";
+import "package:customer/common_functions/stream_functions.dart";
 import "package:customer/models/featured_model.dart";
 import "package:customer/models/wish_list_model.dart";
 import "package:customer/services/app_api_service.dart";
 import "package:customer/utils/app_logger.dart";
 import "package:customer/utils/app_snackbar.dart";
-import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:infinite_scroll_pagination/infinite_scroll_pagination.dart";
 
@@ -19,11 +19,6 @@ class WishListController extends GetxController {
   final PagingController<int, WishListItems> pagingControllerWishList =
       PagingController<int, WishListItems>(firstPageKey: 1);
 
-  ValueNotifier<PagingState<int, WishListItems>> valueNotifierWishList =
-      ValueNotifier<PagingState<int, WishListItems>>(
-    const PagingState<int, WishListItems>(),
-  );
-
   final Rx<Categories> rxSelectedCategory = Categories().obs;
 
   @override
@@ -32,6 +27,9 @@ class WishListController extends GetxController {
 
     pagingControllerCategories.addPageRequestListener(_fetchPageCategories);
     pagingControllerWishList.addPageRequestListener(_fetchPageWishList);
+
+    subscribeWish(callback: pagingControllerWishList.refresh);
+    subscribeCart(callback: pagingControllerWishList.refresh);
   }
 
   @override
@@ -77,7 +75,6 @@ class WishListController extends GetxController {
       isLastPage
           ? pagingControllerWishList.appendLastPage(newItems)
           : pagingControllerWishList.appendPage(newItems, pageKey + 1);
-      valueNotifierWishList.value = pagingControllerWishList.value;
     } on Exception catch (error, stackTrace) {
       AppLogger().error(
         message: "Exception caught",
@@ -85,7 +82,6 @@ class WishListController extends GetxController {
         stackTrace: stackTrace,
       );
       pagingControllerWishList.error = error;
-      valueNotifierWishList.value = pagingControllerWishList.value;
     } finally {}
     return Future<void>.value();
   }
@@ -169,49 +165,6 @@ class WishListController extends GetxController {
       },
       needLoader: false,
     );
-    return completer.future;
-  }
-
-  Future<bool> addToCartAPICall({required String id}) async {
-    final Completer<bool> completer = Completer<bool>();
-
-    await AppAPIService().functionPost(
-      types: Types.order,
-      endPoint: "cart",
-      body: <String, dynamic>{"productId": id, "quantity": "1"},
-      successCallback: (Map<String, dynamic> json) {
-        AppSnackbar().snackbarSuccess(title: "Yay!", message: json["message"]);
-
-        completer.complete(true);
-      },
-      failureCallback: (Map<String, dynamic> json) {
-        AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
-
-        completer.complete(false);
-      },
-    );
-
-    return completer.future;
-  }
-
-  Future<bool> deleteProductAPICall({required String id}) async {
-    final Completer<bool> completer = Completer<bool>();
-
-    await AppAPIService().functionDelete(
-      types: Types.order,
-      endPoint: "wishlist/$id",
-      successCallback: (Map<String, dynamic> json) {
-        AppSnackbar().snackbarSuccess(title: "Yay!", message: json["message"]);
-
-        completer.complete(true);
-      },
-      failureCallback: (Map<String, dynamic> json) {
-        AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
-
-        completer.complete(false);
-      },
-    );
-
     return completer.future;
   }
 }

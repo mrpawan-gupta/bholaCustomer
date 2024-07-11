@@ -15,7 +15,10 @@ class CouponController extends GetxController {
   final TextEditingController searchController = TextEditingController();
   final RxString rxSearchQuery = "".obs;
 
+  final RxBool rxHadCoupon = false.obs;
+
   final RxString rxTempCouponId = "".obs;
+
   final Rx<Coupons> rxSelectedCoupon = Coupons().obs;
 
   final PagingController<int, Coupons> pagingControllerPromo =
@@ -27,7 +30,9 @@ class CouponController extends GetxController {
 
     if (Get.arguments != null && Get.arguments is Map<String, dynamic>) {
       final Map<String, dynamic> arguments = Get.arguments;
+
       if (arguments.containsKey("id")) {
+        updateHadCoupon(value: true);
         updateTempCouponId(arguments["id"]);
       } else {}
     } else {}
@@ -46,6 +51,11 @@ class CouponController extends GetxController {
 
   void updateSearchQuery(String value) {
     rxSearchQuery(value);
+    return;
+  }
+
+  void updateHadCoupon({required bool value}) {
+    rxHadCoupon(value);
     return;
   }
 

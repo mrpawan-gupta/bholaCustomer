@@ -1,4 +1,5 @@
-import "package:customer/controllers/main_navigation_controller.dart";
+import "package:customer/common_functions/cart_list_and_wish_list_functions.dart";
+import "package:customer/common_functions/stream_functions.dart";
 import "package:customer/controllers/wish_list_controller/wish_list_controller.dart";
 import "package:customer/models/featured_model.dart";
 import "package:customer/models/wish_list_model.dart";
@@ -6,6 +7,7 @@ import "package:customer/screens/wish_list_screen/common_grid_view.dart";
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_routes.dart";
+import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:infinite_scroll_pagination/infinite_scroll_pagination.dart";
@@ -33,6 +35,8 @@ class WishListScreen extends GetWidget<WishListController> {
                         destination: AppRoutes().cartScreen,
                         arguments: <String, dynamic>{},
                       );
+
+                      functionCartSinkAdd();
                     },
                     icon: Badge(
                       isLabelVisible: rxCartListCount.value != 0,
@@ -98,14 +102,19 @@ class WishListScreen extends GetWidget<WishListController> {
 
   Widget chipSelection() {
     return ValueListenableBuilder<PagingState<int, WishListItems>>(
-      valueListenable: controller.valueNotifierWishList,
+      valueListenable: controller.pagingControllerWishList,
       builder: (
         BuildContext context,
         PagingState<int, WishListItems> value,
         Widget? child,
       ) {
-        return (value.itemList?.isEmpty ?? true)
-            ? const SizedBox()
+        final Map<String, dynamic> map1 =
+            controller.rxSelectedCategory.value.toJson();
+        final Map<String, dynamic> map2 = Categories().toJson();
+        final bool isMapEquals = mapEquals(map1, map2);
+        return (isMapEquals && (value.itemList?.isEmpty ?? false)) ||
+                isMapEquals && (value.itemList?.isEmpty ?? true)
+            ? const SizedBox(height: 16)
             : SizedBox(
                 height: 32 + 8,
                 width: double.infinity,
@@ -155,15 +164,7 @@ class WishListScreen extends GetWidget<WishListController> {
                               child: InkWell(
                                 borderRadius: BorderRadius.circular(12.0),
                                 onTap: () async {
-                                  final String itemId = item.sId ?? "";
-                                  final String selectedId =
-                                      controller.rxSelectedCategory.value.sId ??
-                                          "";
-
-                                  controller.updateSelectedCategory(
-                                    itemId == selectedId ? Categories() : item,
-                                  );
-
+                                  controller.updateSelectedCategory(item);
                                   controller.pagingControllerWishList.refresh();
                                 },
                                 child: Padding(
@@ -212,8 +213,15 @@ class WishListScreen extends GetWidget<WishListController> {
 
             controller.pagingControllerWishList.refresh();
           },
-          onPressedToCart: (WishListItems item) async {
-            await controller.addToCartAPICall(id: item.sId ?? "");
+          onTapAddToWish: (WishListItems item, {required bool isLiked}) async {
+            isLiked
+                ? await removeFromWishListAPICall(productId: item.sId ?? "")
+                : await addToWishListAPICall(productId: item.sId ?? "");
+
+            controller.pagingControllerWishList.refresh();
+          },
+          onTapAddToCart: (WishListItems item) async {
+            await addToCartAPICall(productId: item.sId ?? "");
 
             await AppNavService().pushNamed(
               destination: AppRoutes().cartScreen,
@@ -221,14 +229,6 @@ class WishListScreen extends GetWidget<WishListController> {
             );
 
             controller.pagingControllerWishList.refresh();
-          },
-          onPressedDelete: (WishListItems item) async {
-            bool value = false;
-            value = await controller.deleteProductAPICall(id: item.sId ?? "");
-
-            if (value) {
-              controller.pagingControllerWishList.refresh();
-            } else {}
           },
           type: "wish list",
         ),

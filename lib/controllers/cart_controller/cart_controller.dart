@@ -1,5 +1,6 @@
 import "dart:async";
 
+import "package:customer/common_functions/stream_functions.dart";
 import "package:customer/models/get_addresses_model.dart";
 import "package:customer/models/get_all_carts_model.dart";
 import "package:customer/models/get_user_by_id.dart";
@@ -22,6 +23,17 @@ class CartController extends GetxController {
     super.onInit();
 
     initReinit();
+
+    subscribeWish(
+      callback: () {
+        unawaited(getAllCartsItemsAPICall(needLoader: true));
+      },
+    );
+    subscribeCart(
+      callback: () {
+        unawaited(getAllCartsItemsAPICall(needLoader: true));
+      },
+    );
   }
 
   void initReinit() {
@@ -88,8 +100,8 @@ class CartController extends GetxController {
         model = GetAddresses.fromJson(json);
 
         final List<Address> list = (model.data?.address ?? <Address>[]).where(
-          (Address element) {
-            return (element.isPrimary ?? false) == true;
+          (Address e) {
+            return (e.isPrimary ?? false) == true;
           },
         ).toList();
 
@@ -134,51 +146,6 @@ class CartController extends GetxController {
       needLoader: needLoader,
     );
     return Future<void>.value();
-  }
-
-  Future<bool> updateCartAPICall({required String id, required num qty}) async {
-    final Completer<bool> completer = Completer<bool>();
-
-    await AppAPIService().functionPatch(
-      types: Types.order,
-      endPoint: "cart/${rxCart.value.sId ?? ""}/item/$id",
-      body: <String, dynamic>{"quantity": qty},
-      successCallback: (Map<String, dynamic> json) {
-        AppLogger().info(message: json["message"]);
-
-        completer.complete(true);
-      },
-      failureCallback: (Map<String, dynamic> json) {
-        AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
-
-        completer.complete(false);
-      },
-      needLoader: false,
-    );
-
-    return completer.future;
-  }
-
-  Future<bool> removeItemFromCartAPICall({required String id}) async {
-    final Completer<bool> completer = Completer<bool>();
-
-    await AppAPIService().functionDelete(
-      types: Types.order,
-      endPoint: "cart/${rxCart.value.sId ?? ""}/item/$id",
-      successCallback: (Map<String, dynamic> json) {
-        AppSnackbar().snackbarSuccess(title: "Yay!", message: json["message"]);
-
-        completer.complete(true);
-      },
-      failureCallback: (Map<String, dynamic> json) {
-        AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
-
-        completer.complete(false);
-      },
-      needLoader: false,
-    );
-
-    return completer.future;
   }
 
   Future<bool> applyCouponAPICall({required String code}) async {

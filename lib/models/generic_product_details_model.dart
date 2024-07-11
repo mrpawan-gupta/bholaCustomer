@@ -61,6 +61,9 @@ class GenericProductData {
     this.isInPortfolio,
     this.isInWishList,
     this.cartQty,
+    this.cartId,
+    this.cartItemId,
+    this.vendorProductId,
   });
 
   GenericProductData.fromJson(Map<String, dynamic> json) {
@@ -97,9 +100,12 @@ class GenericProductData {
     wishlistCount = json["wishlistCount"];
     salePercent = json["salePercent"];
     saleAmount = json["saleAmount"];
-    isInPortfolio = json["is_in_portfolio"];
-    isInWishList = json["is_in_wish_list"];
+    isInPortfolio = json["isAddedInPortfolio"];
+    isInWishList = json["isAddedInWishlist"];
     cartQty = json["cart_qty"];
+    cartId = json["cart_id"];
+    cartItemId = json["cart_item_id"];
+    vendorProductId = json["vendor_product_id"];
   }
 
   String? sId;
@@ -128,6 +134,9 @@ class GenericProductData {
   bool? isInPortfolio;
   bool? isInWishList;
   num? cartQty;
+  String? cartId;
+  String? cartItemId;
+  String? vendorProductId;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -158,9 +167,12 @@ class GenericProductData {
     data["wishlistCount"] = wishlistCount;
     data["salePercent"] = salePercent;
     data["saleAmount"] = saleAmount;
-    data["is_in_portfolio"] = isInPortfolio;
-    data["is_in_wish_list"] = isInWishList;
+    data["isAddedInPortfolio"] = isInPortfolio;
+    data["isAddedInWishlist"] = isInWishList;
     data["cart_qty"] = cartQty;
+    data["cart_id"] = cartId;
+    data["cart_item_id"] = cartItemId;
+    data["vendor_product_id"] = vendorProductId;
     return data;
   }
 }

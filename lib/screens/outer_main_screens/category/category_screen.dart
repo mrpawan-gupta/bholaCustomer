@@ -37,8 +37,11 @@ class CategoryScreen extends GetView<CategoryController> {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: CommonCategoryTitleBar(
               title: "🚜 Rental Categories",
-              onTapViewAll: () {},
-              isViewAllNeeded: false,
+              onTapViewAll: () async {
+                await tabControllerFunction(2);
+              },
+              isViewAllNeeded: true,
+              itemType: Types.services,
             ),
           ),
           Divider(color: AppColors().appGrey, indent: 16, endIndent: 16),
@@ -78,8 +81,14 @@ class CategoryScreen extends GetView<CategoryController> {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: CommonCategoryTitleBar(
               title: "🌾 Product Categories",
-              onTapViewAll: () {},
-              isViewAllNeeded: false,
+              onTapViewAll: () async {
+                await AppNavService().pushNamed(
+                  destination: AppRoutes().productListingScreen,
+                  arguments: <String, dynamic>{},
+                );
+              },
+              isViewAllNeeded: true,
+              itemType: Types.categories,
             ),
           ),
           Divider(color: AppColors().appGrey, indent: 16, endIndent: 16),

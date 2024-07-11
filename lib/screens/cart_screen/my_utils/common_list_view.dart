@@ -117,9 +117,14 @@ class CommonListView extends StatelessWidget {
                           child: InkWell(
                             borderRadius: BorderRadius.circular(12),
                             onTap: () async {
-                              if ((item.quantity ?? 0) > 0) {
+                              if ((item.quantity ?? 0) > 1) {
                                 decQty(item);
-                              } else {}
+                              } else {
+                                await openDeleteCartItemWidget(
+                                  item: item,
+                                  onPressedDelete: onPressedDelete,
+                                );
+                              }
                             },
                             child: ColoredBox(
                               color: AppColors().appRedColor.withOpacity(0.16),
