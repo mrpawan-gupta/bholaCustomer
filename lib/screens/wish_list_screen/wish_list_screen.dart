@@ -5,6 +5,7 @@ import "package:customer/models/featured_model.dart";
 import "package:customer/models/wish_list_model.dart";
 import "package:customer/screens/wish_list_screen/common_grid_view.dart";
 import "package:customer/services/app_nav_service.dart";
+import "package:customer/utils/app_assets_images.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_routes.dart";
 import "package:flutter/foundation.dart";
@@ -43,9 +44,14 @@ class WishListScreen extends GetWidget<WishListController> {
                       label: Text("${rxCartListCount.value}"),
                       textColor: AppColors().appWhiteColor,
                       backgroundColor: AppColors().appPrimaryColor,
-                      child: Icon(
-                        Icons.shopping_cart,
-                        color: AppColors().appPrimaryColor,
+                      child: Image.asset(
+                        AppAssetsImages().appBarCart,
+                        height: 32,
+                        width: 32,
+                        fit: BoxFit.cover,
+                        color: rxCartListCount.value != 0
+                            ? AppColors().appPrimaryColor
+                            : AppColors().appGreyColor,
                       ),
                     ),
                   ),

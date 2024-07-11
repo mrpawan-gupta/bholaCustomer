@@ -34,24 +34,60 @@ class HelpScreen extends GetView<HelpController> {
                 backgroundColor: AppColors().appWhiteColor,
                 onRefresh: () async {
                   controller.pagingControllerServices.refresh();
-                  controller.pagingControllerNewOrder.refresh();
+                  controller.pagingControllerCategories.refresh();
+                  controller.pagingControllerServicesLive.refresh();
+                  controller.pagingControllerCategoriesLive.refresh();
                 },
-                child: SingleChildScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minHeight: constraints.maxHeight,
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                child: Obx(
+                  () {
+                    return Column(
                       children: <Widget>[
-                        chipSelection(),
-                        const SizedBox(height: 16 - 4),
-                        cardWidget(),
+                        const SizedBox(height: 16),
+                        TabBar(
+                          controller: controller.tabController,
+                          padding: EdgeInsets.zero,
+                          labelPadding:
+                              const EdgeInsets.symmetric(horizontal: 8),
+                          indicatorColor: Colors.transparent,
+                          dividerColor: Colors.transparent,
+                          tabs: <Widget>[
+                            commonTab(
+                              index: 0,
+                              isSelected: controller.rxCurrentIndex.value == 0,
+                              item: controller.items[0],
+                            ),
+                            commonTab(
+                              index: 1,
+                              isSelected: controller.rxCurrentIndex.value == 1,
+                              item: controller.items[1],
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        Expanded(
+                          child: TabBarView(
+                            controller: controller.tabController,
+                            children: <Widget>[
+                              Column(
+                                children: <Widget>[
+                                  chipSelectionServices(),
+                                  const SizedBox(height: 16),
+                                  Expanded(child: cardWidgetServices()),
+                                ],
+                              ),
+                              Column(
+                                children: <Widget>[
+                                  chipSelectionCategories(),
+                                  const SizedBox(height: 16),
+                                  Expanded(child: cardWidgetCategories()),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
-                    ),
-                  ),
+                    );
+                  },
                 ),
               );
             },
@@ -61,16 +97,89 @@ class HelpScreen extends GetView<HelpController> {
     );
   }
 
-  Widget chipSelection() {
+  Widget commonTab({
+    required int index,
+    required bool isSelected,
+    required DashboardClass item,
+  }) {
+    return Padding(
+      padding: EdgeInsets.only(
+        left: index == 0 ? 8 : 0,
+        right: index == 1 ? 8 : 0,
+      ),
+      child: SizedBox(
+        height: 100,
+        width: double.infinity,
+        child: Card(
+          elevation: 4,
+          margin: EdgeInsets.zero,
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          surfaceTintColor: AppColors().appWhiteColor,
+          child: InkWell(
+            onTap: () async {
+              controller.tabController.animateTo(index);
+            },
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomLeft,
+                  end: Alignment.topRight,
+                  colors: isSelected
+                      ? <Color>[
+                          AppColors().appPrimaryColor,
+                          AppColors().appPrimaryColor.withOpacity(0.16),
+                        ]
+                      : <Color>[
+                          Colors.white,
+                          Colors.white.withOpacity(0.16),
+                        ],
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Icon(
+                      item.iconData,
+                      size: 32,
+                      color: isSelected
+                          ? AppColors().appWhiteColor
+                          : AppColors().appBlackColor,
+                    ),
+                    const Spacer(),
+                    Text(
+                      item.name,
+                      style: TextStyle(
+                        color: isSelected
+                            ? AppColors().appWhiteColor
+                            : AppColors().appBlackColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget chipSelectionServices() {
     return ValueListenableBuilder<PagingState<int, Bookings>>(
-      valueListenable: controller.pagingControllerNewOrder,
+      valueListenable: controller.pagingControllerServicesLive,
       builder: (
         BuildContext context,
         PagingState<int, Bookings> value,
         Widget? child,
       ) {
         final Map<String, dynamic> map1 =
-            controller.rxSelectedCategory.value.toJson();
+            controller.rxSelectedServices.value.toJson();
         final Map<String, dynamic> map2 = Categories().toJson();
         final bool isMapEquals = mapEquals(map1, map2);
         return (isMapEquals && (value.itemList?.isEmpty ?? false)) ||
@@ -108,6 +217,105 @@ class HelpScreen extends GetView<HelpController> {
                             child: Card(
                               margin: EdgeInsets.zero,
                               elevation: 4,
+                              color: controller.rxSelectedServices.value == item
+                                  ? AppColors().appPrimaryColor
+                                  : AppColors().appWhiteColor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(24.0),
+                                side: BorderSide(
+                                  color: AppColors().appPrimaryColor,
+                                ),
+                              ),
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              surfaceTintColor:
+                                  controller.rxSelectedServices.value == item
+                                      ? AppColors().appPrimaryColor
+                                      : AppColors().appWhiteColor,
+                              child: InkWell(
+                                borderRadius: BorderRadius.circular(12.0),
+                                onTap: () async {
+                                  controller.updateSelectedServices(item);
+                                  controller.pagingControllerServicesLive
+                                      .refresh();
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Center(
+                                    child: Text(
+                                      item.name ?? "",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: controller
+                                                    .rxSelectedServices.value ==
+                                                item
+                                            ? AppColors().appWhiteColor
+                                            : AppColors().appPrimaryColor,
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
+                ),
+              );
+      },
+    );
+  }
+
+  Widget chipSelectionCategories() {
+    return ValueListenableBuilder<PagingState<int, Bookings>>(
+      valueListenable: controller.pagingControllerCategoriesLive,
+      builder: (
+        BuildContext context,
+        PagingState<int, Bookings> value,
+        Widget? child,
+      ) {
+        final Map<String, dynamic> map1 =
+            controller.rxSelectedCategory.value.toJson();
+        final Map<String, dynamic> map2 = Categories().toJson();
+        final bool isMapEquals = mapEquals(map1, map2);
+        return (isMapEquals && (value.itemList?.isEmpty ?? false)) ||
+                isMapEquals && (value.itemList?.isEmpty ?? true)
+            ? const SizedBox(height: 16)
+            : SizedBox(
+                height: 32 + 8,
+                width: double.infinity,
+                child: PagedListView<int, Categories>(
+                  shrinkWrap: true,
+                  pagingController: controller.pagingControllerCategories,
+                  scrollDirection: Axis.horizontal,
+                  physics: const ScrollPhysics(),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  keyboardDismissBehavior:
+                      ScrollViewKeyboardDismissBehavior.onDrag,
+                  builderDelegate: PagedChildBuilderDelegate<Categories>(
+                    noItemsFoundIndicatorBuilder: (BuildContext context) {
+                      return const SizedBox();
+                    },
+                    itemBuilder:
+                        (BuildContext context, Categories item, int index) {
+                      final List<Categories> itemList =
+                          controller.pagingControllerCategories.itemList ??
+                              <Categories>[];
+                      final int length = itemList.length;
+                      final bool isLast = index == length - 1;
+                      return Obx(
+                        () {
+                          return Padding(
+                            padding: EdgeInsets.only(
+                              right: isLast ? 0.0 : 16.0,
+                              bottom: 4,
+                            ),
+                            child: Card(
+                              margin: EdgeInsets.zero,
+                              elevation: 4,
                               color: controller.rxSelectedCategory.value == item
                                   ? AppColors().appPrimaryColor
                                   : AppColors().appWhiteColor,
@@ -126,7 +334,8 @@ class HelpScreen extends GetView<HelpController> {
                                 borderRadius: BorderRadius.circular(12.0),
                                 onTap: () async {
                                   controller.updateSelectedCategory(item);
-                                  controller.pagingControllerNewOrder.refresh();
+                                  controller.pagingControllerCategoriesLive
+                                      .refresh();
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
@@ -159,12 +368,12 @@ class HelpScreen extends GetView<HelpController> {
     );
   }
 
-  Widget cardWidget() {
+  Widget cardWidgetServices() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: PagedListView<int, Bookings>(
         shrinkWrap: true,
-        pagingController: controller.pagingControllerNewOrder,
+        pagingController: controller.pagingControllerServicesLive,
         physics: const ScrollPhysics(),
         padding: EdgeInsets.zero,
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
@@ -172,9 +381,10 @@ class HelpScreen extends GetView<HelpController> {
           noItemsFoundIndicatorBuilder: (BuildContext context) {
             // return AppNoItemFoundWidget(
             //   title: "No items found",
-            //   message: "The order history list is currently empty.",
+            //   message: "The order live list is currently empty.",
             //   onTryAgain: controller.pagingControllerNewOrder.refresh,
             // );
+
             return SizedBox(
               height: Get.height / 1.5,
               width: Get.width,
@@ -209,7 +419,7 @@ class HelpScreen extends GetView<HelpController> {
                         onPressed: () async {
                           await tabControllerFunction(2);
 
-                          controller.pagingControllerNewOrder.refresh();
+                          controller.pagingControllerServicesLive.refresh();
                         },
                       ),
                     ),
@@ -221,7 +431,8 @@ class HelpScreen extends GetView<HelpController> {
           },
           itemBuilder: (BuildContext context, Bookings item, int index) {
             final List<Bookings> itemList =
-                controller.pagingControllerNewOrder.itemList ?? <Bookings>[];
+                controller.pagingControllerServicesLive.itemList ??
+                    <Bookings>[];
             final int length = itemList.length;
             final bool isLast = index == length - 1;
             return Padding(
@@ -245,7 +456,322 @@ class HelpScreen extends GetView<HelpController> {
                       arguments: <String, dynamic>{"id": item.sId ?? ""},
                     );
 
-                    controller.pagingControllerNewOrder.refresh();
+                    controller.pagingControllerServicesLive.refresh();
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Container(
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              height: 56,
+                              width: 56,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              child: CommonImageWidget(
+                                imageUrl: item.vehicleCategory?.photo ?? "",
+                                fit: BoxFit.contain,
+                                imageType: ImageType.image,
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    item.vehicleCategory?.name ?? "",
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    item.sId ?? "",
+                                    style: const TextStyle(fontSize: 10),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        const Divider(),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  const Text(
+                                    "Delivery Address",
+                                    style: TextStyle(),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    "${item.deliveryAddress?.street ?? ""} ${item.deliveryAddress?.city ?? ""} ${item.deliveryAddress?.country ?? ""} ${item.deliveryAddress?.pinCode ?? ""}",
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    maxLines: 5,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        const Divider(),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  const Text(
+                                    "Date",
+                                    style: TextStyle(),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    formatDate(date: item.scheduleDate ?? ""),
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    maxLines: 5,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  const Text(
+                                    "Start Time",
+                                    style: TextStyle(),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    formatTime(
+                                      time: item.approxStartTime ?? "",
+                                    ),
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    maxLines: 5,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  const Text(
+                                    "End Time",
+                                    style: TextStyle(),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    formatTime(
+                                      time: item.approxEndTime ?? "",
+                                    ),
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    maxLines: 5,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        const Divider(),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Expanded(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  const Text(
+                                    "Total amount (Price per Acre * Farm Area)",
+                                    style: TextStyle(),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    "₹${item.amount ?? 0}",
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    maxLines: 5,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        const Divider(),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Expanded(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  const Text(
+                                    "Booking Status",
+                                    style: TextStyle(),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    getBookingStatusString(
+                                      status: item.status ?? "",
+                                    ),
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    maxLines: 5,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget cardWidgetCategories() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: PagedListView<int, Bookings>(
+        shrinkWrap: true,
+        pagingController: controller.pagingControllerCategoriesLive,
+        physics: const ScrollPhysics(),
+        padding: EdgeInsets.zero,
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        builderDelegate: PagedChildBuilderDelegate<Bookings>(
+          noItemsFoundIndicatorBuilder: (BuildContext context) {
+            // return AppNoItemFoundWidget(
+            //   title: "No items found",
+            //   message: "The order live list is currently empty.",
+            //   onTryAgain: controller.pagingControllerNewOrder.refresh,
+            // );
+
+            return SizedBox(
+              height: Get.height / 1.5,
+              width: Get.width,
+              child: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    const SizedBox(height: 16),
+                    Icon(
+                      Icons.fire_truck,
+                      color: AppColors().appPrimaryColor,
+                      size: 48,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      "Your live order list is empty!",
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      "Explore more & shortlist some rental services!",
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      height: 50,
+                      width: 100,
+                      child: AppTextButton(
+                        text: "Start Booking",
+                        onPressed: () async {
+                          await tabControllerFunction(2);
+
+                          controller.pagingControllerCategoriesLive.refresh();
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                  ],
+                ),
+              ),
+            );
+          },
+          itemBuilder: (BuildContext context, Bookings item, int index) {
+            final List<Bookings> itemList =
+                controller.pagingControllerCategoriesLive.itemList ??
+                    <Bookings>[];
+            final int length = itemList.length;
+            final bool isLast = index == length - 1;
+            return Padding(
+              padding: EdgeInsets.only(bottom: isLast ? 32.0 : 16.0),
+              child: Card(
+                margin: EdgeInsets.zero,
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                  side: BorderSide(
+                    color: getBorderColor(status: item.status ?? ""),
+                  ),
+                ),
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                surfaceTintColor: AppColors().appWhiteColor,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(12.0),
+                  onTap: () async {
+                    await AppNavService().pushNamed(
+                      destination: AppRoutes().bookingDetailsScreen,
+                      arguments: <String, dynamic>{"id": item.sId ?? ""},
+                    );
+
+                    controller.pagingControllerCategoriesLive.refresh();
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),

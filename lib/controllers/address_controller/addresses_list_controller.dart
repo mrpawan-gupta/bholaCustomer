@@ -1,3 +1,5 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import "dart:async";
 
 import "package:customer/models/get_addresses_model.dart";
@@ -32,23 +34,10 @@ class AddressesListController extends GetxController {
         GetAddresses model = GetAddresses();
         model = GetAddresses.fromJson(json);
 
-        final List<Address> list = (model.data?.address ?? <Address>[]).where(
-          (Address e) {
-            return (e.isPrimary ?? false) == true;
-          },
-        ).toList();
-
         rxAddressList
           ..clear()
-          ..addAll(model.data?.address ?? <Address>[]);
-
-        if (list.isNotEmpty) {
-          rxAddressList
-            ..removeWhere((Address e) => (e.isPrimary ?? false) == true)
-            ..insert(0, list.first);
-        } else {}
-
-        rxAddressList.refresh();
+          ..addAll(model.data?.address ?? <Address>[])
+          ..refresh();
       },
       failureCallback: (Map<String, dynamic> json) {
         AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
@@ -95,6 +84,39 @@ class AddressesListController extends GetxController {
         "latitude": result.latLng?.latitude ?? "",
         "longitude": result.latLng?.longitude ?? "",
       },
+      successCallback: (Map<String, dynamic> json) {
+        AppLogger().info(message: json["message"]);
+
+        unawaited(getAddressesAPI());
+      },
+      failureCallback: (Map<String, dynamic> json) {
+        AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
+      },
+    );
+    return Future<void>.value();
+  }
+
+  Future<void> updateAddressesAPI({required String id}) async {
+    await AppAPIService().functionPatch(
+      types: Types.oauth,
+      endPoint: "address/$id",
+      body: <String, dynamic>{"isPrimary": true},
+      successCallback: (Map<String, dynamic> json) {
+        AppLogger().info(message: json["message"]);
+
+        unawaited(getAddressesAPI());
+      },
+      failureCallback: (Map<String, dynamic> json) {
+        AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
+      },
+    );
+    return Future<void>.value();
+  }
+
+  Future<void> deleteAddressesAPI({required String id}) async {
+    await AppAPIService().functionDelete(
+      types: Types.oauth,
+      endPoint: "address/$id",
       successCallback: (Map<String, dynamic> json) {
         AppLogger().info(message: json["message"]);
 

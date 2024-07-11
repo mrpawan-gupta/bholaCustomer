@@ -81,7 +81,9 @@ class AddressesListScreen extends GetView<AddressesListController> {
 
   Widget listAdapter(Address item) {
     return InkWell(
-      onTap: () {},
+      onTap: () async {
+        await controller.updateAddressesAPI(id: item.sId ?? "");
+      },
       child: Row(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,7 +94,9 @@ class AddressesListScreen extends GetView<AddressesListController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               IconButton(
-                onPressed: () {},
+                onPressed: () async {
+                  await controller.updateAddressesAPI(id: item.sId ?? "");
+                },
                 icon: Icon(
                   (item.isPrimary ?? false)
                       ? Icons.home_outlined
@@ -147,7 +151,9 @@ class AddressesListScreen extends GetView<AddressesListController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               IconButton(
-                onPressed: () {},
+                onPressed: () async {
+                  await controller.deleteAddressesAPI(id: item.sId ?? "");
+                },
                 icon:
                     Icon(Icons.delete_outline, color: AppColors().appRedColor),
               ),

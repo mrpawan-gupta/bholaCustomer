@@ -9,6 +9,7 @@ import "package:customer/models/coupon_list_model.dart";
 import "package:customer/models/get_all_carts_model.dart";
 import "package:customer/screens/cart_screen/my_utils/common_list_view.dart";
 import "package:customer/services/app_nav_service.dart";
+import "package:customer/utils/app_assets_images.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/localization/app_language_keys.dart";
@@ -46,9 +47,14 @@ class CartScreen extends GetWidget<CartController> {
                       label: Text("${rxWishListCount.value}"),
                       textColor: AppColors().appWhiteColor,
                       backgroundColor: AppColors().appPrimaryColor,
-                      child: Icon(
-                        Icons.favorite,
-                        color: AppColors().appRedColor,
+                      child: Image.asset(
+                        AppAssetsImages().appBarWish,
+                        height: 32,
+                        width: 32,
+                        fit: BoxFit.cover,
+                        color: rxWishListCount.value != 0
+                            ? AppColors().appPrimaryColor
+                            : AppColors().appGreyColor,
                       ),
                     ),
                   ),
@@ -219,47 +225,114 @@ class CartScreen extends GetWidget<CartController> {
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 8),
-                Card(
-                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                  elevation: 0,
-                  margin: EdgeInsets.zero,
-                  color: AppColors().appGreyColor.withOpacity(0.16),
-                  surfaceTintColor: AppColors().appGreyColor.withOpacity(0.16),
-                  child: ListTile(
-                    dense: true,
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-                    title: Text(
-                      controller.getFullName(),
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    subtitle: Text(
-                      controller.getAddressOrAddressPlaceholder(),
-                      style: const TextStyle(),
-                      maxLines: 5,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    trailing: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: InkWell(
-                        borderRadius: BorderRadius.circular(12),
-                        onTap: () async {},
-                        child: ColoredBox(
-                          color: AppColors().appPrimaryColor.withOpacity(0.16),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Icon(
-                              Icons.edit_outlined,
-                              color: AppColors().appPrimaryColor,
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Card(
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      elevation: 0,
+                      margin: EdgeInsets.zero,
+                      color: AppColors().appGreyColor.withOpacity(0.16),
+                      surfaceTintColor:
+                          AppColors().appGreyColor.withOpacity(0.16),
+                      child: ListTile(
+                        dense: true,
+                        title: Text(
+                          controller.getFullName(),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        subtitle: Text(
+                          controller.getAddressOrAddressPlaceholder(),
+                          style: const TextStyle(),
+                          maxLines: 5,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        leading: Icon(
+                          Icons.home_outlined,
+                          color: AppColors().appPrimaryColor,
+                        ),
+                        trailing: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(12),
+                            onTap: () async {
+                              await AppNavService().pushNamed(
+                                destination: AppRoutes().addressesListScreen,
+                                arguments: <String, dynamic>{},
+                              );
+
+                              unawaited(controller.getAddressesAPI());
+                            },
+                            child: ColoredBox(
+                              color:
+                                  AppColors().appPrimaryColor.withOpacity(0.16),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Icon(
+                                  Icons.edit_outlined,
+                                  color: AppColors().appPrimaryColor,
+                                ),
+                              ),
                             ),
                           ),
                         ),
+                        onTap: () async {
+                          await AppNavService().pushNamed(
+                            destination: AppRoutes().addressesListScreen,
+                            arguments: <String, dynamic>{},
+                          );
+
+                          unawaited(controller.getAddressesAPI());
+                        },
                       ),
                     ),
-                    onTap: () {},
-                  ),
+                  ],
                 ),
+                const SizedBox(height: 16),
+                // const SizedBox(height: 16),
+                // Column(
+                //   mainAxisSize: MainAxisSize.min,
+                //   crossAxisAlignment: CrossAxisAlignment.start,
+                //   children: <Widget>[
+                //     Card(
+                //       clipBehavior: Clip.antiAliasWithSaveLayer,
+                //       elevation: 4,
+                //       margin: EdgeInsets.zero,
+                //       color: AppColors().appWhiteColor,
+                //       surfaceTintColor: AppColors().appWhiteColor,
+                //       child: ListTile(
+                //         dense: true,
+                //         title: Text(
+                //           "FREE Delivery",
+                //           style: TextStyle(
+                //             color: AppColors().appPrimaryColor,
+                //             fontWeight: FontWeight.bold,
+                //           ),
+                //           maxLines: 2,
+                //           overflow: TextOverflow.ellipsis,
+                //         ),
+                //         subtitle: const Text(
+                //           "Delivery By 6th April 2024",
+                //           style: TextStyle(),
+                //           maxLines: 2,
+                //           overflow: TextOverflow.ellipsis,
+                //         ),
+                //         leading: Icon(
+                //           Icons.emoji_transportation,
+                //           color: AppColors().appPrimaryColor,
+                //         ),
+                //         trailing: Icon(
+                //           Icons.calendar_month,
+                //           color: AppColors().appPrimaryColor,
+                //         ),
+                //         onTap: () {},
+                //       ),
+                //     ),
+                //   ],
+                // ),
               ],
             ),
           );

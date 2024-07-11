@@ -16,6 +16,7 @@ import "package:customer/screens/nested_category/view_generic_product_details/co
 import "package:customer/screens/nested_category/view_generic_product_details/common_horizontal_list_view_products.dart";
 import "package:customer/screens/review_rating_screen/my_utils/common_list_view.dart";
 import "package:customer/services/app_nav_service.dart";
+import "package:customer/utils/app_assets_images.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_routes.dart";
 import "package:flutter/foundation.dart";
@@ -58,9 +59,14 @@ class ViewGenericProductDetailsScreen
                       label: Text("${rxWishListCount.value}"),
                       textColor: AppColors().appWhiteColor,
                       backgroundColor: AppColors().appPrimaryColor,
-                      child: Icon(
-                        Icons.favorite,
-                        color: AppColors().appRedColor,
+                      child: Image.asset(
+                        AppAssetsImages().appBarWish,
+                        height: 32,
+                        width: 32,
+                        fit: BoxFit.cover,
+                        color: rxWishListCount.value != 0
+                            ? AppColors().appPrimaryColor
+                            : AppColors().appGreyColor,
                       ),
                     ),
                   ),
@@ -78,9 +84,14 @@ class ViewGenericProductDetailsScreen
                       label: Text("${rxCartListCount.value}"),
                       textColor: AppColors().appWhiteColor,
                       backgroundColor: AppColors().appPrimaryColor,
-                      child: Icon(
-                        Icons.shopping_cart,
-                        color: AppColors().appPrimaryColor,
+                      child: Image.asset(
+                        AppAssetsImages().appBarCart,
+                        height: 32,
+                        width: 32,
+                        fit: BoxFit.cover,
+                        color: rxCartListCount.value != 0
+                            ? AppColors().appPrimaryColor
+                            : AppColors().appGreyColor,
                       ),
                     ),
                   ),
@@ -380,15 +391,44 @@ class ViewGenericProductDetailsScreen
                           Icons.home_outlined,
                           color: AppColors().appPrimaryColor,
                         ),
-                        trailing: Icon(
-                          Icons.edit,
-                          color: AppColors().appPrimaryColor,
+                        trailing: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(12),
+                            onTap: () async {
+                              await AppNavService().pushNamed(
+                                destination: AppRoutes().addressesListScreen,
+                                arguments: <String, dynamic>{},
+                              );
+
+                              unawaited(controller.getAddressesAPI());
+                            },
+                            child: ColoredBox(
+                              color:
+                                  AppColors().appPrimaryColor.withOpacity(0.16),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Icon(
+                                  Icons.edit_outlined,
+                                  color: AppColors().appPrimaryColor,
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
-                        onTap: () {},
+                        onTap: () async {
+                          await AppNavService().pushNamed(
+                            destination: AppRoutes().addressesListScreen,
+                            arguments: <String, dynamic>{},
+                          );
+
+                          unawaited(controller.getAddressesAPI());
+                        },
                       ),
                     ),
                   ],
                 ),
+                const SizedBox(height: 16),
                 // const SizedBox(height: 16),
                 // Column(
                 //   mainAxisSize: MainAxisSize.min,

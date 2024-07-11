@@ -256,22 +256,17 @@ class CommonListView extends StatelessWidget {
       extentRatio: 0.24,
       motion: const ScrollMotion(),
       children: <Widget>[
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: SlidableAction(
-              borderRadius: BorderRadius.circular(12.0),
-              onPressed: (BuildContext context) async {
-                await openDeleteCartItemWidget(
-                  item: item,
-                  onPressedDelete: onPressedDelete,
-                );
-              },
-              backgroundColor: AppColors().appRedColor,
-              foregroundColor: AppColors().appWhiteColor,
-              icon: Icons.delete_outline,
-            ),
-          ),
+        SlidableAction(
+          borderRadius: BorderRadius.circular(12.0),
+          onPressed: (BuildContext context) async {
+            await openDeleteCartItemWidget(
+              item: item,
+              onPressedDelete: onPressedDelete,
+            );
+          },
+          backgroundColor: AppColors().appRedColor,
+          foregroundColor: AppColors().appWhiteColor,
+          icon: Icons.delete_outline,
         ),
       ],
     );

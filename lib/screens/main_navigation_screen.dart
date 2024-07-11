@@ -76,7 +76,7 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
                         destination: AppRoutes().wishListScreen,
                         arguments: <String, dynamic>{},
                       );
-                      
+
                       functionWishSinkAdd();
                     },
                     icon: Badge(
@@ -84,9 +84,14 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
                       label: Text("${rxWishListCount.value}"),
                       textColor: AppColors().appWhiteColor,
                       backgroundColor: AppColors().appPrimaryColor,
-                      child: Icon(
-                        Icons.favorite,
-                        color: AppColors().appRedColor,
+                      child: Image.asset(
+                        AppAssetsImages().appBarWish,
+                        height: 32,
+                        width: 32,
+                        fit: BoxFit.cover,
+                        color: rxWishListCount.value != 0
+                            ? AppColors().appPrimaryColor
+                            : AppColors().appGreyColor,
                       ),
                     ),
                   ),
@@ -104,9 +109,14 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
                       label: Text("${rxCartListCount.value}"),
                       textColor: AppColors().appWhiteColor,
                       backgroundColor: AppColors().appPrimaryColor,
-                      child: Icon(
-                        Icons.shopping_cart,
-                        color: AppColors().appPrimaryColor,
+                      child: Image.asset(
+                        AppAssetsImages().appBarCart,
+                        height: 32,
+                        width: 32,
+                        fit: BoxFit.cover,
+                        color: rxCartListCount.value != 0
+                            ? AppColors().appPrimaryColor
+                            : AppColors().appGreyColor,
                       ),
                     ),
                   ),
@@ -155,7 +165,7 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
                 persistentTabConfig(
                   itemIndex: 3,
                   screen: const HelpScreen(),
-                  asset: AppAssetsImages().bottomNavHelp,
+                  asset: AppAssetsImages().bottomNavLive,
                   title: "Live",
                 ),
                 persistentTabConfig(

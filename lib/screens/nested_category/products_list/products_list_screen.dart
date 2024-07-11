@@ -13,6 +13,7 @@ import "package:customer/screens/nested_category/products_list/my_utils/filter_c
 import "package:customer/screens/nested_category/products_list/my_utils/filter_range_widget.dart";
 import "package:customer/screens/nested_category/products_list/my_utils/filter_sort_by_widget.dart";
 import "package:customer/services/app_nav_service.dart";
+import "package:customer/utils/app_assets_images.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_debouncer.dart";
 import "package:customer/utils/app_routes.dart";
@@ -51,9 +52,14 @@ class ProductsListScreen extends GetView<ProductsListController> {
                       label: Text("${rxWishListCount.value}"),
                       textColor: AppColors().appWhiteColor,
                       backgroundColor: AppColors().appPrimaryColor,
-                      child: Icon(
-                        Icons.favorite,
-                        color: AppColors().appRedColor,
+                      child: Image.asset(
+                        AppAssetsImages().appBarWish,
+                        height: 32,
+                        width: 32,
+                        fit: BoxFit.cover,
+                        color: rxWishListCount.value != 0
+                            ? AppColors().appPrimaryColor
+                            : AppColors().appGreyColor,
                       ),
                     ),
                   ),
@@ -71,9 +77,14 @@ class ProductsListScreen extends GetView<ProductsListController> {
                       label: Text("${rxCartListCount.value}"),
                       textColor: AppColors().appWhiteColor,
                       backgroundColor: AppColors().appPrimaryColor,
-                      child: Icon(
-                        Icons.shopping_cart,
-                        color: AppColors().appPrimaryColor,
+                      child: Image.asset(
+                        AppAssetsImages().appBarCart,
+                        height: 32,
+                        width: 32,
+                        fit: BoxFit.cover,
+                        color: rxCartListCount.value != 0
+                            ? AppColors().appPrimaryColor
+                            : AppColors().appGreyColor,
                       ),
                     ),
                   ),
