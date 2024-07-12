@@ -71,6 +71,12 @@ class WishListItems {
     this.discountedPrice,
     this.quantity,
     this.unit,
+    this.isInPortfolio,
+    this.isInWishList,
+    this.cartQty,
+    this.cartId,
+    this.cartItemId,
+    this.vendorProductId,
   });
 
   WishListItems.fromJson(Map<String, dynamic> json) {
@@ -86,6 +92,12 @@ class WishListItems {
     discountedPrice = json["discountedPrice"];
     quantity = json["quantity"];
     unit = json["unit"];
+    isInPortfolio = json["isAddedInPortfolio"];
+    isInWishList = json["isAddedInWishlist"];
+    cartQty = json["cart_qty"];
+    cartId = json["cart_id"];
+    cartItemId = json["cart_item_id"];
+    vendorProductId = json["vendor_product_id"];
   }
 
   String? sId;
@@ -99,6 +111,12 @@ class WishListItems {
   int? discountedPrice;
   int? quantity;
   String? unit;
+  bool? isInPortfolio;
+  bool? isInWishList;
+  num? cartQty;
+  String? cartId;
+  String? cartItemId;
+  String? vendorProductId;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -115,6 +133,12 @@ class WishListItems {
     data["discountedPrice"] = discountedPrice;
     data["quantity"] = quantity;
     data["unit"] = unit;
+    data["isAddedInPortfolio"] = isInPortfolio;
+    data["isAddedInWishlist"] = isInWishList;
+    data["cart_qty"] = cartQty;
+    data["cart_id"] = cartId;
+    data["cart_item_id"] = cartItemId;
+    data["vendor_product_id"] = vendorProductId;
     return data;
   }
 }

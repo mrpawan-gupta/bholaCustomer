@@ -108,6 +108,7 @@ class CartScreen extends GetWidget<CartController> {
                                     unawaited(
                                       controller.getAllCartsItemsAPICall(
                                         needLoader: false,
+                                        removeCoupon: true,
                                       ),
                                     );
                                   },
@@ -169,7 +170,12 @@ class CartScreen extends GetWidget<CartController> {
           arguments: <String, dynamic>{"id": item.productId ?? ""},
         );
 
-        unawaited(controller.getAllCartsItemsAPICall(needLoader: false));
+        unawaited(
+          controller.getAllCartsItemsAPICall(
+            needLoader: false,
+            removeCoupon: true,
+          ),
+        );
       },
       incQty: (Items item) async {
         bool value = false;
@@ -180,7 +186,12 @@ class CartScreen extends GetWidget<CartController> {
         );
 
         if (value) {
-          unawaited(controller.getAllCartsItemsAPICall(needLoader: false));
+          unawaited(
+            controller.getAllCartsItemsAPICall(
+              needLoader: false,
+              removeCoupon: true,
+            ),
+          );
         } else {}
       },
       decQty: (Items item) async {
@@ -192,7 +203,12 @@ class CartScreen extends GetWidget<CartController> {
         );
 
         if (value) {
-          unawaited(controller.getAllCartsItemsAPICall(needLoader: false));
+          unawaited(
+            controller.getAllCartsItemsAPICall(
+              needLoader: false,
+              removeCoupon: true,
+            ),
+          );
         } else {}
       },
       onPressedDelete: (Items item) async {
@@ -203,7 +219,12 @@ class CartScreen extends GetWidget<CartController> {
         );
 
         if (value) {
-          unawaited(controller.getAllCartsItemsAPICall(needLoader: false));
+          unawaited(
+            controller.getAllCartsItemsAPICall(
+              needLoader: false,
+              removeCoupon: true,
+            ),
+          );
         } else {}
       },
     );
@@ -405,7 +426,10 @@ class CartScreen extends GetWidget<CartController> {
 
                   if (value) {
                     unawaited(
-                      controller.getAllCartsItemsAPICall(needLoader: false),
+                      controller.getAllCartsItemsAPICall(
+                        needLoader: false,
+                        removeCoupon: false,
+                      ),
                     );
                   } else {}
                 } else {}
@@ -419,6 +443,7 @@ class CartScreen extends GetWidget<CartController> {
 
   Widget orderPaymentWidget() {
     final Carts item = controller.rxCart.value;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
@@ -483,7 +508,7 @@ class CartScreen extends GetWidget<CartController> {
                         height: 24,
                         child: AppTextButton(
                           text: "Know more",
-                          onPressed: openShowMoreWidget,
+                          onPressed: openKnowMoreWidget,
                         ),
                       ),
                     ),
@@ -541,6 +566,7 @@ class CartScreen extends GetWidget<CartController> {
 
   Widget couponInfo() {
     final Carts item = controller.rxCart.value;
+
     if (item.coupon == null) {
       return const SizedBox();
     } else {
@@ -634,6 +660,7 @@ class CartScreen extends GetWidget<CartController> {
 
   Widget orderPaymentWidget2() {
     final Carts item = controller.rxCart.value;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
@@ -688,6 +715,7 @@ class CartScreen extends GetWidget<CartController> {
 
   Widget buttons() {
     final Carts item = controller.rxCart.value;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Row(
@@ -757,6 +785,55 @@ class CartScreen extends GetWidget<CartController> {
           orderPaymentWidget(),
           const SizedBox(height: 8),
           couponInfo(),
+          const SizedBox(height: 8),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                SizedBox(
+                  height: 50,
+                  child: AppElevatedButton(
+                    text: "Okay",
+                    onPressed: () {
+                      AppNavService().pop();
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+          const SizedBox(height: 48),
+        ],
+      ),
+      backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
+      isScrollControlled: true,
+    );
+    return Future<void>.value();
+  }
+
+  Future<void> openKnowMoreWidget() async {
+    await Get.bottomSheet(
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          const SizedBox(height: 16),
+          Text(
+            AppLanguageKeys().strActionPerform.tr,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 8),
+          const SizedBox(height: 8),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text("Know More"),
+          ),
+          const SizedBox(height: 8),
           const SizedBox(height: 8),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),

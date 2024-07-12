@@ -26,12 +26,16 @@ class CartController extends GetxController {
 
     subscribeWish(
       callback: () {
-        unawaited(getAllCartsItemsAPICall(needLoader: true));
+        unawaited(
+          getAllCartsItemsAPICall(needLoader: true, removeCoupon: false),
+        );
       },
     );
     subscribeCart(
       callback: () {
-        unawaited(getAllCartsItemsAPICall(needLoader: true));
+        unawaited(
+          getAllCartsItemsAPICall(needLoader: true, removeCoupon: false),
+        );
       },
     );
   }
@@ -41,7 +45,9 @@ class CartController extends GetxController {
 
     unawaited(getAddressesAPI());
 
-    unawaited(getAllCartsItemsAPICall(needLoader: true));
+    unawaited(
+      getAllCartsItemsAPICall(needLoader: true, removeCoupon: true),
+    );
     return;
   }
 
@@ -118,12 +124,15 @@ class CartController extends GetxController {
     return Future<void>.value();
   }
 
-  Future<void> getAllCartsItemsAPICall({required bool needLoader}) async {
+  Future<void> getAllCartsItemsAPICall({
+    required bool needLoader,
+    required bool removeCoupon,
+  }) async {
     await AppAPIService().functionGet(
       types: Types.order,
       endPoint: "cart",
       query: <String, dynamic>{"page": 1, "limit": 1000},
-      successCallback: (Map<String, dynamic> json) {
+      successCallback: (Map<String, dynamic> json) async {
         AppLogger().info(message: json["message"]);
 
         GetAllCartsModel model = GetAllCartsModel();
@@ -138,6 +147,15 @@ class CartController extends GetxController {
             ..clear()
             ..addAll(tempList.first.items ?? <Items>[])
             ..refresh();
+
+          final String code = rxCart.value.coupon?.code ?? "";
+
+          if (removeCoupon && code.isNotEmpty) {
+            await removeCouponAPICall(code: code);
+            unawaited(
+              getAllCartsItemsAPICall(needLoader: true, removeCoupon: false),
+            );
+          }
         } else {}
       },
       failureCallback: (Map<String, dynamic> json) {

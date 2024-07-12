@@ -1,11 +1,14 @@
 // ignore_for_file: lines_longer_than_80_chars
 
 import "package:customer/common_widgets/app_elevated_button.dart";
+import "package:customer/common_widgets/app_text_button.dart";
 import "package:customer/controllers/address_controller/addresses_list_controller.dart";
 import "package:customer/models/get_addresses_model.dart";
+import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_constants.dart";
 import "package:customer/utils/app_snackbar.dart";
+import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:place_picker/place_picker.dart";
@@ -25,18 +28,58 @@ class AddressesListScreen extends GetView<AddressesListController> {
       body: SafeArea(
         child: Obx(
           () {
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                noteWidget(),
-                const SizedBox(height: 16),
-                Expanded(child: SingleChildScrollView(child: listView())),
-                const SizedBox(height: 16),
-                button(),
-                const SizedBox(height: 16),
-              ],
-            );
+            return controller.rxAddressList.isEmpty
+                ? SizedBox(
+                    height: Get.height / 1.5,
+                    width: Get.width,
+                    child: Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          const SizedBox(height: 16),
+                          Icon(
+                            Icons.location_on,
+                            color: AppColors().appPrimaryColor,
+                            size: 48,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            "Your address list is empty!",
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            "Looks like you haven't set your address yet!",
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                          const SizedBox(height: 16),
+                          SizedBox(
+                            height: 50,
+                            width: 100,
+                            child: AppTextButton(
+                              text: "Add address",
+                              onPressed: showPlacePicker,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                        ],
+                      ),
+                    ),
+                  )
+                : Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      noteWidget(),
+                      const SizedBox(height: 16),
+                      Expanded(child: SingleChildScrollView(child: listView())),
+                      const SizedBox(height: 16),
+                      button(),
+                      const SizedBox(height: 16),
+                    ],
+                  );
           },
         ),
       ),
@@ -152,7 +195,12 @@ class AddressesListScreen extends GetView<AddressesListController> {
             children: <Widget>[
               IconButton(
                 onPressed: () async {
-                  await controller.deleteAddressesAPI(id: item.sId ?? "");
+                  await openDeleteCartItemWidget(
+                    item: item,
+                    onPressedDelete: (Address item) async {
+                      await controller.deleteAddressesAPI(id: item.sId ?? "");
+                    },
+                  );
                 },
                 icon:
                     Icon(Icons.delete_outline, color: AppColors().appRedColor),
@@ -200,6 +248,72 @@ class AddressesListScreen extends GetView<AddressesListController> {
         AppSnackbar().snackbarFailure(title: "Oops", message: reason);
       }
     } else {}
+    return Future<void>.value();
+  }
+
+  Future<void> openDeleteCartItemWidget({
+    required Address item,
+    required Function(Address item) onPressedDelete,
+  }) async {
+    await Get.bottomSheet(
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          const SizedBox(height: 16),
+          Text(
+            AppLanguageKeys().strActionPerform.tr,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 16),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text(
+              "Are you sure you want to delete? It is an irreversible process!",
+              maxLines: 5,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                SizedBox(
+                  height: 50,
+                  child: AppElevatedButton(
+                    text: "Do not delete address",
+                    onPressed: () {
+                      AppNavService().pop();
+                    },
+                  ),
+                ),
+                const SizedBox(height: 16),
+                SizedBox(
+                  height: 50,
+                  child: AppTextButton(
+                    text: "Delete address",
+                    onPressed: () async {
+                      AppNavService().pop();
+
+                      onPressedDelete(item);
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+          const SizedBox(height: 48),
+        ],
+      ),
+      backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
+      isScrollControlled: true,
+    );
     return Future<void>.value();
   }
 }

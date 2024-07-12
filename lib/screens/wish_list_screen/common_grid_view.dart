@@ -14,7 +14,7 @@ class CommonGridView extends StatelessWidget {
     required this.pagingController,
     required this.onTap,
     required this.onTapAddToWish,
-    required this.onTapAddToCart,
+    required this.onTapBottomButton,
     required this.type,
     super.key,
   });
@@ -22,7 +22,7 @@ class CommonGridView extends StatelessWidget {
   final PagingController<int, WishListItems> pagingController;
   final Function(WishListItems item) onTap;
   final Function(WishListItems item, {required bool isLiked}) onTapAddToWish;
-  final Function(WishListItems item) onTapAddToCart;
+  final Function(WishListItems item) onTapBottomButton;
   final String type;
 
   @override
@@ -357,6 +357,8 @@ class CommonGridView extends StatelessWidget {
   }
 
   Widget bottomButton(WishListItems item) {
+    final bool isInCartList = (item.cartQty ?? 0) > 0;
+
     return SizedBox(
       height: 32,
       child: Card(
@@ -370,7 +372,7 @@ class CommonGridView extends StatelessWidget {
         ),
         child: InkWell(
           onTap: () {
-            onTapAddToCart(item);
+            onTapBottomButton(item);
           },
           child: Padding(
             padding: const EdgeInsets.all(4.0),
@@ -379,7 +381,7 @@ class CommonGridView extends StatelessWidget {
               children: <Widget>[
                 Expanded(
                   child: Text(
-                    "Add to Cart",
+                    isInCartList ? "View in Cart" : "Add to Cart",
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,

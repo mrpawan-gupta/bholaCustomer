@@ -226,8 +226,13 @@ class WishListScreen extends GetWidget<WishListController> {
 
             controller.pagingControllerWishList.refresh();
           },
-          onTapAddToCart: (WishListItems item) async {
-            await addToCartAPICall(productId: item.sId ?? "");
+          onTapBottomButton: (WishListItems item) async {
+            final bool isInCartList = (item.cartQty ?? 0) > 0;
+
+            if (isInCartList) {
+            } else {
+              await addToCartAPICall(productId: item.sId ?? "");
+            }
 
             await AppNavService().pushNamed(
               destination: AppRoutes().cartScreen,

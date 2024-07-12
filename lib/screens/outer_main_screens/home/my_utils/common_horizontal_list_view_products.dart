@@ -339,7 +339,7 @@ class CommonHorizontalListViewProducts extends StatelessWidget {
                         borderRadius: BorderRadius.circular(50.0),
                         child: InkWell(
                           borderRadius: BorderRadius.circular(50.0),
-                           onTap: () async {
+                          onTap: () async {
                             if ((item.cartQty ?? 0) > 1) {
                               decQty(item);
                             } else {
@@ -432,6 +432,7 @@ class CommonHorizontalListViewProducts extends StatelessWidget {
             ),
     );
   }
+
   Future<void> openDeleteCartItemWidget({
     required Products item,
     required Function(Products item) onPressedDelete,

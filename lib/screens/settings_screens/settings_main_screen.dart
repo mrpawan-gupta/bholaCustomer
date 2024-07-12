@@ -115,24 +115,24 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: customListTile(
-                          title: "Build version",
-                          value: controller.rxPackageInfo.value.version,
-                        ),
+                  noteWidget(),
+                  const SizedBox(height: 16),
+                  InkWell(
+                    borderRadius: BorderRadius.circular(12.0),
+                    onTap: () async {
+                      await AppNavService().pushNamed(
+                        destination: AppRoutes().appInfoScreen,
+                        arguments: <String, dynamic>{},
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        "Build info: ${controller.rxPackageInfo.value.version} (${controller.rxPackageInfo.value.buildNumber})",
                       ),
-                      Expanded(
-                        child: customListTile(
-                          title: "Build number",
-                          value: controller.rxPackageInfo.value.buildNumber,
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                   const SizedBox(height: 16),
-                  noteWidget(),
                   const SizedBox(height: 16),
                 ],
               );
@@ -371,19 +371,6 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget customListTile({required String title, required String value}) {
-    return ListTile(
-      title: Text(title, maxLines: 1, overflow: TextOverflow.ellipsis),
-      subtitle: Text(value, maxLines: 1, overflow: TextOverflow.ellipsis),
-      onTap: () async {
-        await AppNavService().pushNamed(
-          destination: AppRoutes().appInfoScreen,
-          arguments: <String, dynamic>{},
-        );
-      },
     );
   }
 
