@@ -41,12 +41,6 @@ class CommonGridView extends StatelessWidget {
       ),
       builderDelegate: PagedChildBuilderDelegate<WishListItems>(
         noItemsFoundIndicatorBuilder: (BuildContext context) {
-          // return AppNoItemFoundWidget(
-          //   title: "No items found",
-          //   message: "The $type is currently empty.",
-          //   onTryAgain: pagingController.refresh,
-          // );
-
           return SizedBox(
             height: Get.height / 1.5,
             width: Get.width,

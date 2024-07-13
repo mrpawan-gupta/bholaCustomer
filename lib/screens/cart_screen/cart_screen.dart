@@ -1,7 +1,6 @@
 import "dart:async";
 
 import "package:customer/common_functions/cart_list_and_wish_list_functions.dart";
-import "package:customer/common_functions/stream_functions.dart";
 import "package:customer/common_widgets/app_elevated_button.dart";
 import "package:customer/common_widgets/app_text_button.dart";
 import "package:customer/controllers/cart_controller/cart_controller.dart";
@@ -40,7 +39,12 @@ class CartScreen extends GetWidget<CartController> {
                         arguments: <String, dynamic>{},
                       );
 
-                      functionWishSinkAdd();
+                      unawaited(
+                        controller.getAllCartsItemsAPICall(
+                          needLoader: true,
+                          removeCoupon: true,
+                        ),
+                      );
                     },
                     icon: Badge(
                       isLabelVisible: rxWishListCount.value != 0,

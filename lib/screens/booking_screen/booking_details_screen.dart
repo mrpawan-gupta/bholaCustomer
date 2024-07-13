@@ -689,7 +689,7 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
                         final (num, String)? result = await Get.bottomSheet(
                           const AppReviewRatingWidget(
                             initialReview: "",
-                            initialRating: 1.0,
+                            initialRating: 1,
                           ),
                           backgroundColor:
                               Theme.of(Get.context!).scaffoldBackgroundColor,

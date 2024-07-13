@@ -1,5 +1,4 @@
 import "package:customer/common_widgets/app_elevated_button.dart";
-import "package:customer/common_widgets/app_no_item_found.dart";
 import "package:customer/common_widgets/app_text_button.dart";
 import "package:customer/common_widgets/common_image_widget.dart";
 import "package:customer/models/product_model.dart";
@@ -53,11 +52,7 @@ class CommonHorizontalListViewProducts extends StatelessWidget {
         ),
         builderDelegate: PagedChildBuilderDelegate<Products>(
           noItemsFoundIndicatorBuilder: (BuildContext context) {
-            return AppNoItemFoundWidget(
-              title: "No items found",
-              message: "The $type is currently empty.",
-              onTryAgain: pagingController.refresh,
-            );
+            return const SizedBox();
           },
           itemBuilder: (BuildContext context, Products item, int index) {
             return listAdapter(item, index);

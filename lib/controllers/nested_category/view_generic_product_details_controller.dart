@@ -10,8 +10,10 @@ import "package:customer/models/product_model.dart";
 import "package:customer/models/rating_summary.dart";
 import "package:customer/models/related_suggested.dart";
 import "package:customer/services/app_api_service.dart";
+import "package:customer/services/app_nav_service.dart";
 import "package:customer/services/app_storage_service.dart";
 import "package:customer/utils/app_logger.dart";
+import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/app_snackbar.dart";
 import "package:flutter/foundation.dart";
 import "package:get/get.dart";
@@ -50,8 +52,12 @@ class ViewGenericProductDetailsController extends GetxController {
     initReinit();
     pagingControllerProducts.addPageRequestListener(_fetchPageProducts);
 
-    subscribeWish(callback: getProductDetailsAPICall);
-    subscribeCart(callback: getProductDetailsAPICall);
+    subscribe(
+      callback: AppNavService().currentRoute ==
+              AppRoutes().viewGenericProductDetailsScreen
+          ? getProductDetailsAPICall
+          : () {},
+    );
   }
 
   void initReinit() {

@@ -58,11 +58,8 @@ class HomeScreen extends GetView<HomeController> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             featuredServicesWidget(),
-                            const SizedBox(height: 16),
                             featuredCategoriesWidget(),
-                            const SizedBox(height: 0),
                             banners(),
-                            const SizedBox(height: 0),
                             dynamicWidget(),
                             const SizedBox(height: 32),
                           ],
@@ -80,117 +77,145 @@ class HomeScreen extends GetView<HomeController> {
   }
 
   Widget featuredServicesWidget() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: CommonHomeTitleBar(
-            title: "🚜 Rental Categories",
-            onTapViewAll: () async {
-              await tabControllerFunction(2);
-            },
-            isViewAllNeeded: true,
-            itemType: Types.services,
-          ),
-        ),
-        Divider(
-          color: AppColors().appGrey,
-          indent: 16,
-          endIndent: 16,
-        ),
-        const SizedBox(height: 8),
-        CommonHorizontalListView(
-          pagingController: controller.pagingControllerServices,
-          onTap: (Categories item) async {
-            final bool isApproved = (item.status ?? "") == "Approved";
-            if (isApproved) {
-              await tabControllerFunction(2);
-            } else {
-              AppSnackbar().snackbarFailure(
-                title: "Oops!",
-                message: "Coming Soon!",
+    return ValueListenableBuilder<PagingState<int, Categories>>(
+      valueListenable: controller.pagingControllerServices,
+      builder: (
+        BuildContext context,
+        PagingState<int, Categories> value,
+        Widget? child,
+      ) {
+        return (value.itemList?.isEmpty ?? false)
+            ? const SizedBox()
+            : Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: CommonHomeTitleBar(
+                      title: "🚜 Rental Categories",
+                      onTapViewAll: () async {
+                        await tabControllerFunction(2);
+                      },
+                      isViewAllNeeded: true,
+                      itemType: Types.services,
+                    ),
+                  ),
+                  Divider(
+                    color: AppColors().appGrey,
+                    indent: 16,
+                    endIndent: 16,
+                  ),
+                  const SizedBox(height: 8),
+                  CommonHorizontalListView(
+                    pagingController: controller.pagingControllerServices,
+                    onTap: (Categories item) async {
+                      final bool isApproved = (item.status ?? "") == "Approved";
+                      if (isApproved) {
+                        await tabControllerFunction(2);
+                      } else {
+                        AppSnackbar().snackbarFailure(
+                          title: "Oops!",
+                          message: "Coming Soon!",
+                        );
+                      }
+                    },
+                    needViewAll: true,
+                    onTapViewAll: (Categories item) async {
+                      final bool isApproved = (item.status ?? "") == "Approved";
+                      if (isApproved) {
+                        await tabControllerFunction(2);
+                      } else {
+                        AppSnackbar().snackbarFailure(
+                          title: "Oops!",
+                          message: "Coming Soon!",
+                        );
+                      }
+                    },
+                    type: "rental services list",
+                    itemType: Types.services,
+                  ),
+                  const SizedBox(height: 8),
+                ],
               );
-            }
-          },
-          needViewAll: true,
-          onTapViewAll: (Categories item) async {
-            final bool isApproved = (item.status ?? "") == "Approved";
-            if (isApproved) {
-              await tabControllerFunction(2);
-            } else {
-              AppSnackbar().snackbarFailure(
-                title: "Oops!",
-                message: "Coming Soon!",
-              );
-            }
-          },
-          type: "rental services list",
-          itemType: Types.services,
-        ),
-      ],
+      },
     );
   }
 
   Widget featuredCategoriesWidget() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: CommonHomeTitleBar(
-            title: "🌾 Product Categories",
-            onTapViewAll: () async {
-              await AppNavService().pushNamed(
-                destination: AppRoutes().productListingScreen,
-                arguments: <String, dynamic>{},
+    return ValueListenableBuilder<PagingState<int, Categories>>(
+      valueListenable: controller.pagingControllerCategories,
+      builder: (
+        BuildContext context,
+        PagingState<int, Categories> value,
+        Widget? child,
+      ) {
+        return (value.itemList?.isEmpty ?? false)
+            ? const SizedBox()
+            : Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: CommonHomeTitleBar(
+                      title: "🌾 Product Categories",
+                      onTapViewAll: () async {
+                        await AppNavService().pushNamed(
+                          destination: AppRoutes().productListingScreen,
+                          arguments: <String, dynamic>{},
+                        );
+                      },
+                      isViewAllNeeded: true,
+                      itemType: Types.categories,
+                    ),
+                  ),
+                  Divider(
+                    color: AppColors().appGrey,
+                    indent: 16,
+                    endIndent: 16,
+                  ),
+                  const SizedBox(height: 8),
+                  CommonHorizontalListView(
+                    pagingController: controller.pagingControllerCategories,
+                    onTap: (Categories item) async {
+                      await AppNavService().pushNamed(
+                        destination: AppRoutes().productListingScreen,
+                        arguments: <String, dynamic>{"id": item.sId ?? ""},
+                      );
+
+                      controller
+                        ..pagingControllerServices.refresh()
+                        ..pagingControllerCategories.refresh()
+                        ..pagingControllerBanners.refresh();
+
+                      unawaited(
+                        controller.apiCallCategoriesWithoutPagination(),
+                      );
+                    },
+                    needViewAll: true,
+                    onTapViewAll: (Categories item) async {
+                      await AppNavService().pushNamed(
+                        destination: AppRoutes().productListingScreen,
+                        arguments: <String, dynamic>{"id": item.sId ?? ""},
+                      );
+
+                      controller
+                        ..pagingControllerServices.refresh()
+                        ..pagingControllerCategories.refresh()
+                        ..pagingControllerBanners.refresh();
+
+                      unawaited(
+                        controller.apiCallCategoriesWithoutPagination(),
+                      );
+                    },
+                    type: "product categories list",
+                    itemType: Types.categories,
+                  ),
+                  const SizedBox(height: 8),
+                ],
               );
-            },
-            isViewAllNeeded: true,
-            itemType: Types.categories,
-          ),
-        ),
-        Divider(
-          color: AppColors().appGrey,
-          indent: 16,
-          endIndent: 16,
-        ),
-        const SizedBox(height: 8),
-        CommonHorizontalListView(
-          pagingController: controller.pagingControllerCategories,
-          onTap: (Categories item) async {
-            await AppNavService().pushNamed(
-              destination: AppRoutes().productListingScreen,
-              arguments: <String, dynamic>{"id": item.sId ?? ""},
-            );
-
-            controller
-              ..pagingControllerServices.refresh()
-              ..pagingControllerCategories.refresh()
-              ..pagingControllerBanners.refresh();
-
-            unawaited(controller.apiCallCategoriesWithoutPagination());
-          },
-          needViewAll: true,
-          onTapViewAll: (Categories item) async {
-            await AppNavService().pushNamed(
-              destination: AppRoutes().productListingScreen,
-              arguments: <String, dynamic>{"id": item.sId ?? ""},
-            );
-
-            controller
-              ..pagingControllerServices.refresh()
-              ..pagingControllerCategories.refresh()
-              ..pagingControllerBanners.refresh();
-
-            unawaited(controller.apiCallCategoriesWithoutPagination());
-          },
-          type: "product categories list",
-          itemType: Types.categories,
-        ),
-      ],
+      },
     );
   }
 
@@ -203,18 +228,18 @@ class HomeScreen extends GetView<HomeController> {
         Widget? child,
       ) {
         return (value.itemList?.isEmpty ?? false)
-            ? const SizedBox(height: 16)
+            ? const SizedBox()
             : Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 8),
                   CommonHorizontalListViewBanner(
                     pagingController: controller.pagingControllerBanners,
                     onTap: (Banners item) {},
                     type: "banners list",
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 8),
                 ],
               );
       },
@@ -237,7 +262,18 @@ class HomeScreen extends GetView<HomeController> {
               final PagingController<int, Products> paging = dynamicList[i];
               final Categories products = productList[i];
               final bool isLast = i == productList.length - 1;
-              return listViewAdapter(paging, products, isLast: isLast);
+              return ValueListenableBuilder<PagingState<int, Products>>(
+                valueListenable: paging,
+                builder: (
+                  BuildContext context,
+                  PagingState<int, Products> value,
+                  Widget? child,
+                ) {
+                  return (value.itemList?.isEmpty ?? false)
+                      ? const SizedBox()
+                      : listViewAdapter(paging, products, isLast: isLast);
+                },
+              );
             },
           );
   }

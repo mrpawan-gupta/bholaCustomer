@@ -5,7 +5,9 @@ import "package:customer/models/banner_model.dart";
 import "package:customer/models/featured_model.dart";
 import "package:customer/models/product_model.dart";
 import "package:customer/services/app_api_service.dart";
+import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_logger.dart";
+import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/app_snackbar.dart";
 import "package:get/get.dart";
 import "package:infinite_scroll_pagination/infinite_scroll_pagination.dart";
@@ -49,23 +51,10 @@ class HomeController extends GetxController {
 
     unawaited(apiCallCategoriesWithoutPagination());
 
-    subscribeWish(
-      callback: () async {
-        pagingControllerServices.refresh();
-        pagingControllerCategories.refresh();
-        pagingControllerBanners.refresh();
-
-        unawaited(apiCallCategoriesWithoutPagination());
-      },
-    );
-    subscribeCart(
-      callback: () async {
-        pagingControllerServices.refresh();
-        pagingControllerCategories.refresh();
-        pagingControllerBanners.refresh();
-
-        unawaited(apiCallCategoriesWithoutPagination());
-      },
+    subscribe(
+      callback: AppNavService().currentRoute == AppRoutes().mainNavigationScreen
+          ? apiCallCategoriesWithoutPagination
+          : () {},
     );
   }
 

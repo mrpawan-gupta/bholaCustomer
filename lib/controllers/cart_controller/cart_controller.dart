@@ -1,6 +1,5 @@
 import "dart:async";
 
-import "package:customer/common_functions/stream_functions.dart";
 import "package:customer/models/get_addresses_model.dart";
 import "package:customer/models/get_all_carts_model.dart";
 import "package:customer/models/get_user_by_id.dart";
@@ -23,21 +22,6 @@ class CartController extends GetxController {
     super.onInit();
 
     initReinit();
-
-    subscribeWish(
-      callback: () {
-        unawaited(
-          getAllCartsItemsAPICall(needLoader: true, removeCoupon: false),
-        );
-      },
-    );
-    subscribeCart(
-      callback: () {
-        unawaited(
-          getAllCartsItemsAPICall(needLoader: true, removeCoupon: false),
-        );
-      },
-    );
   }
 
   void initReinit() {

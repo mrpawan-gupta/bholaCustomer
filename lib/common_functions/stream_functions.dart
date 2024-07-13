@@ -1,49 +1,29 @@
 import "dart:async";
 
 import "package:customer/common_functions/cart_list_and_wish_list_functions.dart";
+import "package:customer/common_functions/resubscribe_stream.dart";
 
-final StreamController<void> broadcast = StreamController<void>.broadcast();
-final StreamController<void> wishStrCont = broadcast;
-final StreamController<void> cartStrCont = broadcast;
+final StreamController<void> streamController = StreamController<void>();
 
-final Stream<void> wishStream = wishStrCont.stream;
-final Stream<void> cartStream = cartStrCont.stream;
+final Stream<void> stream = resubscribeStream(streamController.stream);
 
-StreamSubscription<void>? wishStreamSubscription;
-StreamSubscription<void>? cartStreamSubscription;
+StreamSubscription<void>? streamSubscription;
 
-void functionWishSinkAdd() {
-  wishStrCont.sink.add(null);
+void functionSinkAdd() {
+  streamController.sink.add(null);
 }
 
-void functionCartSinkAdd() {
-  cartStrCont.sink.add(null);
-}
-
-void subscribeWish({required Function() callback}) {
-  wishStreamSubscription = wishStream.listen(
-    (void event) async {
-      await wishListAndCartListAPICall();
-
+void subscribe({required Function() callback}) {
+  streamSubscription = stream.listen(
+    (void event) {
+      unawaited(wishListAndCartListAPICall());
       callback();
     },
   );
 }
 
-void subscribeCart({required Function() callback}) {
-  cartStreamSubscription = cartStream.listen(
-    (void event) async {
-      await wishListAndCartListAPICall();
-
-      callback();
-    },
-  );
-}
-
-void unsubscribeWish() {
-  unawaited(wishStreamSubscription?.cancel());
-}
-
-void unsubscribeCart() {
-  unawaited(cartStreamSubscription?.cancel());
+void unsubscribe() {
+  unawaited(streamController.sink.close());
+  unawaited(streamSubscription?.cancel());
+  return;
 }

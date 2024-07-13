@@ -1,4 +1,3 @@
-import "package:customer/common_widgets/app_no_item_found.dart";
 import "package:customer/common_widgets/common_image_widget.dart";
 import "package:customer/models/featured_model.dart";
 import "package:customer/utils/app_colors.dart";
@@ -46,11 +45,7 @@ class CommonHorizontalListView extends StatelessWidget {
         ),
         builderDelegate: PagedChildBuilderDelegate<Categories>(
           noItemsFoundIndicatorBuilder: (BuildContext context) {
-            return AppNoItemFoundWidget(
-              title: "No items found",
-              message: "The $type is currently empty.",
-              onTryAgain: pagingController.refresh,
-            );
+            return const SizedBox();
           },
           itemBuilder: (BuildContext context, Categories item, int index) {
             return listAdapter(item);
