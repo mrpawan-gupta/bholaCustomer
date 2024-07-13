@@ -1,7 +1,6 @@
 import "dart:async";
 
 import "package:customer/common_functions/booking_functions.dart";
-import "package:customer/common_functions/stream_functions.dart";
 import "package:customer/models/featured_model.dart";
 import "package:customer/models/wish_list_model.dart";
 import "package:customer/services/app_api_service.dart";
@@ -27,9 +26,6 @@ class WishListController extends GetxController {
 
     pagingControllerCategories.addPageRequestListener(_fetchPageCategories);
     pagingControllerWishList.addPageRequestListener(_fetchPageWishList);
-
-    subscribeWish(callback: pagingControllerWishList.refresh);
-    subscribeCart(callback: pagingControllerWishList.refresh);
   }
 
   @override

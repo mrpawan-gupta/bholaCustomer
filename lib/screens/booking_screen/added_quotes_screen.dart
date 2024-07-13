@@ -1,7 +1,7 @@
 // ignore_for_file: lines_longer_than_80_chars
 
 import "package:customer/common_functions/booking_functions.dart";
-import "package:customer/common_widgets/app_no_item_found.dart";
+import "package:customer/common_widgets/app_text_button.dart";
 import "package:customer/common_widgets/common_image_widget.dart";
 import "package:customer/controllers/booking_controller/added_quotes_controller.dart";
 import "package:customer/models/featured_model.dart";
@@ -178,10 +178,44 @@ class AddedQuotesScreen extends GetView<AddedQuotesController> {
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         builderDelegate: PagedChildBuilderDelegate<Bookings>(
           noItemsFoundIndicatorBuilder: (BuildContext context) {
-            return AppNoItemFoundWidget(
-              title: "No items found",
-              message: "The new order list is currently empty.",
-              onTryAgain: controller.pagingControllerNewOrder.refresh,
+            return SizedBox(
+              height: Get.height / 1.5,
+              width: Get.width,
+              child: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    const SizedBox(height: 16),
+                    Icon(
+                      Icons.agriculture,
+                      color: AppColors().appPrimaryColor,
+                      size: 48,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      "You haven't booked anything yet!",
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      "Please try booking whatever rental services you want!",
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      height: 50,
+                      width: 100,
+                      child: AppTextButton(
+                        text: "Book Now",
+                        onPressed: AppNavService().pop,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                  ],
+                ),
+              ),
             );
           },
           itemBuilder: (BuildContext context, Bookings item, int index) {

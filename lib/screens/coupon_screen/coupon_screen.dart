@@ -1,4 +1,5 @@
 import "package:customer/common_widgets/app_elevated_button.dart";
+import "package:customer/common_widgets/app_text_button.dart";
 import "package:customer/common_widgets/app_text_field.dart";
 import "package:customer/controllers/coupon_controller/coupon_controller.dart";
 import "package:customer/models/coupon_list_model.dart";
@@ -10,6 +11,7 @@ import "package:customer/utils/app_snackbar.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:get/get.dart";
+import "package:infinite_scroll_pagination/infinite_scroll_pagination.dart";
 
 class CouponScreen extends GetWidget<CouponController> {
   const CouponScreen({super.key});
@@ -23,24 +25,74 @@ class CouponScreen extends GetWidget<CouponController> {
         surfaceTintColor: AppColors().appTransparentColor,
       ),
       body: SafeArea(
-        child: Obx(
-          () {
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                searchBarWidget(),
-                const SizedBox(height: 16),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: reviewsWidget(),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                buttons(),
-                const SizedBox(height: 16),
-              ],
-            );
+        child: ValueListenableBuilder<PagingState<int, Coupons>>(
+          valueListenable: controller.pagingControllerPromo,
+          builder: (
+            BuildContext context,
+            PagingState<int, Coupons> value,
+            Widget? child,
+          ) {
+            return (value.itemList?.isEmpty ?? false)
+                ? SizedBox(
+                    height: Get.height / 1.5,
+                    width: Get.width,
+                    child: Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          const SizedBox(height: 16),
+                          Icon(
+                            Icons.discount,
+                            color: AppColors().appPrimaryColor,
+                            size: 48,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            " No coupon available at this moment!",
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            "Check back in a little bit.",
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                          const SizedBox(height: 16),
+                          SizedBox(
+                            height: 50,
+                            width: 100,
+                            child: AppTextButton(
+                              text: "Try refreshing",
+                              onPressed:
+                                  controller.pagingControllerPromo.refresh,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                        ],
+                      ),
+                    ),
+                  )
+                : Obx(
+                    () {
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          searchBarWidget(),
+                          const SizedBox(height: 16),
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: reviewsWidget(),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          buttons(),
+                          const SizedBox(height: 16),
+                        ],
+                      );
+                    },
+                  );
           },
         ),
       ),

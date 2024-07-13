@@ -1,4 +1,3 @@
-import "package:customer/common_widgets/app_no_item_found.dart";
 import "package:customer/models/coupon_list_model.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:flutter/material.dart";
@@ -29,11 +28,7 @@ class CommonListView extends StatelessWidget {
       },
       builderDelegate: PagedChildBuilderDelegate<Coupons>(
         noItemsFoundIndicatorBuilder: (BuildContext context) {
-          return AppNoItemFoundWidget(
-            title: "No items found",
-            message: "The coupon list is currently empty.",
-            onTryAgain: pagingController.refresh,
-          );
+          return const SizedBox();
         },
         itemBuilder: (BuildContext context, Coupons item, int index) {
           return couponsListAdapter(

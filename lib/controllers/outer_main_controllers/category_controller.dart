@@ -8,7 +8,7 @@ import "package:get/get.dart";
 import "package:infinite_scroll_pagination/infinite_scroll_pagination.dart";
 
 class CategoryController extends GetxController {
-  final int pageSize = 2;
+  final int pageSize = 3;
 
   final PagingController<int, Categories> pagingControllerServices =
       PagingController<int, Categories>(firstPageKey: 1);

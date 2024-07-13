@@ -1,5 +1,4 @@
 import "package:customer/common_functions/cart_list_and_wish_list_functions.dart";
-import "package:customer/common_functions/stream_functions.dart";
 import "package:customer/controllers/wish_list_controller/wish_list_controller.dart";
 import "package:customer/models/featured_model.dart";
 import "package:customer/models/wish_list_model.dart";
@@ -37,7 +36,7 @@ class WishListScreen extends GetWidget<WishListController> {
                         arguments: <String, dynamic>{},
                       );
 
-                      functionCartSinkAdd();
+                      controller.pagingControllerWishList.refresh();
                     },
                     icon: Badge(
                       isLabelVisible: rxCartListCount.value != 0,

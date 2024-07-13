@@ -77,7 +77,7 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
                         arguments: <String, dynamic>{},
                       );
 
-                      functionWishSinkAdd();
+                      functionSinkAdd();
                     },
                     icon: Badge(
                       isLabelVisible: rxWishListCount.value != 0,
@@ -102,7 +102,7 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
                         arguments: <String, dynamic>{},
                       );
 
-                      functionCartSinkAdd();
+                      functionSinkAdd();
                     },
                     icon: Badge(
                       isLabelVisible: rxCartListCount.value != 0,

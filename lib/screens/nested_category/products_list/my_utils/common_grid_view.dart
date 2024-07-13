@@ -1,5 +1,4 @@
 import "package:customer/common_widgets/app_elevated_button.dart";
-import "package:customer/common_widgets/app_no_item_found.dart";
 import "package:customer/common_widgets/app_text_button.dart";
 import "package:customer/common_widgets/common_image_widget.dart";
 import "package:customer/models/product_model.dart";
@@ -49,10 +48,44 @@ class CommonGridView extends StatelessWidget {
       ),
       builderDelegate: PagedChildBuilderDelegate<Products>(
         noItemsFoundIndicatorBuilder: (BuildContext context) {
-          return AppNoItemFoundWidget(
-            title: "No items found",
-            message: "The $type is currently empty.",
-            onTryAgain: pagingController.refresh,
+          return SizedBox(
+            height: Get.height / 2,
+            width: Get.width,
+            child: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  const SizedBox(height: 16),
+                  Icon(
+                    Icons.shopping_basket,
+                    color: AppColors().appPrimaryColor,
+                    size: 48,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    "No products available at this moment!",
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    "Check back in a little bit.",
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    height: 50,
+                    width: 100,
+                    child: AppTextButton(
+                      text: "Try refreshing",
+                      onPressed: pagingController.refresh,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                ],
+              ),
+            ),
           );
         },
         itemBuilder: (BuildContext context, Products item, int index) {

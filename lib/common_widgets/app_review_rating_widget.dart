@@ -34,7 +34,7 @@ class _AppReviewRatingWidgetState extends State<AppReviewRatingWidget> {
 
     _reviewController.text = widget.initialReview;
     _rxReview(widget.initialReview);
-    _rxRating(widget.initialRating);
+    _rxRating(widget.initialRating.toInt());
   }
 
   @override

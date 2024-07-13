@@ -1,6 +1,5 @@
 import "package:customer/common_functions/date_time_functions.dart";
 import "package:customer/common_widgets/app_elevated_button.dart";
-import "package:customer/common_widgets/app_no_item_found.dart";
 import "package:customer/common_widgets/app_text_button.dart";
 import "package:customer/common_widgets/common_image_widget.dart";
 import "package:customer/models/review_rating_model.dart";
@@ -44,10 +43,44 @@ class CommonListView extends StatelessWidget {
       },
       builderDelegate: PagedChildBuilderDelegate<Reviews>(
         noItemsFoundIndicatorBuilder: (BuildContext context) {
-          return AppNoItemFoundWidget(
-            title: "No items found",
-            message: "The review rating list is currently empty.",
-            onTryAgain: pagingController.refresh,
+          return SizedBox(
+            height: Get.height / 1.5,
+            width: Get.width,
+            child: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  const SizedBox(height: 16),
+                  Icon(
+                    Icons.star,
+                    color: AppColors().appPrimaryColor,
+                    size: 48,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    "Reviews ratings list is empty!",
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    "Check back in a little bit.",
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    height: 50,
+                    width: 100,
+                    child: AppTextButton(
+                      text: "Try refreshing",
+                      onPressed: pagingController.refresh,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                ],
+              ),
+            ),
           );
         },
         itemBuilder: (BuildContext context, Reviews item, int index) {

@@ -379,14 +379,8 @@ class HelpScreen extends GetView<HelpController> {
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         builderDelegate: PagedChildBuilderDelegate<Bookings>(
           noItemsFoundIndicatorBuilder: (BuildContext context) {
-            // return AppNoItemFoundWidget(
-            //   title: "No items found",
-            //   message: "The order live list is currently empty.",
-            //   onTryAgain: controller.pagingControllerNewOrder.refresh,
-            // );
-
             return SizedBox(
-              height: Get.height / 1.5,
+              height: Get.height / 2,
               width: Get.width,
               child: Center(
                 child: Column(
@@ -694,14 +688,8 @@ class HelpScreen extends GetView<HelpController> {
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         builderDelegate: PagedChildBuilderDelegate<Bookings>(
           noItemsFoundIndicatorBuilder: (BuildContext context) {
-            // return AppNoItemFoundWidget(
-            //   title: "No items found",
-            //   message: "The order live list is currently empty.",
-            //   onTryAgain: controller.pagingControllerNewOrder.refresh,
-            // );
-
             return SizedBox(
-              height: Get.height / 1.5,
+              height: Get.height / 2,
               width: Get.width,
               child: Center(
                 child: Column(

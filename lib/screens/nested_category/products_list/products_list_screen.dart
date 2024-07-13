@@ -45,7 +45,7 @@ class ProductsListScreen extends GetView<ProductsListController> {
                         arguments: <String, dynamic>{},
                       );
 
-                      functionWishSinkAdd();
+                      functionSinkAdd();
                     },
                     icon: Badge(
                       isLabelVisible: rxWishListCount.value != 0,
@@ -70,7 +70,7 @@ class ProductsListScreen extends GetView<ProductsListController> {
                         arguments: <String, dynamic>{},
                       );
 
-                      functionCartSinkAdd();
+                      functionSinkAdd();
                     },
                     icon: Badge(
                       isLabelVisible: rxCartListCount.value != 0,

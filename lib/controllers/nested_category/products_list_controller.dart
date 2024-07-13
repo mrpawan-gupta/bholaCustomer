@@ -4,7 +4,9 @@ import "package:customer/models/banner_model.dart";
 import "package:customer/models/featured_model.dart";
 import "package:customer/models/product_model.dart";
 import "package:customer/services/app_api_service.dart";
+import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_logger.dart";
+import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/app_snackbar.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
@@ -57,8 +59,11 @@ class ProductsListController extends GetxController {
 
     unawaited(getCategoriesAPI());
 
-    subscribeWish(callback: pagingControllerRecently.refresh);
-    subscribeCart(callback: pagingControllerRecently.refresh);
+    subscribe(
+      callback: AppNavService().currentRoute == AppRoutes().productListingScreen
+          ? pagingControllerRecently.refresh
+          : () {},
+    );
   }
 
   @override
