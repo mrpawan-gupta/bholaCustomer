@@ -1,3 +1,8 @@
+// ignore_for_file: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member, lines_longer_than_80_chars
+
+import "dart:async";
+
+import "package:customer/common_functions/cart_list_and_wish_list_functions.dart";
 import "package:customer/controllers/main_navigation_controller.dart";
 import "package:customer/controllers/outer_main_controllers/home_controller.dart";
 import "package:customer/models/banner_model.dart";
@@ -33,12 +38,12 @@ class HomeScreen extends GetView<HomeController> {
                 color: AppColors().appPrimaryColor,
                 backgroundColor: AppColors().appWhiteColor,
                 onRefresh: () async {
-                  controller.pagingControllerDynamic.clear();
-
                   controller
                     ..pagingControllerServices.refresh()
                     ..pagingControllerCategories.refresh()
                     ..pagingControllerBanners.refresh();
+
+                  unawaited(controller.apiCallCategoriesWithoutPagination());
                 },
                 child: SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
@@ -46,19 +51,23 @@ class HomeScreen extends GetView<HomeController> {
                     constraints: BoxConstraints(
                       minHeight: constraints.maxHeight,
                     ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        featuredServicesWidget(),
-                        const SizedBox(height: 32),
-                        featuredCategoriesWidget(),
-                        const SizedBox(height: 32),
-                        banners(),
-                        const SizedBox(height: 32),
-                        dynamicWidget(),
-                        const SizedBox(height: 32),
-                      ],
+                    child: Obx(
+                      () {
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            featuredServicesWidget(),
+                            const SizedBox(height: 16),
+                            featuredCategoriesWidget(),
+                            const SizedBox(height: 0),
+                            banners(),
+                            const SizedBox(height: 0),
+                            dynamicWidget(),
+                            const SizedBox(height: 32),
+                          ],
+                        );
+                      },
                     ),
                   ),
                 ),
@@ -78,9 +87,12 @@ class HomeScreen extends GetView<HomeController> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: CommonHomeTitleBar(
-            title: "🚜 Featured Services",
-            isViewAllNeeded: false,
-            onTapViewAll: () {},
+            title: "🚜 Rental Categories",
+            onTapViewAll: () async {
+              await tabControllerFunction(2);
+            },
+            isViewAllNeeded: true,
+            itemType: Types.services,
           ),
         ),
         Divider(
@@ -102,7 +114,20 @@ class HomeScreen extends GetView<HomeController> {
               );
             }
           },
-          type: "rental categories list",
+          needViewAll: true,
+          onTapViewAll: (Categories item) async {
+            final bool isApproved = (item.status ?? "") == "Approved";
+            if (isApproved) {
+              await tabControllerFunction(2);
+            } else {
+              AppSnackbar().snackbarFailure(
+                title: "Oops!",
+                message: "Coming Soon!",
+              );
+            }
+          },
+          type: "rental services list",
+          itemType: Types.services,
         ),
       ],
     );
@@ -116,9 +141,15 @@ class HomeScreen extends GetView<HomeController> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: CommonHomeTitleBar(
-            title: "🌾 Featured Categories",
-            isViewAllNeeded: false,
-            onTapViewAll: () {},
+            title: "🌾 Product Categories",
+            onTapViewAll: () async {
+              await AppNavService().pushNamed(
+                destination: AppRoutes().productListingScreen,
+                arguments: <String, dynamic>{},
+              );
+            },
+            isViewAllNeeded: true,
+            itemType: Types.categories,
           ),
         ),
         Divider(
@@ -134,63 +165,86 @@ class HomeScreen extends GetView<HomeController> {
               destination: AppRoutes().productListingScreen,
               arguments: <String, dynamic>{"id": item.sId ?? ""},
             );
+
+            controller
+              ..pagingControllerServices.refresh()
+              ..pagingControllerCategories.refresh()
+              ..pagingControllerBanners.refresh();
+
+            unawaited(controller.apiCallCategoriesWithoutPagination());
+          },
+          needViewAll: true,
+          onTapViewAll: (Categories item) async {
+            await AppNavService().pushNamed(
+              destination: AppRoutes().productListingScreen,
+              arguments: <String, dynamic>{"id": item.sId ?? ""},
+            );
+
+            controller
+              ..pagingControllerServices.refresh()
+              ..pagingControllerCategories.refresh()
+              ..pagingControllerBanners.refresh();
+
+            unawaited(controller.apiCallCategoriesWithoutPagination());
           },
           type: "product categories list",
+          itemType: Types.categories,
         ),
       ],
     );
   }
 
   Widget banners() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        CommonHorizontalListViewBanner(
-          pagingController: controller.pagingControllerBanners,
-          onTap: (Banners item) {},
-          type: "banners list",
-        ),
-      ],
+    return ValueListenableBuilder<PagingState<int, Banners>>(
+      valueListenable: controller.pagingControllerBanners,
+      builder: (
+        BuildContext context,
+        PagingState<int, Banners> value,
+        Widget? child,
+      ) {
+        return (value.itemList?.isEmpty ?? false)
+            ? const SizedBox(height: 16)
+            : Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  const SizedBox(height: 16),
+                  CommonHorizontalListViewBanner(
+                    pagingController: controller.pagingControllerBanners,
+                    onTap: (Banners item) {},
+                    type: "banners list",
+                  ),
+                  const SizedBox(height: 16),
+                ],
+              );
+      },
     );
   }
 
   Widget dynamicWidget() {
-    return ValueListenableBuilder<PagingState<int, Categories>>(
-      valueListenable: controller.valueNotifierCategories,
-      builder: (
-        BuildContext context,
-        PagingState<int, Categories> value,
-        Widget? child,
-      ) {
-        return valueListenableBuilderAdapter();
-      },
-    );
-  }
-
-  Widget valueListenableBuilderAdapter() {
-    final List<PagingController<int, Products>> dynamicList =
-        controller.pagingControllerDynamic;
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: dynamicList.length,
-      padding: EdgeInsets.zero,
-      physics: const NeverScrollableScrollPhysics(),
-      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-      itemBuilder: (BuildContext context, int i) {
-        final PagingController<int, Products> pagingController = dynamicList[i];
-        final List<Categories> categoriesList =
-            controller.pagingControllerCategories.itemList ?? <Categories>[];
-        final Categories categories = categoriesList[i];
-        final bool isLast = i == dynamicList.length - 1;
-        return listViewAdapter(pagingController, categories, isLast: isLast);
-      },
-    );
+    final RxList<Categories> productList = controller.rxProductCategoriesList;
+    final RxList<PagingController<int, Products>> dynamicList =
+        controller.rxPagingControllerDynamic;
+    return dynamicList.isEmpty
+        ? const SizedBox()
+        : ListView.builder(
+            shrinkWrap: true,
+            itemCount: productList.length,
+            padding: EdgeInsets.zero,
+            physics: const NeverScrollableScrollPhysics(),
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            itemBuilder: (BuildContext context, int i) {
+              final PagingController<int, Products> paging = dynamicList[i];
+              final Categories products = productList[i];
+              final bool isLast = i == productList.length - 1;
+              return listViewAdapter(paging, products, isLast: isLast);
+            },
+          );
   }
 
   Widget listViewAdapter(
-    PagingController<int, Products> pagingController,
-    Categories category, {
+    PagingController<int, Products> paging,
+    Categories products, {
     required bool isLast,
   }) {
     return Padding(
@@ -202,14 +256,22 @@ class HomeScreen extends GetView<HomeController> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: CommonHomeTitleBar(
-              title: "🌾 ${category.name ?? ""}",
+              title: "🌾 ${products.name ?? ""}",
               isViewAllNeeded: true,
               onTapViewAll: () async {
                 await AppNavService().pushNamed(
                   destination: AppRoutes().productListingScreen,
-                  arguments: <String, dynamic>{"id": category.sId ?? ""},
+                  arguments: <String, dynamic>{"id": products.sId ?? ""},
                 );
+
+                controller
+                  ..pagingControllerServices.refresh()
+                  ..pagingControllerCategories.refresh()
+                  ..pagingControllerBanners.refresh();
+
+                unawaited(controller.apiCallCategoriesWithoutPagination());
               },
+              itemType: Types.categories,
             ),
           ),
           Divider(
@@ -219,14 +281,86 @@ class HomeScreen extends GetView<HomeController> {
           ),
           const SizedBox(height: 8),
           CommonHorizontalListViewProducts(
-            pagingController: pagingController,
+            pagingController: paging,
             onTap: (Products item) async {
               await AppNavService().pushNamed(
                 destination: AppRoutes().viewGenericProductDetailsScreen,
                 arguments: <String, dynamic>{"id": item.sId ?? ""},
               );
+
+              controller
+                ..pagingControllerServices.refresh()
+                ..pagingControllerCategories.refresh()
+                ..pagingControllerBanners.refresh();
+
+              unawaited(controller.apiCallCategoriesWithoutPagination());
             },
-            type: "${category.name ?? ""} list",
+            onTapAddToWish: (Products item, {required bool isLiked}) async {
+              bool value = false;
+              value = isLiked
+                  ? await removeFromWishListAPICall(productId: item.sId ?? "")
+                  : await addToWishListAPICall(productId: item.sId ?? "");
+
+              if (value) {
+                item.isInWishList = !(item.isInWishList ?? false);
+                isLiked = item.isInWishList ?? false;
+                paging.notifyListeners();
+              } else {}
+            },
+            onTapAddToCart: (Products item) async {
+              (bool, String) value = (false, "");
+              value = await addToCartAPICall(productId: item.sId ?? "");
+
+              if (value.$1) {
+                item
+                  ..cartQty = 1
+                  ..cartItemId = value.$2;
+                paging.notifyListeners();
+              } else {}
+            },
+            incQty: (Products item) async {
+              final num newQty = (item.cartQty ?? 0) + 1;
+
+              bool value = false;
+              value = await updateCartAPICall(
+                itemId: item.cartItemId ?? "",
+                cartId: item.cartId ?? "",
+                qty: newQty,
+              );
+
+              if (value) {
+                item.cartQty = newQty;
+                paging.notifyListeners();
+              } else {}
+            },
+            decQty: (Products item) async {
+              final num newQty = (item.cartQty ?? 0) - 1;
+
+              bool value = false;
+              value = await updateCartAPICall(
+                itemId: item.cartItemId ?? "",
+                cartId: item.cartId ?? "",
+                qty: newQty,
+              );
+
+              if (value) {
+                item.cartQty = newQty;
+                paging.notifyListeners();
+              } else {}
+            },
+            onPressedDelete: (Products item) async {
+              bool value = false;
+              value = await removeFromCartAPICall(
+                itemId: item.cartItemId ?? "",
+                cartId: item.cartId ?? "",
+              );
+
+              if (value) {
+                item.cartQty = 0;
+                paging.notifyListeners();
+              } else {}
+            },
+            type: "${products.name ?? ""} list",
           ),
         ],
       ),

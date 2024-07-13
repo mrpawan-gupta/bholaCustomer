@@ -15,6 +15,7 @@ import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
+//
 
 class SettingsMainScreen extends GetView<SettingsMainController> {
   const SettingsMainScreen({super.key});
@@ -49,6 +50,16 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
                   // ),
                   // const SizedBox(height: 16),
                   settingsItems(
+                    itemName: "Manage Addresses",
+                    onTap: () async {
+                      await AppNavService().pushNamed(
+                        destination: AppRoutes().addressesListScreen,
+                        arguments: <String, dynamic>{},
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  settingsItems(
                     itemName: "Connect with Us",
                     onTap: () async {
                       await AppNavService().pushNamed(
@@ -63,19 +74,19 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
                     onTap: openLegalPoliciesWidget,
                   ),
                   const SizedBox(height: 16),
-                  settingsItems(
-                    itemName: "App Info",
-                    onTap: () async {
-                      await AppNavService().pushNamed(
-                        destination: AppRoutes().appInfoScreen,
-                        arguments: <String, dynamic>{},
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 16),
+                  // settingsItems(
+                  //   itemName: "App Info",
+                  //   onTap: () async {
+                  //     await AppNavService().pushNamed(
+                  //       destination: AppRoutes().appInfoScreen,
+                  //       arguments: <String, dynamic>{},
+                  //     );
+                  //   },
+                  // ),
+                  // const SizedBox(height: 16),
                   settingsItems1(
-                    itemName: "Try our Customer App",
-                    onTap: AppOpenStore().openStoreForCustomer,
+                    itemName: "Try our Vendor App",
+                    onTap: AppOpenStore().openStoreForVendor,
                   ),
                   const SizedBox(height: 16),
                   Row(
@@ -105,6 +116,23 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
                   ),
                   const SizedBox(height: 16),
                   noteWidget(),
+                  const SizedBox(height: 16),
+                  InkWell(
+                    borderRadius: BorderRadius.circular(12.0),
+                    onTap: () async {
+                      await AppNavService().pushNamed(
+                        destination: AppRoutes().appInfoScreen,
+                        arguments: <String, dynamic>{},
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        "Build info: ${controller.rxPackageInfo.value.version} (${controller.rxPackageInfo.value.buildNumber})",
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
                   const SizedBox(height: 16),
                 ],
               );

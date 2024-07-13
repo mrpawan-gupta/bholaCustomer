@@ -14,7 +14,7 @@ class AppFonts {
   TextTheme getTextTheme() {
     TextTheme textTheme = const TextTheme();
     final bool value = AppNetCheckService().hasConnectionSynchronous;
-
+    GoogleFonts.config.allowRuntimeFetching = value;
     try {
       if (value) {
         textTheme = GoogleFonts.latoTextTheme();

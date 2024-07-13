@@ -14,28 +14,34 @@ class AppNavService extends GetxService {
 
   String previousRoute = AppRoutes().splashScreen;
 
-  Future<void> pushNamed({
+  Future<dynamic> pushNamed({
     required String destination,
     required Map<String, dynamic> arguments,
   }) async {
-    await Get.key.currentState?.pushNamed(destination, arguments: arguments);
-    return Future<void>.value();
+    final NavigatorState? state = Get.key.currentState;
+    final dynamic result = await state?.pushNamed<dynamic>(
+      destination,
+      arguments: arguments,
+    );
+    return Future<dynamic>.value(result);
   }
 
-  Future<void> pushNamedAndRemoveUntil({
+  Future<dynamic> pushNamedAndRemoveUntil({
     required String destination,
     required Map<String, dynamic> arguments,
   }) async {
-    await Get.key.currentState?.pushNamedAndRemoveUntil(
+    final NavigatorState? state = Get.key.currentState;
+    final dynamic result = await state?.pushNamedAndRemoveUntil<dynamic>(
       destination,
       arguments: arguments,
       (Route<dynamic> route) => false,
     );
-    return Future<void>.value();
+    return Future<dynamic>.value(result);
   }
 
-  void pop([Object? result]) {
-    final bool canPop = Get.key.currentState?.canPop() ?? false;
+  dynamic pop([Object? result]) {
+    final NavigatorState? state = Get.key.currentState;
+    final bool canPop = state?.canPop() ?? false;
     if (canPop) {
       Get.key.currentState?.pop(result);
     } else {}
@@ -43,8 +49,7 @@ class AppNavService extends GetxService {
   }
 
   bool canPop() {
-    final bool can = Get.key.currentState?.canPop() ?? false;
-    return can;
+    return Get.key.currentState?.canPop() ?? false;
   }
 
   Future<void> observer(Routing? routing) async {

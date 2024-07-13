@@ -7,6 +7,7 @@ import "package:intl/intl.dart";
 // From: Back-End
 // const CREATED = 'Created';
 // const BOOKINGCONFIRM = 'BookingConfirm';
+// const BOOKINGACCEPTED = 'BookingAccepted';
 // const PAYMENTDONE = 'PaymentDone';
 // const WORKINPROGRESS = 'WorkInProgress';
 // const COMPLETED = 'Completed';
@@ -17,22 +18,25 @@ String getBookingStatusString({required String status}) {
 
   switch (status) {
     case "Created":
-      value = "Created";
+      value = "Booking - Created";
       break;
     case "BookingConfirm":
-      value = "Booking Confirm";
+      value = "Booking - Confirmed";
+      break;
+    case "BookingAccepted":
+      value = "Booking - Accepted";
       break;
     case "PaymentDone":
-      value = "Payment Done";
+      value = "Booking - Payment Done";
       break;
     case "WorkInProgress":
-      value = "Work In Progress";
+      value = "Booking - Work In Progress";
       break;
     case "Completed":
-      value = "Completed";
+      value = "Booking - Completed";
       break;
     case "Cancelled":
-      value = "Cancelled";
+      value = "Booking - Cancelled";
       break;
     default:
       break;
@@ -48,6 +52,9 @@ Color getBorderColor({required String status}) {
       value = AppColors().appGrey;
       break;
     case "BookingConfirm":
+      value = AppColors().appPrimaryColor;
+      break;
+    case "BookingAccepted":
       value = AppColors().appPrimaryColor;
       break;
     case "PaymentDone":

@@ -1,3 +1,7 @@
+// ignore_for_file: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member, lines_longer_than_80_chars
+
+import "package:customer/common_functions/cart_list_and_wish_list_functions.dart";
+import "package:customer/common_functions/stream_functions.dart";
 import "package:customer/common_widgets/app_text_field.dart";
 import "package:customer/controllers/nested_category/products_list_controller.dart";
 import "package:customer/models/banner_model.dart";
@@ -9,46 +13,110 @@ import "package:customer/screens/nested_category/products_list/my_utils/filter_c
 import "package:customer/screens/nested_category/products_list/my_utils/filter_range_widget.dart";
 import "package:customer/screens/nested_category/products_list/my_utils/filter_sort_by_widget.dart";
 import "package:customer/services/app_nav_service.dart";
+import "package:customer/utils/app_assets_images.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_debouncer.dart";
 import "package:customer/utils/app_routes.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:get/get.dart";
+import "package:infinite_scroll_pagination/infinite_scroll_pagination.dart";
 
 class ProductsListScreen extends GetView<ProductsListController> {
   const ProductsListScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text("Products Listing"),
-        surfaceTintColor: AppColors().appTransparentColor,
-      ),
-      body: SafeArea(
-        child: Obx(
-          () {
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                searchBarWidget(),
-                const SizedBox(height: 16),
-                filterWidget(),
-                const SizedBox(height: 16),
-                actionChipsWidget(),
-                const SizedBox(height: 0),
-                banners(),
-                // const SizedBox(height: 16),
-                gridView(),
-                // const SizedBox(height: 16),
-              ],
-            );
-          },
-        ),
-      ),
+    return Obx(
+      () {
+        return Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            title: const Text("Products Listing"),
+            surfaceTintColor: AppColors().appTransparentColor,
+            actions: <Widget>[
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  IconButton(
+                    onPressed: () async {
+                      await AppNavService().pushNamed(
+                        destination: AppRoutes().wishListScreen,
+                        arguments: <String, dynamic>{},
+                      );
+
+                      functionWishSinkAdd();
+                    },
+                    icon: Badge(
+                      isLabelVisible: rxWishListCount.value != 0,
+                      label: Text("${rxWishListCount.value}"),
+                      textColor: AppColors().appWhiteColor,
+                      backgroundColor: AppColors().appPrimaryColor,
+                      child: Image.asset(
+                        AppAssetsImages().appBarWish,
+                        height: 32,
+                        width: 32,
+                        fit: BoxFit.cover,
+                        color: rxWishListCount.value != 0
+                            ? AppColors().appPrimaryColor
+                            : AppColors().appGreyColor,
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () async {
+                      await AppNavService().pushNamed(
+                        destination: AppRoutes().cartScreen,
+                        arguments: <String, dynamic>{},
+                      );
+
+                      functionCartSinkAdd();
+                    },
+                    icon: Badge(
+                      isLabelVisible: rxCartListCount.value != 0,
+                      label: Text("${rxCartListCount.value}"),
+                      textColor: AppColors().appWhiteColor,
+                      backgroundColor: AppColors().appPrimaryColor,
+                      child: Image.asset(
+                        AppAssetsImages().appBarCart,
+                        height: 32,
+                        width: 32,
+                        fit: BoxFit.cover,
+                        color: rxCartListCount.value != 0
+                            ? AppColors().appPrimaryColor
+                            : AppColors().appGreyColor,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                ],
+              ),
+            ],
+          ),
+          body: SafeArea(
+            child: Obx(
+              () {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    searchBarWidget(),
+                    const SizedBox(height: 16),
+                    filterWidget(),
+                    // const SizedBox(height: 16),
+                    // actionChipsWidget(),
+                    const SizedBox(height: 0),
+                    banners(),
+                    const SizedBox(height: 0),
+                    gridView(),
+                    // const SizedBox(height: 16),
+                  ],
+                );
+              },
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -143,15 +211,14 @@ class ProductsListScreen extends GetView<ProductsListController> {
                             : AppColors().appGrey,
                       ),
                       const SizedBox(width: 4),
-                      Text(
-                        "${controller.filterCount().value}",
-                        style: TextStyle(
-                          color: controller.filterCount().value > 0
-                              ? AppColors().appWhiteColor
-                              : AppColors().appGrey,
+                      CircleAvatar(
+                        backgroundColor: AppColors().appWhiteColor,
+                        radius: 12,
+                        child: Text(
+                          "${controller.filterCount().value}",
+                          style: const TextStyle(fontSize: 12),
                         ),
                       ),
-                      const SizedBox(width: 4),
                     ],
                   ),
                 ),
@@ -187,12 +254,22 @@ class ProductsListScreen extends GetView<ProductsListController> {
                           ),
                         ),
                         const SizedBox(width: 4),
-                        Icon(
-                          Icons.arrow_drop_down_circle_outlined,
-                          color: controller.filterIsPriceApplied().value
-                              ? AppColors().appWhiteColor
-                              : AppColors().appGrey,
-                        ),
+                        if (controller.filterIsPriceApplied().value)
+                          CircleAvatar(
+                            backgroundColor: AppColors().appWhiteColor,
+                            radius: 12,
+                            child: const Text(
+                              "1",
+                              style: TextStyle(fontSize: 12),
+                            ),
+                          )
+                        else
+                          Icon(
+                            Icons.arrow_drop_down_circle_outlined,
+                            color: controller.filterIsPriceApplied().value
+                                ? AppColors().appWhiteColor
+                                : AppColors().appGrey,
+                          ),
                       ],
                     ),
                   ),
@@ -229,12 +306,22 @@ class ProductsListScreen extends GetView<ProductsListController> {
                           ),
                         ),
                         const SizedBox(width: 4),
-                        Icon(
-                          Icons.arrow_drop_down_circle_outlined,
-                          color: controller.filterIsSortByApplied().value
-                              ? AppColors().appWhiteColor
-                              : AppColors().appGrey,
-                        ),
+                        if (controller.filterIsSortByApplied().value)
+                          CircleAvatar(
+                            backgroundColor: AppColors().appWhiteColor,
+                            radius: 12,
+                            child: const Text(
+                              "1",
+                              style: TextStyle(fontSize: 12),
+                            ),
+                          )
+                        else
+                          Icon(
+                            Icons.arrow_drop_down_circle_outlined,
+                            color: controller.filterIsSortByApplied().value
+                                ? AppColors().appWhiteColor
+                                : AppColors().appGrey,
+                          ),
                       ],
                     ),
                   ),
@@ -271,12 +358,22 @@ class ProductsListScreen extends GetView<ProductsListController> {
                           ),
                         ),
                         const SizedBox(width: 4),
-                        Icon(
-                          Icons.arrow_drop_down_circle_outlined,
-                          color: controller.filterIsCategoryApplied().value
-                              ? AppColors().appWhiteColor
-                              : AppColors().appGrey,
-                        ),
+                        if (controller.filterIsCategoryApplied().value)
+                          CircleAvatar(
+                            backgroundColor: AppColors().appWhiteColor,
+                            radius: 12,
+                            child: const Text(
+                              "1",
+                              style: TextStyle(fontSize: 12),
+                            ),
+                          )
+                        else
+                          Icon(
+                            Icons.arrow_drop_down_circle_outlined,
+                            color: controller.filterIsCategoryApplied().value
+                                ? AppColors().appWhiteColor
+                                : AppColors().appGrey,
+                          ),
                       ],
                     ),
                   ),
@@ -333,16 +430,29 @@ class ProductsListScreen extends GetView<ProductsListController> {
   }
 
   Widget banners() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        CommonHorizontalListViewBanner(
-          pagingController: controller.pagingControllerBanners,
-          onTap: (Banners item) {},
-          type: "banners list",
-        ),
-      ],
+    return ValueListenableBuilder<PagingState<int, Banners>>(
+      valueListenable: controller.pagingControllerBanners,
+      builder: (
+        BuildContext context,
+        PagingState<int, Banners> value,
+        Widget? child,
+      ) {
+        return (value.itemList?.isEmpty ?? false)
+            ? const SizedBox(height: 16)
+            : Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  const SizedBox(height: 16),
+                  CommonHorizontalListViewBanner(
+                    pagingController: controller.pagingControllerBanners,
+                    onTap: (Banners item) {},
+                    type: "banners list",
+                  ),
+                  const SizedBox(height: 16),
+                ],
+              );
+      },
     );
   }
 
@@ -360,6 +470,73 @@ class ProductsListScreen extends GetView<ProductsListController> {
                   destination: AppRoutes().viewGenericProductDetailsScreen,
                   arguments: <String, dynamic>{"id": item.sId ?? ""},
                 );
+
+                controller.pagingControllerRecently.refresh();
+              },
+              onTapAddToWish: (Products item, {required bool isLiked}) async {
+                bool value = false;
+                value = isLiked
+                    ? await removeFromWishListAPICall(productId: item.sId ?? "")
+                    : await addToWishListAPICall(productId: item.sId ?? "");
+
+                if (value) {
+                  item.isInWishList = !(item.isInWishList ?? false);
+                  isLiked = item.isInWishList ?? false;
+                  controller.pagingControllerRecently.notifyListeners();
+                } else {}
+              },
+              onTapAddToCart: (Products item) async {
+                (bool, String) value = (false, "");
+                value = await addToCartAPICall(productId: item.sId ?? "");
+
+                if (value.$1) {
+                  item
+                    ..cartQty = 1
+                    ..cartItemId = value.$2;
+                  controller.pagingControllerRecently.notifyListeners();
+                } else {}
+              },
+              incQty: (Products item) async {
+                final num newQty = (item.cartQty ?? 0) + 1;
+
+                bool value = false;
+                value = await updateCartAPICall(
+                  itemId: item.cartItemId ?? "",
+                  cartId: item.cartId ?? "",
+                  qty: newQty,
+                );
+
+                if (value) {
+                  item.cartQty = newQty;
+                  controller.pagingControllerRecently.notifyListeners();
+                } else {}
+              },
+              decQty: (Products item) async {
+                final num newQty = (item.cartQty ?? 0) - 1;
+
+                bool value = false;
+                value = await updateCartAPICall(
+                  itemId: item.cartItemId ?? "",
+                  cartId: item.cartId ?? "",
+                  qty: newQty,
+                );
+
+                if (value) {
+                  item.cartQty = newQty;
+                  controller.pagingControllerRecently.notifyListeners();
+                } else {}
+              },
+              onPressedDelete: (Products item) async {
+                bool value = false;
+                value = await removeFromCartAPICall(
+                  itemId: item.cartItemId ?? "",
+                  cartId: item.cartId ?? "",
+                );
+
+                if (value) {
+                  item.cartQty = 0;
+                  controller.pagingControllerRecently.notifyListeners();
+                } else {}
               },
               type: "product list",
             ),

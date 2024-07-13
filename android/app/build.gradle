@@ -34,7 +34,7 @@ if (flutterVersionName == null) {
 android {
     namespace "com.ahinsaaggregator.customer"
     // compileSdk flutter.compileSdkVersion
-    compileSdk 34
+    compileSdk 35
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -60,7 +60,7 @@ android {
         minSdkVersion 24
         
         // targetSdkVersion flutter.targetSdkVersion
-        targetSdk 33
+        targetSdk 35
         
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -83,7 +83,6 @@ android {
             // Signing with the debug keys for now, so `flutter run --release` works.
             // signingConfig signingConfigs.debug
             signingConfig signingConfigs.release
-            
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             ndk { abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86_64' }
         }
@@ -96,4 +95,5 @@ flutter {
 
 dependencies {
     implementation "androidx.multidex:multidex:2.0.1"
+    implementation "androidx.activity:activity:1.9.0"
 }

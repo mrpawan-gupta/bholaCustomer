@@ -1,3 +1,5 @@
+import "package:customer/models/review_rating_model.dart";
+
 class GenericProduct {
   GenericProduct({
     this.success,
@@ -56,9 +58,12 @@ class GenericProductData {
     this.wishlistCount,
     this.salePercent,
     this.saleAmount,
-    this.isAddedInCart,
-    this.isAddedInWishlist,
-    this.isAddedInPortfolio,
+    this.isInPortfolio,
+    this.isInWishList,
+    this.cartQty,
+    this.cartId,
+    this.cartItemId,
+    this.vendorProductId,
   });
 
   GenericProductData.fromJson(Map<String, dynamic> json) {
@@ -95,9 +100,12 @@ class GenericProductData {
     wishlistCount = json["wishlistCount"];
     salePercent = json["salePercent"];
     saleAmount = json["saleAmount"];
-    isAddedInCart = json["isAddedInCart"];
-    isAddedInWishlist = json["isAddedInWishlist"];
-    isAddedInPortfolio = json["isAddedInPortfolio"];
+    isInPortfolio = json["isAddedInPortfolio"];
+    isInWishList = json["isAddedInWishlist"];
+    cartQty = json["cart_qty"];
+    cartId = json["cart_id"];
+    cartItemId = json["cart_item_id"];
+    vendorProductId = json["vendor_product_id"];
   }
 
   String? sId;
@@ -123,9 +131,12 @@ class GenericProductData {
   num? wishlistCount;
   String? salePercent;
   String? saleAmount;
-  bool? isAddedInCart;
-  bool? isAddedInWishlist;
-  bool? isAddedInPortfolio;
+  bool? isInPortfolio;
+  bool? isInWishList;
+  num? cartQty;
+  String? cartId;
+  String? cartItemId;
+  String? vendorProductId;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -156,9 +167,12 @@ class GenericProductData {
     data["wishlistCount"] = wishlistCount;
     data["salePercent"] = salePercent;
     data["saleAmount"] = saleAmount;
-    data["isAddedInCart"] = isAddedInCart;
-    data["isAddedInWishlist"] = isAddedInWishlist;
-    data["isAddedInPortfolio"] = isAddedInPortfolio;
+    data["isAddedInPortfolio"] = isInPortfolio;
+    data["isAddedInWishlist"] = isInWishList;
+    data["cart_qty"] = cartQty;
+    data["cart_id"] = cartId;
+    data["cart_item_id"] = cartItemId;
+    data["vendor_product_id"] = vendorProductId;
     return data;
   }
 }
@@ -189,60 +203,6 @@ class Ratings {
     data["star"] = star;
     data["isDeleted"] = isDeleted;
     data["_id"] = sId;
-    return data;
-  }
-}
-
-class Reviews {
-  Reviews({
-    this.customer,
-    this.review,
-    this.star,
-    this.photos,
-    this.isDeleted,
-    this.sId,
-    this.date,
-    this.customerFirstName,
-    this.customerLastName,
-    this.customerProfilePhoto,
-  });
-
-  Reviews.fromJson(Map<String, dynamic> json) {
-    customer = json["customer"];
-    review = json["review"];
-    star = json["star"];
-    photos = (json["photos"] as List<dynamic>).cast<String>();
-    isDeleted = json["isDeleted"];
-    sId = json["_id"];
-    date = json["date"];
-    customerFirstName = json["customerFirstName"];
-    customerLastName = json["customerLastName"];
-    customerProfilePhoto = json["customerProfilePhoto"];
-  }
-
-  String? customer;
-  String? review;
-  num? star;
-  List<String>? photos;
-  bool? isDeleted;
-  String? sId;
-  String? date;
-  String? customerFirstName;
-  String? customerLastName;
-  String? customerProfilePhoto;
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data["customer"] = customer;
-    data["review"] = review;
-    data["star"] = star;
-    data["photos"] = photos;
-    data["isDeleted"] = isDeleted;
-    data["_id"] = sId;
-    data["date"] = date;
-    data["customerFirstName"] = customerFirstName;
-    data["customerLastName"] = customerLastName;
-    data["customerProfilePhoto"] = customerProfilePhoto;
     return data;
   }
 }

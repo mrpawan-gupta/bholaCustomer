@@ -1,8 +1,10 @@
+import "dart:async";
 import "dart:developer";
 
 import "package:customer/models/fcm_data.dart";
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
+import "package:customer/utils/app_constants.dart";
 import "package:customer/utils/app_logger.dart";
 import "package:customer/utils/app_pretty_print_json.dart";
 import "package:customer/utils/app_routes.dart";
@@ -77,30 +79,41 @@ class AppFCMService extends GetxService {
     FirebaseMessaging.onMessage.listen(
       (RemoteMessage? message) async {
         final RemoteNotification? notification = message!.notification;
+
         final AndroidNotification? android = message.notification?.android;
         final AppleNotification? apple = message.notification?.apple;
 
         final bool condition1 = notification != null;
         final bool condition2 = android != null || apple != null;
+        final bool finalCondition = condition1 && condition2;
 
-        if (condition1 && condition2) {
-          Get
-            ..closeAllSnackbars()
-            ..snackbar(
-              notification.title ?? "",
-              notification.body ?? "",
-              snackPosition: SnackPosition.TOP,
-              backgroundColor: AppColors().appPrimaryColor.withOpacity(0.64),
-              duration: const Duration(seconds: 4),
-              isDismissible: true,
-              dismissDirection: DismissDirection.horizontal,
-              colorText: Colors.white,
-              onTap: (GetSnackBar getSnackBar) async {
-                final Map<String, dynamic> payload = message.data;
-                final String stringPayload = payload.toString();
-                await onTapForegoundOrBackground(stringPayload);
+        if (finalCondition) {
+          unawaited(
+            Get.closeCurrentSnackbar().whenComplete(
+              () {
+                Get.snackbar(
+                  notification.title ?? "",
+                  notification.body ?? "",
+                  snackPosition: SnackPosition.TOP,
+                  snackStyle: SnackStyle.FLOATING,
+                  backgroundColor:
+                      AppColors().appPrimaryColor.withOpacity(0.64),
+                  duration: AppConstants().duration,
+                  isDismissible: true,
+                  dismissDirection: DismissDirection.horizontal,
+                  colorText: Colors.white,
+                  onTap: (GetSnackBar getSnackBar) async {
+                    final Map<String, dynamic> payload = message.data;
+                    final String stringPayload = payload.toString();
+                    await onTapForegoundOrBackground(stringPayload);
+                  },
+                  instantInit: false,
+                );
+
+                return;
               },
-            );
+            ),
+          );
         } else {}
       },
     );

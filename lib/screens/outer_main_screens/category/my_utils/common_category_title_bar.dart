@@ -1,19 +1,20 @@
+import "package:customer/screens/outer_main_screens/category/my_utils/common_horizontal_grid_view.dart";
 import "package:customer/utils/app_colors.dart";
-import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/material.dart";
-import "package:get/get.dart";
 
 class CommonCategoryTitleBar extends StatelessWidget {
   const CommonCategoryTitleBar({
     required this.title,
     required this.isViewAllNeeded,
     required this.onTapViewAll,
+    required this.itemType,
     super.key,
   });
 
   final String title;
   final bool isViewAllNeeded;
   final Function() onTapViewAll;
+  final Types itemType;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +42,11 @@ class CommonCategoryTitleBar extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  AppLanguageKeys().strViewAll.tr,
+                  itemType == Types.categories
+                      ? "View All"
+                      : itemType == Types.services
+                          ? "Book Now"
+                          : "",
                   style: TextStyle(color: AppColors().appPrimaryColor),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,

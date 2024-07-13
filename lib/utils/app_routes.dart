@@ -1,9 +1,10 @@
+import "package:customer/bindings/address_binding/addresses_list_binding.dart";
 import "package:customer/bindings/booking_binding/added_quotes_binding.dart";
 import "package:customer/bindings/booking_binding/booking_details_binding.dart";
 import "package:customer/bindings/booking_binding/booking_payment_binding.dart";
+import "package:customer/bindings/cart_binding/cart_binding.dart";
+import "package:customer/bindings/coupon_binding/coupon_binding.dart";
 import "package:customer/bindings/login_screen_bindings/intro_slider_binding.dart";
-// import "package:customer/bindings/login_screen_bindings/language_selection_binding.dart";
-// import "package:customer/bindings/login_screen_bindings/notification_screen_binding.dart";
 import "package:customer/bindings/login_screen_bindings/otp_screen_binding.dart";
 import "package:customer/bindings/login_screen_bindings/phone_number_screen_binding.dart";
 import "package:customer/bindings/login_screen_bindings/splash_screen_binding.dart";
@@ -15,17 +16,20 @@ import "package:customer/bindings/outer_main_bindings/category_binding.dart";
 import "package:customer/bindings/outer_main_bindings/help_binding.dart";
 import "package:customer/bindings/outer_main_bindings/home_binding.dart";
 import "package:customer/bindings/outer_main_bindings/order_history_binding.dart";
+import "package:customer/bindings/review_rating_binding/review_rating_binding.dart";
 import "package:customer/bindings/settings_bindings/app_info_binding.dart";
 import "package:customer/bindings/settings_bindings/change_language_binding.dart";
 import "package:customer/bindings/settings_bindings/edit_profile_binding.dart";
 import "package:customer/bindings/settings_bindings/settings_main_binding.dart";
 import "package:customer/bindings/settings_bindings/support_binding.dart";
+import "package:customer/bindings/wish_list_binding/wish_list_binding.dart";
+import "package:customer/screens/address_screen/addresses_list_screen.dart";
 import "package:customer/screens/booking_screen/added_quotes_screen.dart";
 import "package:customer/screens/booking_screen/booking_details_screen.dart";
 import "package:customer/screens/booking_screen/booking_payment_screen.dart";
+import "package:customer/screens/cart_screen/cart_screen.dart";
+import "package:customer/screens/coupon_screen/coupon_screen.dart";
 import "package:customer/screens/login_screen/intro_slider_screen.dart";
-// import "package:customer/screens/login_screen/language_selection.dart";
-// import "package:customer/screens/login_screen/notification_screen.dart";
 import "package:customer/screens/login_screen/otp_screen.dart";
 import "package:customer/screens/login_screen/phone_number_screen.dart";
 import "package:customer/screens/login_screen/splash_screen.dart";
@@ -37,11 +41,13 @@ import "package:customer/screens/outer_main_screens/category/category_screen.dar
 import "package:customer/screens/outer_main_screens/help_screen.dart";
 import "package:customer/screens/outer_main_screens/home/home_screen.dart";
 import "package:customer/screens/outer_main_screens/order_history_screen.dart";
+import "package:customer/screens/review_rating_screen/review_rating_screen.dart";
 import "package:customer/screens/settings_screens/app_info_screen.dart";
 import "package:customer/screens/settings_screens/change_language_screen.dart";
 import "package:customer/screens/settings_screens/edit_profile_screen.dart";
 import "package:customer/screens/settings_screens/settings_main_screen.dart";
 import "package:customer/screens/settings_screens/support_screen.dart";
+import "package:customer/screens/wish_list_screen/wish_list_screen.dart";
 import "package:get/get.dart";
 
 class AppRoutes {
@@ -53,9 +59,7 @@ class AppRoutes {
   static final AppRoutes _singleton = AppRoutes._internal();
 
   final String splashScreen = "/";
-  // final String languageSelectionScreen = "/languageSelection";
   final String introSliderScreen = "/introSliderScreen";
-  // final String notificationScreen = "/notificationScreen";
   final String phoneNoScreen = "/phoneNoScreen";
   final String otpScreen = "/otpScreen";
 
@@ -80,27 +84,23 @@ class AppRoutes {
   final String viewGenericProductDetailsScreen =
       "/viewGenericProductDetailsScreen";
 
+  final String wishListScreen = "/wishListScreen";
+  final String cartScreen = "/cartScreen";
+  final String reviewRatingScreen = "/reviewRatingScreen";
+  final String couponScreen = "/couponScreen";
+  final String addressesListScreen = "/addressesListScreen";
+
   List<GetPage<dynamic>> getPages() {
     final GetPage<dynamic> splashScreenRoute = GetPage<dynamic>(
       name: splashScreen,
       page: SplashScreen.new,
       binding: SplashScreenBinding(),
     );
-    // final GetPage<dynamic> languageSelectionRoute = GetPage<dynamic>(
-    //   name: languageSelectionScreen,
-    //   page: LanguageSelectionPage.new,
-    //   binding: LanguageSelectionBinding(),
-    // );
     final GetPage<dynamic> introSliderRoute = GetPage<dynamic>(
       name: introSliderScreen,
       page: IntroSliderScreen.new,
       binding: IntroSliderBinding(),
     );
-    // final GetPage<dynamic> notificationScreenRoute = GetPage<dynamic>(
-    //   name: notificationScreen,
-    //   page: NotificationScreen.new,
-    //   binding: NotificationScreenBinding(),
-    // );
     final GetPage<dynamic> phoneNumberScreenRoute = GetPage<dynamic>(
       name: phoneNoScreen,
       page: PhoneNumberScreen.new,
@@ -196,11 +196,38 @@ class AppRoutes {
       binding: ViewGenericProductDetailsBinding(),
     );
 
+    final GetPage<dynamic> wishListRoute = GetPage<dynamic>(
+      name: wishListScreen,
+      page: WishListScreen.new,
+      binding: WishListBinding(),
+    );
+    final GetPage<dynamic> cartRoute = GetPage<dynamic>(
+      name: cartScreen,
+      page: CartScreen.new,
+      binding: CartBinding(),
+    );
+
+    final GetPage<dynamic> reviewRatingRoute = GetPage<dynamic>(
+      name: reviewRatingScreen,
+      page: ReviewRatingScreen.new,
+      binding: ReviewRatingBinding(),
+    );
+
+    final GetPage<dynamic> couponRoute = GetPage<dynamic>(
+      name: couponScreen,
+      page: CouponScreen.new,
+      binding: CouponBinding(),
+    );
+
+    final GetPage<dynamic> addressesListRoute = GetPage<dynamic>(
+      name: addressesListScreen,
+      page: AddressesListScreen.new,
+      binding: AddressesListBinding(),
+    );
+
     return <GetPage<dynamic>>[
       splashScreenRoute,
-      // languageSelectionRoute,
       introSliderRoute,
-      // notificationScreenRoute,
       phoneNumberScreenRoute,
       otpScreenRoute,
       mainNavigationRoute,
@@ -219,6 +246,11 @@ class AppRoutes {
       bookingPaymentRoute,
       viewGenericProductDetailsRoute,
       addedQuotesRoute,
+      wishListRoute,
+      cartRoute,
+      reviewRatingRoute,
+      couponRoute,
+      addressesListRoute,
     ];
   }
 }

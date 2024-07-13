@@ -2,9 +2,11 @@
 
 import "dart:async";
 
+import "package:customer/common_functions/stream_functions.dart";
 import "package:customer/models/generic_product_details_model.dart";
 import "package:customer/models/get_addresses_model.dart";
 import "package:customer/models/get_user_by_id.dart";
+import "package:customer/models/product_model.dart";
 import "package:customer/models/rating_summary.dart";
 import "package:customer/models/related_suggested.dart";
 import "package:customer/services/app_api_service.dart";
@@ -45,12 +47,19 @@ class ViewGenericProductDetailsController extends GetxController {
       } else {}
     } else {}
 
+    initReinit();
+    pagingControllerProducts.addPageRequestListener(_fetchPageProducts);
+
+    subscribeWish(callback: getProductDetailsAPICall);
+    subscribeCart(callback: getProductDetailsAPICall);
+  }
+
+  void initReinit() {
     updateUserInfo(AppStorageService().getUserInfoModel());
     unawaited(getProductDetailsAPICall());
     unawaited(getAddressesAPI());
     unawaited(getRatingSummaryAPI());
-
-    pagingControllerProducts.addPageRequestListener(_fetchPageProducts);
+    return;
   }
 
   Future<void> initPodPlayerController() async {
@@ -171,8 +180,8 @@ class ViewGenericProductDetailsController extends GetxController {
         model = GetAddresses.fromJson(json);
 
         final List<Address> list = (model.data?.address ?? <Address>[]).where(
-          (Address element) {
-            return (element.isPrimary ?? false) == true;
+          (Address e) {
+            return (e.isPrimary ?? false) == true;
           },
         ).toList();
 
@@ -192,7 +201,7 @@ class ViewGenericProductDetailsController extends GetxController {
   Future<void> getRatingSummaryAPI() async {
     await AppAPIService().functionGet(
       types: Types.order,
-      endPoint: "product/${rxProductId.value}/ratingSummary",
+      endPoint: "product/${rxProductId.value}/ratings/summary",
       successCallback: (Map<String, dynamic> json) {
         AppLogger().info(message: json["message"]);
 
@@ -232,7 +241,6 @@ class ViewGenericProductDetailsController extends GetxController {
 
     final Map<String, dynamic> map1 = rxProductDetailsData.value.toJson();
     final Map<String, dynamic> map2 = GenericProductData().toJson();
-
     final String category = rxProductDetailsData.value.category ?? "";
 
     final bool condition1 = mapEquals(map1, map2);
@@ -244,10 +252,13 @@ class ViewGenericProductDetailsController extends GetxController {
     } else {
       await AppAPIService().functionGet(
         types: Types.order,
-        endPoint: "${rxProductId.value}/product/$category",
+        endPoint: "product/${rxProductId.value}/category/$category",
         query: <String, dynamic>{
           "page": pageKey,
           "limit": pageSize,
+          "sortBy": "createdAt",
+          "sortOrder": "desc",
+          "status": "Approved",
         },
         successCallback: (Map<String, dynamic> json) {
           AppLogger().info(message: json["message"]);

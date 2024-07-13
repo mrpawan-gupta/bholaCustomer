@@ -1,7 +1,8 @@
-import "package:customer/common_widgets/app_no_item_found.dart";
 import "package:customer/common_widgets/common_image_widget.dart";
 import "package:customer/models/banner_model.dart";
+import "package:customer/utils/app_colors.dart";
 import "package:flutter/material.dart";
+import "package:get/get.dart";
 import "package:infinite_scroll_pagination/infinite_scroll_pagination.dart";
 
 class CommonHorizontalListViewBanner extends StatelessWidget {
@@ -19,7 +20,7 @@ class CommonHorizontalListViewBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 150,
+      height: Get.height / 8,
       width: double.infinity,
       child: PagedListView<int, Banners>(
         shrinkWrap: true,
@@ -30,11 +31,7 @@ class CommonHorizontalListViewBanner extends StatelessWidget {
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         builderDelegate: PagedChildBuilderDelegate<Banners>(
           noItemsFoundIndicatorBuilder: (BuildContext context) {
-            return AppNoItemFoundWidget(
-              title: "No items found",
-              message: "The $type is currently empty.",
-              onTryAgain: pagingController.refresh,
-            );
+            return const SizedBox();
           },
           itemBuilder: (BuildContext context, Banners item, int i) {
             final int length = pagingController.itemList?.length ?? 0;
@@ -44,12 +41,17 @@ class CommonHorizontalListViewBanner extends StatelessWidget {
                 right: isLast ? 0.0 : 16.0,
               ),
               child: SizedBox(
-                height: 150,
-                width: 150 * 2,
+                height: Get.height / 8,
+                width: Get.width / 1.5,
                 child: Card(
-                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                  elevation: 0,
                   margin: EdgeInsets.zero,
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    side: BorderSide(color: AppColors().appPrimaryColor),
+                  ),
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  surfaceTintColor: AppColors().appWhiteColor,
                   child: Stack(
                     clipBehavior: Clip.antiAliasWithSaveLayer,
                     children: <Widget>[

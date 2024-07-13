@@ -1,9 +1,9 @@
 import "dart:convert";
-import "dart:developer";
+// import "dart:developer";
 
-import "package:customer/services/app_firestore_user_db.dart";
-import "package:customer/services/app_storage_service.dart";
-import "package:customer/utils/app_constants.dart";
+// import "package:customer/services/app_firestore_user_db.dart";
+// import "package:customer/services/app_storage_service.dart";
+// import "package:customer/utils/app_constants.dart";
 import "package:customer/utils/app_logger.dart";
 import "package:device_info_plus/device_info_plus.dart";
 import "package:get/get.dart";
@@ -42,56 +42,56 @@ class AppDevInfoService extends GetxService {
     return Future<Map<String, dynamic>>.value(allInfoAsMap);
   }
 
-  Future<void> updateInfoToFirestore() async {
-    final bool canUpdate = AppConstants().isEnabledFirestoreUpdateDevInfo;
-    if (canUpdate) {
-      final String id = AppStorageService().getUserInfoModel().sId ?? "";
-      if (id.isEmpty) {
-      } else {
-        final Map<String, dynamic> data = <String, dynamic>{};
+  // Future<void> updateInfoToFirestore() async {
+  //   final bool canUpdate = AppConstants().isEnabledFirestoreUpdateDevInfo;
+  //   if (canUpdate) {
+  //     final String id = AppStorageService().getUserInfoModel().sId ?? "";
+  //     if (id.isEmpty) {
+  //     } else {
+  //       final Map<String, dynamic> data = <String, dynamic>{};
 
-        if (GetPlatform.isAndroid) {
-          data.addAll(
-            <String, dynamic>{
-              "device": <String, Object>{
-                "OS": "Android",
-                "version": android?.version.baseOS ?? "",
-                "sdkInt": android?.version.sdkInt ?? 0,
-                "model": android?.model ?? "",
-                "brand": android?.brand ?? "",
-                "device": android?.device ?? "",
-                "serialNumber": android?.serialNumber ?? "",
-                "id": android?.id ?? "",
-                "manufacturer": android?.manufacturer ?? "",
-                "product": android?.product ?? "",
-                "board": android?.board ?? "",
-              },
-            },
-          );
-        } else if (GetPlatform.isIOS) {
-          data.addAll(
-            <String, dynamic>{
-              "device": <String, Object>{
-                "OS": "iOS",
-                "version": ios?.systemVersion ?? "",
-                "model": ios?.model ?? "",
-                "localizedModel": ios?.localizedModel ?? "",
-                "UUID": ios?.identifierForVendor ?? "",
-              },
-            },
-          );
-        } else {}
+  //       if (GetPlatform.isAndroid) {
+  //         data.addAll(
+  //           <String, dynamic>{
+  //             "device": <String, Object>{
+  //               "OS": "Android",
+  //               "version": android?.version.baseOS ?? "",
+  //               "sdkInt": android?.version.sdkInt ?? 0,
+  //               "model": android?.model ?? "",
+  //               "brand": android?.brand ?? "",
+  //               "device": android?.device ?? "",
+  //               "serialNumber": android?.serialNumber ?? "",
+  //               "id": android?.id ?? "",
+  //               "manufacturer": android?.manufacturer ?? "",
+  //               "product": android?.product ?? "",
+  //               "board": android?.board ?? "",
+  //             },
+  //           },
+  //         );
+  //       } else if (GetPlatform.isIOS) {
+  //         data.addAll(
+  //           <String, dynamic>{
+  //             "device": <String, Object>{
+  //               "OS": "iOS",
+  //               "version": ios?.systemVersion ?? "",
+  //               "model": ios?.model ?? "",
+  //               "localizedModel": ios?.localizedModel ?? "",
+  //               "UUID": ios?.identifierForVendor ?? "",
+  //             },
+  //           },
+  //         );
+  //       } else {}
 
-        await AppFirestoreUserDB().updateOrSetUser(
-          id: id,
-          data: data,
-          successCallback: log,
-          failureCallback: log,
-        );
-      }
-    } else {}
-    return Future<void>.value();
-  }
+  //       await AppFirestoreUserDB().updateOrSetUser(
+  //         id: id,
+  //         data: data,
+  //         successCallback: log,
+  //         failureCallback: log,
+  //       );
+  //     }
+  //   } else {}
+  //   return Future<void>.value();
+  // }
 
   bool isPhysicalDevice() {
     return android?.isPhysicalDevice ?? false;

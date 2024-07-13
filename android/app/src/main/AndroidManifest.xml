@@ -14,6 +14,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <!-- <uses-permission android:name="android.permission.FOREGROUND_SERVICE" /> -->
+    <!-- <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" /> -->
     <!-- <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/> -->
 
     <queries>
@@ -47,7 +48,8 @@
         android:name="${applicationName}" 
         android:icon="@mipmap/ic_launcher"
         android:allowBackup="false"
-        android:fullBackupOnly="false">
+        android:fullBackupOnly="false"
+        android:enableOnBackInvokedCallback="true">
         <activity 
             android:name=".MainActivity" 
             android:exported="true" 
@@ -73,7 +75,6 @@
                 <action android:name="FLUTTER_NOTIFICATION_CLICK" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-
             <!-- App Link -->
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
@@ -113,7 +114,6 @@
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package="com.ahinsaaggregator.customer">
          https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.
-
          In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin. -->
     <queries>
         <intent>

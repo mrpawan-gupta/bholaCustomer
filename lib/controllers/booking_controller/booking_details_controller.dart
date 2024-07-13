@@ -26,7 +26,7 @@ class BookingDetailsController extends GetxController {
     unawaited(getBookingAPICall());
   }
 
-  bool isVisibleDeleteButton() {
+  bool isVisibleConfirmAndCancelButton() {
     final String allowRoute = AppRoutes().addedQuotesScreen;
     final bool isAllowedRoute = AppNavService().previousRoute == allowRoute;
 
@@ -36,8 +36,18 @@ class BookingDetailsController extends GetxController {
     return isAllowedRoute && isStatusCorrect;
   }
 
+  bool isVisibleCancelButton() {
+    final String allowRoute = AppRoutes().mainNavigationScreen;
+    final bool isAllowedRoute = AppNavService().previousRoute == allowRoute;
+
+    final String status = rxBookings.value.status ?? "";
+    final bool isStatusCorrect = status == "BookingConfirm";
+
+    return isAllowedRoute && isStatusCorrect;
+  }
+
   bool isVisibleReviewRating() {
-    final String allowRoute = AppRoutes().addedQuotesScreen;
+    final String allowRoute = AppRoutes().mainNavigationScreen;
     final bool isAllowedRoute = AppNavService().previousRoute == allowRoute;
 
     final String status = rxBookings.value.status ?? "";
@@ -98,7 +108,7 @@ class BookingDetailsController extends GetxController {
     final Completer<bool> completer = Completer<bool>();
     await AppAPIService().functionPatch(
       types: Types.rental,
-      endPoint: "accept/booking/$id",
+      endPoint: "booking/$id/status",
       body: <String, String>{"status": "BookingConfirm"},
       successCallback: (Map<String, dynamic> json) {
         AppSnackbar().snackbarSuccess(title: "Yay!", message: json["message"]);
@@ -135,18 +145,15 @@ class BookingDetailsController extends GetxController {
 
   Future<bool> addReviewRatingAPICall({
     required String id,
-    required int rating,
+    required num rating,
     required String review,
   }) async {
     final Completer<bool> completer = Completer<bool>();
 
     await AppAPIService().functionPost(
       types: Types.rental,
-      endPoint: "review/booking/$id",
-      isForFileUpload: true,
-      formData: FormData(
-        <String, dynamic>{"star": rating, "review": review},
-      ),
+      endPoint: "booking/$id/review",
+      body: <String, dynamic>{"star": rating, "review": review},
       successCallback: (Map<String, dynamic> json) {
         AppSnackbar().snackbarSuccess(title: "Yay!", message: json["message"]);
 
@@ -157,6 +164,7 @@ class BookingDetailsController extends GetxController {
 
         completer.complete(false);
       },
+      needLoader: false,
     );
     return completer.future;
   }

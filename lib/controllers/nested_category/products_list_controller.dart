@@ -1,4 +1,5 @@
 import "dart:async";
+import "package:customer/common_functions/stream_functions.dart";
 import "package:customer/models/banner_model.dart";
 import "package:customer/models/featured_model.dart";
 import "package:customer/models/product_model.dart";
@@ -55,6 +56,9 @@ class ProductsListController extends GetxController {
     pagingControllerRecently.addPageRequestListener(_fetchPageRecently);
 
     unawaited(getCategoriesAPI());
+
+    subscribeWish(callback: pagingControllerRecently.refresh);
+    subscribeCart(callback: pagingControllerRecently.refresh);
   }
 
   @override
@@ -140,11 +144,12 @@ class ProductsListController extends GetxController {
     final Completer<List<Banners>> completer = Completer<List<Banners>>();
     await AppAPIService().functionGet(
       types: Types.order,
-      endPoint: "banners",
+      endPoint: "banner",
       query: <String, dynamic>{
         "page": pageKey,
         "limit": pageSize,
         "appType": "Customer",
+        "isActive": true,
       },
       successCallback: (Map<String, dynamic> json) {
         AppLogger().info(message: json["message"]);
@@ -170,6 +175,9 @@ class ProductsListController extends GetxController {
     final Map<String, dynamic> query = <String, dynamic>{
       "page": pageKey,
       "limit": pageSize,
+      "sortBy": "createdAt",
+      "sortOrder": "desc",
+      "status": "Approved",
     };
 
     if (rxSearchQuery.isNotEmpty) {
@@ -246,10 +254,11 @@ class ProductsListController extends GetxController {
   Future<void> getCategoriesAPI() async {
     await AppAPIService().functionGet(
       types: Types.order,
-      endPoint: "category",
+      endPoint: "productcategory",
       query: <String, dynamic>{
         "page": 1,
         "limit": 1000,
+        "status": "Approved",
       },
       successCallback: (Map<String, dynamic> json) {
         AppLogger().info(message: json["message"]);

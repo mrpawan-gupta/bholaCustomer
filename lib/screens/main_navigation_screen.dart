@@ -1,3 +1,7 @@
+import "dart:async";
+
+import "package:customer/common_functions/cart_list_and_wish_list_functions.dart";
+import "package:customer/common_functions/stream_functions.dart";
 import "package:customer/common_widgets/common_image_widget.dart";
 import "package:customer/controllers/main_navigation_controller.dart";
 import "package:customer/models/get_user_by_id.dart";
@@ -66,21 +70,53 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: CircleAvatar(
+                  IconButton(
+                    onPressed: () async {
+                      await AppNavService().pushNamed(
+                        destination: AppRoutes().wishListScreen,
+                        arguments: <String, dynamic>{},
+                      );
+
+                      functionWishSinkAdd();
+                    },
+                    icon: Badge(
+                      isLabelVisible: rxWishListCount.value != 0,
+                      label: Text("${rxWishListCount.value}"),
+                      textColor: AppColors().appWhiteColor,
                       backgroundColor: AppColors().appPrimaryColor,
-                      child: IconButton(
-                        onPressed: () async {
-                          await AppNavService().pushNamed(
-                            destination: AppRoutes().supportScreen,
-                            arguments: <String, dynamic>{},
-                          );
-                        },
-                        icon: Icon(
-                          Icons.support_agent,
-                          color: AppColors().appWhiteColor,
-                        ),
+                      child: Image.asset(
+                        AppAssetsImages().appBarWish,
+                        height: 32,
+                        width: 32,
+                        fit: BoxFit.cover,
+                        color: rxWishListCount.value != 0
+                            ? AppColors().appPrimaryColor
+                            : AppColors().appGreyColor,
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () async {
+                      await AppNavService().pushNamed(
+                        destination: AppRoutes().cartScreen,
+                        arguments: <String, dynamic>{},
+                      );
+
+                      functionCartSinkAdd();
+                    },
+                    icon: Badge(
+                      isLabelVisible: rxCartListCount.value != 0,
+                      label: Text("${rxCartListCount.value}"),
+                      textColor: AppColors().appWhiteColor,
+                      backgroundColor: AppColors().appPrimaryColor,
+                      child: Image.asset(
+                        AppAssetsImages().appBarCart,
+                        height: 32,
+                        width: 32,
+                        fit: BoxFit.cover,
+                        color: rxCartListCount.value != 0
+                            ? AppColors().appPrimaryColor
+                            : AppColors().appGreyColor,
                       ),
                     ),
                   ),
@@ -88,7 +124,11 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
                 ],
               ),
             ],
-            surfaceTintColor: AppColors().appTransparentColor,
+            surfaceTintColor: AppColors().appWhiteColor,
+            bottom: const PreferredSize(
+              preferredSize: Size.zero,
+              child: Divider(height: 0),
+            ),
           ),
           // ignore: deprecated_member_use
           body: WillPopScope(
@@ -125,7 +165,7 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
                 persistentTabConfig(
                   itemIndex: 3,
                   screen: const HelpScreen(),
-                  asset: AppAssetsImages().bottomNavHelp,
+                  asset: AppAssetsImages().bottomNavLive,
                   title: "Live",
                 ),
                 persistentTabConfig(

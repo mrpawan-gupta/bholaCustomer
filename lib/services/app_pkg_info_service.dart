@@ -1,9 +1,9 @@
 import "dart:convert";
-import "dart:developer";
+// import "dart:developer";
 
-import "package:customer/services/app_firestore_user_db.dart";
-import "package:customer/services/app_storage_service.dart";
-import "package:customer/utils/app_constants.dart";
+// import "package:customer/services/app_firestore_user_db.dart";
+// import "package:customer/services/app_storage_service.dart";
+// import "package:customer/utils/app_constants.dart";
 import "package:customer/utils/app_logger.dart";
 import "package:get/get.dart";
 import "package:package_info_plus/package_info_plus.dart";
@@ -39,31 +39,31 @@ class AppPkgInfoService extends GetxService {
     return Future<Map<String, dynamic>>.value(allInfoAsMap);
   }
 
-  Future<void> updateInfoToFirestore() async {
-    final bool canUpdate = AppConstants().isEnabledFirestoreUpdatePkgInfo;
-    if (canUpdate) {
-      final String id = AppStorageService().getUserInfoModel().sId ?? "";
-      if (id.isEmpty) {
-      } else {
-        final Map<String, dynamic> data = <String, dynamic>{
-          "package": <String, Object>{
-            "packageName": packageInfo.packageName,
-            "appName": packageInfo.appName,
-            "buildNumber": packageInfo.buildNumber,
-            "buildSignature": packageInfo.buildSignature,
-            "version": packageInfo.version,
-            "installerStore": packageInfo.installerStore ?? "",
-          },
-        };
+  // Future<void> updateInfoToFirestore() async {
+  //   final bool canUpdate = AppConstants().isEnabledFirestoreUpdatePkgInfo;
+  //   if (canUpdate) {
+  //     final String id = AppStorageService().getUserInfoModel().sId ?? "";
+  //     if (id.isEmpty) {
+  //     } else {
+  //       final Map<String, dynamic> data = <String, dynamic>{
+  //         "package": <String, Object>{
+  //           "packageName": packageInfo.packageName,
+  //           "appName": packageInfo.appName,
+  //           "buildNumber": packageInfo.buildNumber,
+  //           "buildSignature": packageInfo.buildSignature,
+  //           "version": packageInfo.version,
+  //           "installerStore": packageInfo.installerStore ?? "",
+  //         },
+  //       };
 
-        await AppFirestoreUserDB().updateOrSetUser(
-          id: id,
-          data: data,
-          successCallback: log,
-          failureCallback: log,
-        );
-      }
-    } else {}
-    return Future<void>.value();
-  }
+  //       await AppFirestoreUserDB().updateOrSetUser(
+  //         id: id,
+  //         data: data,
+  //         successCallback: log,
+  //         failureCallback: log,
+  //       );
+  //     }
+  //   } else {}
+  //   return Future<void>.value();
+  // }
 }

@@ -4,16 +4,25 @@ import "dart:io";
 import "package:customer/models/get_user_by_id.dart";
 import "package:customer/services/app_api_service.dart";
 import "package:customer/services/app_perm_service.dart";
+import "package:customer/services/app_pkg_info_service.dart";
 import "package:customer/services/app_storage_service.dart";
 import "package:customer/utils/app_intro_bottom_sheet.dart";
 import "package:customer/utils/app_session.dart";
 import "package:customer/utils/app_snackbar.dart";
 import "package:device_info_plus/device_info_plus.dart";
 import "package:get/get.dart";
+import "package:package_info_plus/package_info_plus.dart";
 import "package:permission_handler/permission_handler.dart";
 
 class SettingsMainController extends GetxController {
   final Rx<GetUserByIdData> rxUserInfo = GetUserByIdData().obs;
+
+  Rx<PackageInfo> rxPackageInfo = PackageInfo(
+    appName: "",
+    packageName: "",
+    version: "",
+    buildNumber: "",
+  ).obs;
 
   @override
   void onInit() {
@@ -24,11 +33,17 @@ class SettingsMainController extends GetxController {
 
   void initAndReInitFunction() {
     updateUserInfo(AppStorageService().getUserInfoModel());
+    updatePackageInfo(AppPkgInfoService().packageInfo);
     return;
   }
 
   void updateUserInfo(GetUserByIdData value) {
     rxUserInfo(value);
+    return;
+  }
+
+  void updatePackageInfo(PackageInfo value) {
+    rxPackageInfo(value);
     return;
   }
 

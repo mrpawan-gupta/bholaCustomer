@@ -6,14 +6,14 @@ import "package:customer/services/app_api_service.dart";
 import "package:customer/services/app_app_links_deep_link_service.dart";
 import "package:customer/services/app_dev_info_service.dart";
 import "package:customer/services/app_fcm_service.dart";
-import "package:customer/services/app_firestore_user_db.dart";
+// import "package:customer/services/app_firestore_user_db.dart";
 import "package:customer/services/app_internet_connection_checker_service.dart";
 // import "package:customer/services/app_location_service.dart";
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/services/app_performance.dart";
 import "package:customer/services/app_perm_service.dart";
 import "package:customer/services/app_pkg_info_service.dart";
-import "package:customer/services/app_remote_config.dart";
+// import "package:customer/services/app_remote_config.dart";
 import "package:customer/services/app_storage_service.dart";
 import "package:customer/utils/app_orientations.dart";
 import "package:firebase_messaging/firebase_messaging.dart";
@@ -31,10 +31,10 @@ void injectDependencies() {
     ..put(AppPermService())
     ..put(AppAppLinksDeepLinkService())
     ..put(AppPkgInfoService())
-    ..put(AppDevInfoService())
+    ..put(AppDevInfoService());
     // ..put(AppLocationService())
-    ..put(AppRemoteConfig())
-    ..put(AppFirestoreUserDB());
+    // ..put(AppRemoteConfig())
+    // ..put(AppFirestoreUserDB());
   return;
 }
 

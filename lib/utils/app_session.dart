@@ -3,11 +3,11 @@ import "dart:async";
 import "package:customer/models/get_user_by_id.dart";
 import "package:customer/models/verify_otp.dart";
 import "package:customer/services/app_api_service.dart";
-import "package:customer/services/app_dev_info_service.dart";
+// import "package:customer/services/app_dev_info_service.dart";
 import "package:customer/services/app_fcm_service.dart";
 // import "package:customer/services/app_location_service.dart";
 import "package:customer/services/app_nav_service.dart";
-import "package:customer/services/app_pkg_info_service.dart";
+// import "package:customer/services/app_pkg_info_service.dart";
 import "package:customer/services/app_storage_service.dart";
 import "package:customer/utils/app_loader.dart";
 import "package:customer/utils/app_logger.dart";
@@ -54,12 +54,12 @@ class AppSession {
     final GetUserByIdData userInfo = await AppSession().getUserAPICall();
     await AppSession().setUserInfo(userInfo: userInfo);
 
-    unawaited(AppPkgInfoService().updateInfoToFirestore());
-    unawaited(AppDevInfoService().updateInfoToFirestore());
+    // unawaited(AppPkgInfoService().updateInfoToFirestore());
+    // unawaited(AppDevInfoService().updateInfoToFirestore());
     // unawaited(AppLocationService().automatedFunction());
 
     final String id = AppStorageService().getUserAuthModel().sId ?? "";
-    await AppFCMService().subscribeToTopic(id: id);
+    unawaited(AppFCMService().subscribeToTopic(id: id));
 
     AppLoader().hideLoader();
 
@@ -74,7 +74,7 @@ class AppSession {
     AppLoader().showLoader();
 
     final String id = AppStorageService().getUserAuthModel().sId ?? "";
-    await AppFCMService().unsubscribeFromTopic(id: id);
+    unawaited(AppFCMService().unsubscribeFromTopic(id: id));
 
     await AppStorageService().erase();
 

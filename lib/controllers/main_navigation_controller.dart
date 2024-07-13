@@ -1,5 +1,6 @@
 import "dart:async";
 
+import "package:customer/common_functions/cart_list_and_wish_list_functions.dart";
 import "package:customer/controllers/outer_main_controllers/booking_controller.dart";
 import "package:customer/controllers/outer_main_controllers/category_controller.dart";
 import "package:customer/controllers/outer_main_controllers/help_controller.dart";
@@ -83,6 +84,7 @@ class MainNavigationController extends GetxController {
 
   void initAndReInitFunction() {
     updateUserInfo(AppStorageService().getUserInfoModel());
+    unawaited(wishListAndCartListAPICall());
     return;
   }
 

@@ -1,3 +1,5 @@
+import "package:customer/models/product_model.dart";
+
 class RelatedSuggested {
   RelatedSuggested({this.success, this.data, this.statusCode, this.message});
 
@@ -58,120 +60,6 @@ class RelatedSuggestedData {
     data["totalcounts"] = totalcounts;
     data["limit"] = limit;
     data["page"] = page;
-    return data;
-  }
-}
-
-class Products {
-  Products({
-    this.sId,
-    this.name,
-    this.description,
-    this.unit,
-    this.isDeleted,
-    this.price,
-    this.discountedPrice,
-    this.discountPercent,
-    this.category,
-    this.itemCode,
-    this.quantity,
-    this.sold,
-    this.sizePerQuantity,
-    this.photo,
-    this.video,
-    this.status,
-    this.cumulativeRating,
-    this.createdAt,
-    this.updatedAt,
-    this.iV,
-  });
-
-  Products.fromJson(Map<String, dynamic> json) {
-    sId = json["_id"];
-    name = json["name"];
-    description = json["description"];
-    unit = json["unit"];
-    isDeleted = json["isDeleted"];
-    price = json["price"];
-    discountedPrice = json["discountedPrice"];
-    discountPercent = json["discountPercent"];
-    category =
-        json["category"] != null ? Category.fromJson(json["category"]) : null;
-    itemCode = json["itemCode"];
-    quantity = json["quantity"];
-    sold = json["sold"];
-    sizePerQuantity = json["sizePerQuantity"];
-    photo = json["photo"];
-    video = json["video"];
-    status = json["status"];
-    cumulativeRating = json["cumulativeRating"];
-    createdAt = json["createdAt"];
-    updatedAt = json["updatedAt"];
-    iV = json["__v"];
-  }
-  String? sId;
-  String? name;
-  String? description;
-  String? unit;
-  bool? isDeleted;
-  num? price;
-  num? discountedPrice;
-  num? discountPercent;
-  Category? category;
-  int? itemCode;
-  int? quantity;
-  int? sold;
-  int? sizePerQuantity;
-  String? photo;
-  String? video;
-  String? status;
-  double? cumulativeRating;
-  String? createdAt;
-  String? updatedAt;
-  int? iV;
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data["_id"] = sId;
-    data["name"] = name;
-    data["description"] = description;
-    data["unit"] = unit;
-    data["isDeleted"] = isDeleted;
-    data["price"] = price;
-    data["discountedPrice"] = discountedPrice;
-    data["discountPercent"] = discountPercent;
-    if (category != null) {
-      data["category"] = category!.toJson();
-    }
-    data["itemCode"] = itemCode;
-    data["quantity"] = quantity;
-    data["sold"] = sold;
-    data["sizePerQuantity"] = sizePerQuantity;
-    data["photo"] = photo;
-    data["video"] = video;
-    data["status"] = status;
-    data["cumulativeRating"] = cumulativeRating;
-    data["createdAt"] = createdAt;
-    data["updatedAt"] = updatedAt;
-    data["__v"] = iV;
-    return data;
-  }
-}
-
-class Category {
-  Category({this.sId, this.name});
-
-  Category.fromJson(Map<String, dynamic> json) {
-    sId = json["_id"];
-    name = json["name"];
-  }
-  String? sId;
-  String? name;
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data["_id"] = sId;
-    data["name"] = name;
     return data;
   }
 }

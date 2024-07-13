@@ -14,12 +14,16 @@ class AppAssetsImages {
   final String splash = "assets/images/splash.png";
   final String flag = "assets/images/flag.jpg";
 
+  final String appBarCart = "assets/images/app_bar_cart.png";
+  final String appBarWish = "assets/images/app_bar_wish.png";
   final String bottomNavHome = "assets/images/bottom_nav_home.png";
   final String bottomNavPortfolio = "assets/images/bottom_nav_portfolio.png";
   final String bottomNavCategory = "assets/images/bottom_nav_category.png";
   final String bottomNavHelp = "assets/images/bottom_nav_help.png";
   final String bottomNavShopping = "assets/images/bottom_nav_shopping.png";
   final String bottomNavOrderHistory = "assets/images/bottom_nav_history.png";
+  final String bottomNavLive = "assets/images/bottom_nav_live.png";
+  final String bottomNavStats = "assets/images/bottom_nav_stats.png";
   final String bottomNavTruck = "assets/images/bottom_nav_truck.png";
   final String bottomNavDrone = "assets/images/bottom_nav_drone.png";
   final String bottomNavJCB = "assets/images/bottom_nav_jcb.png";

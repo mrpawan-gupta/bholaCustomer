@@ -1,22 +1,30 @@
-import "package:customer/common_functions/date_time_functions.dart";
+// ignore_for_file: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member, lines_longer_than_80_chars
+
+import "dart:async";
+
+import "package:customer/common_functions/cart_list_and_wish_list_functions.dart";
+import "package:customer/common_functions/stream_functions.dart";
 import "package:customer/common_widgets/app_bottom_indicator.dart";
 import "package:customer/common_widgets/app_elevated_button.dart";
 import "package:customer/common_widgets/common_image_widget.dart";
 import "package:customer/controllers/nested_category/view_generic_product_details_controller.dart";
 import "package:customer/models/generic_product_details_model.dart";
+import "package:customer/models/product_model.dart";
 import "package:customer/models/rating_summary.dart";
-import "package:customer/models/related_suggested.dart";
+import "package:customer/models/review_rating_model.dart";
 import "package:customer/screens/nested_category/view_generic_product_details/common_generic_product_title_bar.dart";
 import "package:customer/screens/nested_category/view_generic_product_details/common_horizontal_list_view_products.dart";
+import "package:customer/screens/review_rating_screen/my_utils/common_list_view.dart";
 import "package:customer/services/app_nav_service.dart";
+import "package:customer/utils/app_assets_images.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_routes.dart";
-import "package:customer/utils/app_snackbar.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:flutter_rating_bar/flutter_rating_bar.dart";
 import "package:gauge_indicator/gauge_indicator.dart";
 import "package:get/get.dart";
+import "package:infinite_scroll_pagination/infinite_scroll_pagination.dart";
 import "package:pod_player/pod_player.dart";
 import "package:read_more_text/read_more_text.dart";
 
@@ -26,48 +34,113 @@ class ViewGenericProductDetailsScreen
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text("Product Details"),
-        surfaceTintColor: AppColors().appTransparentColor,
-      ),
-      body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              child: SingleChildScrollView(
-                child: Obx(
-                  () {
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        pageViewWidget(),
-                        const SizedBox(height: 16),
-                        basicInfoWidget(),
-                        const SizedBox(height: 16),
-                        moreInfoWidget(),
-                        const SizedBox(height: 16),
-                        advanceInfoWidget(),
-                        const SizedBox(height: 16),
-                        suggestedWidget(),
-                        const SizedBox(height: 16),
-                        ratingBarGraphWidget(),
-                        const SizedBox(height: 16),
-                        reviewsWidget(),
-                      ],
-                    );
-                  },
-                ),
+    return Obx(
+      () {
+        return Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            title: const Text("Product Details"),
+            surfaceTintColor: AppColors().appTransparentColor,
+            actions: <Widget>[
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  IconButton(
+                    onPressed: () async {
+                      await AppNavService().pushNamed(
+                        destination: AppRoutes().wishListScreen,
+                        arguments: <String, dynamic>{},
+                      );
+
+                      functionWishSinkAdd();
+                    },
+                    icon: Badge(
+                      isLabelVisible: rxWishListCount.value != 0,
+                      label: Text("${rxWishListCount.value}"),
+                      textColor: AppColors().appWhiteColor,
+                      backgroundColor: AppColors().appPrimaryColor,
+                      child: Image.asset(
+                        AppAssetsImages().appBarWish,
+                        height: 32,
+                        width: 32,
+                        fit: BoxFit.cover,
+                        color: rxWishListCount.value != 0
+                            ? AppColors().appPrimaryColor
+                            : AppColors().appGreyColor,
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () async {
+                      await AppNavService().pushNamed(
+                        destination: AppRoutes().cartScreen,
+                        arguments: <String, dynamic>{},
+                      );
+
+                      functionCartSinkAdd();
+                    },
+                    icon: Badge(
+                      isLabelVisible: rxCartListCount.value != 0,
+                      label: Text("${rxCartListCount.value}"),
+                      textColor: AppColors().appWhiteColor,
+                      backgroundColor: AppColors().appPrimaryColor,
+                      child: Image.asset(
+                        AppAssetsImages().appBarCart,
+                        height: 32,
+                        width: 32,
+                        fit: BoxFit.cover,
+                        color: rxCartListCount.value != 0
+                            ? AppColors().appPrimaryColor
+                            : AppColors().appGreyColor,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                ],
               ),
+            ],
+          ),
+          body: SafeArea(
+            child: Obx(
+              () {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            pageViewWidget(),
+                            const SizedBox(height: 16),
+                            basicInfoWidget(),
+                            const SizedBox(height: 16),
+                            moreInfoWidget(),
+                            const SizedBox(height: 16),
+                            advanceInfoWidget(),
+                            const SizedBox(height: 0),
+                            suggestedWidget(),
+                            const SizedBox(height: 0),
+                            ratingBarGraphWidget(),
+                            const SizedBox(height: 16),
+                            reviewsWidget(),
+                            const SizedBox(height: 16),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    buttons(),
+                    const SizedBox(height: 16),
+                  ],
+                );
+              },
             ),
-            const SizedBox(height: 16),
-            buttons(),
-            const SizedBox(height: 16),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -76,6 +149,8 @@ class ViewGenericProductDetailsScreen
     return AspectRatio(
       aspectRatio: 1 / 1,
       child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Expanded(
             child: PageView.builder(
@@ -111,9 +186,11 @@ class ViewGenericProductDetailsScreen
             ),
           ),
           const SizedBox(height: 16),
-          AppBottomIndicator(
-            length: 2,
-            index: controller.rxCurrentIndex.value,
+          Align(
+            child: AppBottomIndicator(
+              length: 2,
+              index: controller.rxCurrentIndex.value,
+            ),
           ),
           const SizedBox(height: 16),
         ],
@@ -184,10 +261,12 @@ class ViewGenericProductDetailsScreen
 
   Widget pricingWidget() {
     final GenericProductData data = controller.rxProductDetailsData.value;
+
     final num price = data.price ?? 0;
     final num discountedPrice = data.discountedPrice ?? 0;
     final num discountPercent = data.discountPercent ?? 0;
     final bool condition = discountedPrice == 0 || discountPercent == 0;
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -312,15 +391,44 @@ class ViewGenericProductDetailsScreen
                           Icons.home_outlined,
                           color: AppColors().appPrimaryColor,
                         ),
-                        trailing: Icon(
-                          Icons.edit,
-                          color: AppColors().appPrimaryColor,
+                        trailing: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(12),
+                            onTap: () async {
+                              await AppNavService().pushNamed(
+                                destination: AppRoutes().addressesListScreen,
+                                arguments: <String, dynamic>{},
+                              );
+
+                              unawaited(controller.getAddressesAPI());
+                            },
+                            child: ColoredBox(
+                              color:
+                                  AppColors().appPrimaryColor.withOpacity(0.16),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Icon(
+                                  Icons.edit_outlined,
+                                  color: AppColors().appPrimaryColor,
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
-                        onTap: () {},
+                        onTap: () async {
+                          await AppNavService().pushNamed(
+                            destination: AppRoutes().addressesListScreen,
+                            arguments: <String, dynamic>{},
+                          );
+
+                          unawaited(controller.getAddressesAPI());
+                        },
                       ),
                     ),
                   ],
                 ),
+                const SizedBox(height: 16),
                 // const SizedBox(height: 16),
                 // Column(
                 //   mainAxisSize: MainAxisSize.min,
@@ -368,31 +476,117 @@ class ViewGenericProductDetailsScreen
   }
 
   Widget suggestedWidget() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: CommonGenericProductTitleBar(
-            title: "Suggested",
-            onTapViewAll: () {},
-            isViewAllNeeded: true,
-          ),
-        ),
-        const SizedBox(height: 8),
-        CommonHorizontalListViewProducts(
-          pagingController: controller.pagingControllerProducts,
-          onTap: (Products item) async {
-            await AppNavService().pushNamed(
-              destination: AppRoutes().viewGenericProductDetailsScreen,
-              arguments: <String, dynamic>{"id": item.sId ?? ""},
-            );
-          },
-          type: "Suggested list",
-        ),
-        const SizedBox(height: 16),
-      ],
+    return ValueListenableBuilder<PagingState<int, Products>>(
+      valueListenable: controller.pagingControllerProducts,
+      builder: (
+        BuildContext context,
+        PagingState<int, Products> value,
+        Widget? child,
+      ) {
+        return (value.itemList?.isEmpty ?? false)
+            ? const SizedBox(height: 16)
+            : Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: CommonGenericProductTitleBar(
+                      title: "Suggested",
+                      onTapViewAll: () {},
+                      isViewAllNeeded: false,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  CommonHorizontalListViewProducts(
+                    pagingController: controller.pagingControllerProducts,
+                    onTap: (Products item) async {
+                      await AppNavService().pushNamed(
+                        destination:
+                            AppRoutes().viewGenericProductDetailsScreen,
+                        arguments: <String, dynamic>{"id": item.sId ?? ""},
+                      );
+
+                      unawaited(controller.getProductDetailsAPICall());
+                    },
+                    onTapAddToWish: (
+                      Products item, {
+                      required bool isLiked,
+                    }) async {
+                      bool value = false;
+                      value = isLiked
+                          ? await removeFromWishListAPICall(
+                              productId: item.sId ?? "",
+                            )
+                          : await addToWishListAPICall(
+                              productId: item.sId ?? "",
+                            );
+
+                      if (value) {
+                        item.isInWishList = !(item.isInWishList ?? false);
+                        isLiked = item.isInWishList ?? false;
+                        controller.pagingControllerProducts.notifyListeners();
+                      } else {}
+                    },
+                    onTapAddToCart: (Products item) async {
+                      (bool, String) value = (false, "");
+                      value = await addToCartAPICall(productId: item.sId ?? "");
+
+                      if (value.$1) {
+                        item
+                          ..cartQty = 1
+                          ..cartItemId = value.$2;
+                        controller.pagingControllerProducts.notifyListeners();
+                      } else {}
+                    },
+                    incQty: (Products item) async {
+                      final num newQty = (item.cartQty ?? 0) + 1;
+
+                      bool value = false;
+                      value = await updateCartAPICall(
+                        itemId: item.cartItemId ?? "",
+                        cartId: item.cartId ?? "",
+                        qty: newQty,
+                      );
+
+                      if (value) {
+                        item.cartQty = newQty;
+                        controller.pagingControllerProducts.notifyListeners();
+                      } else {}
+                    },
+                    decQty: (Products item) async {
+                      final num newQty = (item.cartQty ?? 0) - 1;
+
+                      bool value = false;
+                      value = await updateCartAPICall(
+                        itemId: item.cartItemId ?? "",
+                        cartId: item.cartId ?? "",
+                        qty: newQty,
+                      );
+
+                      if (value) {
+                        item.cartQty = newQty;
+                        controller.pagingControllerProducts.notifyListeners();
+                      } else {}
+                    },
+                    onPressedDelete: (Products item) async {
+                      bool value = false;
+                      value = await removeFromCartAPICall(
+                        itemId: item.cartItemId ?? "",
+                        cartId: item.cartId ?? "",
+                      );
+
+                      if (value) {
+                        item.cartQty = 0;
+                        controller.pagingControllerProducts.notifyListeners();
+                      } else {}
+                    },
+                    type: "Suggested list",
+                  ),
+                  const SizedBox(height: 16),
+                ],
+              );
+      },
     );
   }
 
@@ -406,28 +600,10 @@ class ViewGenericProductDetailsScreen
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    const Expanded(
-                      child: Text(
-                        "Ratings",
-                        style: TextStyle(
-                          fontSize: 16 + 4,
-                          fontWeight: FontWeight.w700,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    InkWell(
-                      borderRadius: BorderRadius.circular(100.0),
-                      onTap: () {},
-                      child: Icon(
-                        Icons.edit,
-                        color: AppColors().appPrimaryColor,
-                      ),
-                    ),
-                  ],
+                CommonGenericProductTitleBar(
+                  title: "Ratings",
+                  onTapViewAll: () {},
+                  isViewAllNeeded: false,
                 ),
                 const SizedBox(height: 8),
                 Card(
@@ -443,6 +619,8 @@ class ViewGenericProductDetailsScreen
                       child: Row(
                         children: <Widget>[
                           const Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text("5 ⭐"),
                               SizedBox(height: 4),
@@ -464,6 +642,8 @@ class ViewGenericProductDetailsScreen
                           else
                             Expanded(
                               child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   commonLinearProgressIndicator(
                                     value: (data.ratingsSummary?.i5 ?? 0) /
@@ -494,12 +674,14 @@ class ViewGenericProductDetailsScreen
                             ),
                           const SizedBox(width: 16),
                           Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
                                 "${data.totalRatings ?? 0}",
                                 style: const TextStyle(
-                                  fontSize: 16 + 4,
-                                  fontWeight: FontWeight.w700,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
                                 ),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
@@ -560,82 +742,44 @@ class ViewGenericProductDetailsScreen
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: CommonGenericProductTitleBar(
                   title: "Reviews",
-                  onTapViewAll: () {},
+                  onTapViewAll: () async {
+                    await AppNavService().pushNamed(
+                      destination: AppRoutes().reviewRatingScreen,
+                      arguments: <String, dynamic>{
+                        "id": data.sId ?? "",
+                        "route": AppRoutes().viewGenericProductDetailsScreen,
+                      },
+                    );
+
+                    unawaited(controller.getProductDetailsAPICall());
+                  },
                   isViewAllNeeded: true,
                 ),
               ),
+              const SizedBox(height: 8),
               ListView.separated(
                 shrinkWrap: true,
                 itemCount: data.reviews?.length ?? 0,
-                physics: const NeverScrollableScrollPhysics(),
+                physics: const ScrollPhysics(),
+                padding: EdgeInsets.zero,
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
                 separatorBuilder: (BuildContext context, int index) {
                   return const Divider(indent: 16, endIndent: 16);
                 },
                 itemBuilder: (BuildContext context, int index) {
                   final Reviews item = data.reviews?[index] ?? Reviews();
-                  final String customerFirstName = item.customerFirstName ?? "";
-                  final String customerLastName = item.customerLastName ?? "";
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      ListTile(
-                        leading: CircleAvatar(
-                          radius: 24,
-                          child: CommonImageWidget(
-                            imageUrl: item.customerProfilePhoto ?? "",
-                            fit: BoxFit.cover,
-                            imageType: ImageType.user,
-                          ),
-                        ),
-                        title: Text(
-                          "$customerFirstName $customerLastName",
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: Row(
-                          children: <Widget>[
-                            Flexible(
-                              child: RatingBar.builder(
-                                ignoreGestures: true,
-                                allowHalfRating: true,
-                                initialRating: (item.star ?? 0.0).toDouble(),
-                                itemSize: 16,
-                                unratedColor: AppColors().appGrey,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Icon(
-                                    Icons.star,
-                                    color: AppColors().appOrangeColor,
-                                  );
-                                },
-                                onRatingUpdate: (double value) {},
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              formattedDateTime(
-                                dateTimeString: item.date ?? "",
-                              ),
-                            ),
-                          ],
-                        ),
-                        trailing: IconButton(
-                          onPressed: () {},
-                          icon: const Icon(Icons.more_vert),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Text(
-                          item.review ?? "",
-                          style: TextStyle(color: AppColors().appGrey),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
+
+                  return reviewsListAdapter(
+                    item: item,
+                    onTap: (Reviews item) {},
+                    onPressedEdit: (Reviews item) async {},
+                    onPressedDelete: (Reviews item) async {},
+                    type: "reviews list",
+                    needMoreOptionsButton: false,
                   );
                 },
               ),
-              const SizedBox(height: 16),
             ],
           );
   }
@@ -669,6 +813,11 @@ class ViewGenericProductDetailsScreen
   }
 
   Widget buttons() {
+    final GenericProductData data = controller.rxProductDetailsData.value;
+
+    final bool isInWishList = data.isInWishList ?? false;
+    final bool isInCartList = (data.cartQty ?? 0) > 0;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Row(
@@ -679,12 +828,18 @@ class ViewGenericProductDetailsScreen
               height: 50,
               width: double.infinity,
               child: AppElevatedButton(
-                text: "Add to Cart",
-                onPressed: () {
-                  AppSnackbar().snackbarFailure(
-                    title: "Oops!",
-                    message: "Coming Soon!",
+                text: isInWishList ? "Go to Wish List" : "Add to Wish List",
+                onPressed: () async {
+                  if (!isInWishList) {
+                    await addToWishListAPICall(productId: data.sId ?? "");
+                  } else {}
+
+                  await AppNavService().pushNamed(
+                    destination: AppRoutes().wishListScreen,
+                    arguments: <String, dynamic>{},
                   );
+
+                  unawaited(controller.getProductDetailsAPICall());
                 },
               ),
             ),
@@ -695,12 +850,18 @@ class ViewGenericProductDetailsScreen
               height: 50,
               width: double.infinity,
               child: AppElevatedButton(
-                text: "Buy Now",
-                onPressed: () {
-                  AppSnackbar().snackbarFailure(
-                    title: "Oops!",
-                    message: "Coming Soon!",
+                text: isInCartList ? "Go to Cart List" : "Add to Cart List",
+                onPressed: () async {
+                  if (!isInCartList) {
+                    await addToCartAPICall(productId: data.sId ?? "");
+                  } else {}
+
+                  await AppNavService().pushNamed(
+                    destination: AppRoutes().cartScreen,
+                    arguments: <String, dynamic>{},
                   );
+
+                  unawaited(controller.getProductDetailsAPICall());
                 },
               ),
             ),

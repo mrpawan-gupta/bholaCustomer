@@ -76,8 +76,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       builder: (BuildContext context, Widget? child) {
         final Locale locale = AppStorageService().getUserLangFromStorage();
+        final Widget widget = child ?? const SizedBox();
+        const TextScaler textScaler = TextScaler.noScaling;
         return MediaQuery(
-          data: context.mediaQuery.copyWith(textScaler: TextScaler.noScaling),
+          data: context.mediaQuery.copyWith(textScaler: textScaler),
           child: AppLoader().globalLoaderOverlay(
             child: AppKeyboardManager().globalKeyboardDismisser(
               child: UpgradeAlert(
@@ -86,8 +88,11 @@ class MyApp extends StatelessWidget {
                   languageCode: locale.languageCode,
                   countryCode: locale.countryCode ?? "",
                   debugLogging: kDebugMode,
+                  durationUntilAlertAgain: Duration.zero,
                 ),
-                child: child ?? const SizedBox(),
+                showIgnore: false,
+                showLater: false,
+                child: widget,
               ),
             ),
           ),

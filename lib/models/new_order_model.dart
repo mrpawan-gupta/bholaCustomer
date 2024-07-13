@@ -95,7 +95,7 @@ class Bookings {
     approxEndTime = json["approxEndTime"];
     status = json["status"];
     crop = json["crop"];
-    farmArea = json["farmArea"];
+    farmArea = json["farm_area"];
     customer =
         json["customer"] != null ? Customer.fromJson(json["customer"]) : null;
     vendor = json["vendor"] != null ? Vendor.fromJson(json["vendor"]) : null;
@@ -133,7 +133,7 @@ class Bookings {
     data["approxEndTime"] = approxEndTime;
     data["status"] = status;
     data["crop"] = crop;
-    data["farmArea"] = farmArea;
+    data["farm_area"] = farmArea;
     if (customer != null) {
       data["customer"] = customer!.toJson();
     }

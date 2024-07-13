@@ -657,7 +657,7 @@ class BookingScreen extends GetView<BookingController> {
                   IconButton(
                     padding: EdgeInsets.zero,
                     onPressed: () {
-                      if (controller.rxFarmArea.value > 0) {
+                      if (controller.rxFarmArea.value > 1) {
                         controller.rxFarmArea(controller.rxFarmArea.value - 1);
                       } else {}
                     },
