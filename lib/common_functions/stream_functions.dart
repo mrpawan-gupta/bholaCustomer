@@ -1,29 +1,29 @@
 import "dart:async";
 
 import "package:customer/common_functions/cart_list_and_wish_list_functions.dart";
-import "package:customer/common_functions/resubscribe_stream.dart";
+import "package:rxdart/rxdart.dart";
 
-final StreamController<void> streamController = StreamController<void>();
+final BehaviorSubject<int> _counter = BehaviorSubject<int>()..add(0);
 
-final Stream<void> stream = resubscribeStream(streamController.stream);
-
-StreamSubscription<void>? streamSubscription;
+int get counter => _counter.value;
+set counter(int value) => _counter.sink.add(value);
 
 void functionSinkAdd() {
-  streamController.sink.add(null);
+  counter++;
+  return;
 }
 
 void subscribe({required Function() callback}) {
-  streamSubscription = stream.listen(
-    (void event) {
+  _counter.listen(
+    (int event) {
       unawaited(wishListAndCartListAPICall());
+
       callback();
     },
   );
 }
 
-void unsubscribe() {
-  unawaited(streamController.sink.close());
-  unawaited(streamSubscription?.cancel());
+void closeResources() {
+  unawaited(_counter.close());
   return;
 }

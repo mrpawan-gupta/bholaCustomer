@@ -1,122 +1,46 @@
-// ignore_for_file: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member, lines_longer_than_80_chars
-
-import "package:customer/common_functions/cart_list_and_wish_list_functions.dart";
-import "package:customer/common_functions/stream_functions.dart";
 import "package:customer/common_widgets/app_text_field.dart";
-import "package:customer/controllers/nested_category/products_list_controller.dart";
-import "package:customer/models/banner_model.dart";
-import "package:customer/models/featured_model.dart";
-import "package:customer/models/product_model.dart";
-import "package:customer/screens/nested_category/products_list/my_utils/common_grid_view.dart";
-import "package:customer/screens/nested_category/products_list/my_utils/common_horizontal_list_view_banner.dart";
-import "package:customer/screens/nested_category/products_list/my_utils/filter_category_widget.dart";
-import "package:customer/screens/nested_category/products_list/my_utils/filter_range_widget.dart";
-import "package:customer/screens/nested_category/products_list/my_utils/filter_sort_by_widget.dart";
+import "package:customer/controllers/booking_controller/select_medicine_controller.dart";
+import "package:customer/models/get_all_medicines_model.dart";
+import "package:customer/screens/booking_screen/medicine/my_utils/my_utils/common_grid_view.dart";
+import "package:customer/screens/booking_screen/medicine/my_utils/my_utils/filter_range_widget.dart";
+import "package:customer/screens/booking_screen/medicine/my_utils/my_utils/filter_sort_by_widget.dart";
 import "package:customer/services/app_nav_service.dart";
-import "package:customer/utils/app_assets_images.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_debouncer.dart";
-import "package:customer/utils/app_routes.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:get/get.dart";
-import "package:infinite_scroll_pagination/infinite_scroll_pagination.dart";
 
-class ProductsListScreen extends GetView<ProductsListController> {
-  const ProductsListScreen({super.key});
+class SelectMedicineScreen extends GetWidget<SelectMedicineController> {
+  const SelectMedicineScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () {
-        return Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            title: const Text("Products Listing"),
-            surfaceTintColor: AppColors().appTransparentColor,
-            actions: <Widget>[
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  IconButton(
-                    onPressed: () async {
-                      await AppNavService().pushNamed(
-                        destination: AppRoutes().wishListScreen,
-                        arguments: <String, dynamic>{},
-                      );
-
-                      functionSinkAdd();
-                    },
-                    icon: Badge(
-                      isLabelVisible: rxWishListCount.value != 0,
-                      label: Text("${rxWishListCount.value}"),
-                      textColor: AppColors().appWhiteColor,
-                      backgroundColor: AppColors().appPrimaryColor,
-                      child: Image.asset(
-                        AppAssetsImages().appBarWish,
-                        height: 32,
-                        width: 32,
-                        fit: BoxFit.cover,
-                        color: rxWishListCount.value != 0
-                            ? AppColors().appPrimaryColor
-                            : AppColors().appGreyColor,
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () async {
-                      await AppNavService().pushNamed(
-                        destination: AppRoutes().cartScreen,
-                        arguments: <String, dynamic>{},
-                      );
-
-                      functionSinkAdd();
-                    },
-                    icon: Badge(
-                      isLabelVisible: rxCartListCount.value != 0,
-                      label: Text("${rxCartListCount.value}"),
-                      textColor: AppColors().appWhiteColor,
-                      backgroundColor: AppColors().appPrimaryColor,
-                      child: Image.asset(
-                        AppAssetsImages().appBarCart,
-                        height: 32,
-                        width: 32,
-                        fit: BoxFit.cover,
-                        color: rxCartListCount.value != 0
-                            ? AppColors().appPrimaryColor
-                            : AppColors().appGreyColor,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                ],
-              ),
-            ],
-          ),
-          body: SafeArea(
-            child: Obx(
-              () {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    searchBarWidget(),
-                    const SizedBox(height: 16),
-                    filterWidget(),
-                    // const SizedBox(height: 16),
-                    // actionChipsWidget(),
-                    const SizedBox(height: 0),
-                    banners(),
-                    const SizedBox(height: 0),
-                    gridView(),
-                    // const SizedBox(height: 16),
-                  ],
-                );
-              },
-            ),
-          ),
-        );
-      },
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text("Select Medicine"),
+        surfaceTintColor: AppColors().appTransparentColor,
+      ),
+      body: SafeArea(
+        child: Obx(
+          () {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                searchBarWidget(),
+                const SizedBox(height: 16),
+                filterWidget(),
+                const SizedBox(height: 16),
+                // actionChipsWidget(),
+                gridView(),
+                // const SizedBox(height: 16),
+              ],
+            );
+          },
+        ),
+      ),
     );
   }
 
@@ -152,7 +76,7 @@ class ProductsListScreen extends GetView<ProductsListController> {
                         controller.updateSearchQuery(value);
 
                         AppDebouncer().debounce(
-                          controller.pagingControllerRecently.refresh,
+                          controller.pagingControllerMedicines.refresh,
                         );
                       },
                       onTap: () {},
@@ -330,58 +254,6 @@ class ProductsListScreen extends GetView<ProductsListController> {
             ],
           ),
           const SizedBox(width: 16),
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Container(
-                clipBehavior: Clip.antiAliasWithSaveLayer,
-                decoration: BoxDecoration(
-                  color: controller.filterIsCategoryApplied().value
-                      ? AppColors().appPrimaryColor
-                      : AppColors().appGrey.withOpacity(0.10),
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(50),
-                  onTap: openFilterCategoryWidget,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: <Widget>[
-                        const SizedBox(width: 4),
-                        Text(
-                          "Category",
-                          style: TextStyle(
-                            color: controller.filterIsCategoryApplied().value
-                                ? AppColors().appWhiteColor
-                                : AppColors().appGrey,
-                          ),
-                        ),
-                        const SizedBox(width: 4),
-                        if (controller.filterIsCategoryApplied().value)
-                          CircleAvatar(
-                            backgroundColor: AppColors().appWhiteColor,
-                            radius: 12,
-                            child: const Text(
-                              "1",
-                              style: TextStyle(fontSize: 12),
-                            ),
-                          )
-                        else
-                          Icon(
-                            Icons.arrow_drop_down_circle_outlined,
-                            color: controller.filterIsCategoryApplied().value
-                                ? AppColors().appWhiteColor
-                                : AppColors().appGrey,
-                          ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(width: 16),
         ],
       ),
     );
@@ -417,7 +289,7 @@ class ProductsListScreen extends GetView<ProductsListController> {
                         onDeleted: () {
                           controller.onDeleteFilter(key);
 
-                          controller.pagingControllerRecently.refresh();
+                          controller.pagingControllerMedicines.refresh();
                         },
                       ),
                     );
@@ -429,33 +301,6 @@ class ProductsListScreen extends GetView<ProductsListController> {
           );
   }
 
-  Widget banners() {
-    return ValueListenableBuilder<PagingState<int, Banners>>(
-      valueListenable: controller.pagingControllerBanners,
-      builder: (
-        BuildContext context,
-        PagingState<int, Banners> value,
-        Widget? child,
-      ) {
-        return (value.itemList?.isEmpty ?? false)
-            ? const SizedBox(height: 16)
-            : Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  const SizedBox(height: 16),
-                  CommonHorizontalListViewBanner(
-                    pagingController: controller.pagingControllerBanners,
-                    onTap: (Banners item) {},
-                    type: "banners list",
-                  ),
-                  const SizedBox(height: 16),
-                ],
-              );
-      },
-    );
-  }
-
   Widget gridView() {
     return Expanded(
       child: Column(
@@ -464,14 +309,9 @@ class ProductsListScreen extends GetView<ProductsListController> {
         children: <Widget>[
           Expanded(
             child: CommonGridView(
-              pagingController: controller.pagingControllerRecently,
-              onTap: (Products item) async {
-                await AppNavService().pushNamed(
-                  destination: AppRoutes().viewGenericProductDetailsScreen,
-                  arguments: <String, dynamic>{"id": item.sId ?? ""},
-                );
-
-                controller.pagingControllerRecently.refresh();
+              pagingController: controller.pagingControllerMedicines,
+              onTap: (CropMedicines item) async {
+                AppNavService().pop(item);
               },
               onTapResetAndRefresh: () async {
                 controller.searchController.text = "";
@@ -479,76 +319,10 @@ class ProductsListScreen extends GetView<ProductsListController> {
                   ..updateSearchQuery("")
                   ..updateFilterMinRange(defaultMinRange)
                   ..updateFilterMaxRange(defaultMaxRange)
-                  ..updateFilterSelectedSortBy("")
-                  ..updateFilterSelectedCategory(Categories());
-                controller.pagingControllerRecently.refresh();
+                  ..updateFilterSelectedSortBy("");
+                 controller.pagingControllerMedicines.refresh();
               },
-              onTapAddToWish: (Products item, {required bool isLiked}) async {
-                bool value = false;
-                value = isLiked
-                    ? await removeFromWishListAPICall(productId: item.sId ?? "")
-                    : await addToWishListAPICall(productId: item.sId ?? "");
-
-                if (value) {
-                  item.isInWishList = !(item.isInWishList ?? false);
-                  isLiked = item.isInWishList ?? false;
-                  controller.pagingControllerRecently.notifyListeners();
-                } else {}
-              },
-              onTapAddToCart: (Products item) async {
-                (bool, String) value = (false, "");
-                value = await addToCartAPICall(productId: item.sId ?? "");
-
-                if (value.$1) {
-                  item
-                    ..cartQty = 1
-                    ..cartItemId = value.$2;
-                  controller.pagingControllerRecently.notifyListeners();
-                } else {}
-              },
-              incQty: (Products item) async {
-                final num newQty = (item.cartQty ?? 0) + 1;
-
-                bool value = false;
-                value = await updateCartAPICall(
-                  itemId: item.cartItemId ?? "",
-                  cartId: item.cartId ?? "",
-                  qty: newQty,
-                );
-
-                if (value) {
-                  item.cartQty = newQty;
-                  controller.pagingControllerRecently.notifyListeners();
-                } else {}
-              },
-              decQty: (Products item) async {
-                final num newQty = (item.cartQty ?? 0) - 1;
-
-                bool value = false;
-                value = await updateCartAPICall(
-                  itemId: item.cartItemId ?? "",
-                  cartId: item.cartId ?? "",
-                  qty: newQty,
-                );
-
-                if (value) {
-                  item.cartQty = newQty;
-                  controller.pagingControllerRecently.notifyListeners();
-                } else {}
-              },
-              onPressedDelete: (Products item) async {
-                bool value = false;
-                value = await removeFromCartAPICall(
-                  itemId: item.cartItemId ?? "",
-                  cartId: item.cartId ?? "",
-                );
-
-                if (value) {
-                  item.cartQty = 0;
-                  controller.pagingControllerRecently.notifyListeners();
-                } else {}
-              },
-              type: "product list",
+              type: "medicine list",
             ),
           ),
         ],
@@ -571,7 +345,7 @@ class ProductsListScreen extends GetView<ProductsListController> {
         ..updateFilterMinRange(result.$1)
         ..updateFilterMaxRange(result.$2);
 
-      controller.pagingControllerRecently.refresh();
+      controller.pagingControllerMedicines.refresh();
     } else {}
 
     return Future<void>.value();
@@ -592,29 +366,7 @@ class ProductsListScreen extends GetView<ProductsListController> {
     if (result != null) {
       controller.updateFilterSelectedSortBy(result);
 
-      controller.pagingControllerRecently.refresh();
-    } else {}
-
-    return Future<void>.value();
-  }
-
-  Future<void> openFilterCategoryWidget() async {
-    final Categories selectedCategory =
-        controller.rxFilterSelectedCategory.value;
-
-    final Categories? result = await Get.bottomSheet(
-      FilterCategoryByWidget(
-        selectedCategory: selectedCategory,
-        categoriesList: controller.categoriesList,
-      ),
-      backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
-      isScrollControlled: true,
-    );
-
-    if (result != null) {
-      controller.updateFilterSelectedCategory(result);
-
-      controller.pagingControllerRecently.refresh();
+      controller.pagingControllerMedicines.refresh();
     } else {}
 
     return Future<void>.value();

@@ -2,6 +2,8 @@ import "package:customer/bindings/address_binding/addresses_list_binding.dart";
 import "package:customer/bindings/booking_binding/added_quotes_binding.dart";
 import "package:customer/bindings/booking_binding/booking_details_binding.dart";
 import "package:customer/bindings/booking_binding/booking_payment_binding.dart";
+import "package:customer/bindings/booking_binding/select_crop_binding.dart";
+import "package:customer/bindings/booking_binding/select_medicine_binding.dart";
 import "package:customer/bindings/cart_binding/cart_binding.dart";
 import "package:customer/bindings/coupon_binding/coupon_binding.dart";
 import "package:customer/bindings/login_screen_bindings/intro_slider_binding.dart";
@@ -27,6 +29,8 @@ import "package:customer/screens/address_screen/addresses_list_screen.dart";
 import "package:customer/screens/booking_screen/added_quotes_screen.dart";
 import "package:customer/screens/booking_screen/booking_details_screen.dart";
 import "package:customer/screens/booking_screen/booking_payment_screen.dart";
+import "package:customer/screens/booking_screen/crop/select_crop_screen.dart";
+import "package:customer/screens/booking_screen/medicine/select_medicine_screen.dart";
 import "package:customer/screens/cart_screen/cart_screen.dart";
 import "package:customer/screens/coupon_screen/coupon_screen.dart";
 import "package:customer/screens/login_screen/intro_slider_screen.dart";
@@ -89,6 +93,8 @@ class AppRoutes {
   final String reviewRatingScreen = "/reviewRatingScreen";
   final String couponScreen = "/couponScreen";
   final String addressesListScreen = "/addressesListScreen";
+  final String selectCropScreen = "/selectCropScreen";
+  final String selectMedicineScreen = "/selectMedicineScreen";
 
   List<GetPage<dynamic>> getPages() {
     final GetPage<dynamic> splashScreenRoute = GetPage<dynamic>(
@@ -225,6 +231,18 @@ class AppRoutes {
       binding: AddressesListBinding(),
     );
 
+    final GetPage<dynamic> selectCropRoute = GetPage<dynamic>(
+      name: selectCropScreen,
+      page: SelectCropScreen.new,
+      binding: SelectCropBinding(),
+    );
+
+    final GetPage<dynamic> selectMedicineRoute = GetPage<dynamic>(
+      name: selectMedicineScreen,
+      page: SelectMedicineScreen.new,
+      binding: SelectMedicineBinding(),
+    );
+
     return <GetPage<dynamic>>[
       splashScreenRoute,
       introSliderRoute,
@@ -251,6 +269,8 @@ class AppRoutes {
       reviewRatingRoute,
       couponRoute,
       addressesListRoute,
+      selectCropRoute,
+      selectMedicineRoute,
     ];
   }
 }

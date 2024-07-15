@@ -10,11 +10,14 @@ import "package:customer/screens/cart_screen/my_utils/common_list_view.dart";
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_assets_images.dart";
 import "package:customer/utils/app_colors.dart";
+import "package:customer/utils/app_constants.dart";
+import "package:customer/utils/app_in_app_browser.dart";
 import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
+import "package:read_more_text/read_more_text.dart";
 
 class CartScreen extends GetWidget<CartController> {
   const CartScreen({super.key});
@@ -147,6 +150,8 @@ class CartScreen extends GetWidget<CartController> {
                                   const Divider(indent: 16, endIndent: 16),
                                   const SizedBox(height: 8),
                                   orderPaymentWidget2(),
+                                  const SizedBox(height: 16),
+                                  cautionWidget(),
                                   const SizedBox(height: 16),
                                 ],
                               ),
@@ -710,6 +715,67 @@ class CartScreen extends GetWidget<CartController> {
                   ],
                 ),
               ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget cautionWidget() {
+    final Carts item = controller.rxCart.value;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Card(
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            elevation: 0,
+            margin: EdgeInsets.zero,
+            color: AppColors().appTransparentColor,
+            surfaceTintColor: AppColors().appTransparentColor,
+            shape: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(
+                color: (item.coupon?.code ?? "").isNotEmpty
+                    ? AppColors().appPrimaryColor
+                    : AppColors().appBlackColor,
+              ),
+            ),
+            child: ListTile(
+              dense: true,
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+              title: const Text(
+                "Important note",
+                style: TextStyle(fontWeight: FontWeight.bold),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              subtitle: ReadMoreText(
+                // ignore: lines_longer_than_80_chars
+                "Before proceeding with any purchase of physical products, please review and acknowledge the return policy provided by the vendor. Understanding and agreeing to the terms outlined in the return policy is essential to ensure a smooth transaction and to manage expectations regarding product returns. By continuing with your purchase, you acknowledge that you have read, understood, and agreed to abide by the return policy as stated by the vendor.",
+                numLines: 2,
+                readMoreText: "Read more",
+                readLessText: "Read less",
+                readMoreAlign: Alignment.bottomLeft,
+                readMoreIconColor: AppColors().appPrimaryColor,
+                readMoreTextStyle:
+                    TextStyle(color: AppColors().appPrimaryColor),
+                style: TextStyle(color: AppColors().appBlackColor),
+              ),
+              trailing: Icon(
+                Icons.arrow_forward_ios,
+                color: (item.coupon?.code ?? "").isNotEmpty
+                    ? AppColors().appPrimaryColor
+                    : AppColors().appBlackColor,
+              ),
+              onTap: () async {
+                await AppInAppBrowser().openInAppBrowser(
+                  url: AppConstants().appURLsHomePage,
+                );
+              },
             ),
           ),
         ],

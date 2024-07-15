@@ -1,7 +1,7 @@
 name: customer
 description: "A new Flutter project."
 publish_to: 'none'
-version: 1.0.10+11
+version: 1.0.12+13
 
 environment:
   sdk: '>=3.3.1 <4.0.0'
@@ -66,6 +66,7 @@ dependencies:
       url: https://github.com/dharambudh1/locationpicker.git
   pod_player: ^0.2.2
   read_more_text: ^0.0.5
+  rxdart: ^0.27.7
   simple_ripple_animation: ^0.0.9
   smart_auth: ^2.0.0
   syncfusion_flutter_sliders: ^20.4.54

@@ -7,6 +7,8 @@ import "package:customer/controllers/outer_main_controllers/booking_controller.d
 import "package:customer/models/create_booking.dart";
 import "package:customer/models/featured_model.dart";
 import "package:customer/models/get_addresses_model.dart";
+import "package:customer/models/get_all_crops_model.dart";
+import "package:customer/models/get_all_medicines_model.dart";
 import "package:customer/models/get_all_services.dart";
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
@@ -185,12 +187,12 @@ class BookingScreen extends GetView<BookingController> {
                                 keyboardType: TextInputType.text,
                                 textCapitalization: TextCapitalization.words,
                                 textInputAction: TextInputAction.done,
-                                readOnly: false,
+                                readOnly: true,
                                 obscureText: false,
                                 maxLines: 1,
                                 maxLength: null,
                                 onChanged: controller.rxCropName,
-                                onTap: () {},
+                                onTap: onTapCropName,
                                 inputFormatters: <TextInputFormatter>[
                                   FilteringTextInputFormatter
                                       .singleLineFormatter,
@@ -1182,5 +1184,21 @@ class BookingScreen extends GetView<BookingController> {
         ),
       ),
     );
+  }
+
+  Future<void> onTapCropName() async {
+    final dynamic result = await AppNavService().pushNamed(
+      destination: AppRoutes().selectCropScreen,
+      arguments: <String, dynamic>{},
+    );
+
+    if (result != null && result is (Crops, CropMedicines)) {
+      final String cropName = result.$1.name ?? "";
+
+      controller.cropNameController.text = cropName;
+      controller.rxCropName(cropName);
+    } else {}
+
+    return Future<void>.value();
   }
 }

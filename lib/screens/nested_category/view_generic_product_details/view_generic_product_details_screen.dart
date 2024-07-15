@@ -18,7 +18,10 @@ import "package:customer/screens/review_rating_screen/my_utils/common_list_view.
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_assets_images.dart";
 import "package:customer/utils/app_colors.dart";
+import "package:customer/utils/app_constants.dart";
+import "package:customer/utils/app_in_app_browser.dart";
 import "package:customer/utils/app_routes.dart";
+import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:flutter_rating_bar/flutter_rating_bar.dart";
@@ -121,6 +124,8 @@ class ViewGenericProductDetailsScreen
                             const SizedBox(height: 16),
                             advanceInfoWidget(),
                             const SizedBox(height: 0),
+                            policyInfoWidget(),
+                            const SizedBox(height: 16),
                             suggestedWidget(),
                             const SizedBox(height: 0),
                             ratingBarGraphWidget(),
@@ -368,10 +373,13 @@ class ViewGenericProductDetailsScreen
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Card(
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      elevation: 4,
                       margin: EdgeInsets.zero,
-                      color: AppColors().appWhiteColor,
+                      elevation: 4,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                        side: BorderSide(color: AppColors().appPrimaryColor),
+                      ),
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
                       surfaceTintColor: AppColors().appWhiteColor,
                       child: ListTile(
                         dense: true,
@@ -473,6 +481,80 @@ class ViewGenericProductDetailsScreen
               ],
             ),
           );
+  }
+
+  Widget policyInfoWidget() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Expanded(
+                  child: Card(
+                    margin: EdgeInsets.zero,
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                      side: BorderSide(color: AppColors().appPrimaryColor),
+                    ),
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    surfaceTintColor: AppColors().appWhiteColor,
+                    child: InkWell(
+                      onTap: openReturnPolicyWidget,
+                      child: const Column(
+                        children: <Widget>[
+                          SizedBox(height: 16),
+                          Icon(Icons.history),
+                          SizedBox(height: 8),
+                          Text(
+                            "2-days return policy",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 16),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Card(
+                    margin: EdgeInsets.zero,
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                      side: BorderSide(color: AppColors().appPrimaryColor),
+                    ),
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    surfaceTintColor: AppColors().appWhiteColor,
+                    child: InkWell(
+                      onTap: openCashOnDeliveyWidget,
+                      child: const Column(
+                        children: <Widget>[
+                          SizedBox(height: 16),
+                          Icon(Icons.currency_rupee),
+                          SizedBox(height: 8),
+                          Text(
+                            "Cash-on-delivery",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 16),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget suggestedWidget() {
@@ -869,5 +951,158 @@ class ViewGenericProductDetailsScreen
         ],
       ),
     );
+  }
+
+  Future<void> openReturnPolicyWidget() async {
+    await Get.bottomSheet(
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          const SizedBox(height: 16),
+          Text(
+            AppLanguageKeys().strActionPerform.tr,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 16),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text(
+              "Conditions for Product Return",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+          const SizedBox(height: 16),
+          SizedBox(
+            height: Get.height / 2,
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const Text(
+                      "• Quality Issues: If the product does not meet the agreed-upon quality standards or if there are significant deviations from the product description, you may request a return or refund. Any issues must be reported within 48 hrs after delivery. Supporting evidence, such as photos or written statements, may be required to process your request.",
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      "• Damaged or Defective Products: If the product is damaged or defective upon arrival, you may request a return or refund. Please report the issue within 48 hrs after delivery, and provide supporting evidence, such as photos or written statements.",
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      "• Incorrect Product: If you receive a product different from what was ordered, you may request a return or refund. Please report the issue within 48 hrs after delivery, and provide supporting evidence, such as photos or written statements.",
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      "• Unopened Products: Product must be unopened.",
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      "• Return Shipping: You may be responsible for the return shipping costs. ",
+                    ),
+                    const SizedBox(height: 8),
+                    ListTile(
+                      dense: true,
+                      contentPadding: EdgeInsets.zero,
+                      leading: const Icon(Icons.public),
+                      title: const Text("Refund Policy"),
+                      subtitle: Text(AppConstants().appURLsRefundPolicy),
+                      trailing: const Icon(Icons.open_in_new),
+                      onTap: () async {
+                        AppNavService().pop();
+
+                        await AppInAppBrowser().openInAppBrowser(
+                          url: AppConstants().appURLsRefundPolicy,
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                SizedBox(
+                  height: 50,
+                  child: AppElevatedButton(
+                    text: "Okay",
+                    onPressed: AppNavService().pop,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+          const SizedBox(height: 48),
+        ],
+      ),
+      backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
+      isScrollControlled: true,
+    );
+    return Future<void>.value();
+  }
+
+  Future<void> openCashOnDeliveyWidget() async {
+    await Get.bottomSheet(
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          const SizedBox(height: 16),
+          Text(
+            AppLanguageKeys().strActionPerform.tr,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 16),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text(
+              "Conditions for Cash-on-delivey",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+          const SizedBox(height: 16),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text(
+              "• Available. Select Cash on Delivery (COD) payment option while placing the order and later, pay in cash at the time of actual delivery of product. No advance payment needed.",
+            ),
+          ),
+          const SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                SizedBox(
+                  height: 50,
+                  child: AppElevatedButton(
+                    text: "Okay",
+                    onPressed: AppNavService().pop,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+          const SizedBox(height: 48),
+        ],
+      ),
+      backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
+      isScrollControlled: true,
+    );
+    return Future<void>.value();
   }
 }

@@ -1,5 +1,6 @@
 import "dart:ui";
 
+import "package:customer/models/crop_categories_model.dart";
 import "package:customer/models/featured_model.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:intl/intl.dart";
@@ -88,7 +89,15 @@ String formatTime({required String time}) {
 }
 
 (bool, Categories) checkAndGetCategoryObject({required List<Categories> list}) {
-  final Categories category = Categories(sId: "", name: "All", photo: "");
-  final bool isExist = list.contains(category);
-  return (isExist, category);
+  final Categories item = Categories(sId: "", name: "All", photo: "");
+  final bool isExist = list.contains(item);
+  return (isExist, item);
+}
+
+(bool, CropCategories) checkAndGetCropCategoryObject({
+  required List<CropCategories> list,
+}) {
+  final CropCategories item = CropCategories(sId: "", name: "All", photo: "");
+  final bool isExist = list.contains(item);
+  return (isExist, item);
 }

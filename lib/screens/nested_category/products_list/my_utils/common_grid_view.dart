@@ -14,6 +14,7 @@ class CommonGridView extends StatelessWidget {
   const CommonGridView({
     required this.pagingController,
     required this.onTap,
+    required this.onTapResetAndRefresh,
     required this.onTapAddToWish,
     required this.onTapAddToCart,
     required this.incQty,
@@ -25,6 +26,7 @@ class CommonGridView extends StatelessWidget {
 
   final PagingController<int, Products> pagingController;
   final Function(Products item) onTap;
+  final Function() onTapResetAndRefresh;
   final Function(Products item, {required bool isLiked}) onTapAddToWish;
   final Function(Products item) onTapAddToCart;
   final Function(Products item) incQty;
@@ -63,13 +65,13 @@ class CommonGridView extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    "No products available at this moment!",
+                    "No products available!",
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    "Check back in a little bit.",
+                    "If you've applied filters, try changing/removing it.",
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
@@ -78,8 +80,8 @@ class CommonGridView extends StatelessWidget {
                     height: 50,
                     width: 100,
                     child: AppTextButton(
-                      text: "Try refreshing",
-                      onPressed: pagingController.refresh,
+                      text: "Reset & Refresh",
+                      onPressed: onTapResetAndRefresh,
                     ),
                   ),
                   const SizedBox(height: 16),

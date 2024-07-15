@@ -32,15 +32,14 @@ class CouponScreen extends GetWidget<CouponController> {
             PagingState<int, Coupons> value,
             Widget? child,
           ) {
-            return (value.itemList?.isEmpty ?? false)
-                ? SizedBox(
-                    height: Get.height / 1.5,
-                    width: Get.width,
-                    child: Center(
-                      child: Column(
+            return Obx(
+              () {
+                return (value.itemList?.isEmpty ?? false)
+                    ? Column(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
-                          const SizedBox(height: 16),
+                          searchBarWidget(),
+                          const Spacer(),
                           Icon(
                             Icons.discount,
                             color: AppColors().appPrimaryColor,
@@ -48,13 +47,17 @@ class CouponScreen extends GetWidget<CouponController> {
                           ),
                           const SizedBox(height: 16),
                           Text(
-                            " No coupon available at this moment!",
+                            controller.rxSearchQuery.value.isEmpty
+                                ? "No coupon available at this moment!"
+                                : "No coupon found in this keyword!",
                             textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.titleLarge,
                           ),
                           const SizedBox(height: 16),
                           Text(
-                            "Check back in a little bit.",
+                            controller.rxSearchQuery.value.isEmpty
+                                ? "Check back in a little bit."
+                                : "Try changing/removing search keyword",
                             textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
@@ -63,19 +66,24 @@ class CouponScreen extends GetWidget<CouponController> {
                             height: 50,
                             width: 100,
                             child: AppTextButton(
-                              text: "Try refreshing",
-                              onPressed:
-                                  controller.pagingControllerPromo.refresh,
+                              text: controller.rxSearchQuery.value.isEmpty
+                                  ? "Try refreshing"
+                                  : "Clear filers",
+                              onPressed: () {
+                                if (controller.rxSearchQuery.value.isEmpty) {
+                                  controller.pagingControllerPromo.refresh();
+                                } else {
+                                  controller.searchController.text = "";
+                                  controller.updateSearchQuery("");
+                                  controller.pagingControllerPromo.refresh();
+                                }
+                              },
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          const Spacer(),
                         ],
-                      ),
-                    ),
-                  )
-                : Obx(
-                    () {
-                      return Column(
+                      )
+                    : Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
@@ -91,8 +99,8 @@ class CouponScreen extends GetWidget<CouponController> {
                           const SizedBox(height: 16),
                         ],
                       );
-                    },
-                  );
+              },
+            );
           },
         ),
       ),
