@@ -44,6 +44,7 @@ class Data {
     limit = json["limit"];
     page = json["page"];
   }
+
   List<CropMedicines>? cropMedicines;
   int? totalCounts;
   int? limit;
@@ -85,7 +86,7 @@ class CropMedicines {
     description = json["description"];
     price = json["price"];
     unit = json["unit"];
-    crop = json["crop"];
+    crop = json["crop"] != null ? Crop.fromJson(json["crop"]) : null;
     brand = json["brand"];
     status = json["status"];
     photo = json["photo"];
@@ -94,12 +95,13 @@ class CropMedicines {
     updatedAt = json["updatedAt"];
     iV = json["__v"];
   }
+
   String? sId;
   String? name;
   String? description;
   int? price;
   String? unit;
-  String? crop;
+  Crop? crop;
   String? brand;
   String? status;
   String? photo;
@@ -115,7 +117,9 @@ class CropMedicines {
     data["description"] = description;
     data["price"] = price;
     data["unit"] = unit;
-    data["crop"] = crop;
+    if (crop != null) {
+      data["crop"] = crop!.toJson();
+    }
     data["brand"] = brand;
     data["status"] = status;
     data["photo"] = photo;
@@ -123,6 +127,25 @@ class CropMedicines {
     data["createdAt"] = createdAt;
     data["updatedAt"] = updatedAt;
     data["__v"] = iV;
+    return data;
+  }
+}
+
+class Crop {
+  Crop({this.sId, this.name});
+
+  Crop.fromJson(Map<String, dynamic> json) {
+    sId = json["_id"];
+    name = json["name"];
+  }
+
+  String? sId;
+  String? name;
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data["_id"] = sId;
+    data["name"] = name;
     return data;
   }
 }

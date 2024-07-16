@@ -46,6 +46,7 @@ class AppConstants {
   final String appURLsRefundPolicy = "http://dev.bhola.org.in/refund/";
   final String appURLsTAndCCustomer = "http://dev.bhola.org.in/customer/";
   final String appURLsTAndCVendor = "https://dev.bhola.org.in/vendor/";
+  final String appURLsShippingPolicy = "https://www.dev.bhola.org.in/shipping/";
 
   final String pkgOfAdmin = "com.ahinsaaggregator.admin";
   final String pkgOfCustomer = "com.ahinsaaggregator.customer";

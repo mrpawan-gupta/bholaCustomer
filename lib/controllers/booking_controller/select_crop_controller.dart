@@ -133,6 +133,8 @@ class SelectCropController extends GetxController {
         query: <String, dynamic>{
           "page": 1,
           "limit": 1000,
+          "sortBy": "createdAt",
+          "sortOrder": "desc",
           "status": "Approved",
         },
         successCallback: (Map<String, dynamic> json) {
@@ -176,6 +178,8 @@ class SelectCropController extends GetxController {
     final Map<String, dynamic> query = <String, dynamic>{
       "page": pageKey,
       "limit": pageSize,
+      "sortBy": "createdAt",
+      "sortOrder": "desc",
       "status": "Approved",
     };
 

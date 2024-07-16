@@ -464,6 +464,19 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
               );
             },
           ),
+          ListTile(
+            dense: true,
+            leading: const Icon(Icons.public),
+            title: const Text("Shipping Policy"),
+            subtitle: Text(AppConstants().appURLsShippingPolicy),
+            trailing: const Icon(Icons.open_in_new),
+            onTap: () async {
+              AppNavService().pop();
+              await AppInAppBrowser().openInAppBrowser(
+                url: AppConstants().appURLsShippingPolicy,
+              );
+            },
+          ),
           const SizedBox(height: 48),
         ],
       ),

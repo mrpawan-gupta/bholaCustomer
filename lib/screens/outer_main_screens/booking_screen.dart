@@ -43,18 +43,20 @@ class BookingScreen extends GetView<BookingController> {
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
+                    const SizedBox(height: 16),
                     searchBarWidget(),
+                    const SizedBox(height: 16),
+                    scheduleAndServiceWidget(),
                     const SizedBox(height: 16),
                     cropTextFieldWidget(),
                     const SizedBox(height: 16),
                     slotWidget(),
                     const SizedBox(height: 16),
-                    scheduleAndServiceWidget(),
-                    const SizedBox(height: 16),
                     farmAreaWidget(),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 16),
                     clearFormWidget(),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 16),
+                    const SizedBox(height: 16),
                   ],
                 );
               },
@@ -77,6 +79,9 @@ class BookingScreen extends GetView<BookingController> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           SearchAnchor.bar(
+            barBackgroundColor:
+                MaterialStatePropertyAll<Color>(AppColors().appWhiteColor),
+            viewBackgroundColor: AppColors().appWhiteColor,
             barLeading: Icon(
               Icons.search,
               color: AppColors().appPrimaryColor,

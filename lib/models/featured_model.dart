@@ -65,6 +65,8 @@ class Categories {
     this.status,
     this.vehicleCount,
     this.productCount,
+    this.code,
+    this.displayType,
   });
 
   Categories.fromJson(Map<String, dynamic> json) {
@@ -74,6 +76,8 @@ class Categories {
     status = json["status"];
     vehicleCount = json["vehicleCount"];
     productCount = json["productCount"];
+    code = json["code"];
+    displayType = json["displayType"];
   }
   String? sId;
   String? name;
@@ -81,6 +85,8 @@ class Categories {
   String? status;
   num? vehicleCount;
   num? productCount;
+  String? code;
+  String? displayType;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -90,6 +96,8 @@ class Categories {
     data["status"] = status;
     data["vehicleCount"] = vehicleCount;
     data["productCount"] = productCount;
+    data["code"] = code;
+    data["displayType"] = displayType;
     return data;
   }
 }
