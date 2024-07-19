@@ -311,6 +311,8 @@ class SelectMedicineScreen extends GetWidget<SelectMedicineController> {
             child: CommonGridView(
               pagingController: controller.pagingControllerMedicines,
               onTap: (CropMedicines item) async {
+                controller.updateSelectedCategory(item);
+
                 AppNavService().pop(item);
               },
               onTapResetAndRefresh: () async {
@@ -320,7 +322,7 @@ class SelectMedicineScreen extends GetWidget<SelectMedicineController> {
                   ..updateFilterMinRange(defaultMinRange)
                   ..updateFilterMaxRange(defaultMaxRange)
                   ..updateFilterSelectedSortBy("");
-                 controller.pagingControllerMedicines.refresh();
+                controller.pagingControllerMedicines.refresh();
               },
               type: "medicine list",
             ),

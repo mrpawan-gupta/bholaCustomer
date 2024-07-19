@@ -4,12 +4,10 @@ import "package:customer/common_widgets/app_text_field.dart";
 import "package:customer/controllers/booking_controller/select_crop_controller.dart";
 import "package:customer/models/crop_categories_model.dart";
 import "package:customer/models/get_all_crops_model.dart";
-import "package:customer/models/get_all_medicines_model.dart";
 import "package:customer/screens/booking_screen/crop/my_utils/common_grid_view.dart";
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_debouncer.dart";
-import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
@@ -288,25 +286,7 @@ class SelectCropScreen extends GetWidget<SelectCropController> {
               onTap: (Crops item) async {
                 controller.updateSelectedCrop(item);
 
-                (Crops, CropMedicines) value = (Crops(), CropMedicines());
-
-                await openAskForMedicineWidget(
-                  onPressedReject: () {
-                    value = (item, CropMedicines());
-                    AppNavService().pop(value);
-                  },
-                  onPressedAccept: () async {
-                    final dynamic result = await AppNavService().pushNamed(
-                      destination: AppRoutes().selectMedicineScreen,
-                      arguments: <String, dynamic>{"id": item.sId ?? ""},
-                    );
-
-                    if (result != null && result is CropMedicines) {
-                      value = (item, result);
-                      AppNavService().pop(value);
-                    } else {}
-                  },
-                );
+                AppNavService().pop(item);
               },
               type: "crops list",
             ),

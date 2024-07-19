@@ -121,7 +121,7 @@ class CommonGridView extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
         ),
         Text(
-          item.categroy?.name ?? "",
+          item.category?.name ?? "",
           style: TextStyle(
             fontSize: 10,
             fontWeight: FontWeight.bold,

@@ -33,7 +33,7 @@ class SelectMedicineController extends GetxController {
     "Newest First",
   ].obs;
 
-  final Rx<CropMedicines> rxFilterSelectedCropMedicines = CropMedicines().obs;
+  final Rx<CropMedicines> rxSelectedCropMedicines = CropMedicines().obs;
 
   @override
   void onInit() {
@@ -83,8 +83,8 @@ class SelectMedicineController extends GetxController {
     return;
   }
 
-  void updateFilterSelectedCategory(CropMedicines value) {
-    rxFilterSelectedCropMedicines(value);
+  void updateSelectedCategory(CropMedicines value) {
+    rxSelectedCropMedicines(value);
     return;
   }
 

@@ -40,7 +40,7 @@ import "package:customer/screens/login_screen/splash_screen.dart";
 import "package:customer/screens/main_navigation_screen.dart";
 import "package:customer/screens/nested_category/products_list/products_list_screen.dart";
 import "package:customer/screens/nested_category/view_generic_product_details/view_generic_product_details_screen.dart";
-import "package:customer/screens/outer_main_screens/booking_screen.dart";
+import "package:customer/screens/outer_main_screens/booking/booking_screen.dart";
 import "package:customer/screens/outer_main_screens/category/category_screen.dart";
 import "package:customer/screens/outer_main_screens/help_screen.dart";
 import "package:customer/screens/outer_main_screens/home/home_screen.dart";

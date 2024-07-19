@@ -190,7 +190,7 @@ class SelectCropController extends GetxController {
     final String id = rxSelectedCategory.value.sId ?? "";
     if (id.isEmpty) {
     } else {
-      query.addAll(<String, dynamic>{"categroy": id});
+      query.addAll(<String, dynamic>{"category": id});
     }
 
     await AppAPIService().functionGet(

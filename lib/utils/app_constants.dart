@@ -14,7 +14,6 @@ class AppConstants {
   final double elevation = 0.0;
 
   final String baseURL = "https://${kReleaseMode ? "api" : "dev"}.bhola.org.in";
-  // final String baseURL = "https://${kReleaseMode ? "dev" : "dev"}.bhola.org.in";
 
   final String googleMapAPIKey = "AIzaSyAu0uQwt1solBKGQcExM9eJvU8rEPfbNNo";
   final String vpnAPIKey = "40f6cdcbaf9b4c139d4a276b9788dee6";
@@ -40,13 +39,13 @@ class AppConstants {
   final String sampleImg =
       "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTExL3BmLXMxMDgtcG0tNDExMy1tb2NrdXAuanBn.jpg";
 
-  final String appURLsHomePage = "http://dev.bhola.org.in/";
-  final String appURLsAboutUs = "http://dev.bhola.org.in/about-us/";
-  final String appURLsPrivacyPolicy = "http://dev.bhola.org.in/privacy/";
-  final String appURLsRefundPolicy = "http://dev.bhola.org.in/refund/";
-  final String appURLsTAndCCustomer = "http://dev.bhola.org.in/customer/";
-  final String appURLsTAndCVendor = "https://dev.bhola.org.in/vendor/";
-  final String appURLsShippingPolicy = "https://www.dev.bhola.org.in/shipping/";
+  final String appURLsHomePage = "https://www.bhola.org.in/";
+  final String appURLsAboutUs = "https://www.bhola.org.in/about-us/";
+  final String appURLsPrivacyPolicy = "https://www.bhola.org.in/privacy/";
+  final String appURLsRefundPolicy = "https://www.bhola.org.in/refund/";
+  final String appURLsTAndCCustomer = "https://www.bhola.org.in/customer/";
+  final String appURLsTAndCVendor = "https://www.bhola.org.in/vendor/";
+  final String appURLsShippingPolicy = "https://www.bhola.org.in/shipping/";
 
   final String pkgOfAdmin = "com.ahinsaaggregator.admin";
   final String pkgOfCustomer = "com.ahinsaaggregator.customer";

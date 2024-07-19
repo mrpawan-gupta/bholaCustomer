@@ -3,6 +3,7 @@ import "dart:async";
 import "package:customer/models/create_booking.dart";
 import "package:customer/models/featured_model.dart";
 import "package:customer/models/get_addresses_model.dart";
+import "package:customer/models/get_all_crops_model.dart";
 import "package:customer/models/get_all_services.dart";
 import "package:customer/services/app_api_service.dart";
 import "package:customer/services/app_perm_service.dart";
@@ -39,6 +40,10 @@ class BookingController extends GetxController {
   final Rx<Services> rxSelectedService = Services().obs;
 
   final RxDouble rxFarmArea = 0.0.obs;
+
+  final Rx<Crops> rxSelectedCrop = Crops().obs;
+  final RxBool rxNeedToShowAreaWidget = false.obs;
+  final RxBool rxNeedToShowHourWidget = false.obs;
 
   @override
   void onInit() {
@@ -99,6 +104,7 @@ class BookingController extends GetxController {
     } else if (!cond6) {
       reason = "longitude is missing, please select nearby location.";
     } else {}
+
     return reason;
   }
 
@@ -146,6 +152,8 @@ class BookingController extends GetxController {
           ..clear()
           ..addAll(model.data?.categories ?? <Categories>[])
           ..refresh();
+
+        setupUIProcedure();
       },
       failureCallback: (Map<String, dynamic> json) {
         AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
@@ -191,20 +199,29 @@ class BookingController extends GetxController {
 
     final Map<String, dynamic> body = <String, dynamic>{
       "scheduleDate": rxDate.value,
-      "approxStartTime": rxStartTime.value,
-      "approxEndTime": rxEndTime.value,
       "vehicleCategory": categoriesList[getSelectedCategoryIndex()].sId ?? "",
       "deliveryAddress": rxAddressList[getSelectedAddressIndex()].sId ?? "",
+      "type": rxSelectedCategory.value.displayType ?? "",
       "services": <Map<String, dynamic>>[
         <String, dynamic>{
           "service": servicesList[getSelectedServiceIndex()].sId ?? "",
-          "area": rxFarmArea.value,
+          "area": rxNeedToShowAreaWidget.value ? rxFarmArea.value : 0.0,
         }
       ],
     };
 
     if (rxCropName.value.isNotEmpty) {
-      body.addAll(<String, dynamic>{"crop": rxCropName.value});
+      body.addAll(<String, dynamic>{"crop": rxSelectedCrop.value.sId ?? ""});
+    } else {}
+
+    if (rxNeedToShowHourWidget.value) {
+      body.addAll(
+        <String, dynamic>{
+          "approxStartTime": rxStartTime.value,
+          "approxEndTime": rxEndTime.value,
+          "hours": timeDiff(),
+        },
+      );
     } else {}
 
     await AppAPIService().functionPost(
@@ -252,8 +269,15 @@ class BookingController extends GetxController {
     searchController.clear();
     rxSearchQuery("");
 
+    rxSelectedCategory(Categories());
+    rxSelectedService(Services());
+
+    rxSelectedCrop(Crops());
     cropNameController.clear();
     rxCropName("");
+
+    dateController.clear();
+    rxDate("");
 
     startTimeController.clear();
     rxStartTime("");
@@ -261,13 +285,10 @@ class BookingController extends GetxController {
     endTimeController.clear();
     rxEndTime("");
 
-    dateController.clear();
-    rxDate("");
-
-    rxSelectedCategory(Categories());
-    rxSelectedService(Services());
-
     rxFarmArea(0.0);
+
+    rxNeedToShowAreaWidget(false);
+    rxNeedToShowHourWidget(false);
 
     return;
   }
@@ -278,66 +299,76 @@ class BookingController extends GetxController {
     final bool cond01 = searchController.value.text.isNotEmpty;
     final bool cond02 = getSelectedAddressIndex() != -1;
 
-    // final bool cond03 = cropNameController.value.text.isNotEmpty;
-    // final bool cond04 = rxCropName.value.isNotEmpty;
-    const bool cond03 = true;
-    const bool cond04 = true;
+    final Map<String, dynamic> tempCatMap1 = rxSelectedCategory.value.toJson();
+    final Map<String, dynamic> tempCatMap2 = Categories().toJson();
+    final bool cond03 = !mapEquals(tempCatMap1, tempCatMap2);
+    final bool cond04 = getSelectedCategoryIndex() != -1;
 
-    final bool cond05 = startTimeController.value.text.isNotEmpty;
-    final bool cond06 = rxStartTime.value.isNotEmpty;
-    final bool cond07 = endTimeController.value.text.isNotEmpty;
-    final bool cond08 = rxEndTime.value.isNotEmpty;
+    final Map<String, dynamic> tempSerMap1 = rxSelectedService.value.toJson();
+    final Map<String, dynamic> tempSerMap2 = GetAllServicesData().toJson();
+    final bool cond05 = !mapEquals(tempSerMap1, tempSerMap2);
+    final bool cond06 = getSelectedServiceIndex() != -1;
+
+    // final bool cond07 = cropNameController.value.text.isNotEmpty;
+    // final bool cond08 = rxCropName.value.isNotEmpty;
+    const bool cond07 = true;
+    const bool cond08 = true;
+
     final bool cond9 = dateController.value.text.isNotEmpty;
     final bool cond10 = rxDate.value.isNotEmpty;
 
-    final bool cond11 = !mapEquals(
-      rxSelectedCategory.value.toJson(),
-      Categories().toJson(),
-    );
-    final bool cond12 = getSelectedCategoryIndex() != -1;
-    final bool cond13 = !mapEquals(
-      rxSelectedService.value.toJson(),
-      GetAllServicesData().toJson(),
-    );
-    final bool cond14 = getSelectedServiceIndex() != -1;
-    final bool cond15 = rxFarmArea.value > 0.0;
-    final bool cond16 = isValidStartAndEndTime();
+    final String startTime1 = startTimeController.value.text;
+    final bool cond11 = !rxNeedToShowHourWidget.value || startTime1.isNotEmpty;
+
+    final String startTime2 = rxStartTime.value;
+    final bool cond12 = !rxNeedToShowHourWidget.value || startTime2.isNotEmpty;
+
+    final String endTime1 = endTimeController.value.text;
+    final bool cond13 = !rxNeedToShowHourWidget.value || endTime1.isNotEmpty;
+
+    final String endTime2 = rxEndTime.value;
+    final bool cond14 = !rxNeedToShowHourWidget.value || endTime2.isNotEmpty;
+
+    final bool cond15 = isValidStartAndEndTime();
+    final bool cond16 = !rxNeedToShowAreaWidget.value || rxFarmArea.value > 0.0;
 
     if (!cond01) {
       reason = "Please select your location.";
     } else if (!cond02) {
       reason = "Please select your location from saved addresses.";
-      // ignore: dead_code
     } else if (!cond03) {
-      reason = "Please enter your crop name.";
-      // ignore: dead_code
+      reason = "Please select any category.";
     } else if (!cond04) {
-      reason = "Please enter your valid crop name.";
+      reason = "Please select any category.";
     } else if (!cond05) {
-      reason = "Please enter your start time.";
+      reason = "Please select any service.";
     } else if (!cond06) {
-      reason = "Please enter your valid start time.";
+      reason = "Please select any service.";
+      // ignore: dead_code
     } else if (!cond07) {
-      reason = "Please enter your end time.";
-    } else if (!cond08) {
-      reason = "Please enter your valid end time.";
+      reason = "Please enter your crop name.";
+    }
+    // ignore: dead_code
+    else if (!cond08) {
+      reason = "Please enter your valid crop name.";
     } else if (!cond9) {
       reason = "Please enter your date.";
     } else if (!cond10) {
       reason = "Please enter your valid date.";
     } else if (!cond11) {
-      reason = "Please select any category.";
+      reason = "Please enter your start time.";
     } else if (!cond12) {
-      reason = "Please select any category.";
+      reason = "Please enter your valid start time.";
     } else if (!cond13) {
-      reason = "Please select any service.";
+      reason = "Please enter your end time.";
     } else if (!cond14) {
-      reason = "Please select any service.";
+      reason = "Please enter your valid end time.";
     } else if (!cond15) {
-      reason = "Please select any farm area greater than 0.";
-    } else if (!cond16) {
       reason = "Start time should be greater than end time - 1 hour difference";
+    } else if (!cond16) {
+      reason = "Please select any farm area greater than 0.";
     } else {}
+
     return reason;
   }
 
@@ -357,19 +388,25 @@ class BookingController extends GetxController {
 
   int getSelectedAddressIndex() {
     return rxAddressList.indexWhere(
-      (Address item) => (item.street ?? "") == searchController.value.text,
+      (Address item) {
+        return (item.street ?? "") == searchController.value.text;
+      },
     );
   }
 
   int getSelectedCategoryIndex() {
     return categoriesList.indexWhere(
-      (Categories item) => item == rxSelectedCategory.value,
+      (Categories item) {
+        return item == rxSelectedCategory.value;
+      },
     );
   }
 
   int getSelectedServiceIndex() {
     return servicesList.indexWhere(
-      (Services item) => item == rxSelectedService.value,
+      (Services item) {
+        return item == rxSelectedService.value;
+      },
     );
   }
 
@@ -390,6 +427,23 @@ class BookingController extends GetxController {
     }
   }
 
+  double timeDiff() {
+    if (rxStartTime.value.isEmpty || rxEndTime.value.isEmpty) {
+      return 0.0;
+    } else {
+      final DateTime? startTime = DateTime.tryParse(rxStartTime.value);
+      final DateTime? endTime = DateTime.tryParse(rxEndTime.value);
+      if (startTime != null && endTime != null) {
+        final Duration difference = endTime.difference(startTime);
+        final double differenceInHours =
+            difference.inMilliseconds / Duration.millisecondsPerHour.toDouble();
+        return double.parse(differenceInHours.toStringAsFixed(2));
+      } else {
+        return 0.0;
+      }
+    }
+  }
+
   Future<bool> checkLocationFunction() async {
     final loc.PermissionStatus status = await loc.Location().hasPermission();
     final bool isGranted = status == loc.PermissionStatus.granted;
@@ -406,5 +460,30 @@ class BookingController extends GetxController {
     await AppPermService().permissionLocation();
     await AppPermService().serviceLocation();
     return Future<void>.value();
+  }
+
+  void setupUIProcedure() {
+    final String displayType = rxSelectedCategory.value.displayType ?? "";
+
+    switch (displayType) {
+      case "hour":
+        rxNeedToShowAreaWidget(false);
+        rxNeedToShowHourWidget(true);
+        break;
+      case "area":
+        rxNeedToShowAreaWidget(true);
+        rxNeedToShowHourWidget(true);
+        break;
+      case "areawithmedicine":
+        rxNeedToShowAreaWidget(true);
+        rxNeedToShowHourWidget(true);
+        break;
+      default:
+        rxNeedToShowAreaWidget(true);
+        rxNeedToShowHourWidget(true);
+        break;
+    }
+
+    return;
   }
 }

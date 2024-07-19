@@ -61,7 +61,7 @@ class Crops {
     this.sId,
     this.name,
     this.description,
-    this.categroy,
+    this.category,
     this.status,
     this.photo,
     this.isDeleted,
@@ -74,8 +74,8 @@ class Crops {
     sId = json["_id"];
     name = json["name"];
     description = json["description"];
-    categroy =
-        json["categroy"] != null ? Categroy.fromJson(json["categroy"]) : null;
+    category =
+        json["category"] != null ? Category.fromJson(json["category"]) : null;
     status = json["status"];
     photo = json["photo"];
     isDeleted = json["isDeleted"];
@@ -86,7 +86,7 @@ class Crops {
   String? sId;
   String? name;
   String? description;
-  Categroy? categroy;
+  Category? category;
   String? status;
   String? photo;
   bool? isDeleted;
@@ -99,8 +99,8 @@ class Crops {
     data["_id"] = sId;
     data["name"] = name;
     data["description"] = description;
-    if (categroy != null) {
-      data["categroy"] = categroy!.toJson();
+    if (category != null) {
+      data["category"] = category!.toJson();
     }
     data["status"] = status;
     data["photo"] = photo;
@@ -112,10 +112,10 @@ class Crops {
   }
 }
 
-class Categroy {
-  Categroy({this.sId, this.name});
+class Category {
+  Category({this.sId, this.name});
 
-  Categroy.fromJson(Map<String, dynamic> json) {
+  Category.fromJson(Map<String, dynamic> json) {
     sId = json["_id"];
     name = json["name"];
   }
