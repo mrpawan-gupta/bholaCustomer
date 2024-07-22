@@ -85,6 +85,7 @@ class CommonGridView extends StatelessWidget {
                   ),
                   clipBehavior: Clip.antiAliasWithSaveLayer,
                   surfaceTintColor: AppColors().appWhiteColor,
+                  color: AppColors().appWhiteColor,
                   child: CommonImageWidget(
                     imageUrl: item.photo ?? "",
                     fit: BoxFit.contain,

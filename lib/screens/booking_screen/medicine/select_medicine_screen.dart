@@ -1,10 +1,12 @@
+// ignore_for_file: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member, lines_longer_than_80_chars
+
+import "package:customer/common_functions/medicine_cart_functions.dart";
 import "package:customer/common_widgets/app_text_field.dart";
 import "package:customer/controllers/booking_controller/select_medicine_controller.dart";
 import "package:customer/models/get_all_medicines_model.dart";
 import "package:customer/screens/booking_screen/medicine/my_utils/my_utils/common_grid_view.dart";
 import "package:customer/screens/booking_screen/medicine/my_utils/my_utils/filter_range_widget.dart";
 import "package:customer/screens/booking_screen/medicine/my_utils/my_utils/filter_sort_by_widget.dart";
-import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_debouncer.dart";
 import "package:flutter/material.dart";
@@ -311,9 +313,7 @@ class SelectMedicineScreen extends GetWidget<SelectMedicineController> {
             child: CommonGridView(
               pagingController: controller.pagingControllerMedicines,
               onTap: (CropMedicines item) async {
-                controller.updateSelectedCategory(item);
-
-                AppNavService().pop(item);
+                
               },
               onTapResetAndRefresh: () async {
                 controller.searchController.text = "";
@@ -323,6 +323,64 @@ class SelectMedicineScreen extends GetWidget<SelectMedicineController> {
                   ..updateFilterMaxRange(defaultMaxRange)
                   ..updateFilterSelectedSortBy("");
                 controller.pagingControllerMedicines.refresh();
+              },
+              onTapAddToBooking: (CropMedicines item) async {
+                (bool, String) value = (false, "");
+                value = await addMedicineToBookingAPICall(
+                  bookingId: controller.rxBookingId.value,
+                  medicineId: item.sId ?? "",
+                );
+
+                if (value.$1) {
+                  item
+                    ..bookingQty = 1
+                    ..bookingMedicineId = value.$2;
+                  controller.pagingControllerMedicines.notifyListeners();
+                } else {}
+              },
+              incQty: (CropMedicines item) async {
+                final num newQty = (item.bookingQty ?? 0) + 1;
+
+                bool value = false;
+                value = await updateMedicineInBookingAPICall(
+                  bookingId: controller.rxBookingId.value,
+                  itemId: item.bookingMedicineId ?? "",
+                  qty: newQty,
+                );
+
+                if (value) {
+                  item.bookingQty = newQty;
+                  controller.pagingControllerMedicines.notifyListeners();
+                } else {}
+              },
+              decQty: (CropMedicines item) async {
+                final num newQty = (item.bookingQty ?? 0) - 1;
+
+                bool value = false;
+                value = await updateMedicineInBookingAPICall(
+                  bookingId: controller.rxBookingId.value,
+                  itemId: item.bookingMedicineId ?? "",
+                  qty: newQty,
+                );
+
+                if (value) {
+                  item.bookingQty = newQty;
+                  controller.pagingControllerMedicines.notifyListeners();
+                } else {}
+              },
+              onPressedDelete: (CropMedicines item) async {
+                bool value = false;
+                value = await removeMedicineFromBookingAPICall(
+                  bookingId: controller.rxBookingId.value,
+                  itemId: item.bookingMedicineId ?? "",
+                );
+
+                if (value) {
+                  item
+                    ..bookingQty = 0
+                    ..bookingMedicineId = "";
+                  controller.pagingControllerMedicines.notifyListeners();
+                } else {}
               },
               type: "medicine list",
             ),

@@ -392,7 +392,9 @@ class HomeScreen extends GetView<HomeController> {
               );
 
               if (value) {
-                item.cartQty = 0;
+                item
+                  ..cartQty = 0
+                  ..cartItemId = "";
                 paging.notifyListeners();
               } else {}
             },

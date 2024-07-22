@@ -116,7 +116,7 @@ class GenericProductData {
   num? discountedPrice;
   num? discountPercent;
   String? category;
-  num? itemCode;
+  String? itemCode;
   num? sold;
   num? sizePerQuantity;
   String? photo;

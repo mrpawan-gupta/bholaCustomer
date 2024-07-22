@@ -1,3 +1,5 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import "package:customer/common_widgets/app_elevated_button.dart";
 import "package:customer/common_widgets/app_text_field.dart";
 import "package:customer/controllers/outer_main_controllers/booking_controller.dart";
@@ -16,7 +18,6 @@ import "package:customer/utils/app_constants.dart";
 import "package:customer/utils/app_intro_bottom_sheet.dart";
 import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/app_snackbar.dart";
-import "package:customer/utils/app_whatsapp.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
@@ -735,23 +736,29 @@ class BookingScreen extends GetView<BookingController> {
                     )) {
                       final String id = model.booking?.sId ?? "";
 
-                      await openBookingGlanceWidget(
-                        data: model,
-                        onPressedConfirm: () async {
-                          bool value = false;
-                          value = await controller.confirmOrderAPICall(id: id);
-
-                          if (value) {
-                            controller.clearForm();
-
-                            await AppNavService().pushNamed(
-                              destination: AppRoutes().bookingPaymentScreen,
-                              arguments: <String, dynamic>{"id": id},
-                            );
-                          } else {}
-                        },
-                        onPressedSupport: AppWhatsApp().openWhatsApp,
+                      await AppNavService().pushNamed(
+                        destination: AppRoutes().bookingAddOnsScreen,
+                        arguments: <String, dynamic>{"id": id},
                       );
+
+                      controller.clearForm();
+
+                      // await openBookingGlanceWidget(
+                      //   data: model,
+                      //   onPressedConfirm: () async {
+                      //     bool value = false;
+                      //     value = await controller.confirmOrderAPICall(id: id);
+                      //     if (value) {
+                      //       await AppNavService().pushNamed(
+                      //         destination: AppRoutes().bookingPaymentScreen,
+                      //         arguments: <String, dynamic>{"id": id},
+                      //       );
+
+                      //       controller.clearForm();
+                      //     } else {}
+                      //   },
+                      //   onPressedSupport: AppWhatsApp().openWhatsApp,
+                      // );
                     } else {}
                   } else {
                     AppSnackbar()

@@ -1,5 +1,6 @@
 import "package:customer/bindings/address_binding/addresses_list_binding.dart";
 import "package:customer/bindings/booking_binding/added_quotes_binding.dart";
+import "package:customer/bindings/booking_binding/booking_add_ons_binding.dart";
 import "package:customer/bindings/booking_binding/booking_details_binding.dart";
 import "package:customer/bindings/booking_binding/booking_payment_binding.dart";
 import "package:customer/bindings/booking_binding/select_crop_binding.dart";
@@ -27,6 +28,7 @@ import "package:customer/bindings/settings_bindings/support_binding.dart";
 import "package:customer/bindings/wish_list_binding/wish_list_binding.dart";
 import "package:customer/screens/address_screen/addresses_list_screen.dart";
 import "package:customer/screens/booking_screen/added_quotes_screen.dart";
+import "package:customer/screens/booking_screen/booking_add_ons/booking_add_ons_screen.dart";
 import "package:customer/screens/booking_screen/booking_details_screen.dart";
 import "package:customer/screens/booking_screen/booking_payment_screen.dart";
 import "package:customer/screens/booking_screen/crop/select_crop_screen.dart";
@@ -95,6 +97,8 @@ class AppRoutes {
   final String addressesListScreen = "/addressesListScreen";
   final String selectCropScreen = "/selectCropScreen";
   final String selectMedicineScreen = "/selectMedicineScreen";
+
+  final String bookingAddOnsScreen = "/bookingAddOnsScreen";
 
   List<GetPage<dynamic>> getPages() {
     final GetPage<dynamic> splashScreenRoute = GetPage<dynamic>(
@@ -243,6 +247,12 @@ class AppRoutes {
       binding: SelectMedicineBinding(),
     );
 
+    final GetPage<dynamic> bookingAddOnsRoute = GetPage<dynamic>(
+      name: bookingAddOnsScreen,
+      page: BookingAddOnsScreen.new,
+      binding: BookingAddOnsBinding(),
+    );
+
     return <GetPage<dynamic>>[
       splashScreenRoute,
       introSliderRoute,
@@ -271,6 +281,7 @@ class AppRoutes {
       addressesListRoute,
       selectCropRoute,
       selectMedicineRoute,
+      bookingAddOnsRoute,
     ];
   }
 }

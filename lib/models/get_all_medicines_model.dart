@@ -78,6 +78,9 @@ class CropMedicines {
     this.createdAt,
     this.updatedAt,
     this.iV,
+    this.isAddedInBooking,
+    this.bookingQty,
+    this.bookingMedicineId,
   });
 
   CropMedicines.fromJson(Map<String, dynamic> json) {
@@ -94,6 +97,9 @@ class CropMedicines {
     createdAt = json["createdAt"];
     updatedAt = json["updatedAt"];
     iV = json["__v"];
+    isAddedInBooking = json["isAddedInBooking"];
+    bookingQty = json["booking_qty"];
+    bookingMedicineId = json["booking_medicine_id"];
   }
 
   String? sId;
@@ -109,6 +115,9 @@ class CropMedicines {
   String? createdAt;
   String? updatedAt;
   int? iV;
+  bool? isAddedInBooking;
+  num? bookingQty;
+  String? bookingMedicineId;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -127,6 +136,9 @@ class CropMedicines {
     data["createdAt"] = createdAt;
     data["updatedAt"] = updatedAt;
     data["__v"] = iV;
+    data["isAddedInBooking"] = isAddedInBooking;
+    data["booking_qty"] = bookingQty;
+    data["booking_medicine_id"] = bookingMedicineId;
     return data;
   }
 }

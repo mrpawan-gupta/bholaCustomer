@@ -111,7 +111,7 @@ class ProductDetailsData {
   int? wishlistCount;
   String? unit;
   num? price;
-  int? itemCode;
+  String? itemCode;
   int? sold;
   int? sizePerQuantity;
   String? saleAmount;

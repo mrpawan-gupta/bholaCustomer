@@ -89,6 +89,7 @@ class CommonHorizontalGridView extends StatelessWidget {
                   ),
                   clipBehavior: Clip.antiAliasWithSaveLayer,
                   surfaceTintColor: AppColors().appWhiteColor,
+                  color: AppColors().appWhiteColor,
                   child: CommonImageWidget(
                     imageUrl: item.photo ?? "",
                     fit: BoxFit.contain,
@@ -165,8 +166,8 @@ class CommonHorizontalGridView extends StatelessWidget {
         clipBehavior: Clip.antiAliasWithSaveLayer,
         elevation: 0,
         margin: EdgeInsets.zero,
-        color: AppColors().appPrimaryColor,
         surfaceTintColor: AppColors().appWhiteColor,
+        color: AppColors().appPrimaryColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(50.0),
         ),

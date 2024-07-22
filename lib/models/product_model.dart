@@ -121,7 +121,7 @@ class Products {
   bool? isDeleted;
   num? price;
   Category? category;
-  int? itemCode;
+  String? itemCode;
   int? quantity;
   int? sold;
   int? sizePerQuantity;

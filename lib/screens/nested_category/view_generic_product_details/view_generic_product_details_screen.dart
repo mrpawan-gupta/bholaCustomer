@@ -381,6 +381,7 @@ class ViewGenericProductDetailsScreen
                       ),
                       clipBehavior: Clip.antiAliasWithSaveLayer,
                       surfaceTintColor: AppColors().appWhiteColor,
+                      color: AppColors().appWhiteColor,
                       child: ListTile(
                         dense: true,
                         title: Text(
@@ -448,6 +449,7 @@ class ViewGenericProductDetailsScreen
                 //       margin: EdgeInsets.zero,
                 //       color: AppColors().appWhiteColor,
                 //       surfaceTintColor: AppColors().appWhiteColor,
+                //       color: AppColors().appWhiteColor,
                 //       child: ListTile(
                 //         dense: true,
                 //         title: Text(
@@ -504,6 +506,7 @@ class ViewGenericProductDetailsScreen
                     ),
                     clipBehavior: Clip.antiAliasWithSaveLayer,
                     surfaceTintColor: AppColors().appWhiteColor,
+                    color: AppColors().appWhiteColor,
                     child: InkWell(
                       onTap: openReturnPolicyWidget,
                       child: const Column(
@@ -532,6 +535,7 @@ class ViewGenericProductDetailsScreen
                     ),
                     clipBehavior: Clip.antiAliasWithSaveLayer,
                     surfaceTintColor: AppColors().appWhiteColor,
+                    color: AppColors().appWhiteColor,
                     child: InkWell(
                       onTap: openCashOnDeliveyWidget,
                       child: const Column(
@@ -659,7 +663,9 @@ class ViewGenericProductDetailsScreen
                       );
 
                       if (value) {
-                        item.cartQty = 0;
+                        item
+                          ..cartQty = 0
+                          ..cartItemId = "";
                         controller.pagingControllerProducts.notifyListeners();
                       } else {}
                     },
@@ -692,8 +698,8 @@ class ViewGenericProductDetailsScreen
                   clipBehavior: Clip.antiAliasWithSaveLayer,
                   elevation: 4,
                   margin: EdgeInsets.zero,
-                  color: AppColors().appWhiteColor,
                   surfaceTintColor: AppColors().appWhiteColor,
+                  color: AppColors().appWhiteColor,
                   child: InkWell(
                     onTap: () {},
                     child: Padding(

@@ -149,7 +149,7 @@ class CartScreen extends GetWidget<CartController> {
                                   const SizedBox(height: 8),
                                   const Divider(indent: 16, endIndent: 16),
                                   const SizedBox(height: 8),
-                                  orderPaymentWidget2(),
+                                  totalOrderPaymentWidget(),
                                   const SizedBox(height: 16),
                                   cautionWidget(),
                                   const SizedBox(height: 16),
@@ -333,6 +333,7 @@ class CartScreen extends GetWidget<CartController> {
                 //       margin: EdgeInsets.zero,
                 //       color: AppColors().appWhiteColor,
                 //       surfaceTintColor: AppColors().appWhiteColor,
+                //       color: AppColors().appWhiteColor,
                 //       child: ListTile(
                 //         dense: true,
                 //         title: Text(
@@ -667,7 +668,7 @@ class CartScreen extends GetWidget<CartController> {
     }
   }
 
-  Widget orderPaymentWidget2() {
+  Widget totalOrderPaymentWidget() {
     final Carts item = controller.rxCart.value;
 
     return Padding(
@@ -827,6 +828,13 @@ class CartScreen extends GetWidget<CartController> {
                   await AppNavService().pushNamed(
                     destination: AppRoutes().bookingPaymentScreen,
                     arguments: <String, dynamic>{"id": "123456"},
+                  );
+
+                  unawaited(
+                    controller.getAllCartsItemsAPICall(
+                      needLoader: true,
+                      removeCoupon: true,
+                    ),
                   );
                 },
               ),

@@ -2,13 +2,11 @@ import "dart:async";
 
 import "package:customer/models/new_order_model.dart";
 import "package:customer/services/app_api_service.dart";
-import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_logger.dart";
-import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/app_snackbar.dart";
 import "package:get/get.dart";
 
-class BookingDetailsController extends GetxController {
+class BookingAddOnsController extends GetxController {
   final RxString rxBookingId = "".obs;
   final Rx<Bookings> rxBookings = Bookings().obs;
 
@@ -23,37 +21,7 @@ class BookingDetailsController extends GetxController {
       } else {}
     } else {}
 
-    unawaited(getBookingAPICall());
-  }
-
-  bool isVisibleConfirmAndCancelButton() {
-    final String allowRoute = AppRoutes().addedQuotesScreen;
-    final bool isAllowedRoute = AppNavService().previousRoute == allowRoute;
-
-    final String status = rxBookings.value.status ?? "";
-    final bool isStatusCorrect = status == "Created";
-
-    return isAllowedRoute && isStatusCorrect;
-  }
-
-  bool isVisibleCancelButton() {
-    final String allowRoute = AppRoutes().mainNavigationScreen;
-    final bool isAllowedRoute = AppNavService().previousRoute == allowRoute;
-
-    final String status = rxBookings.value.status ?? "";
-    final bool isStatusCorrect = status == "BookingConfirm";
-
-    return isAllowedRoute && isStatusCorrect;
-  }
-
-  bool isVisibleReviewRating() {
-    final String allowRoute = AppRoutes().mainNavigationScreen;
-    final bool isAllowedRoute = AppNavService().previousRoute == allowRoute;
-
-    final String status = rxBookings.value.status ?? "";
-    final bool isStatusCorrect = status == "Completed";
-
-    return isAllowedRoute && isStatusCorrect;
+    unawaited(getBookingAPICall(needLoader: true));
   }
 
   void updateBookingId(String value) {
@@ -66,7 +34,7 @@ class BookingDetailsController extends GetxController {
     return;
   }
 
-  Future<bool> getBookingAPICall() async {
+  Future<bool> getBookingAPICall({required bool needLoader}) async {
     final Completer<bool> completer = Completer<bool>();
 
     await AppAPIService().functionGet(
@@ -100,6 +68,7 @@ class BookingDetailsController extends GetxController {
 
         completer.complete(false);
       },
+      needLoader: needLoader,
     );
     return completer.future;
   }
@@ -140,40 +109,6 @@ class BookingDetailsController extends GetxController {
         completer.complete(false);
       },
     );
-    return completer.future;
-  }
-
-  Future<bool> addReviewRatingAPICall({
-    required String id,
-    required num rating,
-    required String review,
-  }) async {
-    final Completer<bool> completer = Completer<bool>();
-
-    final FormData formData = FormData(
-      <String, dynamic>{
-        "star": rating,
-        "review": review,
-      },
-    );
-
-    await AppAPIService().functionPost(
-      types: Types.rental,
-      endPoint: "booking/$id/review",
-      successCallback: (Map<String, dynamic> json) {
-        AppSnackbar().snackbarSuccess(title: "Yay!", message: json["message"]);
-
-        completer.complete(true);
-      },
-      failureCallback: (Map<String, dynamic> json) {
-        AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
-
-        completer.complete(false);
-      },
-      isForFileUpload: true,
-      formData: formData,
-    );
-
     return completer.future;
   }
 }

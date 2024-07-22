@@ -1,7 +1,10 @@
+import "package:customer/common_widgets/app_elevated_button.dart";
 import "package:customer/common_widgets/app_text_button.dart";
 import "package:customer/common_widgets/common_image_widget.dart";
 import "package:customer/models/get_all_medicines_model.dart";
+import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
+import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:infinite_scroll_pagination/infinite_scroll_pagination.dart";
@@ -11,6 +14,10 @@ class CommonGridView extends StatelessWidget {
     required this.pagingController,
     required this.onTap,
     required this.onTapResetAndRefresh,
+    required this.onTapAddToBooking,
+    required this.incQty,
+    required this.decQty,
+    required this.onPressedDelete,
     required this.type,
     super.key,
   });
@@ -18,6 +25,10 @@ class CommonGridView extends StatelessWidget {
   final PagingController<int, CropMedicines> pagingController;
   final Function(CropMedicines item) onTap;
   final Function() onTapResetAndRefresh;
+  final Function(CropMedicines item) onTapAddToBooking;
+  final Function(CropMedicines item) incQty;
+  final Function(CropMedicines item) decQty;
+  final Function(CropMedicines item) onPressedDelete;
   final String type;
 
   @override
@@ -32,7 +43,7 @@ class CommonGridView extends StatelessWidget {
         crossAxisCount: 2,
         mainAxisSpacing: 16,
         crossAxisSpacing: 16,
-        childAspectRatio: 1 / 1.56,
+        childAspectRatio: 1 / 1.70,
       ),
       builderDelegate: PagedChildBuilderDelegate<CropMedicines>(
         noItemsFoundIndicatorBuilder: (BuildContext context) {
@@ -107,6 +118,9 @@ class CommonGridView extends StatelessWidget {
           productNameAndDetailsWidget(item),
           const SizedBox(height: 4),
           priceAndLikeRow(item),
+          const SizedBox(height: 4),
+          const SizedBox(height: 4),
+          bottomButton(item),
         ],
       ),
     );
@@ -130,6 +144,7 @@ class CommonGridView extends StatelessWidget {
                   ),
                   clipBehavior: Clip.antiAliasWithSaveLayer,
                   surfaceTintColor: AppColors().appWhiteColor,
+                  color: AppColors().appWhiteColor,
                   child: CommonImageWidget(
                     imageUrl: item.photo ?? "",
                     fit: BoxFit.contain,
@@ -192,14 +207,20 @@ class CommonGridView extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          "₹$price",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: AppColors().appPrimaryColor,
-          ),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              "₹$price",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: AppColors().appPrimaryColor,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
         ),
       ],
     );
@@ -213,5 +234,191 @@ class CommonGridView extends StatelessWidget {
         Expanded(child: pricingWidget(item)),
       ],
     );
+  }
+
+  Widget bottomButton(CropMedicines item) {
+    final bool isInBooking = (item.bookingQty ?? 0) > 0;
+
+    return SizedBox(
+      height: 32,
+      child: isInBooking
+          ? Card(
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              elevation: 0,
+              margin: EdgeInsets.zero,
+              surfaceTintColor: AppColors().appWhiteColor,
+              color: AppColors().appPrimaryColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50.0),
+              ),
+              child: InkWell(
+                onTap: () async {},
+                child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(50.0),
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(50.0),
+                          onTap: () async {
+                            if ((item.bookingQty ?? 0) > 1) {
+                              decQty(item);
+                            } else {
+                              await openDeleteBookingItemWidget(
+                                item: item,
+                                onPressedDelete: onPressedDelete,
+                              );
+                            }
+                          },
+                          child: ColoredBox(
+                            color: AppColors().appWhiteColor.withOpacity(0.16),
+                            child: Icon(
+                              Icons.remove,
+                              color: AppColors().appWhiteColor,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          "${item.bookingQty ?? 0}",
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors().appWhiteColor,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(50.0),
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(50.0),
+                          onTap: () async {
+                            if ((item.bookingQty ?? 0) < 100) {
+                              incQty(item);
+                            } else {}
+                          },
+                          child: ColoredBox(
+                            color: AppColors().appWhiteColor.withOpacity(0.16),
+                            child: Icon(
+                              Icons.add,
+                              color: AppColors().appWhiteColor,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            )
+          : Card(
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              elevation: 0,
+              margin: EdgeInsets.zero,
+              surfaceTintColor: AppColors().appWhiteColor,
+              color: AppColors().appPrimaryColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50.0),
+              ),
+              child: InkWell(
+                onTap: () {
+                  onTapAddToBooking(item);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Expanded(
+                        child: Text(
+                          "Add to Booking",
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors().appWhiteColor,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+    );
+  }
+
+  Future<void> openDeleteBookingItemWidget({
+    required CropMedicines item,
+    required Function(CropMedicines item) onPressedDelete,
+  }) async {
+    await Get.bottomSheet(
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          const SizedBox(height: 16),
+          Text(
+            AppLanguageKeys().strActionPerform.tr,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 16),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text(
+              "Are you sure you want to delete? It is an irreversible process!",
+              maxLines: 5,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                SizedBox(
+                  height: 50,
+                  child: AppElevatedButton(
+                    text: "Do not delete booking item",
+                    onPressed: () {
+                      AppNavService().pop();
+                    },
+                  ),
+                ),
+                const SizedBox(height: 16),
+                SizedBox(
+                  height: 50,
+                  child: AppTextButton(
+                    text: "Delete booking item",
+                    onPressed: () async {
+                      AppNavService().pop();
+
+                      onPressedDelete(item);
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+          const SizedBox(height: 48),
+        ],
+      ),
+      backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
+      isScrollControlled: true,
+    );
+    return Future<void>.value();
   }
 }

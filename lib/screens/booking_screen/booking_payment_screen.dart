@@ -1,6 +1,8 @@
 import "package:customer/common_widgets/app_elevated_button.dart";
 import "package:customer/controllers/booking_controller/booking_payment_controller.dart";
+import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
+import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/app_snackbar.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
@@ -15,32 +17,50 @@ class BookingPaymentScreen extends GetView<BookingPaymentController> {
         centerTitle: true,
         title: const Text("Payment Booking Screen"),
         surfaceTintColor: AppColors().appTransparentColor,
+        leading: BackButton(onPressed: backDecision),
       ),
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text("Booking ID: ${controller.rxBookingId.value}"),
-              const SizedBox(height: 32),
-              const Text("This is our Payment Booking Screen"),
-              const SizedBox(height: 32),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: AppElevatedButton(
-                  text: "Payment Gateway Coming Soon",
-                  onPressed: () {
-                    AppSnackbar().snackbarFailure(
-                      title: "Oops!",
-                      message: "Coming Soon!",
-                    );
-                  },
+      // ignore: deprecated_member_use
+      body: WillPopScope(
+        onWillPop: () async {
+          backDecision();
+          return Future<bool>.value(false);
+        },
+        child: SafeArea(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text("Booking ID: ${controller.rxBookingId.value}"),
+                const SizedBox(height: 32),
+                const Text("This is our Payment Booking Screen"),
+                const SizedBox(height: 32),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: AppElevatedButton(
+                    text: "Payment Gateway Coming Soon",
+                    onPressed: () {
+                      AppSnackbar().snackbarFailure(
+                        title: "Oops!",
+                        message: "Coming Soon!",
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
     );
+  }
+
+  void backDecision() {
+    if (AppNavService().previousRoute == AppRoutes().bookingAddOnsScreen) {
+      AppNavService().pop();
+      AppNavService().pop();
+    } else {
+      AppNavService().pop();
+    }
+    return;
   }
 }

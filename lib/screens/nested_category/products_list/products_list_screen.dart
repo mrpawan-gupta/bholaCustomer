@@ -544,7 +544,9 @@ class ProductsListScreen extends GetView<ProductsListController> {
                 );
 
                 if (value) {
-                  item.cartQty = 0;
+                  item
+                    ..cartQty = 0
+                    ..cartItemId = "";
                   controller.pagingControllerRecently.notifyListeners();
                 } else {}
               },

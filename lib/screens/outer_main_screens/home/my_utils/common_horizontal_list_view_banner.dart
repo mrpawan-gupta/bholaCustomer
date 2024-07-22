@@ -52,6 +52,7 @@ class CommonHorizontalListViewBanner extends StatelessWidget {
                   ),
                   clipBehavior: Clip.antiAliasWithSaveLayer,
                   surfaceTintColor: AppColors().appWhiteColor,
+                  color: AppColors().appWhiteColor,
                   child: Stack(
                     clipBehavior: Clip.antiAliasWithSaveLayer,
                     children: <Widget>[

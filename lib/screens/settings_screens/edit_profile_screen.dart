@@ -53,6 +53,7 @@ class EditProfileScreen extends GetView<EditProfileController> {
                               right: 0,
                               child: Card(
                                 surfaceTintColor: AppColors().appWhiteColor,
+                                color: AppColors().appWhiteColor,
                                 shape: const OvalBorder(),
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),

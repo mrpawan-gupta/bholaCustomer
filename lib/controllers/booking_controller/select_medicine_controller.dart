@@ -14,7 +14,8 @@ double defaultMaxRange = 10000.0;
 class SelectMedicineController extends GetxController {
   final int pageSize = 10;
 
-  final RxString rxSelectedCropId = "".obs;
+  final RxString rxBookingId = "".obs;
+  final RxString rxCropId = "".obs;
 
   final TextEditingController searchController = TextEditingController();
   final RxString rxSearchQuery = "".obs;
@@ -41,8 +42,12 @@ class SelectMedicineController extends GetxController {
 
     if (Get.arguments != null && Get.arguments is Map<String, dynamic>) {
       final Map<String, dynamic> arguments = Get.arguments;
-      if (arguments.containsKey("id")) {
-        updateSelectedCropId(arguments["id"]);
+      if (arguments.containsKey("booking_id")) {
+        updateBookingId(arguments["booking_id"]);
+      } else {}
+
+      if (arguments.containsKey("crop_id")) {
+        updateCropId(arguments["crop_id"]);
       } else {}
     } else {}
 
@@ -58,8 +63,13 @@ class SelectMedicineController extends GetxController {
     super.onClose();
   }
 
-  void updateSelectedCropId(String value) {
-    rxSelectedCropId(value);
+  void updateBookingId(String value) {
+    rxBookingId(value);
+    return;
+  }
+
+  void updateCropId(String value) {
+    rxCropId(value);
     return;
   }
 
@@ -116,7 +126,8 @@ class SelectMedicineController extends GetxController {
       "sortBy": "createdAt",
       "sortOrder": "desc",
       "status": "Approved",
-      "crop": rxSelectedCropId.value,
+      "bookingId": rxBookingId.value,
+      "crop": rxCropId.value,
     };
 
     if (rxSearchQuery.isNotEmpty) {
