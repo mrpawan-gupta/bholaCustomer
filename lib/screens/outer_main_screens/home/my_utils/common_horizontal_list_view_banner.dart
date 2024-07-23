@@ -20,7 +20,7 @@ class CommonHorizontalListViewBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: Get.height / 8,
+      height: Get.height / (3.68 * 2),
       width: double.infinity,
       child: PagedListView<int, Banners>(
         shrinkWrap: true,
@@ -37,12 +37,10 @@ class CommonHorizontalListViewBanner extends StatelessWidget {
             final int length = pagingController.itemList?.length ?? 0;
             final bool isLast = i == length - 1;
             return Padding(
-              padding: EdgeInsets.only(
-                right: isLast ? 0.0 : 16.0,
-              ),
+              padding: EdgeInsets.only(right: isLast ? 0.0 : 16.0),
               child: SizedBox(
-                height: Get.height / 8,
-                width: Get.width / 1.5,
+                height: Get.height / (3.68 * 2),
+                width: Get.height / 3.68,
                 child: Card(
                   margin: EdgeInsets.zero,
                   elevation: 4,
@@ -75,7 +73,7 @@ class CommonHorizontalListViewBanner extends StatelessWidget {
       children: <Widget>[
         CommonImageWidget(
           imageUrl: item.image ?? "",
-          fit: BoxFit.contain,
+          fit: BoxFit.cover,
           imageType: ImageType.image,
         ),
       ],
@@ -86,7 +84,11 @@ class CommonHorizontalListViewBanner extends StatelessWidget {
     return Material(
       clipBehavior: Clip.antiAliasWithSaveLayer,
       color: Colors.transparent,
-      child: InkWell(onTap: () async {}),
+      child: InkWell(
+        onTap: () async {
+          onTap(item);
+        },
+      ),
     );
   }
 }

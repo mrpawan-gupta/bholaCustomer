@@ -120,7 +120,7 @@ class ViewGenericProductDetailsScreen
                             const SizedBox(height: 16),
                             basicInfoWidget(),
                             const SizedBox(height: 16),
-                            moreInfoWidget(),
+                            descriptionWidget(),
                             const SizedBox(height: 16),
                             advanceInfoWidget(),
                             const SizedBox(height: 0),
@@ -325,7 +325,7 @@ class ViewGenericProductDetailsScreen
     );
   }
 
-  Widget moreInfoWidget() {
+  Widget descriptionWidget() {
     final GenericProductData data = controller.rxProductDetailsData.value;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -333,14 +333,17 @@ class ViewGenericProductDetailsScreen
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          CommonGenericProductTitleBar(
-            title: "Product Description",
-            onTapViewAll: () {},
-            isViewAllNeeded: false,
+          Text(
+            "Product Description:",
+            style: TextStyle(color: AppColors().appGrey),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: 8),
           ReadMoreText(
-            data.description ?? "",
+            (data.description ?? "").isNotEmpty
+                ? data.description ?? ""
+                : "Description is not provided.",
             numLines: 2,
             readMoreText: "Read more",
             readLessText: "Read less",
