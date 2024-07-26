@@ -80,8 +80,8 @@ class Coupons {
   String? code;
   String? couponType;
   bool? isActive;
-  int? discountPercent;
-  int? maxamount;
+  num? discountPercent;
+  num? maxamount;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

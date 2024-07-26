@@ -66,15 +66,15 @@ class Data {
   String? sId;
   String? user;
   List<Items>? items;
-  int? totalItems;
-  int? totalPrice;
-  int? discountedprice;
+  num? totalItems;
+  num? totalPrice;
+  num? discountedprice;
   String? status;
   String? createdAt;
   String? updatedAt;
   int? iV;
-  int? discountedPrice;
-  int? maxamount;
+  num? discountedPrice;
+  num? maxamount;
   String? coupon;
 
   Map<String, dynamic> toJson() {
@@ -111,8 +111,8 @@ class Items {
 
   String? sId;
   String? product;
-  int? quantity;
-  int? totalPrice;
+  num? quantity;
+  num? totalPrice;
   int? iV;
 
   Map<String, dynamic> toJson() {

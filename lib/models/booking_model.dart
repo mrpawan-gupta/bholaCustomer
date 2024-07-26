@@ -74,7 +74,7 @@ class Bookings {
 
   String? sId;
   int? totalOrders;
-  int? stock;
+  num? stock;
   String? categoryName;
   String? categoryImage;
 

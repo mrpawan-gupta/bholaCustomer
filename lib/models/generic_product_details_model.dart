@@ -122,7 +122,7 @@ class GenericProductData {
   String? photo;
   String? video;
   String? status;
-  double? cumulativeRating;
+  num? cumulativeRating;
   List<Ratings>? ratings;
   List<Reviews>? reviews;
   String? categoryName;

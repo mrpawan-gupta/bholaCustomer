@@ -61,8 +61,8 @@ class Medicines {
     sId = json["_id"];
   }
   String? medicine;
-  int? quantity;
-  int? totalPrice;
+  num? quantity;
+  num? totalPrice;
   String? sId;
 
   Map<String, dynamic> toJson() {

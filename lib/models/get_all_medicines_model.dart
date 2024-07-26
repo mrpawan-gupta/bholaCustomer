@@ -105,7 +105,7 @@ class CropMedicines {
   String? sId;
   String? name;
   String? description;
-  int? price;
+  num? price;
   String? unit;
   Crop? crop;
   String? brand;

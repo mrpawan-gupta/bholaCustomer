@@ -122,9 +122,9 @@ class Products {
   num? price;
   Category? category;
   String? itemCode;
-  int? quantity;
-  int? sold;
-  int? sizePerQuantity;
+  num? quantity;
+  num? sold;
+  num? sizePerQuantity;
   String? photo;
   String? video;
   String? status;

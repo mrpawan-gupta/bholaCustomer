@@ -102,7 +102,7 @@ class ProductDetailsData {
   String? category;
   String? photo;
   String? video;
-  double? cumulativeRating;
+  num? cumulativeRating;
   List<Reviews>? reviews;
   List<Ratings>? ratings;
   String? categoryName;
@@ -112,15 +112,15 @@ class ProductDetailsData {
   String? unit;
   num? price;
   String? itemCode;
-  int? sold;
-  int? sizePerQuantity;
+  num? sold;
+  num? sizePerQuantity;
   String? saleAmount;
   String? salePercent;
   num? discountPercent;
   num? discountedPrice;
   bool? isAddedInCart;
   bool? isAddedInWishlist;
-  int? isAddedInPortfolio;
+  num? isAddedInPortfolio;
   String? vendorProductId;
 
   Map<String, dynamic> toJson() {
@@ -187,7 +187,7 @@ class Reviews {
     customerProfilePhoto = json["customerProfilePhoto"];
   }
   String? customer;
-  int? star;
+  num? star;
   List<String>? reviewPhotos;
   String? sId;
   String? date;
@@ -228,7 +228,7 @@ class Ratings {
     isDeleted = json["isDeleted"];
   }
   String? customer;
-  int? star;
+  num? star;
   String? sId;
   bool? isDeleted;
 

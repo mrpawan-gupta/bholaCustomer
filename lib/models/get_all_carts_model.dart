@@ -101,9 +101,9 @@ class Carts {
   Coupons? coupon;
   int? totalQuantity;
   int? totalItems;
-  int? totalPriceWithDiscount;
-  int? totalPriceWithoutDiscount;
-  int? deliveryAmount;
+  num? totalPriceWithDiscount;
+  num? totalPriceWithoutDiscount;
+  num? deliveryAmount;
   String? status;
   String? createdAt;
   String? updatedAt;
@@ -161,9 +161,9 @@ class Items {
   String? productName;
   String? categoryName;
   String? productImage;
-  int? price;
-  int? quantity;
-  int? totalPrice;
+  num? price;
+  num? quantity;
+  num? totalPrice;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

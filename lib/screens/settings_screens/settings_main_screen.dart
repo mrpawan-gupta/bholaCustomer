@@ -10,10 +10,13 @@ import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_constants.dart";
 import "package:customer/utils/app_in_app_browser.dart";
+import "package:customer/utils/app_open_share.dart";
 import "package:customer/utils/app_open_store.dart";
 import "package:customer/utils/app_routes.dart";
+import "package:customer/utils/app_url_launcher.dart";
 import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/material.dart";
+import "package:font_awesome_flutter/font_awesome_flutter.dart";
 import "package:get/get.dart";
 //
 
@@ -74,16 +77,52 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
                     onTap: openLegalPoliciesWidget,
                   ),
                   const SizedBox(height: 16),
-                  // settingsItems(
-                  //   itemName: "App Info",
-                  //   onTap: () async {
-                  //     await AppNavService().pushNamed(
-                  //       destination: AppRoutes().appInfoScreen,
-                  //       arguments: <String, dynamic>{},
-                  //     );
-                  //   },
-                  // ),
-                  // const SizedBox(height: 16),
+                  settingsItems(
+                    itemName: "Rate this app",
+                    onTap: AppOpenStore().openStoreForCustomer,
+                  ),
+                  const SizedBox(height: 16),
+                  settingsItems(
+                    itemName: "Share this app",
+                    onTap: AppOpenShare().openShareForCustomer,
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: settingsItems3(
+                          itemName: "Follow us",
+                          itemColor: const Color(0xFFd62976),
+                          itemIconData: FontAwesomeIcons.instagram,
+                          onTap: () async {
+                            await AppURLLauncher().open(
+                              scheme: "https",
+                              path: AppConstants().appURLsInstagram,
+                            );
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: settingsItems3(
+                          itemName: "Subscribe us",
+                          itemColor: const Color(0xFFFF0000),
+                          itemIconData: FontAwesomeIcons.youtube,
+                          onTap: () async {
+                            await AppURLLauncher().open(
+                              scheme: "https",
+                              path: AppConstants().appURLsYoutube,
+                            );
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
                   settingsItems1(
                     itemName: "Try our Vendor App",
                     onTap: AppOpenStore().openStoreForVendor,
@@ -164,16 +203,7 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
               Material(
                 clipBehavior: Clip.antiAliasWithSaveLayer,
                 color: Colors.transparent,
-                child: InkWell(
-                  onTap: () async {
-                    // await AppNavService().pushNamed(
-                    //   destination: AppRoutes().editProfileScreen,
-                    //   arguments: <String, dynamic>{},
-                    // );
-
-                    await canGoAhead();
-                  },
-                ),
+                child: InkWell(onTap: canGoAhead),
               ),
             ],
           ),
@@ -191,14 +221,7 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
         margin: EdgeInsets.zero,
         color: AppColors().appGreyColor.withOpacity(0.10),
         child: InkWell(
-          onTap: () async {
-            // await AppNavService().pushNamed(
-            //   destination: AppRoutes().editProfileScreen,
-            //   arguments: <String, dynamic>{},
-            // );
-
-            await canGoAhead();
-          },
+          onTap: canGoAhead,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -222,21 +245,8 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
                 const SizedBox(height: 16),
                 AppTextButton(
                   text: "Update Profile",
-                  onPressed: () async {
-                    // await AppNavService().pushNamed(
-                    //   destination: AppRoutes().editProfileScreen,
-                    //   arguments: <String, dynamic>{},
-                    // );
-
-                    await canGoAhead();
-                  },
+                  onPressed: canGoAhead,
                 ),
-
-                // const SizedBox(height: 16),
-                // commonTitleAndValueWidget(
-                //   title: "Address",
-                //   value: controller.getAddressOrAddressPlaceholder(),
-                // ),
               ],
             ),
           ),
@@ -368,6 +378,45 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
               color: AppColors().appRedColor,
             ),
             alignment: Alignment.center,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget settingsItems3({
+    required String itemName,
+    required IconData itemIconData,
+    required Color itemColor,
+    required void Function() onTap,
+  }) {
+    return Card(
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      elevation: 0,
+      margin: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: BorderSide(color: itemColor),
+      ),
+      color: AppColors().appTransparentColor,
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              const SizedBox(width: 16),
+              Expanded(
+                child: MaybeMarqueeText(
+                  text: itemName,
+                  style: TextStyle(color: itemColor),
+                  alignment: Alignment.center,
+                ),
+              ),
+              const SizedBox(width: 16),
+              FaIcon(itemIconData, color: itemColor),
+            ],
           ),
         ),
       ),

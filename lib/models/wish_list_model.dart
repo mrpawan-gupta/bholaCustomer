@@ -103,13 +103,13 @@ class WishListItems {
   String? sId;
   String? name;
   String? description;
-  int? price;
+  num? price;
   Category? category;
   String? photo;
-  double? cumulativeRating;
-  int? discountPercent;
-  int? discountedPrice;
-  int? quantity;
+  num? cumulativeRating;
+  num? discountPercent;
+  num? discountedPrice;
+  num? quantity;
   String? unit;
   bool? isInPortfolio;
   bool? isInWishList;

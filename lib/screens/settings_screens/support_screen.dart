@@ -1,6 +1,7 @@
 // ignore_for_file: lines_longer_than_80_chars
 
 import "package:customer/controllers/settings_controllers/support_controller.dart";
+import "package:customer/utils/app_assets_images.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_constants.dart";
 import "package:customer/utils/app_url_launcher.dart";
@@ -24,6 +25,13 @@ class SupportScreen extends GetView<SupportController> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
+              Image.asset(
+                AppAssetsImages().splash,
+                height: Get.height / 4,
+                width: Get.width,
+                fit: BoxFit.cover,
+              ),
+              const SizedBox(height: 16),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text(

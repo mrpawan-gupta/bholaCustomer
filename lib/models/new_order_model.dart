@@ -143,10 +143,10 @@ class Bookings {
   Vehicle? vehicle;
   Vehicle? vehicleCategory;
   List<Services>? services;
-  int? amount;
-  int? commissionAmount;
-  int? discount;
-  int? finalAmount;
+  num? amount;
+  num? commissionAmount;
+  num? discount;
+  num? finalAmount;
   SenderAddress? senderAddress;
   SenderAddress? deliveryAddress;
   String? scheduleDate;
@@ -154,17 +154,17 @@ class Bookings {
   String? approxEndTime;
   String? status;
   Service? crop;
-  int? farmArea;
-  int? hours;
+  num? farmArea;
+  num? hours;
   Customer? customer;
   Customer? vendor;
   String? createdAt;
   String? updatedAt;
   int? iV;
-  int? commissionPercentage;
-  int? discountPercentage;
+  num? commissionPercentage;
+  num? discountPercentage;
   List<Medicines>? medicines;
-  int? totalMedicinePrice;
+  num? totalMedicinePrice;
   int? totalMedicines;
 
   Map<String, dynamic> toJson() {
@@ -250,8 +250,8 @@ class Services {
     area = json["area"];
   }
   Service? service;
-  int? price;
-  int? area;
+  num? price;
+  num? area;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -355,8 +355,8 @@ class Medicines {
   }
   String? sId;
   Medicine? medicine;
-  int? quantity;
-  int? totalPrice;
+  num? quantity;
+  num? totalPrice;
   int? iV;
 
   Map<String, dynamic> toJson() {
