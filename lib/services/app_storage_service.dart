@@ -17,42 +17,84 @@ class AppStorageService extends GetxService {
   static final AppStorageService _singleton = AppStorageService._internal();
 
   final GetStorage box = GetStorage();
-
   final String userDataKey = "userDataKey";
   final String userLangKey = "userLangKey";
   final String userAuthKey = "userAuthKey";
   final String userInfoKey = "userInfoKey";
 
   Future<void> init() async {
-    final bool hasInitialized = await GetStorage.init();
+    bool hasInitialized = false;
+    try {
+      hasInitialized = await GetStorage.init();
+    } on Exception catch (error, stackTrace) {
+      AppLogger().error(
+        message: "Exception caught",
+        error: error,
+        stackTrace: stackTrace,
+      );
+    } finally {}
     AppLogger().info(message: "GetStorage hasInitialized: $hasInitialized");
     return Future<void>.value();
   }
 
   Future<void> setUserData(Map<String, dynamic> userInfo) async {
-    final String value = json.encode(userInfo);
-    await box.write(userDataKey, value);
-    await box.save();
+    try {
+      final String value = json.encode(userInfo);
+      await box.write(userDataKey, value);
+      await box.save();
+    } on Exception catch (error, stackTrace) {
+      AppLogger().error(
+        message: "Exception caught",
+        error: error,
+        stackTrace: stackTrace,
+      );
+    } finally {}
     return Future<void>.value();
   }
 
   Map<String, dynamic> getUserData() {
-    final String value = box.read(userDataKey) ?? "";
+    String value = "";
+    try {
+      value = box.read(userDataKey) ?? "";
+    } on Exception catch (error, stackTrace) {
+      AppLogger().error(
+        message: "Exception caught",
+        error: error,
+        stackTrace: stackTrace,
+      );
+    } finally {}
     return value.isEmpty ? <String, dynamic>{} : json.decode(value);
   }
 
   Future<void> setUserLang(String lang) async {
-    await box.write(userLangKey, lang);
-    await box.save();
+    try {
+      await box.write(userLangKey, lang);
+      await box.save();
+    } on Exception catch (error, stackTrace) {
+      AppLogger().error(
+        message: "Exception caught",
+        error: error,
+        stackTrace: stackTrace,
+      );
+    } finally {}
     return Future<void>.value();
   }
 
   String getUserLang() {
-    String value = box.read(userLangKey) ?? "";
-    if (value.isEmpty) {
-      final List<Locale> locale = AppTranslations().supportedLocales();
-      value = AppTranslations().localeToUnderscoreString(locale: locale[0]);
-    } else {}
+    String value = "";
+    try {
+      value = box.read(userLangKey) ?? "";
+      if (value.isEmpty) {
+        final List<Locale> locale = AppTranslations().supportedLocales();
+        value = AppTranslations().localeToUnderscoreString(locale: locale[0]);
+      } else {}
+    } on Exception catch (error, stackTrace) {
+      AppLogger().error(
+        message: "Exception caught",
+        error: error,
+        stackTrace: stackTrace,
+      );
+    } finally {}
     return value;
   }
 
@@ -61,14 +103,31 @@ class AppStorageService extends GetxService {
   }
 
   Future<void> setUserAuth(VerifyOTPModelData userAuth) async {
-    final String value = json.encode(userAuth);
-    await box.write(userAuthKey, value);
-    await box.save();
+    try {
+      final String value = json.encode(userAuth);
+      await box.write(userAuthKey, value);
+      await box.save();
+    } on Exception catch (error, stackTrace) {
+      AppLogger().error(
+        message: "Exception caught",
+        error: error,
+        stackTrace: stackTrace,
+      );
+    } finally {}
     return Future<void>.value();
   }
 
   Map<String, dynamic> getUserAuth() {
-    final String value = box.read(userAuthKey) ?? "";
+    String value = "";
+    try {
+      value = box.read(userAuthKey) ?? "";
+    } on Exception catch (error, stackTrace) {
+      AppLogger().error(
+        message: "Exception caught",
+        error: error,
+        stackTrace: stackTrace,
+      );
+    } finally {}
     return value.isEmpty ? <String, dynamic>{} : json.decode(value);
   }
 
@@ -81,27 +140,55 @@ class AppStorageService extends GetxService {
   }
 
   Future<void> setUserInfo(GetUserByIdData userInfo) async {
-    final String value = json.encode(userInfo);
-    await box.write(userInfoKey, value);
-    await box.save();
+    try {
+      final String value = json.encode(userInfo);
+      await box.write(userInfoKey, value);
+      await box.save();
+    } on Exception catch (error, stackTrace) {
+      AppLogger().error(
+        message: "Exception caught",
+        error: error,
+        stackTrace: stackTrace,
+      );
+    } finally {}
     return Future<void>.value();
   }
 
   Map<String, dynamic> getUserInfo() {
-    final String value = box.read(userInfoKey) ?? "";
+    String value = "";
+    try {
+      value = box.read(userInfoKey) ?? "";
+    } on Exception catch (error, stackTrace) {
+      AppLogger().error(
+        message: "Exception caught",
+        error: error,
+        stackTrace: stackTrace,
+      );
+    } finally {}
     return value.isEmpty ? <String, dynamic>{} : json.decode(value);
   }
 
   GetUserByIdData getUserInfoModel() {
     final Map<String, dynamic> value = getUserInfo();
-    final GetUserByIdData data = value.isEmpty 
-        ? GetUserByIdData() 
-        : GetUserByIdData.fromJson(value);
+    GetUserByIdData data = GetUserByIdData();
+    if (value.isEmpty) {
+      data = GetUserByIdData();
+    } else {
+      data = GetUserByIdData.fromJson(value);
+    }
     return data;
   }
 
   Future<void> erase() async {
-    await box.erase();
+    try {
+      await box.erase();
+    } on Exception catch (error, stackTrace) {
+      AppLogger().error(
+        message: "Exception caught",
+        error: error,
+        stackTrace: stackTrace,
+      );
+    } finally {}
     return Future<void>.value();
   }
 }

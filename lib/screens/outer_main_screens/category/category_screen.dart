@@ -1,3 +1,4 @@
+import "package:customer/common_functions/rental_booking_stream.dart";
 import "package:customer/controllers/main_navigation_controller.dart";
 import "package:customer/controllers/outer_main_controllers/category_controller.dart";
 import "package:customer/models/featured_model.dart";
@@ -42,6 +43,7 @@ class CategoryScreen extends GetView<CategoryController> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    const SizedBox(height: 8),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: CommonCategoryTitleBar(
@@ -66,6 +68,10 @@ class CategoryScreen extends GetView<CategoryController> {
                           final bool isApproved =
                               (item.status ?? "") == "Approved";
                           if (isApproved) {
+                            RentalBookingStream().functionSinkAdd(
+                              id: item.sId ?? "",
+                            );
+
                             await tabControllerFunction(2);
                           } else {
                             AppSnackbar().snackbarFailure(
@@ -103,6 +109,7 @@ class CategoryScreen extends GetView<CategoryController> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    const SizedBox(height: 8),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: CommonCategoryTitleBar(

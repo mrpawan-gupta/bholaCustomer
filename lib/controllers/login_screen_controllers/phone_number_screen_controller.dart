@@ -25,9 +25,21 @@ class PhoneNumberScreenController extends GetxController {
   }
 
   Future<void> getAppSignature() async {
-    final String appSignature = await SmartAuth().getAppSignature() ?? "";
+    String appSignature = "";
+
+    try {
+      appSignature = await SmartAuth().getAppSignature() ?? "";
+    } on Exception catch (error, stackTrace) {
+      AppLogger().error(
+        message: "Exception caught",
+        error: error,
+        stackTrace: stackTrace,
+      );
+    } finally {}
+
     AppLogger().info(message: "appSignature: $appSignature");
     updateAppSignature(appSignature);
+
     return Future<void>.value();
   }
 

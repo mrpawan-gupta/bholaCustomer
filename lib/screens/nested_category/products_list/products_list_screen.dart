@@ -1,7 +1,7 @@
 // ignore_for_file: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member, lines_longer_than_80_chars
 
 import "package:customer/common_functions/cart_list_and_wish_list_functions.dart";
-import "package:customer/common_functions/stream_functions.dart";
+import "package:customer/common_functions/order_booking_stream.dart";
 import "package:customer/common_widgets/app_text_field.dart";
 import "package:customer/controllers/nested_category/products_list_controller.dart";
 import "package:customer/models/banner_model.dart";
@@ -45,7 +45,7 @@ class ProductsListScreen extends GetView<ProductsListController> {
                         arguments: <String, dynamic>{},
                       );
 
-                      functionSinkAdd();
+                      OrderBookingStream().functionSinkAdd();
                     },
                     icon: Badge(
                       isLabelVisible: rxWishListCount.value != 0,
@@ -70,7 +70,7 @@ class ProductsListScreen extends GetView<ProductsListController> {
                         arguments: <String, dynamic>{},
                       );
 
-                      functionSinkAdd();
+                      OrderBookingStream().functionSinkAdd();
                     },
                     icon: Badge(
                       isLabelVisible: rxCartListCount.value != 0,

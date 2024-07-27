@@ -1,14 +1,19 @@
 import "dart:async";
 
+import "package:customer/common_functions/rental_booking_stream.dart";
+import "package:customer/common_widgets/app_elevated_button.dart";
+import "package:customer/common_widgets/app_text_button.dart";
 import "package:customer/models/create_booking.dart";
 import "package:customer/models/featured_model.dart";
 import "package:customer/models/get_addresses_model.dart";
 import "package:customer/models/get_all_crops_model.dart";
 import "package:customer/models/get_all_services.dart";
 import "package:customer/services/app_api_service.dart";
+import "package:customer/services/app_nav_service.dart";
 import "package:customer/services/app_perm_service.dart";
 import "package:customer/utils/app_logger.dart";
 import "package:customer/utils/app_snackbar.dart";
+import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
@@ -51,6 +56,53 @@ class BookingController extends GetxController {
 
     unawaited(getAddressesAPI());
     unawaited(getCategoriesAPI());
+
+    RentalBookingStream().subscribe(
+      callback: (String newId) async {
+        final String selectedId = rxSelectedCategory.value.sId ?? "";
+
+        if (selectedId.isNotEmpty) {
+          if (selectedId != newId) {
+            final String oldName = getCategoryById(id: selectedId).name ?? "";
+            final String newName = getCategoryById(id: newId).name ?? "";
+
+            await openConfirmUpdateRentalCategoryWidget(
+              oldName: oldName,
+              newName: newName,
+              onPressedUpdate: () async {
+                await clearAndUpdateForm(id: newId);
+              },
+            );
+          } else {}
+        } else {
+          await clearAndUpdateForm(id: newId);
+        }
+      },
+    );
+  }
+
+  Future<void> clearAndUpdateForm({required String id}) async {
+    clearForm();
+
+    final Categories value = getCategoryById(id: id);
+
+    rxSelectedCategory(value);
+    setupUIProcedure();
+
+    rxSelectedService(Services());
+    servicesList.clear();
+
+    await getServicesAPI();
+    return Future<void>.value();
+  }
+
+  Categories getCategoryById({required String id}) {
+    return categoriesList.firstWhere(
+      (Categories e) {
+        return (e.sId ?? "") == id;
+      },
+      orElse: Categories.new,
+    );
   }
 
   void updateQuery(String value) {
@@ -309,10 +361,9 @@ class BookingController extends GetxController {
     final bool cond05 = !mapEquals(tempSerMap1, tempSerMap2);
     final bool cond06 = getSelectedServiceIndex() != -1;
 
-    // final bool cond07 = cropNameController.value.text.isNotEmpty;
-    // final bool cond08 = rxCropName.value.isNotEmpty;
-    const bool cond07 = true;
-    const bool cond08 = true;
+    final String temp = cropNameController.value.text;
+    final bool cond07 = !rxNeedToShowAreaWidget.value || temp.isNotEmpty;
+    final bool cond08 = !rxNeedToShowAreaWidget.value || temp.isNotEmpty;
 
     final bool cond9 = dateController.value.text.isNotEmpty;
     final bool cond10 = rxDate.value.isNotEmpty;
@@ -344,12 +395,9 @@ class BookingController extends GetxController {
       reason = "Please select any service.";
     } else if (!cond06) {
       reason = "Please select any service.";
-      // ignore: dead_code
     } else if (!cond07) {
       reason = "Please enter your crop name.";
-    }
-    // ignore: dead_code
-    else if (!cond08) {
+    } else if (!cond08) {
       reason = "Please enter your valid crop name.";
     } else if (!cond9) {
       reason = "Please enter your date.";
@@ -485,5 +533,72 @@ class BookingController extends GetxController {
     }
 
     return;
+  }
+
+  Future<void> openConfirmUpdateRentalCategoryWidget({
+    required String oldName,
+    required String newName,
+    required Function() onPressedUpdate,
+  }) async {
+    await Get.bottomSheet(
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          const SizedBox(height: 16),
+          Text(
+            AppLanguageKeys().strActionPerform.tr,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text(
+              "Are you sure you want to update $oldName with new $newName?",
+              maxLines: 5,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                SizedBox(
+                  height: 50,
+                  child: AppElevatedButton(
+                    text: "Update with $newName",
+                    onPressed: () {
+                      AppNavService().pop();
+
+                      onPressedUpdate();
+                    },
+                  ),
+                ),
+                const SizedBox(height: 16),
+                SizedBox(
+                  height: 50,
+                  child: AppTextButton(
+                    text: "Keep $oldName",
+                    onPressed: () async {
+                      AppNavService().pop();
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+          const SizedBox(height: 48),
+        ],
+      ),
+      backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
+      isScrollControlled: true,
+    );
+    return Future<void>.value();
   }
 }

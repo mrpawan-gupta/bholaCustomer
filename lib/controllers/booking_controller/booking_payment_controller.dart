@@ -1,6 +1,6 @@
-import "dart:async";
+// import "dart:async";
 
-import "package:customer/services/phonepe_sdk_service.dart";
+// import "package:customer/services/phonepe_sdk_service.dart";
 import "package:get/get.dart";
 
 class BookingPaymentController extends GetxController {
@@ -23,17 +23,17 @@ class BookingPaymentController extends GetxController {
     return;
   }
 
-  Future<(bool, String, String)> createOrderAPICall() async {
-    final Completer<(bool, String, String)> completer =
-        Completer<(bool, String, String)>();
+  // Future<(bool, String, String)> createOrderAPICall() async {
+  //   final Completer<(bool, String, String)> completer =
+  //       Completer<(bool, String, String)>();
 
-    String body = "";
-    body = getBody(amount: 1000);
+  //   String body = "";
+  //   body = getBody(amount: 1000);
 
-    String checksum = "";
-    checksum = getChecksumCalculation(amount: 1000);
+  //   String checksum = "";
+  //   checksum = getChecksumCalculation(amount: 1000);
 
-    completer.complete((true, body, checksum));
-    return completer.future;
-  }
+  //   completer.complete((true, body, checksum));
+  //   return completer.future;
+  // }
 }

@@ -108,7 +108,7 @@ class OrderHistoryScreen extends GetView<OrderHistoryController> {
         right: index == 1 ? 8 : 0,
       ),
       child: SizedBox(
-        height: 100,
+        height: kToolbarHeight,
         width: double.infinity,
         child: Card(
           elevation: 4,
@@ -138,18 +138,18 @@ class OrderHistoryScreen extends GetView<OrderHistoryController> {
               ),
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Column(
+                child: Row(
                   mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Icon(
                       item.iconData,
-                      size: 32,
+                      size: 24,
                       color: isSelected
                           ? AppColors().appWhiteColor
                           : AppColors().appBlackColor,
                     ),
-                    const Spacer(),
+                    const SizedBox(width: 16),
                     Text(
                       item.name,
                       style: TextStyle(

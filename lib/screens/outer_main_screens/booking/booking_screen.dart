@@ -286,6 +286,9 @@ class BookingScreen extends GetView<BookingController> {
   }
 
   Widget cropAndTimeWidget() {
+    final bool cond1 = controller.rxNeedToShowAreaWidget.value;
+    final bool cond2 = controller.rxNeedToShowHourWidget.value;
+    final bool isOptional = !cond1 & cond2;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -298,9 +301,9 @@ class BookingScreen extends GetView<BookingController> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  const Text(
-                    "Crop name",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                  Text(
+                    isOptional ? "Crop name (optional)" : "Crop name",
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),

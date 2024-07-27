@@ -3,6 +3,7 @@
 import "dart:async";
 
 import "package:customer/common_functions/cart_list_and_wish_list_functions.dart";
+import "package:customer/common_functions/rental_booking_stream.dart";
 import "package:customer/controllers/main_navigation_controller.dart";
 import "package:customer/controllers/outer_main_controllers/home_controller.dart";
 import "package:customer/models/banner_model.dart";
@@ -90,6 +91,7 @@ class HomeScreen extends GetView<HomeController> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  const SizedBox(height: 8),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: CommonHomeTitleBar(
@@ -112,6 +114,10 @@ class HomeScreen extends GetView<HomeController> {
                     onTap: (Categories item) async {
                       final bool isApproved = (item.status ?? "") == "Approved";
                       if (isApproved) {
+                        RentalBookingStream().functionSinkAdd(
+                          id: item.sId ?? "",
+                        );
+
                         await tabControllerFunction(2);
                       } else {
                         AppSnackbar().snackbarFailure(
@@ -124,6 +130,10 @@ class HomeScreen extends GetView<HomeController> {
                     onTapViewAll: (Categories item) async {
                       final bool isApproved = (item.status ?? "") == "Approved";
                       if (isApproved) {
+                        RentalBookingStream().functionSinkAdd(
+                          id: item.sId ?? "",
+                        );
+
                         await tabControllerFunction(2);
                       } else {
                         AppSnackbar().snackbarFailure(
@@ -156,6 +166,7 @@ class HomeScreen extends GetView<HomeController> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  const SizedBox(height: 8),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: CommonHomeTitleBar(
@@ -289,6 +300,7 @@ class HomeScreen extends GetView<HomeController> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          const SizedBox(height: 8),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: CommonHomeTitleBar(

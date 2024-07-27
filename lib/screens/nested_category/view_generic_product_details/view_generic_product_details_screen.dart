@@ -3,7 +3,7 @@
 import "dart:async";
 
 import "package:customer/common_functions/cart_list_and_wish_list_functions.dart";
-import "package:customer/common_functions/stream_functions.dart";
+import "package:customer/common_functions/order_booking_stream.dart";
 import "package:customer/common_widgets/app_bottom_indicator.dart";
 import "package:customer/common_widgets/app_elevated_button.dart";
 import "package:customer/common_widgets/common_image_widget.dart";
@@ -55,7 +55,7 @@ class ViewGenericProductDetailsScreen
                         arguments: <String, dynamic>{},
                       );
 
-                      functionSinkAdd();
+                      OrderBookingStream().functionSinkAdd();
                     },
                     icon: Badge(
                       isLabelVisible: rxWishListCount.value != 0,
@@ -80,7 +80,7 @@ class ViewGenericProductDetailsScreen
                         arguments: <String, dynamic>{},
                       );
 
-                      functionSinkAdd();
+                      OrderBookingStream().functionSinkAdd();
                     },
                     icon: Badge(
                       isLabelVisible: rxCartListCount.value != 0,

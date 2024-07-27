@@ -2,7 +2,7 @@
 
 import "dart:async";
 
-import "package:customer/common_functions/stream_functions.dart";
+import "package:customer/common_functions/order_booking_stream.dart";
 import "package:customer/models/generic_product_details_model.dart";
 import "package:customer/models/get_addresses_model.dart";
 import "package:customer/models/get_user_by_id.dart";
@@ -52,7 +52,7 @@ class ViewGenericProductDetailsController extends GetxController {
     initReinit();
     pagingControllerProducts.addPageRequestListener(_fetchPageProducts);
 
-    subscribe(
+    OrderBookingStream().subscribe(
       callback: AppNavService().currentRoute ==
               AppRoutes().viewGenericProductDetailsScreen
           ? getProductDetailsAPICall

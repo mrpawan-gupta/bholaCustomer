@@ -1,5 +1,5 @@
 import "dart:async";
-import "package:customer/common_functions/stream_functions.dart";
+import "package:customer/common_functions/order_booking_stream.dart";
 import "package:customer/models/banner_model.dart";
 import "package:customer/models/featured_model.dart";
 import "package:customer/models/product_model.dart";
@@ -59,7 +59,7 @@ class ProductsListController extends GetxController {
 
     unawaited(getCategoriesAPI());
 
-    subscribe(
+    OrderBookingStream().subscribe(
       callback: AppNavService().currentRoute == AppRoutes().productListingScreen
           ? pagingControllerRecently.refresh
           : () {},

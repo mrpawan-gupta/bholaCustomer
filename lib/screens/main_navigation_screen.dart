@@ -1,7 +1,7 @@
 import "dart:async";
 
 import "package:customer/common_functions/cart_list_and_wish_list_functions.dart";
-import "package:customer/common_functions/stream_functions.dart";
+import "package:customer/common_functions/order_booking_stream.dart";
 import "package:customer/common_widgets/common_image_widget.dart";
 import "package:customer/controllers/main_navigation_controller.dart";
 import "package:customer/models/get_user_by_id.dart";
@@ -77,7 +77,7 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
                         arguments: <String, dynamic>{},
                       );
 
-                      functionSinkAdd();
+                      OrderBookingStream().functionSinkAdd();
                     },
                     icon: Badge(
                       isLabelVisible: rxWishListCount.value != 0,
@@ -102,7 +102,7 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
                         arguments: <String, dynamic>{},
                       );
 
-                      functionSinkAdd();
+                      OrderBookingStream().functionSinkAdd();
                     },
                     icon: Badge(
                       isLabelVisible: rxCartListCount.value != 0,
@@ -125,9 +125,13 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
               ),
             ],
             surfaceTintColor: AppColors().appWhiteColor,
-            bottom: const PreferredSize(
+            bottom: PreferredSize(
               preferredSize: Size.zero,
-              child: Divider(height: 0),
+              child: Divider(
+                color: AppColors().appPrimaryColor,
+                thickness: 2.0,
+                height: 0.0,
+              ),
             ),
           ),
           // ignore: deprecated_member_use
