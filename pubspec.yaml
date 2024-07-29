@@ -24,6 +24,7 @@ dependencies:
   firebase_remote_config: ^5.0.3
   flutter:
     sdk: flutter
+  flutter_cache_manager: ^3.3.3
   flutter_cached_pdfview: ^0.4.2
   flutter_custom_tabs: ^2.1.0
   flutter_keyboard_visibility: ^6.0.0
@@ -47,7 +48,7 @@ dependencies:
   is_first_run: ^1.0.0
   like_button: ^2.0.5
   liquid_pull_to_refresh: ^3.0.1
-  loader_overlay: ^4.0.0
+  loader_overlay: ^4.0.1
   location: ^6.0.2
   logger: ^2.4.0
   lottie: ^3.1.2
@@ -69,7 +70,7 @@ dependencies:
       url: https://github.com/dharambudh1/locationpicker.git
   pod_player: ^0.2.2
   read_more_text: ^0.0.5
-  rxdart: ^0.27.7
+  rxdart: ^0.28.0
   share_plus: ^9.0.0
   simple_ripple_animation: ^0.0.9
   smart_auth: ^2.0.0
@@ -77,9 +78,9 @@ dependencies:
   transparent_image: ^2.0.1
   upgrader: ^10.3.0
   url_launcher: ^6.3.0
-  video_thumbnail:
+  video_compress:
     git:
-      url: https://github.com/dharambudh1/video_thumbnail.git
+      url: https://github.com/dharambudh1/VideoCompress.git
 
 dev_dependencies:
   flutter_launcher_icons: "^0.13.1"

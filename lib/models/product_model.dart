@@ -65,7 +65,6 @@ class Products {
     this.price,
     this.category,
     this.itemCode,
-    this.quantity,
     this.sold,
     this.sizePerQuantity,
     this.photo,
@@ -95,7 +94,6 @@ class Products {
     category =
         json["category"] != null ? Category.fromJson(json["category"]) : null;
     itemCode = json["itemCode"];
-    quantity = json["quantity"];
     sold = json["sold"];
     sizePerQuantity = json["sizePerQuantity"];
     photo = json["photo"];
@@ -122,7 +120,6 @@ class Products {
   num? price;
   Category? category;
   String? itemCode;
-  num? quantity;
   num? sold;
   num? sizePerQuantity;
   String? photo;
@@ -153,7 +150,6 @@ class Products {
       data["category"] = category!.toJson();
     }
     data["itemCode"] = itemCode;
-    data["quantity"] = quantity;
     data["sold"] = sold;
     data["sizePerQuantity"] = sizePerQuantity;
     data["photo"] = photo;

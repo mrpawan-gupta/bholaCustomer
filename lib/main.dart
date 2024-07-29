@@ -76,10 +76,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       builder: (BuildContext context, Widget? child) {
         final Locale locale = AppStorageService().getUserLangFromStorage();
-        final Widget widget = child ?? const SizedBox();
-        const TextScaler textScaler = TextScaler.noScaling;
         return MediaQuery(
-          data: context.mediaQuery.copyWith(textScaler: textScaler),
+          data: context.mediaQuery.copyWith(textScaler: TextScaler.noScaling),
           child: AppLoader().globalLoaderOverlay(
             child: AppKeyboardManager().globalKeyboardDismisser(
               child: UpgradeAlert(
@@ -92,7 +90,7 @@ class MyApp extends StatelessWidget {
                 ),
                 showIgnore: false,
                 showLater: false,
-                child: widget,
+                child: child ?? const SizedBox(),
               ),
             ),
           ),
@@ -107,6 +105,8 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
+      defaultTransition: Transition.cupertino,
+      transitionDuration: const Duration(seconds: 1),
     );
   }
 

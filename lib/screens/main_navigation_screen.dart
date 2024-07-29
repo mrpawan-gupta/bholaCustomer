@@ -124,6 +124,7 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
                 ],
               ),
             ],
+            backgroundColor: AppColors().appWhiteColor,
             surfaceTintColor: AppColors().appWhiteColor,
             bottom: PreferredSize(
               preferredSize: Size.zero,
@@ -233,11 +234,23 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
   }
 
   Widget helloWidget(GetUserByIdData data) {
-    return Text(
-      "${data.firstName ?? ""} ${data.lastName ?? ""}",
-      style: const TextStyle(fontSize: 16 + 4, fontWeight: FontWeight.w700),
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Text(
+          controller.greet(),
+          style: const TextStyle(fontSize: 12),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+        const SizedBox(height: 2),
+        Text(
+          "${data.firstName ?? ""} ${data.lastName ?? ""}",
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ],
     );
   }
 }

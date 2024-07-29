@@ -207,7 +207,7 @@ class CommonHorizontalListViewProducts extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
         ),
         Text(
-          "${item.quantity ?? ""} ${item.unit ?? ""}",
+          "${item.sizePerQuantity ?? ""} ${item.unit ?? ""}",
           style: const TextStyle(fontWeight: FontWeight.bold),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
