@@ -15,7 +15,7 @@ import "package:customer/services/app_perm_service.dart";
 import "package:customer/services/app_pkg_info_service.dart";
 // import "package:customer/services/app_remote_config.dart";
 import "package:customer/services/app_storage_service.dart";
-// import "package:customer/services/phonepe_sdk_service.dart";
+import "package:customer/services/phonepe_sdk_service.dart";
 import "package:customer/utils/app_orientations.dart";
 import "package:firebase_messaging/firebase_messaging.dart";
 import "package:get/get.dart";
@@ -56,7 +56,7 @@ Future<void> initDependencies() async {
   unawaited(AppPkgInfoService().initPkgInformation());
   unawaited(AppDevInfoService().initDevInformation());
 
-  // unawaited(PhonePeSDKService().init());
+  unawaited(PhonePeSDKService().init());
 
   return Future<void>.value();
 }

@@ -1,10 +1,20 @@
-// import "dart:async";
+import "dart:async";
 
-// import "package:customer/services/phonepe_sdk_service.dart";
+import "package:customer/services/phonepe_sdk_service.dart";
 import "package:get/get.dart";
+
+enum PaymentState {
+  notStarted,
+  started,
+  processing,
+  paymemtSuccess,
+  paymentFailure,
+}
 
 class BookingPaymentController extends GetxController {
   final RxString rxBookingId = "".obs;
+  final Rx<PaymentState> rxPaymentState = PaymentState.notStarted.obs;
+  final RxString rxMessage = "".obs;
 
   @override
   void onInit() {
@@ -16,6 +26,8 @@ class BookingPaymentController extends GetxController {
         updateBookingId(arguments["id"]);
       } else {}
     } else {}
+
+    updatePaymentState(PaymentState.started);
   }
 
   void updateBookingId(String value) {
@@ -23,17 +35,35 @@ class BookingPaymentController extends GetxController {
     return;
   }
 
-  // Future<(bool, String, String)> createOrderAPICall() async {
-  //   final Completer<(bool, String, String)> completer =
-  //       Completer<(bool, String, String)>();
+  void updatePaymentState(PaymentState value) {
+    rxPaymentState(value);
+    return;
+  }
 
-  //   String body = "";
-  //   body = getBody(amount: 1000);
+  void updateMessage(String value) {
+    rxMessage(value);
+    return;
+  }
 
-  //   String checksum = "";
-  //   checksum = getChecksumCalculation(amount: 1000);
+  bool canGoBack() {
+    final PaymentState state = rxPaymentState.value;
+    final bool condition1 = state == PaymentState.paymemtSuccess;
+    final bool condition2 = state == PaymentState.paymentFailure;
+    final bool finalCondition = condition1 || condition2;
 
-  //   completer.complete((true, body, checksum));
-  //   return completer.future;
-  // }
+    return finalCondition;
+  }
+
+  Future<(bool, String, String)> createOrderAPICall() async {
+    final Completer<(bool, String, String)> completer =
+        Completer<(bool, String, String)>();
+
+    final String body = getBody(amount: 1000);
+
+    final String checksum = getChecksumCalculation(amount: 1000);
+
+    completer.complete((true, body, checksum));
+
+    return completer.future;
+  }
 }
