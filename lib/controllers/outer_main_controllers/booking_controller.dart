@@ -84,23 +84,33 @@ class BookingController extends GetxController {
   Future<void> clearAndUpdateForm({required String id}) async {
     clearForm();
 
-    final Categories value = getCategoryById(id: id);
+    await updateFormFurther(getCategoryById(id: id));
 
-    rxSelectedCategory(value);
-    setupUIProcedure();
+    return Future<void>.value();
+  }
 
-    rxSelectedService(Services());
-    servicesList.clear();
+  Future<void> updateFormFurther(Categories value) async {
+    final Map<String, dynamic> map1 = value.toJson();
+    final Map<String, dynamic> map2 = Categories().toJson();
 
-    await getServicesAPI();
+    final bool isMapEquals = mapEquals(map1, map2);
+
+    if (!isMapEquals) {
+      rxSelectedCategory(value);
+      setupUIProcedure();
+
+      rxSelectedService(Services());
+      servicesList.clear();
+
+      await getServicesAPI();
+    } else {}
+
     return Future<void>.value();
   }
 
   Categories getCategoryById({required String id}) {
     return categoriesList.firstWhere(
-      (Categories e) {
-        return (e.sId ?? "") == id;
-      },
+      (Categories e) => (e.sId ?? "") == id,
       orElse: Categories.new,
     );
   }

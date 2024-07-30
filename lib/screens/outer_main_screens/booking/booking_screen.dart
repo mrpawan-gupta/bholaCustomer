@@ -208,13 +208,7 @@ class BookingScreen extends GetView<BookingController> {
                               items: controller.categoriesList,
                               onChanged: (Categories? value) async {
                                 if (value != null) {
-                                  controller.rxSelectedCategory(value);
-                                  controller.setupUIProcedure();
-
-                                  controller.rxSelectedService(Services());
-                                  controller.servicesList.clear();
-
-                                  await controller.getServicesAPI();
+                                  await controller.updateFormFurther(value);
                                 } else {}
                               },
                             ),
@@ -1040,6 +1034,7 @@ class BookingScreen extends GetView<BookingController> {
 
       if (result != null && result is Crops) {
         final Crops temp = controller.rxSelectedCrop.value;
+
         final String selectedId = temp.sId ?? "";
         final String newId = result.sId ?? "";
 
