@@ -1,5 +1,6 @@
 import "dart:async";
 
+import "package:customer/common_functions/booking_functions.dart";
 import "package:customer/common_functions/rental_booking_stream.dart";
 import "package:customer/common_widgets/app_elevated_button.dart";
 import "package:customer/common_widgets/app_text_button.dart";
@@ -92,7 +93,6 @@ class BookingController extends GetxController {
   Future<void> updateFormFurther(Categories value) async {
     final Map<String, dynamic> map1 = value.toJson();
     final Map<String, dynamic> map2 = Categories().toJson();
-
     final bool isMapEquals = mapEquals(map1, map2);
 
     if (!isMapEquals) {
@@ -524,15 +524,15 @@ class BookingController extends GetxController {
     final String displayType = rxSelectedCategory.value.displayType ?? "";
 
     switch (displayType) {
-      case "hour":
+      case displayTypeHour:
         rxNeedToShowAreaWidget(false);
         rxNeedToShowHourWidget(true);
         break;
-      case "area":
+      case displayTypeArea:
         rxNeedToShowAreaWidget(true);
         rxNeedToShowHourWidget(true);
         break;
-      case "areawithmedicine":
+      case displayTypeAreaWithMedicine:
         rxNeedToShowAreaWidget(true);
         rxNeedToShowHourWidget(true);
         break;

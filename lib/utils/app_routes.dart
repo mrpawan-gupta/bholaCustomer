@@ -2,7 +2,6 @@ import "package:customer/bindings/address_binding/addresses_list_binding.dart";
 import "package:customer/bindings/booking_binding/added_quotes_binding.dart";
 import "package:customer/bindings/booking_binding/booking_add_ons_binding.dart";
 import "package:customer/bindings/booking_binding/booking_details_binding.dart";
-import "package:customer/bindings/booking_binding/booking_payment_binding.dart";
 import "package:customer/bindings/booking_binding/select_crop_binding.dart";
 import "package:customer/bindings/booking_binding/select_medicine_binding.dart";
 import "package:customer/bindings/cart_binding/cart_binding.dart";
@@ -19,6 +18,7 @@ import "package:customer/bindings/outer_main_bindings/category_binding.dart";
 import "package:customer/bindings/outer_main_bindings/help_binding.dart";
 import "package:customer/bindings/outer_main_bindings/home_binding.dart";
 import "package:customer/bindings/outer_main_bindings/order_history_binding.dart";
+import "package:customer/bindings/payment_binding/payment_binding.dart";
 import "package:customer/bindings/review_rating_binding/review_rating_binding.dart";
 import "package:customer/bindings/settings_bindings/app_info_binding.dart";
 import "package:customer/bindings/settings_bindings/change_language_binding.dart";
@@ -30,7 +30,6 @@ import "package:customer/screens/address_screen/addresses_list_screen.dart";
 import "package:customer/screens/booking_screen/added_quotes_screen.dart";
 import "package:customer/screens/booking_screen/booking_add_ons/booking_add_ons_screen.dart";
 import "package:customer/screens/booking_screen/booking_details_screen.dart";
-import "package:customer/screens/booking_screen/booking_payment_screen.dart";
 import "package:customer/screens/booking_screen/crop/select_crop_screen.dart";
 import "package:customer/screens/booking_screen/medicine/select_medicine_screen.dart";
 import "package:customer/screens/cart_screen/cart_screen.dart";
@@ -47,6 +46,7 @@ import "package:customer/screens/outer_main_screens/category/category_screen.dar
 import "package:customer/screens/outer_main_screens/help_screen.dart";
 import "package:customer/screens/outer_main_screens/home/home_screen.dart";
 import "package:customer/screens/outer_main_screens/order_history_screen.dart";
+import "package:customer/screens/payment_screen/payment_screen.dart";
 import "package:customer/screens/review_rating_screen/review_rating_screen.dart";
 import "package:customer/screens/settings_screens/app_info_screen.dart";
 import "package:customer/screens/settings_screens/change_language_screen.dart";
@@ -76,7 +76,7 @@ class AppRoutes {
   final String helpScreen = "/helpScreen";
   final String orderHistoryScreen = "/orderHistoryScreen";
 
-  final String bookingPaymentScreen = "/bookingPaymentScreen";
+  final String paymentScreen = "/paymentScreen";
   final String bookingDetailsScreen = "/bookingDetailsScreen";
   final String addedQuotesScreen = "/addedQuotesScreen";
 
@@ -153,10 +153,10 @@ class AppRoutes {
       binding: OrderHistoryBinding(),
     );
 
-    final GetPage<dynamic> bookingPaymentRoute = GetPage<dynamic>(
-      name: bookingPaymentScreen,
-      page: BookingPaymentScreen.new,
-      binding: BookingPaymentBinding(),
+    final GetPage<dynamic> paymentRoute = GetPage<dynamic>(
+      name: paymentScreen,
+      page: PaymentScreen.new,
+      binding: PaymentBinding(),
     );
     final GetPage<dynamic> bookingDetailsRoute = GetPage<dynamic>(
       name: bookingDetailsScreen,
@@ -271,7 +271,7 @@ class AppRoutes {
       productListingRoute,
       editProfileRoute,
       bookingDetailsRoute,
-      bookingPaymentRoute,
+      paymentRoute,
       viewGenericProductDetailsRoute,
       addedQuotesRoute,
       wishListRoute,

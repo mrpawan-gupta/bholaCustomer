@@ -18,7 +18,6 @@ import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/material.dart";
 import "package:font_awesome_flutter/font_awesome_flutter.dart";
 import "package:get/get.dart";
-//
 
 class SettingsMainScreen extends GetView<SettingsMainController> {
   const SettingsMainScreen({super.key});

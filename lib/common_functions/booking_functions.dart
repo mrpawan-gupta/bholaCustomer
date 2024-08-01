@@ -101,3 +101,8 @@ String formatTime({required String time}) {
   final bool isExist = list.contains(item);
   return (isExist, item);
 }
+
+// display type
+const String displayTypeHour = "hour";
+const String displayTypeArea = "area";
+const String displayTypeAreaWithMedicine = "areawithmedicine";

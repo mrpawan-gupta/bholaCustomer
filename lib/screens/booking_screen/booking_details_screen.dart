@@ -5,6 +5,7 @@ import "package:customer/common_widgets/app_review_rating_widget.dart";
 import "package:customer/common_widgets/common_image_widget.dart";
 import "package:customer/controllers/booking_controller/booking_details_controller.dart";
 import "package:customer/models/new_order_model.dart";
+import "package:customer/screens/booking_screen/my_utils/pay_now_later_widget.dart";
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_routes.dart";
@@ -596,7 +597,7 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            "₹${item.discount ?? 0}",
+                            "₹${item.discountAmount ?? 0}",
                             style: const TextStyle(fontWeight: FontWeight.bold),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -618,7 +619,7 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            "${item.discountPercentage ?? 0}%",
+                            "${item.services?.first.discountPercentage ?? 0}%",
                             style: const TextStyle(fontWeight: FontWeight.bold),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -633,14 +634,14 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           const Text(
-                            "Final amount",
+                            "Net amount",
                             style: TextStyle(),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            "₹${item.finalAmount ?? 0}",
+                            "₹${item.netAmount ?? 0}",
                             style: const TextStyle(fontWeight: FontWeight.bold),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -838,7 +839,6 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
         controller.isVisibleConfirmAndCancelButton();
     final bool isVisibleCancelButton = controller.isVisibleCancelButton();
     final bool isVisibleReviewRating = controller.isVisibleReviewRating();
-
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -872,10 +872,7 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
                         value = await controller.confirmOrderAPICall(id: id);
 
                         if (value) {
-                          await AppNavService().pushNamed(
-                            destination: AppRoutes().bookingPaymentScreen,
-                            arguments: <String, dynamic>{"id": id},
-                          );
+                          await openPayNowLaterWidget(id: id);
 
                           await controller.getBookingAPICall();
                         } else {}
@@ -1074,5 +1071,24 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
           const SizedBox(),
       ],
     );
+  }
+
+  Future<void> openPayNowLaterWidget({required String id}) async {
+    final bool? result = await Get.bottomSheet(
+      const PayNowLaterWidget(),
+      backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
+      isScrollControlled: true,
+    );
+
+    if (result != null) {
+      if (result) {
+        await AppNavService().pushNamed(
+          destination: AppRoutes().paymentScreen,
+          arguments: <String, dynamic>{"id": id},
+        );
+      } else {}
+    } else {}
+
+    return Future<void>.value();
   }
 }

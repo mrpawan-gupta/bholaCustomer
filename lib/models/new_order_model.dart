@@ -65,10 +65,6 @@ class Bookings {
     this.vehicle,
     this.vehicleCategory,
     this.services,
-    this.amount,
-    this.commissionAmount,
-    this.discount,
-    this.finalAmount,
     this.senderAddress,
     this.deliveryAddress,
     this.scheduleDate = "2001-01-01T00:00:00.000Z",
@@ -83,11 +79,13 @@ class Bookings {
     this.createdAt,
     this.updatedAt,
     this.iV,
-    this.commissionPercentage,
-    this.discountPercentage,
     this.medicines,
     this.totalMedicinePrice,
     this.totalMedicines,
+    this.grossAmount,
+    this.commissionAmount,
+    this.discountAmount,
+    this.netAmount,
   });
 
   Bookings.fromJson(Map<String, dynamic> json) {
@@ -104,10 +102,6 @@ class Bookings {
         services!.add(Services.fromJson(v));
       }
     }
-    amount = json["amount"];
-    commissionAmount = json["commissionAmount"];
-    discount = json["discount"];
-    finalAmount = json["finalAmount"];
     senderAddress = json["senderAddress"] != null
         ? SenderAddress.fromJson(json["senderAddress"])
         : null;
@@ -119,7 +113,7 @@ class Bookings {
     approxEndTime = json["approxEndTime"];
     status = json["status"];
     crop = json["crop"] != null ? Service.fromJson(json["crop"]) : null;
-    farmArea = json["farm_area"];
+    farmArea = json["farmArea"];
     hours = json["hours"];
     customer =
         json["customer"] != null ? Customer.fromJson(json["customer"]) : null;
@@ -127,8 +121,6 @@ class Bookings {
     createdAt = json["createdAt"];
     updatedAt = json["updatedAt"];
     iV = json["__v"];
-    commissionPercentage = json["commissionPercentage"];
-    discountPercentage = json["discountPercentage"];
     if (json["medicines"] != null) {
       medicines = <Medicines>[];
       for (final dynamic v in json["medicines"] as List<dynamic>) {
@@ -137,16 +129,17 @@ class Bookings {
     }
     totalMedicinePrice = json["totalMedicinePrice"];
     totalMedicines = json["totalMedicines"];
+
+    grossAmount = json["grossAmount"];
+    commissionAmount = json["commissionAmount"];
+    discountAmount = json["discountAmount"];
+    netAmount = json["netAmount"];
   }
   String? sId;
   String? type;
   Vehicle? vehicle;
   Vehicle? vehicleCategory;
   List<Services>? services;
-  num? amount;
-  num? commissionAmount;
-  num? discount;
-  num? finalAmount;
   SenderAddress? senderAddress;
   SenderAddress? deliveryAddress;
   String? scheduleDate;
@@ -161,11 +154,13 @@ class Bookings {
   String? createdAt;
   String? updatedAt;
   int? iV;
-  num? commissionPercentage;
-  num? discountPercentage;
   List<Medicines>? medicines;
   num? totalMedicinePrice;
-  int? totalMedicines;
+  num? totalMedicines;
+  num? grossAmount;
+  num? commissionAmount;
+  num? discountAmount;
+  num? netAmount;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -180,10 +175,6 @@ class Bookings {
     if (services != null) {
       data["services"] = services!.map((Services v) => v.toJson()).toList();
     }
-    data["amount"] = amount;
-    data["commissionAmount"] = commissionAmount;
-    data["discount"] = discount;
-    data["finalAmount"] = finalAmount;
     if (senderAddress != null) {
       data["senderAddress"] = senderAddress!.toJson();
     }
@@ -197,7 +188,7 @@ class Bookings {
     if (crop != null) {
       data["crop"] = crop!.toJson();
     }
-    data["farm_area"] = farmArea;
+    data["farmArea"] = farmArea;
     data["hours"] = hours;
     if (customer != null) {
       data["customer"] = customer!.toJson();
@@ -208,13 +199,15 @@ class Bookings {
     data["createdAt"] = createdAt;
     data["updatedAt"] = updatedAt;
     data["__v"] = iV;
-    data["commissionPercentage"] = commissionPercentage;
-    data["discountPercentage"] = discountPercentage;
     if (medicines != null) {
       data["medicines"] = medicines!.map((Medicines v) => v.toJson()).toList();
     }
     data["totalMedicinePrice"] = totalMedicinePrice;
     data["totalMedicines"] = totalMedicines;
+    data["grossAmount"] = grossAmount;
+    data["commissionAmount"] = commissionAmount;
+    data["discountAmount"] = discountAmount;
+    data["netAmount"] = netAmount;
     return data;
   }
 }
@@ -241,17 +234,27 @@ class Vehicle {
 }
 
 class Services {
-  Services({this.service, this.price, this.area});
+  Services({
+    this.service,
+    this.price,
+    this.area,
+    this.commissionPercentage,
+    this.discountPercentage,
+  });
 
   Services.fromJson(Map<String, dynamic> json) {
     service =
         json["service"] != null ? Service.fromJson(json["service"]) : null;
     price = json["price"];
     area = json["area"];
+    commissionPercentage = json["commissionPercentage"];
+    discountPercentage = json["discountPercentage"];
   }
   Service? service;
   num? price;
   num? area;
+  num? commissionPercentage;
+  num? discountPercentage;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -260,6 +263,8 @@ class Services {
     }
     data["price"] = price;
     data["area"] = area;
+    data["commissionPercentage"] = commissionPercentage;
+    data["discountPercentage"] = discountPercentage;
     return data;
   }
 }

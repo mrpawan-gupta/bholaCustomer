@@ -1,24 +1,12 @@
-// ignore_for_file: lines_longer_than_80_chars
-
 import "package:customer/common_widgets/app_elevated_button.dart";
 import "package:customer/common_widgets/app_text_button.dart";
-import "package:customer/models/create_booking.dart";
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 
-class VendorUnavailable extends StatelessWidget {
-  const VendorUnavailable({
-    required this.data,
-    required this.onPressedConfirm,
-    required this.onPressedSupport,
-    super.key,
-  });
-
-  final CreateBookingData data;
-  final Function() onPressedConfirm;
-  final Function() onPressedSupport;
+class PayNowLaterWidget extends StatelessWidget {
+  const PayNowLaterWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +26,7 @@ class VendorUnavailable extends StatelessWidget {
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.0),
           child: Text(
-            "The selected service is currently not available in your area. Try Selecting the different service or contact the support team.",
+            "Would you like to pay now? You can always pay later as an option!",
             maxLines: 5,
             overflow: TextOverflow.ellipsis,
           ),
@@ -52,11 +40,10 @@ class VendorUnavailable extends StatelessWidget {
               SizedBox(
                 height: 50,
                 child: AppElevatedButton(
-                  text: "Confirm Booking",
+                  text: "Pay now",
                   onPressed: () {
-                    AppNavService().pop();
-                    
-                    onPressedConfirm();
+                    const bool value = true;
+                    AppNavService().pop(value);
                   },
                 ),
               ),
@@ -64,11 +51,10 @@ class VendorUnavailable extends StatelessWidget {
               SizedBox(
                 height: 50,
                 child: AppTextButton(
-                  text: "Contact Support",
+                  text: "Pay later",
                   onPressed: () async {
-                    AppNavService().pop();
-
-                    onPressedSupport();
+                    const bool value = false;
+                    AppNavService().pop(value);
                   },
                 ),
               ),

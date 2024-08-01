@@ -10,6 +10,7 @@ import "package:customer/common_widgets/common_image_widget.dart";
 import "package:customer/controllers/booking_controller/booking_add_ons_controller.dart";
 import "package:customer/models/new_order_model.dart";
 import "package:customer/screens/booking_screen/booking_add_ons/my_utis/common_list_view.dart";
+import "package:customer/screens/booking_screen/my_utils/pay_now_later_widget.dart";
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_routes.dart";
@@ -37,7 +38,6 @@ class BookingAddOnsScreen extends GetWidget<BookingAddOnsController> {
                   child: SingleChildScrollView(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         listView(context),
                       ],
@@ -64,6 +64,7 @@ class BookingAddOnsScreen extends GetWidget<BookingAddOnsController> {
   Widget listView(BuildContext context) {
     final Bookings bookings = controller.rxBookings.value;
     final List<Medicines> medicinesList = bookings.medicines ?? <Medicines>[];
+    
     return medicinesList.isEmpty
         ? SizedBox(
             height: Get.height / 2,
@@ -395,7 +396,7 @@ class BookingAddOnsScreen extends GetWidget<BookingAddOnsController> {
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
-                                    "₹${bookings.discount ?? 0}",
+                                    "₹${bookings.discountAmount ?? 0}",
                                     style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -419,7 +420,7 @@ class BookingAddOnsScreen extends GetWidget<BookingAddOnsController> {
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
-                                    "${bookings.discountPercentage ?? 0}%",
+                                    "${bookings.services?.first.discountPercentage ?? 0}%",
                                     style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -436,14 +437,14 @@ class BookingAddOnsScreen extends GetWidget<BookingAddOnsController> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   const Text(
-                                    "Final amount",
+                                    "Net amount",
                                     style: TextStyle(),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
-                                    "₹${bookings.finalAmount ?? 0}",
+                                    "₹${bookings.netAmount ?? 0}",
                                     style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -505,7 +506,7 @@ class BookingAddOnsScreen extends GetWidget<BookingAddOnsController> {
                         const SizedBox(width: 4),
                         Expanded(
                           child: Text(
-                            "₹${bookings.finalAmount ?? 0}",
+                            "₹${bookings.netAmount ?? 0}",
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -559,10 +560,7 @@ class BookingAddOnsScreen extends GetWidget<BookingAddOnsController> {
                     value = await controller.confirmOrderAPICall(id: id);
 
                     if (value) {
-                      await AppNavService().pushNamed(
-                        destination: AppRoutes().bookingPaymentScreen,
-                        arguments: <String, dynamic>{"id": id},
-                      );
+                      await openPayNowLaterWidget(id: id);
 
                       unawaited(
                         controller.getBookingAPICall(needLoader: true),
@@ -1152,6 +1150,25 @@ class BookingAddOnsScreen extends GetWidget<BookingAddOnsController> {
       backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
       isScrollControlled: true,
     );
+    return Future<void>.value();
+  }
+
+  Future<void> openPayNowLaterWidget({required String id}) async {
+    final bool? result = await Get.bottomSheet(
+      const PayNowLaterWidget(),
+      backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
+      isScrollControlled: true,
+    );
+
+    if (result != null) {
+      if (result) {
+        await AppNavService().pushNamed(
+          destination: AppRoutes().paymentScreen,
+          arguments: <String, dynamic>{"id": id},
+        );
+      } else {}
+    } else {}
+
     return Future<void>.value();
   }
 }

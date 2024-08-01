@@ -6,6 +6,7 @@ import "package:customer/common_widgets/common_image_widget.dart";
 import "package:customer/controllers/booking_controller/added_quotes_controller.dart";
 import "package:customer/models/featured_model.dart";
 import "package:customer/models/new_order_model.dart";
+import "package:customer/screens/booking_screen/my_utils/pay_now_later_widget.dart";
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_routes.dart";
@@ -223,10 +224,8 @@ class AddedQuotesScreen extends GetView<AddedQuotesController> {
                 controller.pagingControllerNewOrder.itemList ?? <Bookings>[];
             final int length = itemList.length;
             final bool isLast = index == length - 1;
-
             final String status = item.status ?? "";
             final bool isStatusCorrect = status == "Created";
-
             return Padding(
               padding: EdgeInsets.only(bottom: isLast ? 32.0 : 16.0),
               child: Card(
@@ -244,15 +243,7 @@ class AddedQuotesScreen extends GetView<AddedQuotesController> {
                 child: InkWell(
                   borderRadius: BorderRadius.circular(12.0),
                   onTap: () async {
-                    // await AppNavService().pushNamed(
-                    //   destination: AppRoutes().bookingDetailsScreen,
-                    //   arguments: <String, dynamic>{"id": item.sId ?? ""},
-                    // );
-
-                    await AppNavService().pushNamed(
-                      destination: AppRoutes().bookingAddOnsScreen,
-                      arguments: <String, dynamic>{"id": item.sId ?? ""},
-                    );
+                    await navigate(item: item);
 
                     controller.pagingControllerNewOrder.refresh();
                   },
@@ -670,13 +661,7 @@ class AddedQuotesScreen extends GetView<AddedQuotesController> {
                                           .confirmOrderAPICall(id: id);
 
                                       if (value) {
-                                        await AppNavService().pushNamed(
-                                          destination:
-                                              AppRoutes().bookingPaymentScreen,
-                                          arguments: <String, dynamic>{
-                                            "id": id,
-                                          },
-                                        );
+                                        await openPayNowLaterWidget(id: id);
 
                                         controller.pagingControllerNewOrder
                                             .refresh();
@@ -759,5 +744,41 @@ class AddedQuotesScreen extends GetView<AddedQuotesController> {
         ),
       ),
     );
+  }
+
+  Future<void> navigate({required Bookings item}) async {
+    final String displayType = item.type ?? "";
+    final bool isMedicineSupported = displayType == displayTypeAreaWithMedicine;
+
+    isMedicineSupported
+        ? await AppNavService().pushNamed(
+            destination: AppRoutes().bookingAddOnsScreen,
+            arguments: <String, dynamic>{"id": item.sId ?? ""},
+          )
+        : await AppNavService().pushNamed(
+            destination: AppRoutes().bookingDetailsScreen,
+            arguments: <String, dynamic>{"id": item.sId ?? ""},
+          );
+
+    return Future<void>.value();
+  }
+
+  Future<void> openPayNowLaterWidget({required String id}) async {
+    final bool? result = await Get.bottomSheet(
+      const PayNowLaterWidget(),
+      backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
+      isScrollControlled: true,
+    );
+
+    if (result != null) {
+      if (result) {
+        await AppNavService().pushNamed(
+          destination: AppRoutes().paymentScreen,
+          arguments: <String, dynamic>{"id": id},
+        );
+      } else {}
+    } else {}
+
+    return Future<void>.value();
   }
 }

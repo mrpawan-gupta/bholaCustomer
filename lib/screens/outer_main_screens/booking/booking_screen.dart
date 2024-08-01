@@ -1,5 +1,6 @@
 // ignore_for_file: lines_longer_than_80_chars
 
+import "package:customer/common_functions/booking_functions.dart";
 import "package:customer/common_widgets/app_elevated_button.dart";
 import "package:customer/common_widgets/app_text_field.dart";
 import "package:customer/controllers/outer_main_controllers/booking_controller.dart";
@@ -10,8 +11,6 @@ import "package:customer/models/get_all_crops_model.dart";
 import "package:customer/models/get_all_services.dart";
 import "package:customer/screens/outer_main_screens/booking/my_utils/custom_dd_for_categories.dart";
 import "package:customer/screens/outer_main_screens/booking/my_utils/custom_dd_for_services.dart";
-import "package:customer/screens/outer_main_screens/booking/my_utils/vendor_available.dart";
-import "package:customer/screens/outer_main_screens/booking/my_utils/vendor_unavailable.dart";
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_constants.dart";
@@ -720,48 +719,7 @@ class BookingScreen extends GetView<BookingController> {
             Expanded(
               child: AppElevatedButton(
                 text: "Get Quote",
-                onPressed: () async {
-                  final String reason = controller.validateForm();
-
-                  if (reason.isEmpty) {
-                    CreateBookingData model = CreateBookingData();
-                    model = await controller.createBookingAPI();
-
-                    if (!mapEquals(
-                      model.toJson(),
-                      CreateBookingData().toJson(),
-                    )) {
-                      final String id = model.booking?.sId ?? "";
-
-                      await AppNavService().pushNamed(
-                        destination: AppRoutes().bookingAddOnsScreen,
-                        arguments: <String, dynamic>{"id": id},
-                      );
-
-                      controller.clearForm();
-
-                      // await openBookingGlanceWidget(
-                      //   data: model,
-                      //   onPressedConfirm: () async {
-                      //     bool value = false;
-                      //     value = await controller.confirmOrderAPICall(id: id);
-                      //     if (value) {
-                      //       await AppNavService().pushNamed(
-                      //         destination: AppRoutes().bookingPaymentScreen,
-                      //         arguments: <String, dynamic>{"id": id},
-                      //       );
-
-                      //       controller.clearForm();
-                      //     } else {}
-                      //   },
-                      //   onPressedSupport: AppWhatsApp().openWhatsApp,
-                      // );
-                    } else {}
-                  } else {
-                    AppSnackbar()
-                        .snackbarFailure(title: "Oops", message: reason);
-                  }
-                },
+                onPressed: onPressedGetQuote,
               ),
             ),
             const SizedBox(width: 16),
@@ -925,7 +883,6 @@ class BookingScreen extends GetView<BookingController> {
         },
       );
     }
-
     return Future<void>.value();
   }
 
@@ -944,15 +901,11 @@ class BookingScreen extends GetView<BookingController> {
         final String formattedAddress = result.formattedAddress ?? "";
         controller.searchController.text = formattedAddress;
         controller.rxSearchQuery(formattedAddress);
-
         if (controller.searchController.isOpen) {
           controller.searchController.closeView(formattedAddress);
         } else {}
       } else {
-        AppSnackbar().snackbarFailure(
-          title: "Oops",
-          message: reason,
-        );
+        AppSnackbar().snackbarFailure(title: "Oops", message: reason);
       }
     } else {}
     return Future<void>.value();
@@ -967,12 +920,9 @@ class BookingScreen extends GetView<BookingController> {
       firstDate: DateTime.now(),
       lastDate: DateTime.now().add(const Duration(days: 365)),
     );
-
     if (picked != null) {
       final DateTime dateTime = picked;
-
       final String formattedDate = DateFormat("dd-MM-yyyy").format(dateTime);
-
       onPicked(dateTime.toString(), formattedDate);
     } else {}
     return Future<void>.value();
@@ -985,7 +935,6 @@ class BookingScreen extends GetView<BookingController> {
       context: Get.context!,
       initialTime: TimeOfDay.now(),
     );
-
     if (picked != null) {
       final DateTime dateTime = DateTime(
         DateTime.now().year,
@@ -994,34 +943,9 @@ class BookingScreen extends GetView<BookingController> {
         picked.hour,
         picked.minute,
       );
-
       final String formattedTime = DateFormat("hh:mm a").format(dateTime);
-
       onPicked(dateTime.toString(), formattedTime);
     } else {}
-    return Future<void>.value();
-  }
-
-  Future<void> openBookingGlanceWidget({
-    required CreateBookingData data,
-    required Function() onPressedConfirm,
-    required Function() onPressedSupport,
-  }) async {
-    await Get.bottomSheet(
-      (data.vendorsAvailable ?? false)
-          ? VendorAvailable(
-              data: data,
-              onPressedConfirm: onPressedConfirm,
-              onPressedSupport: onPressedSupport,
-            )
-          : VendorUnavailable(
-              data: data,
-              onPressedConfirm: onPressedConfirm,
-              onPressedSupport: onPressedSupport,
-            ),
-      backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
-      isScrollControlled: true,
-    );
     return Future<void>.value();
   }
 
@@ -1034,10 +958,8 @@ class BookingScreen extends GetView<BookingController> {
 
       if (result != null && result is Crops) {
         final Crops temp = controller.rxSelectedCrop.value;
-
         final String selectedId = temp.sId ?? "";
         final String newId = result.sId ?? "";
-
         if (selectedId != newId) {
           controller.rxSelectedCrop(result);
           controller.cropNameController.text = result.name ?? "";
@@ -1050,5 +972,38 @@ class BookingScreen extends GetView<BookingController> {
         message: "Please select rental category first.",
       );
     }
+    return Future<void>.value();
+  }
+
+  Future<void> onPressedGetQuote() async {
+    final String reason = controller.validateForm();
+
+    if (reason.isEmpty) {
+      CreateBookingData model = CreateBookingData();
+      model = await controller.createBookingAPI();
+
+      final Map<String, dynamic> map1 = model.toJson();
+      final Map<String, dynamic> map2 = CreateBookingData().toJson();
+      final bool condition = !mapEquals(map1, map2);
+
+      if (condition) {
+        final Categories category = controller.rxSelectedCategory.value;
+        final String displayType = category.displayType ?? "";
+        final bool isMedicineSupported = displayType == displayTypeAreaWithMedicine;
+        isMedicineSupported
+            ? await AppNavService().pushNamed(
+                destination: AppRoutes().bookingAddOnsScreen,
+                arguments: <String, dynamic>{"id": model.sId ?? ""},
+              )
+            : await AppNavService().pushNamed(
+                destination: AppRoutes().bookingDetailsScreen,
+                arguments: <String, dynamic>{"id": model.sId ?? ""},
+              );
+        controller.clearForm();
+      } else {}
+    } else {
+      AppSnackbar().snackbarFailure(title: "Oops", message: reason);
+    }
+    return Future<void>.value();
   }
 }

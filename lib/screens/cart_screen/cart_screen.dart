@@ -825,10 +825,7 @@ class CartScreen extends GetWidget<CartController> {
               child: AppElevatedButton(
                 text: "Proceed to Payment",
                 onPressed: () async {
-                  await AppNavService().pushNamed(
-                    destination: AppRoutes().bookingPaymentScreen,
-                    arguments: <String, dynamic>{"id": "123456"},
-                  );
+                  // Payment Screen
 
                   unawaited(
                     controller.getAllCartsItemsAPICall(
