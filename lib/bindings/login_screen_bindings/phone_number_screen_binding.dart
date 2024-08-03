@@ -4,6 +4,6 @@ import "package:get/get.dart";
 class PhoneNumberScreenBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(PhoneNumberScreenController.new);
+    Get.put(PhoneNumberScreenController());
   }
 }

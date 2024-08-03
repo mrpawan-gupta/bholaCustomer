@@ -1,4 +1,5 @@
 import "dart:async";
+import "dart:io";
 
 import "package:customer/common_functions/dependencies_injection.dart";
 import "package:customer/firebase_options.dart";
@@ -12,6 +13,7 @@ import "package:customer/utils/app_loader.dart";
 import "package:customer/utils/app_logger.dart";
 import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/localization/app_translations.dart";
+import "package:customer/utils/my_http_overrides.dart";
 import "package:firebase_core/firebase_core.dart";
 import "package:firebase_crashlytics/firebase_crashlytics.dart";
 import "package:firebase_messaging/firebase_messaging.dart";
@@ -28,6 +30,9 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  SecurityContext.defaultContext.allowLegacyUnsafeRenegotiation = true;
+  HttpOverrides.global = MyHttpOverrides();
 
   final FirebaseOptions options = DefaultFirebaseOptions.currentPlatform;
   await Firebase.initializeApp(options: options);

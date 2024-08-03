@@ -312,7 +312,7 @@ class BookingController extends GetxController {
     await AppAPIService().functionPatch(
       types: Types.rental,
       endPoint: "booking/$id/status",
-      body: <String, String>{"status": "BookingConfirm"},
+      body: <String, String>{"status": bookingConfirmed},
       successCallback: (Map<String, dynamic> json) {
         AppSnackbar().snackbarSuccess(title: "Yay!", message: json["message"]);
 

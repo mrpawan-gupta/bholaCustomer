@@ -1,5 +1,6 @@
 import "dart:async";
 
+import "package:customer/common_functions/booking_functions.dart";
 import "package:customer/models/new_order_model.dart";
 import "package:customer/services/app_api_service.dart";
 import "package:customer/utils/app_logger.dart";
@@ -78,7 +79,7 @@ class BookingAddOnsController extends GetxController {
     await AppAPIService().functionPatch(
       types: Types.rental,
       endPoint: "booking/$id/status",
-      body: <String, String>{"status": "BookingConfirm"},
+      body: <String, String>{"status": bookingConfirmed},
       successCallback: (Map<String, dynamic> json) {
         AppSnackbar().snackbarSuccess(title: "Yay!", message: json["message"]);
 

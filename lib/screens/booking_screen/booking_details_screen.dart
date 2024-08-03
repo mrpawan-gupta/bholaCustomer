@@ -9,7 +9,10 @@ import "package:customer/screens/booking_screen/my_utils/pay_now_later_widget.da
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_routes.dart";
+import "package:customer/utils/app_snackbar.dart";
+import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 import "package:get/get.dart";
 
 class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
@@ -40,7 +43,8 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
                     ),
                   ),
                 ),
-                decideActionButtonWidget(),
+                decideTopActionButtonWidget(),
+                decideBottomActionButtonWidget(),
                 const SizedBox(height: 16),
               ],
             );
@@ -177,6 +181,20 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
                         ],
                       ),
                     ),
+                    const SizedBox(width: 16),
+                    IconButton(
+                      icon: const Icon(Icons.copy),
+                      onPressed: () async {
+                        final String id = controller.rxBookingId.value;
+
+                        await Clipboard.setData(ClipboardData(text: id));
+
+                        AppSnackbar().snackbarSuccess(
+                          title: "Yay!",
+                          message: "Booking ID copied to clipboard!",
+                        );
+                      },
+                    ),
                   ],
                 ),
                 const Divider(),
@@ -186,79 +204,75 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Expanded(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            const Text(
-                              "Customer Info:",
-                              style: TextStyle(),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              "${item.customer?.firstName ?? ""} ${item.customer?.lastName ?? ""}",
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              item.customer?.phoneNumber ?? "",
-                              style: const TextStyle(fontSize: 10),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              item.customer?.email ?? "",
-                              style: const TextStyle(fontSize: 10),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      const VerticalDivider(),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            const Text(
-                              "Vendor Info:",
-                              style: TextStyle(),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              "${item.vendor?.firstName ?? ""} ${item.vendor?.lastName ?? ""}",
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              item.vendor?.phoneNumber ?? "",
-                              style: const TextStyle(fontSize: 10),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              item.vendor?.email ?? "",
-                              style: const TextStyle(fontSize: 10),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
-                        ),
+                        child: mapEquals(
+                          item.vendor?.toJson() ?? Customer().toJson(),
+                          Customer().toJson(),
+                        )
+                            ? const Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    "Vendor Information:",
+                                    style: TextStyle(),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  SizedBox(height: 4),
+                                  Text(
+                                    "No vendor has accepted this booking yet.",
+                                    style: TextStyle(fontSize: 10),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  SizedBox(height: 4),
+                                  Text(
+                                    "Please allow some time for this to be processed.",
+                                    style: TextStyle(fontSize: 10),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              )
+                            : Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  const Text(
+                                    "Vendor Information:",
+                                    style: TextStyle(),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    "${item.vendor?.firstName ?? ""} ${item.vendor?.lastName ?? ""}",
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    (item.vendor?.phoneNumber ?? "").isNotEmpty
+                                        ? item.vendor?.phoneNumber ?? ""
+                                        : "Phone number is not provided",
+                                    style: const TextStyle(fontSize: 10),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    (item.vendor?.email ?? "").isNotEmpty
+                                        ? item.vendor?.email ?? ""
+                                        : "Email address is not provided",
+                                    style: const TextStyle(fontSize: 10),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
                       ),
                     ],
                   ),
@@ -518,79 +532,7 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           const Text(
-                            "Medicine count",
-                            style: TextStyle(),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            "${item.medicines?.length ?? 0}",
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          const Text(
-                            "Medicine Qty.",
-                            style: TextStyle(),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            "${item.totalMedicines ?? 0}",
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          const Text(
-                            "Medicine cost",
-                            style: TextStyle(),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            "₹${item.totalMedicinePrice ?? 0}",
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                const Divider(),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Expanded(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          const Text(
-                            "Discount ₹",
+                            "Discount Amount",
                             style: TextStyle(),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -612,7 +554,7 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           const Text(
-                            "Discount %",
+                            "Discount Percentage",
                             style: TextStyle(),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -627,6 +569,34 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
                         ],
                       ),
                     ),
+                  ],
+                ),
+                const Divider(),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Expanded(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          const Text(
+                            "Gross Payable Amount",
+                            style: TextStyle(),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            "₹${item.grossAmount ?? 0}",
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                    ),
                     const SizedBox(width: 16),
                     Expanded(
                       child: Column(
@@ -634,7 +604,7 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           const Text(
-                            "Net amount",
+                            "Net Payable Amount",
                             style: TextStyle(),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -661,10 +631,13 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
   }
 
   Widget medicineInfoWidget() {
-    final Bookings data = controller.rxBookings.value;
-    return data.medicines?.isEmpty ?? true
-        ? const SizedBox()
-        : Column(
+    final Bookings item = controller.rxBookings.value;
+    final String displayType = item.type ?? "";
+    final bool isMedicineSupported = displayType == displayTypeAreaWithMedicine;
+    final bool hasMedicineAttached = item.medicines?.isNotEmpty ?? false;
+    final bool finalCondition = isMedicineSupported && hasMedicineAttached;
+    return finalCondition
+        ? Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -675,21 +648,107 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
                   dividerColor: AppColors().appTransparentColor,
                 ),
                 child: ExpansionTile(
-                  title: const Text("View attached medicines"),
+                  title: const Text(
+                    "View Crop Medicines Information:",
+                    style: TextStyle(),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                   expandedAlignment: Alignment.centerLeft,
+                  tilePadding: EdgeInsets.zero,
                   children: <Widget>[
-                    listView(data),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Expanded(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              const Text(
+                                "Medicine Count",
+                                style: TextStyle(),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                "${item.medicines?.length ?? 0}",
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              const Text(
+                                "Medicine Qty.",
+                                style: TextStyle(),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                "${item.totalMedicines ?? 0}",
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              const Text(
+                                "Medicine Cost",
+                                style: TextStyle(),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                "₹${item.totalMedicinePrice ?? 0}",
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Divider(),
+                    listView(item),
                   ],
                 ),
               ),
             ],
-          );
+          )
+        : const SizedBox();
   }
 
-  Widget listView(Bookings data) {
+  Widget listView(Bookings item) {
     return ListView.separated(
       shrinkWrap: true,
-      itemCount: data.medicines?.length ?? 0,
+      itemCount: item.medicines?.length ?? 0,
       physics: const NeverScrollableScrollPhysics(),
       padding: EdgeInsets.zero,
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
@@ -697,7 +756,7 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
         return const Divider(indent: 16, endIndent: 16);
       },
       itemBuilder: (BuildContext context, int index) {
-        final Medicines medicine = data.medicines?[index] ?? Medicines();
+        final Medicines medicine = item.medicines?[index] ?? Medicines();
         return listViewAdapter(medicine);
       },
     );
@@ -833,7 +892,81 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
     );
   }
 
-  Widget decideActionButtonWidget() {
+  Widget decideTopActionButtonWidget() {
+    final Bookings item = controller.rxBookings.value;
+    final bool paymentReceived = item.paymentReceived ?? false;
+
+    final bool status1 = item.status == bookingConfirmed;
+    final bool status2 = item.status == bookingAccepted;
+    final bool status3 = item.status == bookingWorkInProgress;
+    final bool status4 = item.status == bookingCompleted;
+    final bool cond1 = !paymentReceived && status1;
+    final bool cond2 = !paymentReceived && status2;
+    final bool cond3 = !paymentReceived && status3;
+    final bool cond4 = !paymentReceived && status4;
+
+    final bool finalCondition = cond1 || cond2 || cond3 || cond4;
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        if (finalCondition)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Expanded(
+                  child: Card(
+                    margin: EdgeInsets.zero,
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                      side: BorderSide(
+                        color: AppColors().appPrimaryColor,
+                      ),
+                    ),
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    surfaceTintColor: AppColors().appWhiteColor,
+                    color: AppColors().appWhiteColor,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(12.0),
+                      onTap: () async {
+                        final String id = controller.rxBookingId.value;
+
+                        await openPayNowLaterWidget(id: id);
+
+                        await controller.getBookingAPICall();
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Center(
+                          child: Text(
+                            "Pay now",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: AppColors().appPrimaryColor,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )
+        else
+          const SizedBox(),
+      ],
+    );
+  }
+
+  Widget decideBottomActionButtonWidget() {
     final Bookings item = controller.rxBookings.value;
     final bool isVisibleConfirmAndCancelButton =
         controller.isVisibleConfirmAndCancelButton();
@@ -843,6 +976,13 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        SizedBox(
+          height: isVisibleConfirmAndCancelButton ||
+                  isVisibleCancelButton ||
+                  isVisibleReviewRating
+              ? 16
+              : 0,
+        ),
         if (isVisibleConfirmAndCancelButton)
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),

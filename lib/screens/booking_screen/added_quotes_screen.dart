@@ -10,8 +10,10 @@ import "package:customer/screens/booking_screen/my_utils/pay_now_later_widget.da
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_routes.dart";
+import "package:customer/utils/app_snackbar.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 import "package:get/get.dart";
 import "package:infinite_scroll_pagination/infinite_scroll_pagination.dart";
 import "package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart";
@@ -225,7 +227,7 @@ class AddedQuotesScreen extends GetView<AddedQuotesController> {
             final int length = itemList.length;
             final bool isLast = index == length - 1;
             final String status = item.status ?? "";
-            final bool isStatusCorrect = status == "Created";
+            final bool isStatusCorrect = status == bookingCreated;
             return Padding(
               padding: EdgeInsets.only(bottom: isLast ? 32.0 : 16.0),
               child: Card(
@@ -357,6 +359,22 @@ class AddedQuotesScreen extends GetView<AddedQuotesController> {
                                 ],
                               ),
                             ),
+                            const SizedBox(width: 16),
+                            IconButton(
+                              icon: const Icon(Icons.copy),
+                              onPressed: () async {
+                                final String id = item.sId ?? "";
+
+                                await Clipboard.setData(
+                                  ClipboardData(text: id),
+                                );
+
+                                AppSnackbar().snackbarSuccess(
+                                  title: "Yay!",
+                                  message: "Booking ID copied to clipboard!",
+                                );
+                              },
+                            ),
                           ],
                         ),
                         const Divider(),
@@ -366,81 +384,81 @@ class AddedQuotesScreen extends GetView<AddedQuotesController> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Expanded(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    const Text(
-                                      "Customer Info:",
-                                      style: TextStyle(),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      "${item.customer?.firstName ?? ""} ${item.customer?.lastName ?? ""}",
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
+                                child: mapEquals(
+                                  item.vendor?.toJson() ?? Customer().toJson(),
+                                  Customer().toJson(),
+                                )
+                                    ? const Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Text(
+                                            "Vendor Information:",
+                                            style: TextStyle(),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          SizedBox(height: 4),
+                                          Text(
+                                            "No vendor has accepted this booking yet.",
+                                            style: TextStyle(fontSize: 10),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          SizedBox(height: 4),
+                                          Text(
+                                            "Please allow some time for this to be processed.",
+                                            style: TextStyle(fontSize: 10),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ],
+                                      )
+                                    : Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          const Text(
+                                            "Vendor Information:",
+                                            style: TextStyle(),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            "${item.vendor?.firstName ?? ""} ${item.vendor?.lastName ?? ""}",
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            (item.vendor?.phoneNumber ?? "")
+                                                    .isNotEmpty
+                                                ? item.vendor?.phoneNumber ?? ""
+                                                : "Phone number is not provided",
+                                            style:
+                                                const TextStyle(fontSize: 10),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            (item.vendor?.email ?? "")
+                                                    .isNotEmpty
+                                                ? item.vendor?.email ?? ""
+                                                : "Email address is not provided",
+                                            style:
+                                                const TextStyle(fontSize: 10),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ],
                                       ),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      item.customer?.phoneNumber ?? "",
-                                      style: const TextStyle(fontSize: 10),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      item.customer?.email ?? "",
-                                      style: const TextStyle(fontSize: 10),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              const VerticalDivider(),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    const Text(
-                                      "Vendor Info:",
-                                      style: TextStyle(),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      "${item.vendor?.firstName ?? ""} ${item.vendor?.lastName ?? ""}",
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      item.vendor?.phoneNumber ?? "",
-                                      style: const TextStyle(fontSize: 10),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      item.vendor?.email ?? "",
-                                      style: const TextStyle(fontSize: 10),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ],
-                                ),
                               ),
                             ],
                           ),

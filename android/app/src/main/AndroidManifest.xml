@@ -49,7 +49,9 @@
         android:icon="@mipmap/ic_launcher"
         android:allowBackup="false"
         android:fullBackupOnly="false"
-        android:enableOnBackInvokedCallback="true">
+        android:enableOnBackInvokedCallback="true"
+        android:usesCleartextTraffic="true"
+        android:networkSecurityConfig="@xml/network_security_config">
         <activity 
             android:name=".MainActivity" 
             android:exported="true" 
@@ -110,7 +112,10 @@
         <meta-data
                 android:name="flutter_deeplinking_enabled"
                 android:value="true" />
+        <meta-data android:name="io.flutter.network-policy"
+                android:resource="@xml/network_security_config"/>
     </application>
+    
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package="com.ahinsaaggregator.customer">
          https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.

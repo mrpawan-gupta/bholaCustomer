@@ -14,7 +14,7 @@ import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 
-enum Types { oauth, rental, order }
+enum Types { oauth, rental, order, payment }
 
 class AppAPIService extends GetConnect {
   factory AppAPIService() {

@@ -5,6 +5,7 @@ import "package:after_layout/after_layout.dart";
 import "package:confetti/confetti.dart";
 import "package:customer/common_widgets/app_lottie_widget.dart";
 import "package:customer/controllers/payment_controller/payment_controller.dart";
+import "package:customer/models/phone_pe_res_model.dart";
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/services/phonepe_sdk_service.dart";
 import "package:customer/utils/app_assets_lotties.dart";
@@ -39,7 +40,6 @@ class _PaymentScreenState extends State<PaymentScreen>
       body: WillPopScope(
         onWillPop: () async {
           backDecision();
-
           return Future<bool>.value(false);
         },
         child: SafeArea(
@@ -83,10 +83,10 @@ class _PaymentScreenState extends State<PaymentScreen>
       case PaymentState.processing:
         widget = CircularProgressIndicator(color: AppColors().appPrimaryColor);
         break;
-      case PaymentState.paymemtSuccess:
+      case PaymentState.success:
         widget = commonAppLottieWidget(AppAssetsLotties().lottiePaymentSuccess);
         break;
-      case PaymentState.paymentFailure:
+      case PaymentState.failure:
         widget = commonAppLottieWidget(AppAssetsLotties().lottiePaymentFailure);
         break;
     }
@@ -94,17 +94,19 @@ class _PaymentScreenState extends State<PaymentScreen>
     return Row(
       children: <Widget>[
         const SizedBox(width: 16),
-        Expanded(
-          child: Center(
-            child: widget,
-          ),
-        ),
+        Expanded(child: Center(child: widget)),
         const SizedBox(width: 16),
       ],
     );
   }
 
   Widget lowerWidget() {
+    final PhonePeResModel item = controller.rxPhonePeResModel.value;
+
+    final bool cond1 = (item.data?.transaction ?? "").isNotEmpty;
+    final bool cond2 = controller.rxPaymentState.value == PaymentState.success;
+    final bool finalCondition = cond1 || cond2;
+
     String message = "";
 
     switch (controller.rxPaymentState.value) {
@@ -117,10 +119,10 @@ class _PaymentScreenState extends State<PaymentScreen>
       case PaymentState.processing:
         message = "Payment processing";
         break;
-      case PaymentState.paymemtSuccess:
+      case PaymentState.success:
         message = "Payment success";
         break;
-      case PaymentState.paymentFailure:
+      case PaymentState.failure:
         message = "Payment failure";
         break;
     }
@@ -141,6 +143,21 @@ class _PaymentScreenState extends State<PaymentScreen>
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
+              if (finalCondition)
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    const SizedBox(height: 16),
+                    Text(
+                      "Transaction ID: ${item.data?.transaction ?? ""}",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 16),
+                  ],
+                )
+              else
+                const SizedBox(),
             ],
           ),
         ),
@@ -239,9 +256,7 @@ class _PaymentScreenState extends State<PaymentScreen>
         onTap: () async {
           await AppNavService().pushNamed(
             destination: AppRoutes().bookingDetailsScreen,
-            arguments: <String, dynamic>{
-              "id": controller.rxBookingId.value,
-            },
+            arguments: <String, dynamic>{"id": controller.rxBookingId.value},
           );
 
           AppNavService().pop();
@@ -279,9 +294,7 @@ class _PaymentScreenState extends State<PaymentScreen>
       child: InkWell(
         borderRadius: BorderRadius.circular(12.0),
         onTap: () async {
-          controller
-            ..updatePaymentState(PaymentState.notStarted)
-            ..updatePaymentState(PaymentState.started);
+          controller.resetAllPaymentData();
 
           await initiatePaymentProcedure();
         },
@@ -327,6 +340,8 @@ class _PaymentScreenState extends State<PaymentScreen>
   }
 
   Future<void> initiatePaymentProcedure() async {
+    controller.updatePaymentState(PaymentState.started);
+
     (bool, String, String) response = (false, "", "");
     response = await controller.bookingTransactionAPICall();
 
@@ -340,25 +355,21 @@ class _PaymentScreenState extends State<PaymentScreen>
       );
 
       if (result.$1) {
-        controller
-          ..updatePaymentState(PaymentState.paymemtSuccess)
-          ..updateMessage(result.$2);
+        bool value = false;
+        value = await controller.bookingTransactionStatusAPICall();
 
-        AppSnackbar().snackbarSuccess(title: "Yay!", message: result.$2);
-
-        controller.confettiController.play();
+        if (value) {
+          controller.updatePaymentState(PaymentState.success);
+          controller.confettiController.play();
+        } else {
+          controller.updatePaymentState(PaymentState.failure);
+        }
       } else {
-        controller
-          ..updatePaymentState(PaymentState.paymentFailure)
-          ..updateMessage(result.$2);
-
+        controller.updatePaymentState(PaymentState.failure);
         AppSnackbar().snackbarFailure(title: "Oops", message: result.$2);
       }
     } else {
-      controller
-        ..updatePaymentState(PaymentState.paymentFailure)
-        ..updateMessage("Payment failure");
-
+      controller.updatePaymentState(PaymentState.failure);
       AppSnackbar().snackbarFailure(title: "Oops", message: "Payment failure");
     }
 
@@ -368,7 +379,6 @@ class _PaymentScreenState extends State<PaymentScreen>
   @override
   Future<void> afterFirstLayout(BuildContext context) async {
     await initiatePaymentProcedure();
-
     return Future<void>.value();
   }
 }

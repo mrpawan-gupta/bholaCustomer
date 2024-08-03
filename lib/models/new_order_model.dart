@@ -86,6 +86,8 @@ class Bookings {
     this.commissionAmount,
     this.discountAmount,
     this.netAmount,
+    this.transaction,
+    this.paymentReceived,
   });
 
   Bookings.fromJson(Map<String, dynamic> json) {
@@ -134,6 +136,8 @@ class Bookings {
     commissionAmount = json["commissionAmount"];
     discountAmount = json["discountAmount"];
     netAmount = json["netAmount"];
+    transaction = json["transaction"];
+    paymentReceived = json["paymentReceived"];
   }
   String? sId;
   String? type;
@@ -161,6 +165,8 @@ class Bookings {
   num? commissionAmount;
   num? discountAmount;
   num? netAmount;
+  String? transaction;
+  bool? paymentReceived;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -208,6 +214,8 @@ class Bookings {
     data["commissionAmount"] = commissionAmount;
     data["discountAmount"] = discountAmount;
     data["netAmount"] = netAmount;
+    data["transaction"] = transaction;
+    data["paymentReceived"] = paymentReceived;
     return data;
   }
 }

@@ -1,5 +1,4 @@
 import "package:cached_network_image/cached_network_image.dart";
-// import "package:customer/services/app_api_service.dart";
 import "package:customer/utils/app_assets_images.dart";
 import "package:customer/utils/app_logger.dart";
 import "package:flutter/material.dart";
@@ -28,12 +27,8 @@ class CommonImageWidget extends StatelessWidget {
       image: imageUrl.isURL
           ? CachedNetworkImageProvider(
               imageUrl,
-              // headers: AppAPIService().getHeaders(),
               errorListener: (Object error) {
-                AppLogger().error(
-                  message: "Exception caught",
-                  error: error,
-                );
+                AppLogger().error(message: "Exception caught", error: error);
               },
             ) as ImageProvider
           : assetImage(imageType) as ImageProvider,
