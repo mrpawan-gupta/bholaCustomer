@@ -18,7 +18,7 @@ import "package:get/get.dart";
 import "package:infinite_scroll_pagination/infinite_scroll_pagination.dart";
 import "package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart";
 
-class AddedQuotesScreen extends GetView<AddedQuotesController> {
+class AddedQuotesScreen extends GetWidget<AddedQuotesController> {
   const AddedQuotesScreen({super.key});
 
   @override
