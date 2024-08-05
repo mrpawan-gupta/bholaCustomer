@@ -2,7 +2,6 @@ import "dart:async";
 import "dart:convert";
 import "dart:developer";
 
-import "package:confetti/confetti.dart";
 import "package:customer/common_functions/encode_decode_functions.dart";
 import "package:customer/models/phone_pe_payload_model.dart";
 import "package:customer/models/phone_pe_req_model.dart";
@@ -21,8 +20,6 @@ class PaymentController extends GetxController {
   final Rx<PhonePeResModel> rxPhonePeResModel = PhonePeResModel().obs;
   final Rx<PaymentState> rxPaymentState = PaymentState.notStarted.obs;
 
-  ConfettiController confettiController = ConfettiController();
-
   @override
   void onInit() {
     super.onInit();
@@ -33,21 +30,6 @@ class PaymentController extends GetxController {
         updateBookingId(arguments["id"]);
       } else {}
     } else {}
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-
-    const Duration duration = Duration(seconds: 2);
-    confettiController = ConfettiController(duration: duration);
-  }
-
-  @override
-  void onClose() {
-    confettiController.dispose();
-
-    super.onClose();
   }
 
   void updateBookingId(String value) {
@@ -119,7 +101,6 @@ class PaymentController extends GetxController {
         if (finalCondition) {
           final Map<String, dynamic> map = decodeBase64toMap(body: body);
           final PhonePeReqModel model = PhonePeReqModel.fromJson(map);
-
           updatePhonePeReqModel(model);
         } else {}
 
@@ -168,7 +149,6 @@ class PaymentController extends GetxController {
     final Map<String, dynamic> map = json.decode(decodedString);
     final String prettyPrint = AppPrettyPrintJSON().prettyPrint(map);
     log(prettyPrint);
-
     return map;
   }
 }

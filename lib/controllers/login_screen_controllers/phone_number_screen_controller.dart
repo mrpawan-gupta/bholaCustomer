@@ -9,6 +9,7 @@ import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/app_snackbar.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
+import "package:phone_number_hint/phone_number_hint.dart";
 import "package:smart_auth/smart_auth.dart";
 
 class PhoneNumberScreenController extends GetxController {
@@ -47,22 +48,31 @@ class PhoneNumberScreenController extends GetxController {
     if (GetPlatform.isAndroid) {
       final bool isPhysicalDevice = AppDevInfoService().isPhysicalDevice();
       if (isPhysicalDevice) {
-        final Credential result = await SmartAuth().requestHint(
-              isPhoneNumberIdentifierSupported: true,
-            ) ??
-            Credential(id: "");
+        // final Credential result = await SmartAuth().requestHint(
+        //       isPhoneNumberIdentifierSupported: true,
+        //     ) ??
+        //     Credential(id: "");
 
-        if (result.id.isNotEmpty) {
-          await stringOperation(fullPhoneNumber: result.id);
+        // if (result.id.isNotEmpty) {
+        //   await stringOperation(fullPhoneNumber: result.id);
+        //   unfocus();
+        // } else {}
+
+        String result = "";
+        result = await PhoneNumberHint().requestHint() ?? "";
+
+        if (result.isNotEmpty) {
+          await stringOperation(value: result);
           unfocus();
         } else {}
       } else {}
     } else {}
+
     return Future<void>.value();
   }
 
-  Future<void> stringOperation({required String fullPhoneNumber}) async {
-    final String temp = fullPhoneNumber;
+  Future<void> stringOperation({required String value}) async {
+    final String temp = value;
 
     final String substring = temp.startsWith("0")
         ? temp.substring(1)

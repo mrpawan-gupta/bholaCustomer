@@ -133,12 +133,8 @@ class PhoneNumberScreen extends GetView<PhoneNumberScreenController> {
                               maxLength: null,
                               onChanged: (String value) async {
                                 value.length.isGreaterThan(10)
-                                    ? controller.stringOperation(
-                                        fullPhoneNumber: value,
-                                      )
-                                    : controller.updatePhoneNo(
-                                        value,
-                                      );
+                                    ? controller.stringOperation(value: value)
+                                    : controller.updatePhoneNo(value);
 
                                 controller.unfocus();
                               },
@@ -150,9 +146,7 @@ class PhoneNumberScreen extends GetView<PhoneNumberScreenController> {
                                 FilteringTextInputFormatter.deny(RegExp(r"\s")),
                               ],
                               enabled: true,
-                              autofillHints: const <String>[
-                                AutofillHints.telephoneNumber,
-                              ],
+                              autofillHints: const <String>[],
                               hintText: "9876543210",
                               hintStyle: TextStyle(
                                 fontSize: 18,

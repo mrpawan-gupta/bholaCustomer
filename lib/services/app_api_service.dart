@@ -3,11 +3,13 @@ import "dart:developer";
 import "dart:io";
 
 import "package:customer/services/app_internet_connection_checker_service.dart";
+import "package:customer/services/app_nav_service.dart";
 import "package:customer/services/app_storage_service.dart";
 import "package:customer/utils/app_constants.dart";
 import "package:customer/utils/app_loader.dart";
 import "package:customer/utils/app_logger.dart";
 import "package:customer/utils/app_pretty_print_json.dart";
+import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/app_session.dart";
 import "package:customer/utils/localization/app_translations.dart";
 import "package:flutter/foundation.dart";
@@ -731,7 +733,14 @@ class AppAPIService extends GetConnect {
       AppLogger().error(message: "$statusCode: $statusText");
       failureCallback(<String, dynamic>{"message": loginAgainMessage});
 
-      await AppSession().performSignOut();
+      final String current = AppNavService().currentRoute;
+      final bool condition1 = current != AppRoutes().splashScreen;
+      final bool condition2 = current != AppRoutes().phoneNoScreen;
+      final bool finalCondition = condition1 && condition2;
+
+      if (finalCondition) {
+        await AppSession().performSignOut();
+      } else {}
     } else {
       if (statusCode >= 500 || response.body is String) {
         AppLogger().error(message: "$statusCode: $statusText");

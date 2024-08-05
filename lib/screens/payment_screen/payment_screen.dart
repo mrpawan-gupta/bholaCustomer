@@ -1,8 +1,6 @@
 import "dart:async";
-import "dart:math" as math;
 
 import "package:after_layout/after_layout.dart";
-import "package:confetti/confetti.dart";
 import "package:customer/common_widgets/app_lottie_widget.dart";
 import "package:customer/controllers/payment_controller/payment_controller.dart";
 import "package:customer/models/phone_pe_res_model.dart";
@@ -43,27 +41,23 @@ class _PaymentScreenState extends State<PaymentScreen>
           return Future<bool>.value(false);
         },
         child: SafeArea(
-          child: ConfettiWidget(
-            confettiController: controller.confettiController,
-            blastDirection: math.pi / 8,
-            child: Obx(
-              () {
-                return Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      const SizedBox(height: 16),
-                      upperWidget(),
-                      const SizedBox(height: 16),
-                      lowerWidget(),
-                      const Spacer(),
-                      button(),
-                      const SizedBox(height: 16),
-                    ],
-                  ),
-                );
-              },
-            ),
+          child: Obx(
+            () {
+              return Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    const SizedBox(height: 16),
+                    upperWidget(),
+                    const SizedBox(height: 16),
+                    lowerWidget(),
+                    const Spacer(),
+                    button(),
+                    const SizedBox(height: 16),
+                  ],
+                ),
+              );
+            },
           ),
         ),
       ),
@@ -355,15 +349,12 @@ class _PaymentScreenState extends State<PaymentScreen>
       );
 
       if (result.$1) {
-        bool value = false;
-        value = await controller.bookingTransactionStatusAPICall();
-
-        if (value) {
-          controller.updatePaymentState(PaymentState.success);
-          controller.confettiController.play();
-        } else {
-          controller.updatePaymentState(PaymentState.failure);
-        }
+        final bool value = await controller.bookingTransactionStatusAPICall();
+        value
+            ? controller.updatePaymentState(PaymentState.success)
+            : controller.updatePaymentState(PaymentState.failure);
+        AppSnackbar()
+            .snackbarSuccess(title: "Yay!", message: "Payment success");
       } else {
         controller.updatePaymentState(PaymentState.failure);
         AppSnackbar().snackbarFailure(title: "Oops", message: result.$2);
@@ -372,7 +363,6 @@ class _PaymentScreenState extends State<PaymentScreen>
       controller.updatePaymentState(PaymentState.failure);
       AppSnackbar().snackbarFailure(title: "Oops", message: "Payment failure");
     }
-
     return Future<void>.value();
   }
 
