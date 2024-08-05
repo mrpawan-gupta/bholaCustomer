@@ -17,7 +17,6 @@ class AppConstants {
 
   final String googleMapAPIKey = "AIzaSyAu0uQwt1solBKGQcExM9eJvU8rEPfbNNo";
   final String vpnAPIKey = "40f6cdcbaf9b4c139d4a276b9788dee6";
-  final String textbeeKey = "3b20d296-35df-4630-a805-c87a8496cd2b";
   final String whatsAppNumber = "+919765716231";
 
   final Duration duration = const Duration(seconds: 4);

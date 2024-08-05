@@ -3,7 +3,6 @@ import "dart:async";
 import "package:customer/services/app_api_service.dart";
 import "package:customer/services/app_dev_info_service.dart";
 import "package:customer/services/app_nav_service.dart";
-// import "package:customer/services/app_textbee.dart";
 import "package:customer/utils/app_logger.dart";
 import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/app_snackbar.dart";
@@ -136,13 +135,6 @@ class PhoneNumberScreenController extends GetxController {
           title: "Yay!",
           message: json["message"],
         );
-
-        // await AppTextbee().sendSMS(
-        //   body: <String, dynamic>{
-        //     "phoneNumber": "+91${rxPhoneNumber.value.trim()}",
-        //     "appSignature": rxAppSignature.value.trim(),
-        //   },
-        // );
 
         await AppNavService().pushNamed(
           destination: AppRoutes().otpScreen,
