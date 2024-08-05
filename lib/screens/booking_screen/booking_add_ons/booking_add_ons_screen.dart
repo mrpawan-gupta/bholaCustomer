@@ -8,6 +8,7 @@ import "package:customer/common_widgets/app_elevated_button.dart";
 import "package:customer/common_widgets/app_text_button.dart";
 import "package:customer/common_widgets/common_image_widget.dart";
 import "package:customer/controllers/booking_controller/booking_add_ons_controller.dart";
+import "package:customer/models/get_booking_medicine_details.dart";
 import "package:customer/models/new_order_model.dart";
 import "package:customer/screens/booking_screen/booking_add_ons/my_utis/common_list_view.dart";
 import "package:customer/screens/booking_screen/my_utils/pay_now_later_widget.dart";
@@ -65,8 +66,8 @@ class BookingAddOnsScreen extends GetWidget<BookingAddOnsController> {
   }
 
   Widget listView(BuildContext context) {
-    final Bookings bookings = controller.rxBookings.value;
-    final List<Medicines> medicinesList = bookings.medicines ?? <Medicines>[];
+    final MedicineDetailsData meds = controller.rxMedicine.value;
+    final List<Medicines> medicinesList = meds.medicines ?? <Medicines>[];
 
     return medicinesList.isEmpty
         ? SizedBox(
@@ -175,8 +176,8 @@ class BookingAddOnsScreen extends GetWidget<BookingAddOnsController> {
   }
 
   Widget viewBookingDetailsCardWidget() {
-    final Bookings bookings = controller.rxBookings.value;
-    final List<Medicines> medicinesList = bookings.medicines ?? <Medicines>[];
+    final MedicineDetailsData meds = controller.rxMedicine.value;
+    final List<Medicines> medicinesList = meds.medicines ?? <Medicines>[];
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -274,9 +275,10 @@ class BookingAddOnsScreen extends GetWidget<BookingAddOnsController> {
 
   Widget medicineRowtWidget() {
     final Bookings item = controller.rxBookings.value;
+    final MedicineDetailsData meds = controller.rxMedicine.value;
     final String displayType = item.type ?? "";
     final bool isMedicineSupported = displayType == displayTypeAreaWithMedicine;
-    final bool hasMedicineAttached = item.medicines?.isNotEmpty ?? false;
+    final bool hasMedicineAttached = meds.medicines?.isNotEmpty ?? false;
     final bool finalCondition = isMedicineSupported && hasMedicineAttached;
 
     return finalCondition
@@ -304,7 +306,7 @@ class BookingAddOnsScreen extends GetWidget<BookingAddOnsController> {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                "${item.medicines?.length ?? 0}",
+                                "${meds.medicines?.length ?? 0}",
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -328,7 +330,7 @@ class BookingAddOnsScreen extends GetWidget<BookingAddOnsController> {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                "${item.totalMedicines ?? 0}",
+                                "${meds.totalMedicines ?? 0}",
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -352,7 +354,7 @@ class BookingAddOnsScreen extends GetWidget<BookingAddOnsController> {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                "₹${item.totalMedicinePrice ?? 0}",
+                                "₹${meds.totalMedicinePrice ?? 0}",
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),

@@ -79,9 +79,6 @@ class Bookings {
     this.createdAt,
     this.updatedAt,
     this.iV,
-    this.medicines,
-    this.totalMedicinePrice,
-    this.totalMedicines,
     this.grossAmount,
     this.commissionAmount,
     this.discountAmount,
@@ -123,15 +120,6 @@ class Bookings {
     createdAt = json["createdAt"];
     updatedAt = json["updatedAt"];
     iV = json["__v"];
-    if (json["medicines"] != null) {
-      medicines = <Medicines>[];
-      for (final dynamic v in json["medicines"] as List<dynamic>) {
-        medicines!.add(Medicines.fromJson(v));
-      }
-    }
-    totalMedicinePrice = json["totalMedicinePrice"];
-    totalMedicines = json["totalMedicines"];
-
     grossAmount = json["grossAmount"];
     commissionAmount = json["commissionAmount"];
     discountAmount = json["discountAmount"];
@@ -158,9 +146,6 @@ class Bookings {
   String? createdAt;
   String? updatedAt;
   int? iV;
-  List<Medicines>? medicines;
-  num? totalMedicinePrice;
-  num? totalMedicines;
   num? grossAmount;
   num? commissionAmount;
   num? discountAmount;
@@ -205,11 +190,6 @@ class Bookings {
     data["createdAt"] = createdAt;
     data["updatedAt"] = updatedAt;
     data["__v"] = iV;
-    if (medicines != null) {
-      data["medicines"] = medicines!.map((Medicines v) => v.toJson()).toList();
-    }
-    data["totalMedicinePrice"] = totalMedicinePrice;
-    data["totalMedicines"] = totalMedicines;
     data["grossAmount"] = grossAmount;
     data["commissionAmount"] = commissionAmount;
     data["discountAmount"] = discountAmount;
@@ -351,63 +331,6 @@ class Customer {
     data["firstName"] = firstName;
     data["lastName"] = lastName;
     data["email"] = email;
-    return data;
-  }
-}
-
-class Medicines {
-  Medicines({this.sId, this.medicine, this.quantity, this.totalPrice, this.iV});
-
-  Medicines.fromJson(Map<String, dynamic> json) {
-    sId = json["_id"];
-    medicine =
-        json["medicine"] != null ? Medicine.fromJson(json["medicine"]) : null;
-    quantity = json["quantity"];
-    totalPrice = json["totalPrice"];
-    iV = json["__v"];
-  }
-  String? sId;
-  Medicine? medicine;
-  num? quantity;
-  num? totalPrice;
-  int? iV;
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data["_id"] = sId;
-    if (medicine != null) {
-      data["medicine"] = medicine!.toJson();
-    }
-    data["quantity"] = quantity;
-    data["totalPrice"] = totalPrice;
-    data["__v"] = iV;
-    return data;
-  }
-}
-
-class Medicine {
-  Medicine({this.sId, this.name, this.brand, this.description, this.photo});
-
-  Medicine.fromJson(Map<String, dynamic> json) {
-    sId = json["_id"];
-    name = json["name"];
-    brand = json["brand"];
-    description = json["description"];
-    photo = json["photo"];
-  }
-  String? sId;
-  String? name;
-  String? brand;
-  String? description;
-  String? photo;
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data["_id"] = sId;
-    data["name"] = name;
-    data["brand"] = brand;
-    data["description"] = description;
-    data["photo"] = photo;
     return data;
   }
 }

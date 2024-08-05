@@ -1,6 +1,8 @@
 import "dart:async";
 
 import "package:customer/common_functions/booking_functions.dart";
+import "package:customer/models/get_booking_medicine_details.dart";
+import "package:customer/models/get_booking_transaction_details.dart";
 import "package:customer/models/new_order_model.dart";
 import "package:customer/services/app_api_service.dart";
 import "package:customer/services/app_nav_service.dart";
@@ -12,6 +14,8 @@ import "package:get/get.dart";
 class BookingDetailsController extends GetxController {
   final RxString rxBookingId = "".obs;
   final Rx<Bookings> rxBookings = Bookings().obs;
+  final Rx<MedicineDetailsData> rxMedicine = MedicineDetailsData().obs;
+  final Rx<TransactionDetailsData> rxTransaction = TransactionDetailsData().obs;
 
   @override
   void onInit() {
@@ -67,6 +71,16 @@ class BookingDetailsController extends GetxController {
     return;
   }
 
+  void updateMedicine(MedicineDetailsData value) {
+    rxMedicine(value);
+    return;
+  }
+
+  void updateTransaction(TransactionDetailsData value) {
+    rxTransaction(value);
+    return;
+  }
+
   Future<bool> getBookingAPICall() async {
     final Completer<bool> completer = Completer<bool>();
 
@@ -92,7 +106,72 @@ class BookingDetailsController extends GetxController {
         if (list.isEmpty) {
         } else {
           updateBookings(list.first);
+
+          final Bookings item = rxBookings.value;
+          final String displayType = item.type ?? "";
+          final bool condition = displayType == displayTypeAreaWithMedicine;
+
+          if (condition) {
+            unawaited(getBookingMedicineAPICall());
+          } else {}
+
+          final bool paymentReceived = item.paymentReceived ?? false;
+
+          if (paymentReceived) {
+            unawaited(getBookingTransactionAPICall());
+          } else {}
         }
+
+        completer.complete(true);
+      },
+      failureCallback: (Map<String, dynamic> json) {
+        AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
+
+        completer.complete(false);
+      },
+    );
+    return completer.future;
+  }
+
+  Future<bool> getBookingMedicineAPICall() async {
+    final Completer<bool> completer = Completer<bool>();
+
+    await AppAPIService().functionGet(
+      types: Types.rental,
+      endPoint: "booking/medicine/${rxBookingId.value}",
+      query: <String, dynamic>{"page": 1, "limit": 1000},
+      successCallback: (Map<String, dynamic> json) {
+        AppLogger().info(message: json["message"]);
+
+        GetBookingMedicineDetails model = GetBookingMedicineDetails();
+        model = GetBookingMedicineDetails.fromJson(json);
+
+        updateMedicine(model.data ?? MedicineDetailsData());
+
+        completer.complete(true);
+      },
+      failureCallback: (Map<String, dynamic> json) {
+        AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
+
+        completer.complete(false);
+      },
+    );
+    return completer.future;
+  }
+
+  Future<bool> getBookingTransactionAPICall() async {
+    final Completer<bool> completer = Completer<bool>();
+
+    await AppAPIService().functionGet(
+      types: Types.rental,
+      endPoint: "booking/transaction/${rxBookingId.value}",
+      successCallback: (Map<String, dynamic> json) {
+        AppLogger().info(message: json["message"]);
+
+        GetBookingTransactionDetails model = GetBookingTransactionDetails();
+        model = GetBookingTransactionDetails.fromJson(json);
+
+        updateTransaction(model.data ?? TransactionDetailsData());
 
         completer.complete(true);
       },

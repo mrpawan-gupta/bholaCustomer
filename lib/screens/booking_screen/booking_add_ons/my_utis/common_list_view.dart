@@ -1,7 +1,7 @@
 import "package:customer/common_widgets/app_elevated_button.dart";
 import "package:customer/common_widgets/app_text_button.dart";
 import "package:customer/common_widgets/common_image_widget.dart";
-import "package:customer/models/new_order_model.dart";
+import "package:customer/models/get_booking_medicine_details.dart";
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/localization/app_language_keys.dart";
