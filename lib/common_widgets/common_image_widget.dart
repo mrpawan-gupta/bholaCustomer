@@ -13,7 +13,6 @@ class CommonImageWidget extends StatelessWidget {
     required this.imageType,
     super.key,
   });
-
   final String imageUrl;
   final BoxFit fit;
   final ImageType imageType;
@@ -36,6 +35,32 @@ class CommonImageWidget extends StatelessWidget {
       placeholder: assetImage(imageType) as ImageProvider,
       fadeInDuration: const Duration(seconds: 1),
       fadeOutDuration: const Duration(seconds: 1),
+      imageErrorBuilder: (
+        BuildContext context,
+        Object error,
+        StackTrace? stackTrace,
+      ) {
+        AppLogger().error(
+          message: "Exception caught",
+          error: error,
+          stackTrace: stackTrace,
+        );
+
+        return Image.asset(assetImage(imageType).assetName);
+      },
+      placeholderErrorBuilder: (
+        BuildContext context,
+        Object error,
+        StackTrace? stackTrace,
+      ) {
+        AppLogger().error(
+          message: "Exception caught",
+          error: error,
+          stackTrace: stackTrace,
+        );
+
+        return Image.asset(assetImage(imageType).assetName);
+      },
     );
   }
 

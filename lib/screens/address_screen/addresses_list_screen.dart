@@ -195,7 +195,7 @@ class AddressesListScreen extends GetView<AddressesListController> {
             children: <Widget>[
               IconButton(
                 onPressed: () async {
-                  await openDeleteCartItemWidget(
+                  await openDeleteAddressItemWidget(
                     item: item,
                     onPressedDelete: (Address item) async {
                       await controller.deleteAddressesAPI(id: item.sId ?? "");
@@ -251,7 +251,7 @@ class AddressesListScreen extends GetView<AddressesListController> {
     return Future<void>.value();
   }
 
-  Future<void> openDeleteCartItemWidget({
+  Future<void> openDeleteAddressItemWidget({
     required Address item,
     required Function(Address item) onPressedDelete,
   }) async {

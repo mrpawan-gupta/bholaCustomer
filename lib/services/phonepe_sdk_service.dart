@@ -20,9 +20,9 @@ class PhonePeSDKService {
 
     try {
       value = await PhonePePaymentSdk.init(
-        kReleaseMode ? "SANDBOX" : "SANDBOX",
+        kReleaseMode ? "PRODUCTION" : "SANDBOX",
         null,
-        kReleaseMode ? "AHINSAUAT" : "AHINSAUAT",
+        kReleaseMode ? "M225AAVLG7V05" : "AHINSAUAT",
         !kReleaseMode,
       );
       AppLogger().info(message: "PhonePe init(): $value");
