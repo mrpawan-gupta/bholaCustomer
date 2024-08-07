@@ -2,6 +2,7 @@ import "dart:async";
 import "dart:io";
 
 import "package:customer/services/app_pkg_info_service.dart";
+import "package:customer/utils/app_constants.dart";
 import "package:customer/utils/app_logger.dart";
 import "package:customer/utils/app_pretty_print_json.dart";
 import "package:flutter/foundation.dart";
@@ -20,10 +21,10 @@ class PhonePeSDKService {
 
     try {
       value = await PhonePePaymentSdk.init(
-        kReleaseMode ? "PRODUCTION" : "SANDBOX",
-        null,
-        kReleaseMode ? "M225AAVLG7V05" : "AHINSAUAT",
-        !kReleaseMode,
+        AppConstants().phonePeEnvironment,
+        AppConstants().phonePeAppId,
+        AppConstants().phonePeMerchantId,
+        AppConstants().phonePeEnableLogging,
       );
       AppLogger().info(message: "PhonePe init(): $value");
     } on Exception catch (error, stackTrace) {
@@ -55,7 +56,6 @@ class PhonePeSDKService {
 
       final Map<String, dynamic> prettyPrint = Map<String, dynamic>.from(map);
       final String prettyOutput = AppPrettyPrintJSON().prettyPrint(prettyPrint);
-
       AppLogger().info(message: "PhonePe startTransaction(): $prettyOutput");
 
       if (map.isNotEmpty) {

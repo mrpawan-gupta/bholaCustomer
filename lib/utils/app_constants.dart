@@ -15,6 +15,12 @@ class AppConstants {
 
   final String baseURL = "https://${kReleaseMode ? "api" : "dev"}.bhola.org.in";
 
+  // PhonePe
+  final String phonePeEnvironment = kReleaseMode ? "PRODUCTION" : "SANDBOX";
+  final String? phonePeAppId = kReleaseMode ? null : null;
+  final String phonePeMerchantId = kReleaseMode ? "M225AAVLG7V05" : "AHINSAUAT";
+  final bool phonePeEnableLogging = !kReleaseMode;
+
   final String googleMapAPIKey = "AIzaSyAu0uQwt1solBKGQcExM9eJvU8rEPfbNNo";
   final String vpnAPIKey = "40f6cdcbaf9b4c139d4a276b9788dee6";
   final String whatsAppNumber = "+919765716231";
