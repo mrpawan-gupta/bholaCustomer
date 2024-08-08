@@ -63,22 +63,22 @@ class CommonImageWidget extends StatelessWidget {
       },
     );
   }
+}
 
-  AssetImage assetImage(ImageType imageType) {
-    String value = "";
+AssetImage assetImage(ImageType imageType) {
+  String value = "";
 
-    switch (imageType) {
-      case ImageType.user:
-        value = AppAssetsImages().userPlaceholder;
-        break;
-      case ImageType.image:
-        value = AppAssetsImages().imagePlaceholder;
-        break;
-      case ImageType.video:
-        value = AppAssetsImages().videoPlaceholder;
-        break;
-    }
-
-    return AssetImage(value);
+  switch (imageType) {
+    case ImageType.user:
+      value = AppAssetsImages().userPlaceholder;
+      break;
+    case ImageType.image:
+      value = AppAssetsImages().imagePlaceholder;
+      break;
+    case ImageType.video:
+      value = AppAssetsImages().videoPlaceholder;
+      break;
   }
+
+  return AssetImage(value);
 }

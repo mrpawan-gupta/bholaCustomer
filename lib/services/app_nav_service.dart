@@ -1,7 +1,7 @@
 import "package:customer/services/app_analytics_service.dart";
 import "package:customer/utils/app_logger.dart";
 import "package:customer/utils/app_routes.dart";
-import "package:flutter/widgets.dart";
+import "package:flutter/material.dart";
 import "package:get/get.dart";
 
 class AppNavService extends GetxService {
@@ -14,6 +14,16 @@ class AppNavService extends GetxService {
 
   String currentRoute = AppRoutes().splashScreen;
   String previousRoute = AppRoutes().splashScreen;
+
+  Future<dynamic> push({required Widget destination}) async {
+    final NavigatorState? state = Get.key.currentState;
+    final dynamic result = await state?.push<dynamic>(
+      MaterialPageRoute<dynamic>(
+        builder: (BuildContext context) => destination,
+      ),
+    );
+    return Future<dynamic>.value(result);
+  }
 
   Future<dynamic> pushNamed({
     required String destination,
