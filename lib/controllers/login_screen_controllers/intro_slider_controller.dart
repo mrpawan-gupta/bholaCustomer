@@ -5,10 +5,19 @@ import "package:get/get.dart";
 
 class IntroSliderController extends GetxController {
   final RxInt rxTotalPages = 3.obs;
-  
+
   final RxInt rxInitialPage = 0.obs;
 
   final PageController pageController = PageController();
+
+  RxList<String> getProminentDisclosure() {
+    final List<String> list = <String>[
+      AppConstants().disclosureForNotification,
+      AppConstants().disclosureForLocation,
+      AppConstants().disclosureForCamMicStorage,
+    ];
+    return list.obs;
+  }
 
   RxList<String> getIntroductionAnimation() {
     final List<String> list = <String>[
@@ -51,24 +60,28 @@ class IntroSliderController extends GetxController {
 
   Future<String> permissionValidateIndex0() async {
     String reason = "";
+
     final bool cond1 = await AppPermService().permissionNotification();
 
     if (!cond1) {
       reason = "App requires Notifications permission.";
     } else {}
+
     return Future<String>.value(reason);
   }
 
   Future<String> permissionValidateIndex1() async {
     String reason = "";
 
-    final bool cond1 = await AppPermService().permissionLocation();
+    final bool cond1 = await AppPermService().permissionLocation2();
     final bool cond2 = await AppPermService().serviceLocation();
+
     if (!cond1) {
       reason = "App requires Location permission.";
     } else if (!cond2) {
       reason = "App requires Location service to be enabled.";
     } else {}
+
     return Future<String>.value(reason);
   }
 
@@ -86,6 +99,7 @@ class IntroSliderController extends GetxController {
     } else if (!cond3) {
       reason = "App requires Location service to be enabled.";
     } else {}
+
     return Future<String>.value(reason);
   }
 
@@ -99,6 +113,7 @@ class IntroSliderController extends GetxController {
     } else if (rxInitialPage.value == 0) {
       reason = await permissionValidateIndex2();
     } else {}
+
     return Future<String>.value(reason);
   }
 }

@@ -87,7 +87,7 @@ class AppConstants {
   final String vendLocationLottie = AppAssetsLotties().lottieLocation;
   final String vendLocationTitle = "Enable Location Services for Bhola";
   final String vendLocationBody =
-      "To select your equipment or shop location accurately and connect with nearby customers, please enable location services for Bhola at all times. Bhola will use your location data in the background to match you with relevant customers based on your longitude and latitude.";
+      "To accurately select your equipment or shop location and connect effectively with nearby customers, please ensure that location permissions and services are enabled for Bhola at all times. Bhola utilizes your location data, both in the foreground and background, to match you with relevant customers based on your coordinates. This enables your business to find and engage with nearby customers more efficiently, enhancing service delivery and potentially increasing customer satisfaction and sales. For more information, please refer to our privacy policy below.";
 
   final String vendCamMicStorageLottie = AppAssetsLotties().lottieCamera;
   final String vendCamMicStorageTitle = "Optimize Your Bhola Profile";
@@ -96,4 +96,11 @@ class AppConstants {
 
   final String commonNote =
       "Note: Your privacy and security are our top priorities. All data collected is used solely to improve your experience with Bhola.";
+
+  final String disclosureForNotification =
+      "Prominent Disclosure for Notification Permission";
+  final String disclosureForLocation =
+      "Prominent Disclosure for Location Permission";
+  final String disclosureForCamMicStorage =
+      "Prominent Disclosure for Cam, Mic & Storage Permission";
 }

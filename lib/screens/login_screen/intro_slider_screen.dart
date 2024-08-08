@@ -7,6 +7,7 @@ import "package:customer/controllers/login_screen_controllers/intro_slider_contr
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_constants.dart";
+import "package:customer/utils/app_in_app_browser.dart";
 import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/app_snackbar.dart";
 import "package:flutter/material.dart";
@@ -81,9 +82,25 @@ class IntroSliderScreen extends GetView<IntroSliderController> {
           body: Column(
             children: <Widget>[
               linearProgressIndicator(),
-              const SizedBox(height: kToolbarHeight / 2),
-              Expanded(child: pageView()),
-              const SizedBox(height: kToolbarHeight / 2),
+              const SizedBox(height: 16),
+              Expanded(
+                child: pageView(),
+              ),
+              const SizedBox(height: 0),
+              ListTile(
+                dense: true,
+                leading: const Icon(Icons.public),
+                title: const Text("Privacy Policy"),
+                subtitle: Text(AppConstants().appURLsPrivacyPolicy),
+                trailing: const Icon(Icons.open_in_new),
+                onTap: () async {
+                  AppNavService().pop();
+                  await AppInAppBrowser().openInAppBrowser(
+                    url: AppConstants().appURLsPrivacyPolicy,
+                  );
+                },
+              ),
+              const SizedBox(height: 0),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text(
@@ -91,7 +108,7 @@ class IntroSliderScreen extends GetView<IntroSliderController> {
                   style: Theme.of(Get.context!).textTheme.bodySmall,
                 ),
               ),
-              const SizedBox(height: kToolbarHeight / 2),
+              const SizedBox(height: 16),
             ],
           ),
         );
@@ -139,31 +156,41 @@ class IntroSliderScreen extends GetView<IntroSliderController> {
       itemCount: controller.rxTotalPages.value,
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (BuildContext context, int i) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Column(
-            children: <Widget>[
-              const Spacer(),
-              AppLottieWidget(
-                path: controller.getIntroductionAnimation()[i],
-                fit: BoxFit.cover,
-                height: 200,
-                width: 200,
-                repeat: true,
-                onLoaded: (LottieComposition composition) async {},
-              ),
-              const SizedBox(height: kToolbarHeight / 2),
-              Text(
-                controller.getIntroductionTitle()[i],
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(height: kToolbarHeight / 2),
-              Text(
-                controller.getIntroductionDescription()[i],
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              const Spacer(),
-            ],
+        final String disclosure = controller.getProminentDisclosure()[i];
+        final String animation = controller.getIntroductionAnimation()[i];
+        final String title = controller.getIntroductionTitle()[i];
+        final String description = controller.getIntroductionDescription()[i];
+        return SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(
+                  disclosure,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 16),
+                AppLottieWidget(
+                  path: animation,
+                  fit: BoxFit.cover,
+                  height: 100,
+                  width: 100,
+                  repeat: true,
+                  onLoaded: (LottieComposition composition) async {},
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  title,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  description,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ],
+            ),
           ),
         );
       },
