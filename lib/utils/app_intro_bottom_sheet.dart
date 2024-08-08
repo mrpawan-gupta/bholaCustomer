@@ -52,7 +52,7 @@ class AppIntroBottomSheet {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         AppLottieWidget(
-                          path: AppConstants().vendNotificationLottie,
+                          path: AppConstants().custNotificationLottie,
                           fit: BoxFit.cover,
                           height: 100,
                           width: 100,
@@ -61,12 +61,12 @@ class AppIntroBottomSheet {
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          AppConstants().vendNotificationTitle,
+                          AppConstants().custNotificationTitle,
                           style: Theme.of(context).textTheme.titleLarge,
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          AppConstants().vendNotificationBody,
+                          AppConstants().custNotificationBody,
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ],
@@ -80,7 +80,7 @@ class AppIntroBottomSheet {
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                 leading: const Icon(Icons.public),
                 title: const Text("Privacy Policy"),
-                subtitle: Text(AppConstants().appURLsRefundPolicy),
+                subtitle: Text(AppConstants().appURLsPrivacyPolicy),
                 trailing: const Icon(Icons.open_in_new),
                 onTap: () async {
                   AppNavService().pop();
@@ -169,7 +169,7 @@ class AppIntroBottomSheet {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         AppLottieWidget(
-                          path: AppConstants().vendLocationLottie,
+                          path: AppConstants().custLocationLottie,
                           fit: BoxFit.cover,
                           height: 100,
                           width: 100,
@@ -178,12 +178,12 @@ class AppIntroBottomSheet {
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          AppConstants().vendLocationTitle,
+                          AppConstants().custLocationTitle,
                           style: Theme.of(context).textTheme.titleLarge,
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          AppConstants().vendLocationBody,
+                          AppConstants().custLocationBody,
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ],
@@ -197,7 +197,7 @@ class AppIntroBottomSheet {
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                 leading: const Icon(Icons.public),
                 title: const Text("Privacy Policy"),
-                subtitle: Text(AppConstants().appURLsRefundPolicy),
+                subtitle: Text(AppConstants().appURLsPrivacyPolicy),
                 trailing: const Icon(Icons.open_in_new),
                 onTap: () async {
                   AppNavService().pop();
@@ -286,7 +286,7 @@ class AppIntroBottomSheet {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         AppLottieWidget(
-                          path: AppConstants().vendCamMicStorageLottie,
+                          path: AppConstants().custCamMicStorageLottie,
                           fit: BoxFit.cover,
                           height: 100,
                           width: 100,
@@ -295,12 +295,12 @@ class AppIntroBottomSheet {
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          AppConstants().vendCamMicStorageTitle,
+                          AppConstants().custCamMicStorageTitle,
                           style: Theme.of(context).textTheme.titleLarge,
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          AppConstants().vendCamMicStorageBody,
+                          AppConstants().custCamMicStorageBody,
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ],
@@ -314,7 +314,7 @@ class AppIntroBottomSheet {
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                 leading: const Icon(Icons.public),
                 title: const Text("Privacy Policy"),
-                subtitle: Text(AppConstants().appURLsRefundPolicy),
+                subtitle: Text(AppConstants().appURLsPrivacyPolicy),
                 trailing: const Icon(Icons.open_in_new),
                 onTap: () async {
                   AppNavService().pop();
