@@ -138,8 +138,12 @@ class BookingDetailsController extends GetxController {
 
     await AppAPIService().functionGet(
       types: Types.rental,
-      endPoint: "booking/medicine/${rxBookingId.value}",
-      query: <String, dynamic>{"page": 1, "limit": 1000},
+      endPoint: "bookingmedicine",
+      query: <String, dynamic>{
+        "page": 1,
+        "limit": 1000,
+        "bookingId": rxBookingId.value,
+      },
       successCallback: (Map<String, dynamic> json) {
         AppLogger().info(message: json["message"]);
 

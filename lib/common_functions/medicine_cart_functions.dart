@@ -14,7 +14,7 @@ Future<(bool, String)> addMedicineToBookingAPICall({
 
   await AppAPIService().functionPost(
     types: Types.rental,
-    endPoint: "bookingMedicine/$bookingId",
+    endPoint: "bookingmedicine/$bookingId",
     body: <String, dynamic>{"medicine": medicineId, "quantity": "1"},
     successCallback: (Map<String, dynamic> json) {
       AppLogger().info(message: json["message"]);
@@ -60,7 +60,7 @@ Future<bool> updateMedicineInBookingAPICall({
 
   await AppAPIService().functionPatch(
     types: Types.rental,
-    endPoint: "bookingMedicine/$bookingId/$itemId",
+    endPoint: "bookingmedicine/$bookingId/$itemId",
     body: <String, dynamic>{"quantity": qty},
     successCallback: (Map<String, dynamic> json) {
       AppLogger().info(message: json["message"]);
@@ -86,7 +86,7 @@ Future<bool> removeMedicineFromBookingAPICall({
 
   await AppAPIService().functionDelete(
     types: Types.rental,
-    endPoint: "bookingMedicine/$bookingId/$itemId",
+    endPoint: "bookingmedicine/$bookingId/$itemId",
     successCallback: (Map<String, dynamic> json) {
       AppLogger().info(message: json["message"]);
 
