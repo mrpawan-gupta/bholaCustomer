@@ -4,7 +4,6 @@ import "dart:developer";
 
 import "package:customer/common_functions/encode_decode_functions.dart";
 import "package:customer/models/phone_pe_payload_model.dart";
-import "package:customer/models/phone_pe_req_model.dart";
 import "package:customer/models/phone_pe_res_model.dart";
 import "package:customer/services/app_api_service.dart";
 import "package:customer/utils/app_logger.dart";
@@ -16,7 +15,7 @@ enum PaymentState { notStarted, started, processing, success, failure }
 
 class PaymentController extends GetxController {
   final RxString rxBookingId = "".obs;
-  final Rx<PhonePeReqModel> rxPhonePeReqModel = PhonePeReqModel().obs;
+  final Rx<PhonePePayloadModel> rxPhonePePayload = PhonePePayloadModel().obs;
   final Rx<PhonePeResModel> rxPhonePeResModel = PhonePeResModel().obs;
   final Rx<PaymentState> rxPaymentState = PaymentState.notStarted.obs;
 
@@ -37,8 +36,8 @@ class PaymentController extends GetxController {
     return;
   }
 
-  void updatePhonePeReqModel(PhonePeReqModel value) {
-    rxPhonePeReqModel(value);
+  void updatePhonePePayload(PhonePePayloadModel value) {
+    rxPhonePePayload(value);
     return;
   }
 
@@ -53,7 +52,7 @@ class PaymentController extends GetxController {
   }
 
   void resetAllPaymentData() {
-    updatePhonePeReqModel(PhonePeReqModel());
+    updatePhonePePayload(PhonePePayloadModel());
     updatePhonePeResModel(PhonePeResModel());
     updatePaymentState(PaymentState.notStarted);
 
@@ -61,9 +60,7 @@ class PaymentController extends GetxController {
   }
 
   bool canGoBack() {
-    final bool cond1 = canGoBackSuccess();
-    final bool cond2 = canGoBackFailure();
-    final bool finalCondition = cond1 || cond2;
+    final bool finalCondition = canGoBackSuccess() || canGoBackFailure();
 
     return finalCondition;
   }
@@ -90,19 +87,18 @@ class PaymentController extends GetxController {
         PhonePePayloadModel model = PhonePePayloadModel();
         model = PhonePePayloadModel.fromJson(json);
 
-        final String body = model.data?.body ?? "";
-        final String checksum = model.data?.checksum ?? "";
-        final String paymentGateway = model.data?.paymentGateway ?? "";
+        updatePhonePePayload(model);
+
+        final PhonePePayloadModel payload = rxPhonePePayload.value;
+        final String body = payload.data?.body ?? "";
+        final String checksum = payload.data?.checksum ?? "";
+        final String paymentGateway = payload.data?.paymentGateway ?? "";
 
         final bool cond1 = paymentGateway == "PhonePay";
         final bool cond2 = paymentGateway == "PhonePe";
         final bool finalCondition = cond1 || cond2;
 
-        if (finalCondition) {
-          final Map<String, dynamic> map = decodeBase64toMap(body: body);
-          final PhonePeReqModel model = PhonePeReqModel.fromJson(map);
-          updatePhonePeReqModel(model);
-        } else {}
+        decodeBase64toMap(body: body);
 
         completer.complete((finalCondition, body, checksum));
       },
@@ -119,11 +115,9 @@ class PaymentController extends GetxController {
   Future<bool> bookingTransactionStatusAPICall() async {
     final Completer<bool> completer = Completer<bool>();
 
-    final String id = rxPhonePeReqModel.value.merchantTransactionId ?? "";
-
     await AppAPIService().functionGet(
       types: Types.payment,
-      endPoint: "transaction/$id",
+      endPoint: "transaction/${rxPhonePePayload.value.data?.sId ?? ""}",
       successCallback: (Map<String, dynamic> json) {
         AppSnackbar().snackbarSuccess(title: "Yay!", message: json["message"]);
 
@@ -149,6 +143,7 @@ class PaymentController extends GetxController {
     final Map<String, dynamic> map = json.decode(decodedString);
     final String prettyPrint = AppPrettyPrintJSON().prettyPrint(map);
     log(prettyPrint);
+
     return map;
   }
 }

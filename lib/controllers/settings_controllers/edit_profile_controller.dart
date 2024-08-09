@@ -170,7 +170,7 @@ class EditProfileController extends GetxController {
 
       await AppAPIService().functionPatch(
         types: Types.oauth,
-        endPoint: "profile/photo",
+        endPoint: "profile/photo/0",
         successCallback: (Map<String, dynamic> json) {
           AppSnackbar().snackbarSuccess(
             title: "Yay!",

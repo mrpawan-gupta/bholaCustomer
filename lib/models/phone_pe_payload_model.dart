@@ -32,23 +32,27 @@ class PhonePePayloadModel {
 
 class Data {
   Data({
+    this.sId,
     this.checksum,
     this.body,
     this.paymentGateway,
   });
 
   Data.fromJson(Map<String, dynamic> json) {
+    sId = json["_id"];
     checksum = json["checksum"];
     body = json["body"];
     paymentGateway = json["paymentGateway"];
   }
 
+  String? sId;
   String? checksum;
   String? body;
   String? paymentGateway;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data["_id"] = sId;
     data["checksum"] = checksum;
     data["body"] = body;
     data["paymentGateway"] = paymentGateway;

@@ -99,10 +99,8 @@ class AppImageVideoPicker {
     final bool hasPerm = await AppPermService().permissionPhotoOrStorage();
     if (hasPerm) {
       const ImageSource src = ImageSource.camera;
-      final XFile file = isForVideo
-          ? await _picker.pickVideo(source: src) ?? XFile("")
-          : await _picker.pickImage(source: src) ?? XFile("");
-      filePath = file.path;
+      final XFile xFile = await getXFile(isForVideo: isForVideo, src: src);
+      filePath = xFile.path;
     } else {
       AppSnackbar().snackbarFailure(
         title: "Oops",
@@ -117,10 +115,8 @@ class AppImageVideoPicker {
     final bool hasPerm = await AppPermService().permissionPhotoOrStorage();
     if (hasPerm) {
       const ImageSource src = ImageSource.gallery;
-      final XFile file = isForVideo
-          ? await _picker.pickVideo(source: src) ?? XFile("")
-          : await _picker.pickImage(source: src) ?? XFile("");
-      filePath = file.path;
+      final XFile xFile = await getXFile(isForVideo: isForVideo, src: src);
+      filePath = xFile.path;
     } else {
       AppSnackbar().snackbarFailure(
         title: "Oops",
@@ -128,6 +124,24 @@ class AppImageVideoPicker {
       );
     }
     return Future<String>.value(filePath);
+  }
+
+  Future<XFile> getXFile({
+    required bool isForVideo,
+    required ImageSource src,
+  }) async {
+    final XFile xFile = isForVideo
+        ? await _picker.pickVideo(
+              source: src,
+              maxDuration: const Duration(minutes: 5),
+            ) ??
+            XFile("")
+        : await _picker.pickImage(
+              source: src,
+              requestFullMetadata: false,
+            ) ??
+            XFile("");
+    return Future<XFile>.value(xFile);
   }
 
   Future<void> validateMediaInfo({
@@ -150,6 +164,7 @@ class AppImageVideoPicker {
         AppLogger().info(message: "getMediaInfo: $info");
 
         final bool contains = info.containsKey("durationMs");
+
         if (contains) {
           final num durationMs = info["durationMs"] ?? 0;
           final num durationinMinutes = durationMs / 60000;

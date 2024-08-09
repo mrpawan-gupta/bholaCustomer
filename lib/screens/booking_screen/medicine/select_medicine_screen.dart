@@ -13,7 +13,7 @@ import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:get/get.dart";
 
-class SelectMedicineScreen extends GetWidget<SelectMedicineController> {
+class SelectMedicineScreen extends GetView<SelectMedicineController> {
   const SelectMedicineScreen({super.key});
 
   @override

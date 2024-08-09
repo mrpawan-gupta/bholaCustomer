@@ -15,7 +15,7 @@ import "package:flutter/services.dart";
 import "package:get/get.dart";
 import "package:infinite_scroll_pagination/infinite_scroll_pagination.dart";
 
-class SelectCropScreen extends GetWidget<SelectCropController> {
+class SelectCropScreen extends GetView<SelectCropController> {
   const SelectCropScreen({super.key});
 
   @override
