@@ -1201,19 +1201,7 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
   }
 
   Widget decideTopActionButtonWidget() {
-    final Bookings item = controller.rxBookings.value;
-    final bool paymentReceived = item.paymentReceived ?? false;
-
-    final bool status1 = item.status == bookingConfirmed;
-    final bool status2 = item.status == bookingAccepted;
-    final bool status3 = item.status == bookingWorkInProgress;
-    final bool status4 = item.status == bookingCompleted;
-    final bool cond1 = !paymentReceived && status1;
-    final bool cond2 = !paymentReceived && status2;
-    final bool cond3 = !paymentReceived && status3;
-    final bool cond4 = !paymentReceived && status4;
-
-    final bool finalCondition = cond1 || cond2 || cond3 || cond4;
+    final bool finalCondition = controller.canPayNow();
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -1244,7 +1232,11 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
                       onTap: () async {
                         final String id = controller.rxBookingId.value;
 
-                        await openPayNowLaterWidget(id: id);
+                        final bool finalCondition = controller.canPayNow();
+
+                        if (finalCondition) {
+                          await openPayNowLaterWidget(id: id);
+                        } else {}
 
                         await controller.getBookingAPICall();
                       },
@@ -1320,7 +1312,11 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
                         value = await controller.confirmOrderAPICall(id: id);
 
                         if (value) {
-                          await openPayNowLaterWidget(id: id);
+                          final bool finalCondition = controller.canPayNow();
+
+                          if (finalCondition) {
+                            await openPayNowLaterWidget(id: id);
+                          } else {}
 
                           await controller.getBookingAPICall();
                         } else {}

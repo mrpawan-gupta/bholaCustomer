@@ -138,21 +138,20 @@ class OrderHistoryScreen extends GetView<OrderHistoryController> {
                         ],
                 ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Icon(
-                      item.iconData,
-                      size: 24,
-                      color: isSelected
-                          ? AppColors().appWhiteColor
-                          : AppColors().appBlackColor,
-                    ),
-                    const SizedBox(width: 16),
-                    Text(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Icon(
+                    item.iconData,
+                    size: 24,
+                    color: isSelected
+                        ? AppColors().appWhiteColor
+                        : AppColors().appBlackColor,
+                  ),
+                  const SizedBox(width: 8),
+                  Flexible(
+                    child: Text(
                       item.name,
                       style: TextStyle(
                         color: isSelected
@@ -163,8 +162,8 @@ class OrderHistoryScreen extends GetView<OrderHistoryController> {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),

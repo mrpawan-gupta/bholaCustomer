@@ -1,3 +1,5 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import "dart:async";
 
 import "package:customer/common_functions/booking_functions.dart";
@@ -133,7 +135,9 @@ class HelpController extends GetxController
 
   Future<void> _fetchPageCategories(int pageKey) async {
     try {
-      final List<Categories> newItems = await _apiCallCategories(pageKey);
+      // final List<Categories> newItems = await _apiCallCategories(pageKey);
+      await Future<void>.delayed(const Duration(seconds: 1));
+      final List<Categories> newItems = <Categories>[];
       final bool isLastPage = newItems.length < pageSize;
       isLastPage
           ? pagingControllerCategories.appendLastPage(newItems)
@@ -169,7 +173,9 @@ class HelpController extends GetxController
 
   Future<void> _fetchPageCategoriesLive(int pageKey) async {
     try {
-      final List<Bookings> newItems = await _apiCallCategoriesLive(pageKey);
+      // final List<Bookings> newItems = await _apiCallCategoriesLive(pageKey);
+      await Future<void>.delayed(const Duration(seconds: 1));
+      final List<Bookings> newItems = <Bookings>[];
       final bool isLastPage = newItems.length < pageSize;
       isLastPage
           ? pagingControllerCategoriesLive.appendLastPage(newItems)
@@ -232,50 +238,50 @@ class HelpController extends GetxController
     return completer.future;
   }
 
-  Future<List<Categories>> _apiCallCategories(int pageKey) async {
-    final Completer<List<Categories>> completer = Completer<List<Categories>>();
-    if (pageKey > 1) {
-      completer.complete(<Categories>[]);
-    } else {
-      await AppAPIService().functionGet(
-        types: Types.rental,
-        endPoint: "vehiclecategory",
-        query: <String, dynamic>{
-          "page": 1,
-          "limit": 1000,
-          "status": "Approved",
-        },
-        successCallback: (Map<String, dynamic> json) {
-          AppLogger().info(message: json["message"]);
+  // Future<List<Categories>> _apiCallCategories(int pageKey) async {
+  //   final Completer<List<Categories>> completer = Completer<List<Categories>>();
+  //   if (pageKey > 1) {
+  //     completer.complete(<Categories>[]);
+  //   } else {
+  //     await AppAPIService().functionGet(
+  //       types: Types.rental,
+  //       endPoint: "vehiclecategory",
+  //       query: <String, dynamic>{
+  //         "page": 1,
+  //         "limit": 1000,
+  //         "status": "Approved",
+  //       },
+  //       successCallback: (Map<String, dynamic> json) {
+  //         AppLogger().info(message: json["message"]);
 
-          FeaturedModel model = FeaturedModel();
-          model = FeaturedModel.fromJson(json);
+  //         FeaturedModel model = FeaturedModel();
+  //         model = FeaturedModel.fromJson(json);
 
-          final (bool, Categories) result = checkAndGetCategoryObject(
-            list: pagingControllerCategories.itemList ?? <Categories>[],
-          );
-          final bool hasAlreadyAdded = result.$1;
-          final Categories allCategory = result.$2;
+  //         final (bool, Categories) result = checkAndGetCategoryObject(
+  //           list: pagingControllerCategories.itemList ?? <Categories>[],
+  //         );
+  //         final bool hasAlreadyAdded = result.$1;
+  //         final Categories allCategory = result.$2;
 
-          if (hasAlreadyAdded) {
-          } else {
-            model.data?.categories?.insert(0, allCategory);
-            updateSelectedCategory(allCategory);
-          }
+  //         if (hasAlreadyAdded) {
+  //         } else {
+  //           model.data?.categories?.insert(0, allCategory);
+  //           updateSelectedCategory(allCategory);
+  //         }
 
-          completer.complete(model.data?.categories ?? <Categories>[]);
-        },
-        failureCallback: (Map<String, dynamic> json) {
-          AppSnackbar()
-              .snackbarFailure(title: "Oops", message: json["message"]);
+  //         completer.complete(model.data?.categories ?? <Categories>[]);
+  //       },
+  //       failureCallback: (Map<String, dynamic> json) {
+  //         AppSnackbar()
+  //             .snackbarFailure(title: "Oops", message: json["message"]);
 
-          completer.complete(<Categories>[]);
-        },
-        needLoader: false,
-      );
-    }
-    return completer.future;
-  }
+  //         completer.complete(<Categories>[]);
+  //       },
+  //       needLoader: false,
+  //     );
+  //   }
+  //   return completer.future;
+  // }
 
   Future<List<Bookings>> _apiCallServicesLive(int pageKey) async {
     final Completer<List<Bookings>> completer = Completer<List<Bookings>>();
@@ -318,47 +324,46 @@ class HelpController extends GetxController
     return completer.future;
   }
 
-  Future<List<Bookings>> _apiCallCategoriesLive(int pageKey) async {
-    final Completer<List<Bookings>> completer = Completer<List<Bookings>>();
+  // Future<List<Bookings>> _apiCallCategoriesLive(int pageKey) async {
+  //   final Completer<List<Bookings>> completer = Completer<List<Bookings>>();
 
-    final Map<String, dynamic> query = <String, dynamic>{
-      "page": pageKey,
-      "limit": pageSize,
-      "status": "BookingConfirm,BookingAccepted,PaymentDone,WorkInProgress",
-      "sortBy": "createdAt",
-      "sortOrder": "desc",
-    };
+  //   final Map<String, dynamic> query = <String, dynamic>{
+  //     "page": pageKey,
+  //     "limit": pageSize,
+  //     "status": "BookingConfirm,BookingAccepted,PaymentDone,WorkInProgress",
+  //     "sortBy": "createdAt",
+  //     "sortOrder": "desc",
+  //   };
 
-    final String id = rxSelectedCategory.value.sId ?? "";
-    if (id.isEmpty) {
-    } else {
-      query.addAll(
-        <String, dynamic>{"categoryId": id},
-      );
-    }
+  //   final String id = rxSelectedCategory.value.sId ?? "";
+  //   if (id.isEmpty) {
+  //   } else {
+  //     query.addAll(
+  //       <String, dynamic>{"categoryId": id},
+  //     );
+  //   }
 
-    await AppAPIService().functionGet(
-      types: Types.rental,
-      endPoint: "booking/history/Customer",
-      query: query,
-      successCallback: (Map<String, dynamic> json) {
-        AppLogger().info(message: json["message"]);
+  //   await AppAPIService().functionGet(
+  //     types: Types.rental,
+  //     endPoint: "booking/history/Customer",
+  //     query: query,
+  //     successCallback: (Map<String, dynamic> json) {
+  //       AppLogger().info(message: json["message"]);
 
-        NewOrderModel model = NewOrderModel();
-        model = NewOrderModel.fromJson(json);
+  //       NewOrderModel model = NewOrderModel();
+  //       model = NewOrderModel.fromJson(json);
 
-        completer.complete(model.data?.bookings ?? <Bookings>[]);
-      },
-      failureCallback: (Map<String, dynamic> json) {
-        AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
+  //       completer.complete(model.data?.bookings ?? <Bookings>[]);
+  //     },
+  //     failureCallback: (Map<String, dynamic> json) {
+  //       AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
 
-        completer.complete(<Bookings>[]);
-      },
-      needLoader: false,
-    );
-    return completer.future;
-  }
-
+  //       completer.complete(<Bookings>[]);
+  //     },
+  //     needLoader: false,
+  //   );
+  //   return completer.future;
+  // }
 }
 
 class DashboardClass {

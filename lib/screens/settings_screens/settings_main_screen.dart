@@ -37,9 +37,7 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  userImage(),
-                  const SizedBox(height: 16),
-                  userInfo(),
+                  userMainCard(),
                   const SizedBox(height: 16),
                   // settingsItems(
                   //   itemName: "Change Language",
@@ -72,7 +70,7 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
                   ),
                   const SizedBox(height: 16),
                   settingsItems(
-                    itemName: "Legal Policies",
+                    itemName: "About Bhola",
                     onTap: openLegalPoliciesWidget,
                   ),
                   const SizedBox(height: 16),
@@ -166,7 +164,7 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        "Build info: ${controller.rxPackageInfo.value.version} (${controller.rxPackageInfo.value.buildNumber})",
+                        "Build: ${controller.rxPackageInfo.value.version} (${controller.rxPackageInfo.value.buildNumber})",
                       ),
                     ),
                   ),
@@ -181,14 +179,48 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
     );
   }
 
+  Widget userMainCard() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Card(
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        elevation: 0,
+        margin: EdgeInsets.zero,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: BorderSide(
+            color: AppColors().appGreyColor.withOpacity(0.10),
+          ),
+        ),
+        color: AppColors().appGreyColor.withOpacity(0.10),
+        child: InkWell(
+          onTap: canGoAhead,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                userImage(),
+                const SizedBox(width: 16),
+                Expanded(child: userInfo()),
+                const SizedBox(width: 16),
+                const Icon(Icons.arrow_forward_ios),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget userImage() {
     final GetUserByIdData data = controller.rxUserInfo.value;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Container(
-          height: 64 * 2,
-          width: 64 * 2,
+          height: 64,
+          width: 64,
           clipBehavior: Clip.antiAliasWithSaveLayer,
           decoration: const BoxDecoration(shape: BoxShape.circle),
           child: Stack(
@@ -212,66 +244,38 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
   }
 
   Widget userInfo() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Card(
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        elevation: 0,
-        margin: EdgeInsets.zero,
-        color: AppColors().appGreyColor.withOpacity(0.10),
-        child: InkWell(
-          onTap: canGoAhead,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                commonTitleAndValueWidget(
-                  title: "Name",
-                  value: controller.getFullName(),
-                ),
-                const SizedBox(height: 16),
-                commonTitleAndValueWidget(
-                  title: "Email",
-                  value: controller.getEmailOrEmailPlaceholder(),
-                ),
-                const SizedBox(height: 16),
-                commonTitleAndValueWidget(
-                  title: "Phone",
-                  value: controller.getPhoneNumberOrPhoneNumberPlaceholder(),
-                ),
-                const SizedBox(height: 16),
-                AppTextButton(
-                  text: "Update Profile",
-                  onPressed: canGoAhead,
-                ),
-              ],
-            ),
-          ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        commonTitleAndValueWidget(
+          value: controller.getFullName(),
+          isBold: true,
         ),
-      ),
+        commonTitleAndValueWidget(
+          value: controller.getEmailOrEmailPlaceholder(),
+          isBold: false,
+        ),
+        commonTitleAndValueWidget(
+          value: controller.getPhoneNumberOrPhoneNumberPlaceholder(),
+          isBold: false,
+        ),
+      ],
     );
   }
 
   Widget commonTitleAndValueWidget({
-    required String title,
     required String value,
+    required bool isBold,
   }) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         Text(
-          title,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-        const SizedBox(height: 4),
-        Text(
           value,
-          style: const TextStyle(fontWeight: FontWeight.bold),
-          maxLines: 5,
+          style: TextStyle(fontWeight: isBold ? FontWeight.bold : null),
+          maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
       ],
@@ -438,9 +442,9 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           const SizedBox(height: 16),
-          Text(
-            AppLanguageKeys().strActionPerform.tr,
-            style: const TextStyle(
+          const Text(
+            "Visit our websites",
+            style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w500,
             ),
@@ -496,6 +500,19 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
               AppNavService().pop();
               await AppInAppBrowser().openInAppBrowser(
                 url: AppConstants().appURLsRefundPolicy,
+              );
+            },
+          ),
+          ListTile(
+            dense: true,
+            leading: const Icon(Icons.public),
+            title: const Text("Terms & Conditions - Vendor"),
+            subtitle: Text(AppConstants().appURLsTAndCVendor),
+            trailing: const Icon(Icons.open_in_new),
+            onTap: () async {
+              AppNavService().pop();
+              await AppInAppBrowser().openInAppBrowser(
+                url: AppConstants().appURLsTAndCVendor,
               );
             },
           ),

@@ -76,14 +76,14 @@ class TransactionDetailsData {
   String? sId;
   String? paymentGateway;
   String? transactionId;
-  int? amount;
+  num? amount;
   String? status;
   String? currency;
   String? payerId;
   String? payeeId;
   String? transactionType;
   String? referenceNumber;
-  int? fee;
+  num? fee;
   String? createdAt;
   String? updatedAt;
   int? iV;
@@ -134,7 +134,7 @@ class PaymentDetails {
   }
 
   String? transactionId;
-  int? amount;
+  num? amount;
   String? state;
   String? responseCode;
   PaymentInstrument? paymentInstrument;

@@ -32,18 +32,18 @@ class PhonePeResModel {
 
 class Data {
   Data({
-    this.transaction,
+    this.transactionId,
   });
 
   Data.fromJson(Map<String, dynamic> json) {
-    transaction = json["transaction"];
+    transactionId = json["transactionId"];
   }
 
-  String? transaction;
+  String? transactionId;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data["transaction"] = transaction;
+    data["transactionId"] = transactionId;
     return data;
   }
 }

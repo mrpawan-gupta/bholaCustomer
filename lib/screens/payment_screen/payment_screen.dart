@@ -97,7 +97,7 @@ class _PaymentScreenState extends State<PaymentScreen>
   Widget lowerWidget() {
     final PhonePeResModel item = controller.rxPhonePeResModel.value;
 
-    final bool cond1 = (item.data?.transaction ?? "").isNotEmpty;
+    final bool cond1 = (item.data?.transactionId ?? "").isNotEmpty;
     final bool cond2 = controller.rxPaymentState.value == PaymentState.success;
     final bool finalCondition = cond1 || cond2;
 
@@ -143,7 +143,7 @@ class _PaymentScreenState extends State<PaymentScreen>
                   children: <Widget>[
                     const SizedBox(height: 16),
                     Text(
-                      "Transaction ID: ${item.data?.transaction ?? ""}",
+                      "Transaction ID: ${item.data?.transactionId ?? ""}",
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
