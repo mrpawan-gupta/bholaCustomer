@@ -9,6 +9,7 @@ import "package:customer/models/featured_model.dart";
 import "package:customer/models/new_order_model.dart";
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
+import "package:customer/utils/app_debouncer.dart";
 import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/app_snackbar.dart";
 import "package:flutter/foundation.dart";
@@ -409,13 +410,18 @@ class OrderHistoryScreen extends GetView<OrderHistoryController> {
                     const SizedBox(height: 16),
                     SizedBox(
                       height: 50,
-                      width: 100,
+                      width: (Get.width) / 2,
                       child: AppTextButton(
                         text: "Start Booking",
-                        onPressed: () async {
-                          await tabControllerFunction(2);
+                        onPressed: () {
+                          AppDebouncer().debounce(
+                            () async {
+                              await tabControllerFunction(2);
 
-                          controller.pagingControllerServicesHistory.refresh();
+                              controller.pagingControllerServicesHistory
+                                  .refresh();
+                            },
+                          );
                         },
                       ),
                     ),
@@ -908,14 +914,18 @@ class OrderHistoryScreen extends GetView<OrderHistoryController> {
                     const SizedBox(height: 16),
                     SizedBox(
                       height: 50,
-                      width: 100,
+                      width: (Get.width) / 2,
                       child: AppTextButton(
                         text: "Start Booking",
-                        onPressed: () async {
-                          await tabControllerFunction(2);
+                        onPressed: () {
+                          AppDebouncer().debounce(
+                            () async {
+                              await tabControllerFunction(2);
 
-                          controller.pagingControllerCategoriesHistory
-                              .refresh();
+                              controller.pagingControllerCategoriesHistory
+                                  .refresh();
+                            },
+                          );
                         },
                       ),
                     ),

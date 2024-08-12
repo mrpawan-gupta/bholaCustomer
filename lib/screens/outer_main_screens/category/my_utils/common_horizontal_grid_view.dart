@@ -33,7 +33,7 @@ class CommonHorizontalGridView extends StatelessWidget {
       physics: const ScrollPhysics(),
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
+        crossAxisCount: 1,
         mainAxisSpacing: 16,
         crossAxisSpacing: 16,
         childAspectRatio: 1.32 / 1,
@@ -115,6 +115,11 @@ class CommonHorizontalGridView extends StatelessWidget {
   }
 
   Widget productNameAndDetailsWidget(Categories item) {
+    final num itemCount = itemType == Types.categories
+        ? item.productCount ?? 0
+        : itemType == Types.services
+            ? item.vehicleCount ?? 0
+            : 0;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,15 +133,13 @@ class CommonHorizontalGridView extends StatelessWidget {
         Row(
           children: <Widget>[
             Text(
-              itemType == Types.categories
-                  ? "${item.productCount ?? 0}"
-                  : itemType == Types.services
-                      ? "${item.vehicleCount ?? 0}"
-                      : "",
+              itemCount != 0 ? "$itemCount" : "No",
               style: TextStyle(
                 fontSize: 10,
                 fontWeight: FontWeight.bold,
-                color: AppColors().appPrimaryColor,
+                color: itemCount != 0
+                    ? AppColors().appPrimaryColor
+                    : AppColors().appGreyColor,
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,

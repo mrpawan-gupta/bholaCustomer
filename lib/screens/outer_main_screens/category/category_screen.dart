@@ -1,4 +1,6 @@
 import "package:customer/common_functions/rental_booking_stream.dart";
+import "package:customer/common_widgets/app_elevated_button.dart";
+import "package:customer/common_widgets/app_text_button.dart";
 import "package:customer/controllers/main_navigation_controller.dart";
 import "package:customer/controllers/outer_main_controllers/category_controller.dart";
 import "package:customer/models/featured_model.dart";
@@ -23,6 +25,25 @@ class CategoryScreen extends GetView<CategoryController> {
       children: <Widget>[
         featuredServicesWidget(),
         featuredCategoriesidget(),
+        Divider(color: AppColors().appGrey, indent: 16, endIndent: 16),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            const SizedBox(width: 16),
+            Expanded(
+              child: AppTextButton(
+                text: "❔ Looking for something else? Tap here.",
+                onPressed: () async {
+                  await AppNavService().pushNamed(
+                    destination: AppRoutes().supportScreen,
+                    arguments: <String, dynamic>{},
+                  );
+                },
+              ),
+            ),
+            const SizedBox(width: 16),
+          ],
+        ),
         const SizedBox(height: 32),
       ],
     );
@@ -61,6 +82,15 @@ class CategoryScreen extends GetView<CategoryController> {
                       endIndent: 16,
                     ),
                     const SizedBox(height: 8),
+                    const Align(
+                      child: Text(
+                        "🌟 Our most popular vehicles categories! 🌟",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
                     Expanded(
                       child: CommonHorizontalGridView(
                         pagingController: controller.pagingControllerServices,
@@ -85,6 +115,26 @@ class CategoryScreen extends GetView<CategoryController> {
                         type: "rental services list",
                         itemType: Types.services,
                       ),
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: SizedBox(
+                            height: 40,
+                            width: double.infinity,
+                            child: AppElevatedButton(
+                              text: "Book Now",
+                              onPressed: () async {
+                                await tabControllerFunction(2);
+                              },
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                      ],
                     ),
                     const SizedBox(height: 8),
                   ],
@@ -130,6 +180,15 @@ class CategoryScreen extends GetView<CategoryController> {
                       endIndent: 16,
                     ),
                     const SizedBox(height: 8),
+                    const Align(
+                      child: Text(
+                        "🌟 Our most popular products categories! 🌟",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
                     Expanded(
                       child: CommonHorizontalGridView(
                         pagingController: controller.pagingControllerCategories,
@@ -144,6 +203,29 @@ class CategoryScreen extends GetView<CategoryController> {
                         type: "product categories list",
                         itemType: Types.categories,
                       ),
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: SizedBox(
+                            height: 40,
+                            width: double.infinity,
+                            child: AppElevatedButton(
+                              text: "View All",
+                              onPressed: () async {
+                                await AppNavService().pushNamed(
+                                  destination: AppRoutes().productListingScreen,
+                                  arguments: <String, dynamic>{},
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                      ],
                     ),
                     const SizedBox(height: 8),
                   ],

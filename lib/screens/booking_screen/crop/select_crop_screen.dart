@@ -71,25 +71,29 @@ class SelectCropScreen extends GetView<SelectCropController> {
                       const SizedBox(height: 16),
                       SizedBox(
                         height: 50,
-                        width: 100,
+                        width: (Get.width) / 2,
                         child: AppTextButton(
                           text: controller.rxSearchQuery.value.isEmpty &&
                                   isMapEquals
                               ? "Try refreshing"
                               : "Clear filers",
                           onPressed: () {
-                            final List<CropCategories> tempList = controller
-                                    .pagingControllerCategories.itemList ??
-                                <CropCategories>[];
+                            AppDebouncer().debounce(
+                              () {
+                                final List<CropCategories> tempList = controller
+                                        .pagingControllerCategories.itemList ??
+                                    <CropCategories>[];
 
-                            if (tempList.isNotEmpty) {
-                              final CropCategories item = tempList.first;
-                              controller.updateSelectedCategory(item);
-                            } else {}
+                                if (tempList.isNotEmpty) {
+                                  final CropCategories item = tempList.first;
+                                  controller.updateSelectedCategory(item);
+                                } else {}
 
-                            controller.searchController.text = "";
-                            controller.updateSearchQuery("");
-                            controller.pagingControllerCrops.refresh();
+                                controller.searchController.text = "";
+                                controller.updateSearchQuery("");
+                                controller.pagingControllerCrops.refresh();
+                              },
+                            );
                           },
                         ),
                       ),

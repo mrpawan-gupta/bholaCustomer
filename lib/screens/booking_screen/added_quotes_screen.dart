@@ -209,7 +209,7 @@ class AddedQuotesScreen extends GetWidget<AddedQuotesController> {
                     const SizedBox(height: 16),
                     SizedBox(
                       height: 50,
-                      width: 100,
+                      width: (Get.width) / 2,
                       child: AppTextButton(
                         text: "Book Now",
                         onPressed: AppNavService().pop,

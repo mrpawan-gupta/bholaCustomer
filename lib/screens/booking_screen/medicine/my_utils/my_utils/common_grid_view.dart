@@ -4,6 +4,7 @@ import "package:customer/common_widgets/common_image_widget.dart";
 import "package:customer/models/get_all_medicines_model.dart";
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
+import "package:customer/utils/app_debouncer.dart";
 import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
@@ -75,10 +76,14 @@ class CommonGridView extends StatelessWidget {
                   const SizedBox(height: 16),
                   SizedBox(
                     height: 50,
-                    width: 100,
+                    width: (Get.width) / 2,
                     child: AppTextButton(
                       text: "Reset & Refresh",
-                      onPressed: onTapResetAndRefresh,
+                      onPressed: () {
+                        AppDebouncer().debounce(
+                          onTapResetAndRefresh,
+                        );
+                      },
                     ),
                   ),
                   const SizedBox(height: 16),

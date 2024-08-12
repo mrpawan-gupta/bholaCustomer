@@ -120,6 +120,11 @@ class CommonHorizontalListView extends StatelessWidget {
   }
 
   Widget productNameAndDetailsWidget(Categories item) {
+    final num itemCount = itemType == Types.categories
+        ? item.productCount ?? 0
+        : itemType == Types.services
+            ? item.vehicleCount ?? 0
+            : 0;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -133,15 +138,13 @@ class CommonHorizontalListView extends StatelessWidget {
         Row(
           children: <Widget>[
             Text(
-              itemType == Types.categories
-                  ? "${item.productCount ?? 0}"
-                  : itemType == Types.services
-                      ? "${item.vehicleCount ?? 0}"
-                      : "",
+              itemCount != 0 ? "$itemCount" : "No",
               style: TextStyle(
                 fontSize: 10,
                 fontWeight: FontWeight.bold,
-                color: AppColors().appPrimaryColor,
+                color: itemCount != 0
+                    ? AppColors().appPrimaryColor
+                    : AppColors().appGreyColor,
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,

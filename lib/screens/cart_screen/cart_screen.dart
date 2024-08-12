@@ -102,7 +102,7 @@ class CartScreen extends GetWidget<CartController> {
                               const SizedBox(height: 16),
                               SizedBox(
                                 height: 50,
-                                width: 100,
+                                width: (Get.width) / 2,
                                 child: AppTextButton(
                                   text: "Start Shopping",
                                   onPressed: () async {

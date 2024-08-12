@@ -64,19 +64,26 @@ class CouponScreen extends GetWidget<CouponController> {
                           const SizedBox(height: 16),
                           SizedBox(
                             height: 50,
-                            width: 100,
+                            width: (Get.width) / 2,
                             child: AppTextButton(
                               text: controller.rxSearchQuery.value.isEmpty
                                   ? "Try refreshing"
                                   : "Clear filers",
                               onPressed: () {
-                                if (controller.rxSearchQuery.value.isEmpty) {
-                                  controller.pagingControllerPromo.refresh();
-                                } else {
-                                  controller.searchController.text = "";
-                                  controller.updateSearchQuery("");
-                                  controller.pagingControllerPromo.refresh();
-                                }
+                                AppDebouncer().debounce(
+                                  () {
+                                    if (controller
+                                        .rxSearchQuery.value.isEmpty) {
+                                      controller.pagingControllerPromo
+                                          .refresh();
+                                    } else {
+                                      controller.searchController.text = "";
+                                      controller.updateSearchQuery("");
+                                      controller.pagingControllerPromo
+                                          .refresh();
+                                    }
+                                  },
+                                );
                               },
                             ),
                           ),

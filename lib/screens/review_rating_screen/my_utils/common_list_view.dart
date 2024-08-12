@@ -5,6 +5,7 @@ import "package:customer/common_widgets/common_image_widget.dart";
 import "package:customer/models/review_rating_model.dart";
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_colors.dart";
+import "package:customer/utils/app_debouncer.dart";
 import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/material.dart";
 import "package:flutter_rating_bar/flutter_rating_bar.dart";
@@ -71,10 +72,14 @@ class CommonListView extends StatelessWidget {
                   const SizedBox(height: 16),
                   SizedBox(
                     height: 50,
-                    width: 100,
+                    width: (Get.width) / 2,
                     child: AppTextButton(
                       text: "Try refreshing",
-                      onPressed: pagingController.refresh,
+                      onPressed: () {
+                        AppDebouncer().debounce(
+                          pagingController.refresh,
+                        );
+                      },
                     ),
                   ),
                   const SizedBox(height: 16),

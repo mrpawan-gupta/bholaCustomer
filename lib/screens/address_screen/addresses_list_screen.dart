@@ -57,7 +57,7 @@ class AddressesListScreen extends GetView<AddressesListController> {
                           const SizedBox(height: 16),
                           SizedBox(
                             height: 50,
-                            width: 100,
+                            width: (Get.width) / 2,
                             child: AppTextButton(
                               text: "Add address",
                               onPressed: showPlacePicker,

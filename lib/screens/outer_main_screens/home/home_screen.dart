@@ -272,6 +272,9 @@ class HomeScreen extends GetView<HomeController> {
             itemBuilder: (BuildContext context, int i) {
               final PagingController<int, Products> paging = dynamicList[i];
               final Categories products = productList[i];
+
+              final bool hasProducts = (products.productCount ?? 0) > 0;
+
               final bool isLast = i == productList.length - 1;
               return ValueListenableBuilder<PagingState<int, Products>>(
                 valueListenable: paging,
@@ -282,7 +285,9 @@ class HomeScreen extends GetView<HomeController> {
                 ) {
                   return (value.itemList?.isEmpty ?? false)
                       ? const SizedBox()
-                      : listViewAdapter(paging, products, isLast: isLast);
+                      : hasProducts
+                          ? listViewAdapter(paging, products, isLast: isLast)
+                          : const SizedBox();
                 },
               );
             },
