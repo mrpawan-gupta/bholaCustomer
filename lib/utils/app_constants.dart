@@ -44,6 +44,8 @@ class AppConstants {
   final String sampleImg =
       "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTExL3BmLXMxMDgtcG0tNDExMy1tb2NrdXAuanBn.jpg";
 
+  final String appURLsFeedbackForm = "https://forms.gle/4AwQFH9u5fnKutKU8";
+
   final String appURLsHomePage = "https://www.bhola.org.in/";
   final String appURLsAboutUs = "https://www.bhola.org.in/about-us/";
   final String appURLsPrivacyPolicy = "https://www.bhola.org.in/privacy/";
@@ -51,8 +53,9 @@ class AppConstants {
   final String appURLsTAndCCustomer = "https://www.bhola.org.in/customer/";
   final String appURLsTAndCVendor = "https://www.bhola.org.in/vendor/";
   final String appURLsShippingPolicy = "https://www.bhola.org.in/shipping/";
-  final String appURLsInstagram = "https://www.instagram.com/bhola_ahinsa";
-  final String appURLsYoutube = "https://www.youtube.com/@bholatutorials";
+
+  final String appURLsInstagram = "www.instagram.com/bhola_ahinsa";
+  final String appURLsYoutube = "www.youtube.com/@bholatutorials";
 
   final String pkgOfAdmin = "com.ahinsaaggregator.admin";
   final String pkgOfCustomer = "com.ahinsaaggregator.customer";

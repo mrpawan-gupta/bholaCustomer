@@ -75,6 +75,15 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
                   ),
                   const SizedBox(height: 16),
                   settingsItems(
+                    itemName: "Provide Feedback",
+                    onTap: () async {
+                      await AppInAppBrowser().openInAppBrowser(
+                        url: AppConstants().appURLsFeedbackForm,
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  settingsItems(
                     itemName: "Rate this app",
                     onTap: AppOpenStore().openStoreForCustomer,
                   ),
