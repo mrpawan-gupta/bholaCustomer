@@ -1,8 +1,7 @@
-import "dart:ui";
-
 import "package:customer/models/crop_categories_model.dart";
 import "package:customer/models/featured_model.dart";
 import "package:customer/utils/app_colors.dart";
+import "package:flutter/material.dart";
 import "package:intl/intl.dart";
 
 // For Rental Bookings
@@ -142,3 +141,9 @@ const String unitLitre = "litre";
 const String unitML = "ml";
 const String unitGram = "gram";
 const String unitNOS = "nos";
+
+const String statusApproved = "Approved";
+const String statusPending = "Pending";
+
+const String statusActive = "Active";
+const String statusInactive = "Inactive";

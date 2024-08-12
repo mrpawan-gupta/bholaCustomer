@@ -1,6 +1,6 @@
-import "package:cached_network_image/cached_network_image.dart";
 import "package:customer/utils/app_assets_images.dart";
 import "package:customer/utils/app_logger.dart";
+import "package:extended_image/extended_image.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 
@@ -13,6 +13,7 @@ class CommonImageWidget extends StatelessWidget {
     required this.imageType,
     super.key,
   });
+
   final String imageUrl;
   final BoxFit fit;
   final ImageType imageType;
@@ -23,14 +24,7 @@ class CommonImageWidget extends StatelessWidget {
       height: double.infinity,
       width: double.infinity,
       fit: fit,
-      image: imageUrl.isURL
-          ? CachedNetworkImageProvider(
-              imageUrl,
-              errorListener: (Object error) {
-                AppLogger().error(message: "Exception caught", error: error);
-              },
-            ) as ImageProvider
-          : assetImage(imageType) as ImageProvider,
+      image: imageProvider(imageUrl: imageUrl, imageType: imageType),
       placeholderFit: fit,
       placeholder: assetImage(imageType) as ImageProvider,
       fadeInDuration: const Duration(seconds: 1),
@@ -45,7 +39,6 @@ class CommonImageWidget extends StatelessWidget {
           error: error,
           stackTrace: stackTrace,
         );
-
         return Image.asset(assetImage(imageType).assetName);
       },
       placeholderErrorBuilder: (
@@ -58,11 +51,23 @@ class CommonImageWidget extends StatelessWidget {
           error: error,
           stackTrace: stackTrace,
         );
-
         return Image.asset(assetImage(imageType).assetName);
       },
     );
   }
+}
+
+ImageProvider<Object> imageProvider({
+  required String imageUrl,
+  required ImageType imageType,
+}) {
+  return imageUrl.isURL
+      ? ExtendedNetworkImageProvider(
+          imageUrl,
+          cache: true,
+          timeLimit: const Duration(minutes: 10),
+        ) as ImageProvider
+      : assetImage(imageType) as ImageProvider<Object>;
 }
 
 AssetImage assetImage(ImageType imageType) {
