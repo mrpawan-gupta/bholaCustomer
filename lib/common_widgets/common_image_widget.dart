@@ -61,7 +61,7 @@ ImageProvider<Object> imageProvider({
   required String imageUrl,
   required ImageType imageType,
 }) {
-  return imageUrl.isURL
+  return imageUrl.isURL && imageUrl.isImageFileName
       ? ExtendedNetworkImageProvider(
           imageUrl,
           cache: true,

@@ -7,9 +7,66 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:116067404693:android:3698b6778ef3c7dff6c49c",
+        "android_client_info": {
+          "package_name": "com.ahinsaaggregator.admin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIi-Wjyn2iEjhj8BEGccXt8ts2P9zK_Gk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:116067404693:android:c0e39b7c992d1214f6c49c",
+        "android_client_info": {
+          "package_name": "com.ahinsaaggregator.admin.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIi-Wjyn2iEjhj8BEGccXt8ts2P9zK_Gk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:116067404693:android:35698b78d4fa9cd3f6c49c",
         "android_client_info": {
           "package_name": "com.ahinsaaggregator.customer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIi-Wjyn2iEjhj8BEGccXt8ts2P9zK_Gk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:116067404693:android:7a6dd78d73358499f6c49c",
+        "android_client_info": {
+          "package_name": "com.ahinsaaggregator.customer.dev"
         }
       },
       "oauth_client": [],

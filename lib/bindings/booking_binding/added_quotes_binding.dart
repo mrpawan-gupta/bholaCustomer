@@ -4,6 +4,6 @@ import "package:get/get.dart";
 class AddedQuotesBinding extends Bindings {
   @override
   void dependencies() {
-    Get.create(AddedQuotesController.new);
+    Get.lazyPut(AddedQuotesController.new);
   }
 }

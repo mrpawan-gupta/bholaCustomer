@@ -1,6 +1,8 @@
+import "package:customer/app_config.dart";
 import "package:customer/controllers/settings_controllers/app_info_controller.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_snackbar.dart";
+import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:get/get.dart";
@@ -47,6 +49,26 @@ class AppInfoScreen extends GetView<AppInfoController> {
                     title: "Installer Store",
                     value: controller.rxPackageInfo.value.installerStore ?? "",
                   ),
+                  customListTile(
+                    title: "App Flavor",
+                    value: appFlavor ?? "",
+                  ),
+                  customListTile(
+                    title: "Base URL",
+                    value: AppConfig().baseURL,
+                  ),
+                  customListTile(
+                    title: "Is kDebugMode?",
+                    value: kDebugMode.toString(),
+                  ),
+                  customListTile(
+                    title: "Is kProfileMode?",
+                    value: kProfileMode.toString(),
+                  ),
+                  customListTile(
+                    title: "Is kReleaseMode?",
+                    value: kReleaseMode.toString(),
+                  ),
                 ],
               );
             },
@@ -63,9 +85,7 @@ class AppInfoScreen extends GetView<AppInfoController> {
       trailing: IconButton(
         icon: const Icon(Icons.copy),
         onPressed: () async {
-          await Clipboard.setData(
-            ClipboardData(text: value),
-          );
+          await Clipboard.setData(ClipboardData(text: value));
 
           AppSnackbar().snackbarSuccess(
             title: "Yay!",
