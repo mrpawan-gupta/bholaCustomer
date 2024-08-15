@@ -188,7 +188,11 @@ class AppImageVideoPicker {
 Future<Uint8List> generateThumbnail({required String path}) async {
   Uint8List value = kTransparentImage;
   try {
-    value = await VideoCompress.getByteThumbnail(path) ?? kTransparentImage;
+    final File tempFile = File(path);
+    final bool exists = tempFile.existsSync();
+    value = exists
+        ? await VideoCompress.getByteThumbnail(path) ?? kTransparentImage
+        : kTransparentImage;
   } on Exception catch (error, stackTrace) {
     AppLogger().error(
       message: "Exception caught",
@@ -202,7 +206,8 @@ Future<Uint8List> generateThumbnail({required String path}) async {
 Future<File> getSingleFile({required String url}) async {
   File file = File("");
   try {
-    file = await DefaultCacheManager().getSingleFile(url);
+    final DefaultCacheManager defaultCacheManager = DefaultCacheManager();
+    file = url.isURL ? await defaultCacheManager.getSingleFile(url) : File("");
   } on Exception catch (error, stackTrace) {
     AppLogger().error(
       message: "Exception caught",

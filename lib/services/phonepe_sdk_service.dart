@@ -1,8 +1,8 @@
 import "dart:async";
 import "dart:io";
 
+import "package:customer/app_config.dart";
 import "package:customer/services/app_pkg_info_service.dart";
-import "package:customer/utils/app_constants.dart";
 import "package:customer/utils/app_logger.dart";
 import "package:customer/utils/app_pretty_print_json.dart";
 import "package:flutter/foundation.dart";
@@ -21,10 +21,10 @@ class PhonePeSDKService {
 
     try {
       value = await PhonePePaymentSdk.init(
-        AppConstants().phonePeEnvironment,
-        AppConstants().phonePeAppId,
-        AppConstants().phonePeMerchantId,
-        AppConstants().phonePeEnableLogging,
+        AppConfig().phonePeEnvironment,
+        null,
+        AppConfig().phonePeMerchantId,
+        !kReleaseMode,
       );
       AppLogger().info(message: "PhonePe init(): $value");
     } on Exception catch (error, stackTrace) {

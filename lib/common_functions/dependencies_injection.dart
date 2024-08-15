@@ -1,6 +1,7 @@
 import "dart:async";
 
-import "package:customer/main.dart";
+import "package:customer/main_dev.dart" as dev;
+import "package:customer/main_prd.dart" as prd;
 import "package:customer/services/app_analytics_service.dart";
 import "package:customer/services/app_api_service.dart";
 import "package:customer/services/app_app_links_deep_link_service.dart";
@@ -16,6 +17,7 @@ import "package:customer/services/app_storage_service.dart";
 import "package:customer/services/phonepe_sdk_service.dart";
 import "package:customer/utils/app_orientations.dart";
 import "package:firebase_messaging/firebase_messaging.dart";
+import "package:flutter/services.dart";
 import "package:get/get.dart";
 
 void injectDependencies() {
@@ -31,16 +33,34 @@ void injectDependencies() {
     ..put(AppAppLinksDeepLinkService())
     ..put(AppPkgInfoService())
     ..put(AppDevInfoService());
-    // ..put(AppLocationService());
+  // ..put(AppLocationService());
   return;
 }
 
 Future<void> initDependencies() async {
   await AppOrientations().initAppOrientations();
+  
   await AppStorageService().init();
 
   await AppFCMService().setupInteractedMessage();
-  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+
+  const String flavor = appFlavor ?? "";
+  switch (flavor) {
+    case "dev":
+      FirebaseMessaging.onBackgroundMessage(
+        dev.firebaseMessagingBackgroundHandler,
+      );
+      break;
+
+    case "prd":
+      FirebaseMessaging.onBackgroundMessage(
+        prd.firebaseMessagingBackgroundHandler,
+      );
+      break;
+
+    default:
+      break;
+  }
 
   unawaited(AppPkgInfoService().initPkgInformation());
   unawaited(AppDevInfoService().initDevInformation());
