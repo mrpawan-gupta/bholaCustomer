@@ -171,7 +171,7 @@ class CategoryScreen extends GetView<CategoryController> {
                           );
                         },
                         isViewAllNeeded: true,
-                        itemType: Types.categories,
+                        itemType: Types.products,
                       ),
                     ),
                     Divider(
@@ -201,7 +201,7 @@ class CategoryScreen extends GetView<CategoryController> {
                         needViewAll: false,
                         onTapViewAll: (Categories item) async {},
                         type: "product categories list",
-                        itemType: Types.categories,
+                        itemType: Types.products,
                       ),
                     ),
                     const SizedBox(height: 16),

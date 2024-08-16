@@ -178,7 +178,7 @@ class HomeScreen extends GetView<HomeController> {
                         );
                       },
                       isViewAllNeeded: true,
-                      itemType: Types.categories,
+                      itemType: Types.products,
                     ),
                   ),
                   Divider(
@@ -221,7 +221,7 @@ class HomeScreen extends GetView<HomeController> {
                       );
                     },
                     type: "product categories list",
-                    itemType: Types.categories,
+                    itemType: Types.products,
                   ),
                   const SizedBox(height: 8),
                 ],
@@ -324,7 +324,7 @@ class HomeScreen extends GetView<HomeController> {
 
                 unawaited(controller.apiCallCategoriesWithoutPagination());
               },
-              itemType: Types.categories,
+              itemType: Types.products,
             ),
           ),
           Divider(

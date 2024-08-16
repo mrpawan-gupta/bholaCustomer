@@ -5,7 +5,7 @@ import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:infinite_scroll_pagination/infinite_scroll_pagination.dart";
 
-enum Types { categories, services }
+enum Types { products, services }
 
 class CommonHorizontalListView extends StatelessWidget {
   const CommonHorizontalListView({
@@ -120,7 +120,7 @@ class CommonHorizontalListView extends StatelessWidget {
   }
 
   Widget productNameAndDetailsWidget(Categories item) {
-    final num itemCount = itemType == Types.categories
+    final num itemCount = itemType == Types.products
         ? item.productCount ?? 0
         : itemType == Types.services
             ? item.vehicleCount ?? 0
@@ -190,7 +190,7 @@ class CommonHorizontalListView extends StatelessWidget {
               children: <Widget>[
                 Expanded(
                   child: Text(
-                    itemType == Types.categories
+                    itemType == Types.products
                         ? "View All"
                         : itemType == Types.services
                             ? "Book Now"

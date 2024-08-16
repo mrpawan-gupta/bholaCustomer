@@ -42,7 +42,7 @@ class CommonCategoryTitleBar extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  itemType == Types.categories
+                  itemType == Types.products
                       ? "View All"
                       : itemType == Types.services
                           ? "Book Now"

@@ -4,7 +4,7 @@ import "package:customer/utils/app_colors.dart";
 import "package:flutter/material.dart";
 import "package:infinite_scroll_pagination/infinite_scroll_pagination.dart";
 
-enum Types { categories, services }
+enum Types { products, services }
 
 class CommonHorizontalGridView extends StatelessWidget {
   const CommonHorizontalGridView({
@@ -115,7 +115,7 @@ class CommonHorizontalGridView extends StatelessWidget {
   }
 
   Widget productNameAndDetailsWidget(Categories item) {
-    final num itemCount = itemType == Types.categories
+    final num itemCount = itemType == Types.products
         ? item.productCount ?? 0
         : itemType == Types.services
             ? item.vehicleCount ?? 0
