@@ -562,7 +562,7 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               const Text(
-                                "Discount Amount",
+                                "Discounted Amount",
                                 style: TextStyle(),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
@@ -586,7 +586,7 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               const Text(
-                                "Discount Percentage",
+                                "Discounted Percentage",
                                 style: TextStyle(),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,

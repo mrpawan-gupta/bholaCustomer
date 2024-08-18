@@ -104,9 +104,14 @@ android {
 
             firebaseCrashlytics {
                 mappingFileUploadEnabled true
+
                 nativeSymbolUploadEnabled true
-                strippedNativeLibsDir "build/app/intermediates/stripped_native_libs/release/out/lib"
-                unstrippedNativeLibsDir "build/app/intermediates/merged_native_libs/release/out/lib"
+                
+                // strippedNativeLibsDir "build/app/intermediates/stripped_native_libs/release/out/lib"
+                strippedNativeLibsDir "build/app/intermediates/stripped_native_libs/prdRelease/stripPrdReleaseDebugSymbols/out/lib"
+
+                // unstrippedNativeLibsDir "build/app/intermediates/merged_native_libs/release/out/lib"
+                unstrippedNativeLibsDir "build/app/intermediates/merged_native_libs/prdRelease/mergePrdReleaseNativeLibs/out/lib"
             }
         }
     }

@@ -2,6 +2,7 @@ import "package:customer/common_widgets/common_image_widget.dart";
 import "package:customer/models/featured_model.dart";
 import "package:customer/utils/app_colors.dart";
 import "package:flutter/material.dart";
+import "package:get/get.dart";
 import "package:infinite_scroll_pagination/infinite_scroll_pagination.dart";
 
 enum Types { products, services }
@@ -26,26 +27,30 @@ class CommonHorizontalGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PagedGridView<int, Categories>(
-      shrinkWrap: true,
-      pagingController: pagingController,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      physics: const ScrollPhysics(),
-      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 1,
-        mainAxisSpacing: 16,
-        crossAxisSpacing: 16,
-        childAspectRatio: 1.32 / 1,
-      ),
-      scrollDirection: Axis.horizontal,
-      builderDelegate: PagedChildBuilderDelegate<Categories>(
-        noItemsFoundIndicatorBuilder: (BuildContext context) {
-          return const SizedBox();
-        },
-        itemBuilder: (BuildContext context, Categories item, int index) {
-          return listAdapter(item);
-        },
+    return SizedBox(
+      height: needViewAll ? Get.height / 4.80 : Get.height / 5.96,
+      width: double.infinity,
+      child: PagedGridView<int, Categories>(
+        shrinkWrap: true,
+        pagingController: pagingController,
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        physics: const ScrollPhysics(),
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 1,
+          mainAxisSpacing: 16,
+          crossAxisSpacing: 16,
+          childAspectRatio: needViewAll ? 1.64 / 1 : 1.32 / 1,
+        ),
+        builderDelegate: PagedChildBuilderDelegate<Categories>(
+          noItemsFoundIndicatorBuilder: (BuildContext context) {
+            return const SizedBox();
+          },
+          itemBuilder: (BuildContext context, Categories item, int index) {
+            return listAdapter(item);
+          },
+        ),
       ),
     );
   }
@@ -118,7 +123,7 @@ class CommonHorizontalGridView extends StatelessWidget {
     final num itemCount = itemType == Types.products
         ? item.productCount ?? 0
         : itemType == Types.services
-            ? item.vehicleCount ?? 0
+            ? item.approvedServiceCount ?? 0
             : 0;
     return Column(
       mainAxisSize: MainAxisSize.min,

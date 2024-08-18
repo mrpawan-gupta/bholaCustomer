@@ -397,7 +397,7 @@ class BookingAddOnsScreen extends GetWidget<BookingAddOnsController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         const Text(
-                          "Discount Amount",
+                          "Discounted Amount",
                           style: TextStyle(),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -419,7 +419,7 @@ class BookingAddOnsScreen extends GetWidget<BookingAddOnsController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         const Text(
-                          "Discount Percentage",
+                          "Discounted Percentage",
                           style: TextStyle(),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -585,11 +585,25 @@ class BookingAddOnsScreen extends GetWidget<BookingAddOnsController> {
                     value = await controller.confirmOrderAPICall(id: id);
 
                     if (value) {
-                      await openPayNowLaterWidget(id: id);
+                      final bool finalCondition =
+                          controller.canPayNow(controller.rxBookings.value);
+
+                      if (finalCondition) {
+                        await openPayNowLaterWidget(id: id);
+                      } else {}
+
+                      await AppNavService().pushNamed(
+                        destination: AppRoutes().bookingDetailsScreen,
+                        arguments: <String, dynamic>{
+                          "id": id,
+                        },
+                      );
 
                       unawaited(
                         controller.getBookingAPICall(needLoader: true),
                       );
+
+                      AppNavService().pop();
                     } else {}
                   },
                   child: Padding(

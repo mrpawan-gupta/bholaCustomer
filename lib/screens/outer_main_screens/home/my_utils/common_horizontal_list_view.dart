@@ -123,7 +123,7 @@ class CommonHorizontalListView extends StatelessWidget {
     final num itemCount = itemType == Types.products
         ? item.productCount ?? 0
         : itemType == Types.services
-            ? item.vehicleCount ?? 0
+            ? item.approvedServiceCount ?? 0
             : 0;
     return Column(
       mainAxisSize: MainAxisSize.min,

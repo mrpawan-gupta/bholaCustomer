@@ -13,6 +13,7 @@ import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_constants.dart";
 import "package:customer/utils/app_in_app_browser.dart";
 import "package:customer/utils/app_routes.dart";
+import "package:customer/utils/app_snackbar.dart";
 import "package:customer/utils/localization/app_language_keys.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
@@ -827,12 +828,17 @@ class CartScreen extends GetWidget<CartController> {
                 onPressed: () async {
                   // Payment Screen
 
-                  unawaited(
-                    controller.getAllCartsItemsAPICall(
-                      needLoader: true,
-                      removeCoupon: true,
-                    ),
+                  AppSnackbar().snackbarFailure(
+                    title: "Oops!",
+                    message: "Coming Soon!",
                   );
+
+                  // unawaited(
+                  //   controller.getAllCartsItemsAPICall(
+                  //     needLoader: true,
+                  //     removeCoupon: true,
+                  //   ),
+                  // );
                 },
               ),
             ),

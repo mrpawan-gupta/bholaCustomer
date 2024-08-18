@@ -679,7 +679,20 @@ class AddedQuotesScreen extends GetView<AddedQuotesController> {
                                           .confirmOrderAPICall(id: id);
 
                                       if (value) {
-                                        await openPayNowLaterWidget(id: id);
+                                        final bool finalCondition =
+                                            controller.canPayNow(item);
+
+                                        if (finalCondition) {
+                                          await openPayNowLaterWidget(id: id);
+                                        } else {}
+
+                                        await AppNavService().pushNamed(
+                                          destination:
+                                              AppRoutes().bookingDetailsScreen,
+                                          arguments: <String, dynamic>{
+                                            "id": item.sId ?? "",
+                                          },
+                                        );
 
                                         controller.pagingControllerNewOrder
                                             .refresh();

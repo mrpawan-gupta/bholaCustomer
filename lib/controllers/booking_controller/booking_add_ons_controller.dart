@@ -6,6 +6,7 @@ import "package:customer/models/new_order_model.dart";
 import "package:customer/services/app_api_service.dart";
 import "package:customer/utils/app_logger.dart";
 import "package:customer/utils/app_snackbar.dart";
+import "package:flutter/foundation.dart";
 import "package:get/get.dart";
 
 class BookingAddOnsController extends GetxController {
@@ -156,5 +157,29 @@ class BookingAddOnsController extends GetxController {
       },
     );
     return completer.future;
+  }
+
+  bool canPayNow(Bookings item) {
+    final bool paymentReceived = item.paymentReceived ?? false;
+
+    final bool status1 = item.status == bookingConfirmed;
+    final bool status2 = item.status == bookingAccepted;
+    final bool status3 = item.status == bookingWorkInProgress;
+    final bool status4 = item.status == bookingCompleted;
+
+    final bool cond1 = !paymentReceived && status1;
+    final bool cond2 = !paymentReceived && status2;
+    final bool cond3 = !paymentReceived && status3;
+    final bool cond4 = !paymentReceived && status4;
+
+    final Map<String, dynamic> emptyJson = Customer().toJson();
+    final Map<String, dynamic> map1 = item.vendor?.toJson() ?? emptyJson;
+    final Map<String, dynamic> map2 = emptyJson;
+
+    final bool semifinalCondition1 = cond1 || cond2 || cond3 || cond4;
+    final bool semifinalCondition2 = !mapEquals(map1, map2);
+
+    final bool finalCondition = semifinalCondition1 && semifinalCondition2;
+    return finalCondition;
   }
 }

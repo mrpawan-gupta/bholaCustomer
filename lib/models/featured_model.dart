@@ -63,7 +63,7 @@ class Categories {
     this.name,
     this.photo,
     this.status,
-    this.vehicleCount,
+    this.approvedServiceCount,
     this.productCount,
     this.itemCode,
     this.displayType,
@@ -74,7 +74,7 @@ class Categories {
     name = json["name"];
     photo = json["photo"];
     status = json["status"];
-    vehicleCount = json["vehicleCount"];
+    approvedServiceCount = json["approvedServiceCount"];
     productCount = json["productCount"];
     itemCode = json["itemCode"];
     displayType = json["displayType"];
@@ -83,7 +83,7 @@ class Categories {
   String? name;
   String? photo;
   String? status;
-  num? vehicleCount;
+  num? approvedServiceCount;
   num? productCount;
   String? itemCode;
   String? displayType;
@@ -94,7 +94,7 @@ class Categories {
     data["name"] = name;
     data["photo"] = photo;
     data["status"] = status;
-    data["vehicleCount"] = vehicleCount;
+    data["approvedServiceCount"] = approvedServiceCount;
     data["productCount"] = productCount;
     data["itemCode"] = itemCode;
     data["displayType"] = displayType;

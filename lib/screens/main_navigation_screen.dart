@@ -139,11 +139,12 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
           body: WillPopScope(
             onWillPop: () async {
               bool value = false;
-              if (controller.getCurrentIndex() == 0) {
-                value = true;
-              } else {
+              value = controller.getCurrentIndex() == 0;
+
+              if (!value) {
                 controller.jumpToTab(0);
-              }
+              } else {}
+
               return Future<bool>.value(value);
             },
             child: PersistentTabView(

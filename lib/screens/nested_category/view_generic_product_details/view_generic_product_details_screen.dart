@@ -102,6 +102,34 @@ class ViewGenericProductDetailsScreen
                 ],
               ),
             ],
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(kToolbarHeight),
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: commonAppBarBottom(
+                          iconData: Icons.shopping_bag_outlined,
+                          name: "Coming soon!",
+                          onTap: () async {
+                            await AppNavService().pushNamed(
+                              destination: AppRoutes().supportScreen,
+                              arguments: <String, dynamic>{},
+                            );
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                ],
+              ),
+            ),
           ),
           body: SafeArea(
             child: Obx(
@@ -1113,5 +1141,52 @@ class ViewGenericProductDetailsScreen
       isScrollControlled: true,
     );
     return Future<void>.value();
+  }
+
+  Widget commonAppBarBottom({
+    required IconData iconData,
+    required String name,
+    required Function() onTap,
+  }) {
+    return Card(
+      margin: EdgeInsets.zero,
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
+        side: BorderSide(color: AppColors().appPrimaryColor),
+      ),
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      surfaceTintColor: AppColors().appWhiteColor,
+      color: AppColors().appWhiteColor,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12.0),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Icon(
+                  iconData,
+                  color: AppColors().appPrimaryColor,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  name,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: AppColors().appPrimaryColor,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

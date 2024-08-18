@@ -65,7 +65,6 @@ class Bookings {
     this.vehicle,
     this.vehicleCategory,
     this.services,
-    this.senderAddress,
     this.deliveryAddress,
     this.scheduleDate = "2001-01-01T00:00:00.000Z",
     this.approxStartTime = "2001-01-01T00:00:00.000Z",
@@ -101,9 +100,6 @@ class Bookings {
         services!.add(Services.fromJson(v));
       }
     }
-    senderAddress = json["senderAddress"] != null
-        ? SenderAddress.fromJson(json["senderAddress"])
-        : null;
     deliveryAddress = json["deliveryAddress"] != null
         ? SenderAddress.fromJson(json["deliveryAddress"])
         : null;
@@ -132,7 +128,6 @@ class Bookings {
   Vehicle? vehicle;
   Vehicle? vehicleCategory;
   List<Services>? services;
-  SenderAddress? senderAddress;
   SenderAddress? deliveryAddress;
   String? scheduleDate;
   String? approxStartTime;
@@ -165,9 +160,6 @@ class Bookings {
     }
     if (services != null) {
       data["services"] = services!.map((Services v) => v.toJson()).toList();
-    }
-    if (senderAddress != null) {
-      data["senderAddress"] = senderAddress!.toJson();
     }
     if (deliveryAddress != null) {
       data["deliveryAddress"] = deliveryAddress!.toJson();

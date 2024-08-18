@@ -13,6 +13,7 @@ import "package:customer/utils/app_snackbar.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:infinite_scroll_pagination/infinite_scroll_pagination.dart";
+import "package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart";
 
 class CategoryScreen extends GetView<CategoryController> {
   const CategoryScreen({super.key});
@@ -23,28 +24,62 @@ class CategoryScreen extends GetView<CategoryController> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        featuredServicesWidget(),
-        featuredCategoriesidget(),
-        Divider(color: AppColors().appGrey, indent: 16, endIndent: 16),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            const SizedBox(width: 16),
-            Expanded(
-              child: AppTextButton(
-                text: "❔ Looking for something else? Tap here.",
-                onPressed: () async {
-                  await AppNavService().pushNamed(
-                    destination: AppRoutes().supportScreen,
-                    arguments: <String, dynamic>{},
-                  );
+        Expanded(
+          child: LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              return LiquidPullToRefresh(
+                showChildOpacityTransition: false,
+                color: AppColors().appPrimaryColor,
+                backgroundColor: AppColors().appWhiteColor,
+                onRefresh: () async {
+                  controller
+                    ..pagingControllerServices.refresh()
+                    ..pagingControllerCategories.refresh();
                 },
-              ),
-            ),
-            const SizedBox(width: 16),
-          ],
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: constraints.maxHeight,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        featuredServicesWidget(),
+                        featuredCategoriesidget(),
+                        Divider(
+                          color: AppColors().appGrey,
+                          indent: 16,
+                          endIndent: 16,
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: AppTextButton(
+                                text: "❔ Looking for something else? Tap here.",
+                                onPressed: () async {
+                                  await AppNavService().pushNamed(
+                                    destination: AppRoutes().supportScreen,
+                                    arguments: <String, dynamic>{},
+                                  );
+                                },
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                          ],
+                        ),
+                        const SizedBox(height: 32),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
         ),
-        const SizedBox(height: 32),
       ],
     );
   }
@@ -57,89 +92,84 @@ class CategoryScreen extends GetView<CategoryController> {
         PagingState<int, Categories> value,
         Widget? child,
       ) {
-        return Expanded(
-          child: (value.itemList?.isEmpty ?? false)
-              ? const SizedBox()
-              : Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    const SizedBox(height: 8),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: CommonCategoryTitleBar(
-                        title: "🚜 Rental Categories",
-                        onTapViewAll: () async {
-                          await tabControllerFunction(2);
-                        },
-                        isViewAllNeeded: true,
-                        itemType: Types.services,
-                      ),
+        return (value.itemList?.isEmpty ?? false)
+            ? const SizedBox()
+            : Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  const SizedBox(height: 8),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: CommonCategoryTitleBar(
+                      title: "🚜 Rental Categories",
+                      onTapViewAll: () async {
+                        await tabControllerFunction(2);
+                      },
+                      isViewAllNeeded: true,
+                      itemType: Types.services,
                     ),
-                    Divider(
-                      color: AppColors().appGrey,
-                      indent: 16,
-                      endIndent: 16,
+                  ),
+                  Divider(
+                    color: AppColors().appGrey,
+                    indent: 16,
+                    endIndent: 16,
+                  ),
+                  const SizedBox(height: 8),
+                  const Align(
+                    child: Text(
+                      "🌟 Our most popular vehicles categories! 🌟",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 8),
-                    const Align(
-                      child: Text(
-                        "🌟 Our most popular vehicles categories! 🌟",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Expanded(
-                      child: CommonHorizontalGridView(
-                        pagingController: controller.pagingControllerServices,
-                        onTap: (Categories item) async {
-                          final bool isApproved =
-                              (item.status ?? "") == "Approved";
-                          if (isApproved) {
-                            RentalBookingStream().functionSinkAdd(
-                              id: item.sId ?? "",
-                            );
+                  ),
+                  const SizedBox(height: 16),
+                  CommonHorizontalGridView(
+                    pagingController: controller.pagingControllerServices,
+                    onTap: (Categories item) async {
+                      final bool isApproved = (item.status ?? "") == "Approved";
+                      if (isApproved) {
+                        RentalBookingStream().functionSinkAdd(
+                          id: item.sId ?? "",
+                        );
 
-                            await tabControllerFunction(2);
-                          } else {
-                            AppSnackbar().snackbarFailure(
-                              title: "Oops!",
-                              message: "Coming Soon!",
-                            );
-                          }
-                        },
-                        needViewAll: false,
-                        onTapViewAll: (Categories item) async {},
-                        type: "rental services list",
-                        itemType: Types.services,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: SizedBox(
-                            height: 40,
-                            width: double.infinity,
-                            child: AppElevatedButton(
-                              text: "Book Now",
-                              onPressed: () async {
-                                await tabControllerFunction(2);
-                              },
-                            ),
+                        await tabControllerFunction(2);
+                      } else {
+                        AppSnackbar().snackbarFailure(
+                          title: "Oops!",
+                          message: "Coming Soon!",
+                        );
+                      }
+                    },
+                    needViewAll: false,
+                    onTapViewAll: (Categories item) async {},
+                    type: "rental services list",
+                    itemType: Types.services,
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: SizedBox(
+                          height: 40,
+                          width: double.infinity,
+                          child: AppElevatedButton(
+                            text: "Book Now",
+                            onPressed: () async {
+                              await tabControllerFunction(2);
+                            },
                           ),
                         ),
-                        const SizedBox(width: 16),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                  ],
-                ),
-        );
+                      ),
+                      const SizedBox(width: 16),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                ],
+              );
       },
     );
   }
@@ -152,85 +182,81 @@ class CategoryScreen extends GetView<CategoryController> {
         PagingState<int, Categories> value,
         Widget? child,
       ) {
-        return Expanded(
-          child: (value.itemList?.isEmpty ?? false)
-              ? const SizedBox()
-              : Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    const SizedBox(height: 8),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: CommonCategoryTitleBar(
-                        title: "🌾 Product Categories",
-                        onTapViewAll: () async {
-                          await AppNavService().pushNamed(
-                            destination: AppRoutes().productListingScreen,
-                            arguments: <String, dynamic>{},
-                          );
-                        },
-                        isViewAllNeeded: true,
-                        itemType: Types.products,
-                      ),
+        return (value.itemList?.isEmpty ?? false)
+            ? const SizedBox()
+            : Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  const SizedBox(height: 8),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: CommonCategoryTitleBar(
+                      title: "🌾 Product Categories",
+                      onTapViewAll: () async {
+                        await AppNavService().pushNamed(
+                          destination: AppRoutes().productListingScreen,
+                          arguments: <String, dynamic>{},
+                        );
+                      },
+                      isViewAllNeeded: true,
+                      itemType: Types.products,
                     ),
-                    Divider(
-                      color: AppColors().appGrey,
-                      indent: 16,
-                      endIndent: 16,
+                  ),
+                  Divider(
+                    color: AppColors().appGrey,
+                    indent: 16,
+                    endIndent: 16,
+                  ),
+                  const SizedBox(height: 8),
+                  const Align(
+                    child: Text(
+                      "🌟 Our most popular products categories! 🌟",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 8),
-                    const Align(
-                      child: Text(
-                        "🌟 Our most popular products categories! 🌟",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Expanded(
-                      child: CommonHorizontalGridView(
-                        pagingController: controller.pagingControllerCategories,
-                        onTap: (Categories item) async {
-                          await AppNavService().pushNamed(
-                            destination: AppRoutes().productListingScreen,
-                            arguments: <String, dynamic>{"id": item.sId ?? ""},
-                          );
-                        },
-                        needViewAll: false,
-                        onTapViewAll: (Categories item) async {},
-                        type: "product categories list",
-                        itemType: Types.products,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: SizedBox(
-                            height: 40,
-                            width: double.infinity,
-                            child: AppElevatedButton(
-                              text: "View All",
-                              onPressed: () async {
-                                await AppNavService().pushNamed(
-                                  destination: AppRoutes().productListingScreen,
-                                  arguments: <String, dynamic>{},
-                                );
-                              },
-                            ),
+                  ),
+                  const SizedBox(height: 16),
+                  CommonHorizontalGridView(
+                    pagingController: controller.pagingControllerCategories,
+                    onTap: (Categories item) async {
+                      await AppNavService().pushNamed(
+                        destination: AppRoutes().productListingScreen,
+                        arguments: <String, dynamic>{"id": item.sId ?? ""},
+                      );
+                    },
+                    needViewAll: false,
+                    onTapViewAll: (Categories item) async {},
+                    type: "product categories list",
+                    itemType: Types.products,
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: SizedBox(
+                          height: 40,
+                          width: double.infinity,
+                          child: AppElevatedButton(
+                            text: "View All",
+                            onPressed: () async {
+                              await AppNavService().pushNamed(
+                                destination: AppRoutes().productListingScreen,
+                                arguments: <String, dynamic>{},
+                              );
+                            },
                           ),
                         ),
-                        const SizedBox(width: 16),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                  ],
-                ),
-        );
+                      ),
+                      const SizedBox(width: 16),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                ],
+              );
       },
     );
   }
