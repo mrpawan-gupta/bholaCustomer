@@ -11,7 +11,7 @@ class WishListModel {
 
   bool? success;
   WishListModelData? data;
-  int? statusCode;
+  num? statusCode;
   String? message;
 
   Map<String, dynamic> toJson() {
@@ -42,9 +42,9 @@ class WishListModelData {
   }
 
   List<WishListItems>? items;
-  int? totalcounts;
-  int? limit;
-  int? page;
+  num? totalcounts;
+  num? limit;
+  num? page;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

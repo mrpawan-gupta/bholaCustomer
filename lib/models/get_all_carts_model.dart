@@ -12,7 +12,7 @@ class GetAllCartsModel {
 
   bool? success;
   Data? data;
-  int? statusCode;
+  num? statusCode;
   String? message;
 
   Map<String, dynamic> toJson() {
@@ -43,9 +43,9 @@ class Data {
   }
 
   List<Carts>? carts;
-  int? totalcounts;
-  int? limit;
-  int? page;
+  num? totalcounts;
+  num? limit;
+  num? page;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -99,8 +99,8 @@ class Carts {
   String? user;
   List<Items>? items;
   Coupons? coupon;
-  int? totalQuantity;
-  int? totalItems;
+  num? totalQuantity;
+  num? totalItems;
   num? totalPriceWithDiscount;
   num? totalPriceWithoutDiscount;
   num? deliveryAmount;

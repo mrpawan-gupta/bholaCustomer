@@ -10,7 +10,7 @@ class GetAddresses {
   }
   bool? success;
   GetAddressesData? data;
-  int? statusCode;
+  num? statusCode;
   String? message;
 
   Map<String, dynamic> toJson() {
@@ -38,7 +38,7 @@ class GetAddressesData {
     totalCount = json["totalCount"];
   }
   List<Address>? address;
-  int? totalCount;
+  num? totalCount;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -85,7 +85,7 @@ class Address {
   String? user;
   String? createdAt;
   String? updatedAt;
-  int? iV;
+  num? iV;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

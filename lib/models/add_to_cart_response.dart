@@ -10,7 +10,7 @@ class AddToCartResponse {
 
   bool? success;
   Data? data;
-  int? statusCode;
+  num? statusCode;
   String? message;
 
   Map<String, dynamic> toJson() {
@@ -72,7 +72,7 @@ class Data {
   String? status;
   String? createdAt;
   String? updatedAt;
-  int? iV;
+  num? iV;
   num? discountedPrice;
   num? maxamount;
   String? coupon;
@@ -113,7 +113,7 @@ class Items {
   String? product;
   num? quantity;
   num? totalPrice;
-  int? iV;
+  num? iV;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

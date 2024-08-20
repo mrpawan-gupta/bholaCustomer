@@ -10,7 +10,7 @@ class FeaturedModel {
   }
   bool? success;
   FeaturedModelData? data;
-  int? statusCode;
+  num? statusCode;
   String? message;
 
   Map<String, dynamic> toJson() {
@@ -40,9 +40,9 @@ class FeaturedModelData {
     totalcounts = json["totalcounts"];
   }
   List<Categories>? categories;
-  int? limit;
-  int? page;
-  int? totalcounts;
+  num? limit;
+  num? page;
+  num? totalcounts;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

@@ -24,8 +24,8 @@ Future<bool> wishListAndCartListAPICall() async {
       WishAndCartCountModel model = WishAndCartCountModel();
       model = WishAndCartCountModel.fromJson(json);
 
-      final int wishlistTotalCount = model.data?.wishlistTotalCount ?? 0;
-      final int cartTotalCount = model.data?.cartTotalCount ?? 0;
+      final num wishlistTotalCount = model.data?.wishlistTotalCount ?? 0;
+      final num cartTotalCount = model.data?.cartTotalCount ?? 0;
 
       rxWishListCount(wishlistTotalCount);
       rxCartListCount(cartTotalCount);

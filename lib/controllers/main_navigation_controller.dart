@@ -6,12 +6,14 @@ import "package:customer/controllers/outer_main_controllers/category_controller.
 import "package:customer/controllers/outer_main_controllers/help_controller.dart";
 import "package:customer/controllers/outer_main_controllers/home_controller.dart";
 import "package:customer/controllers/outer_main_controllers/order_history_controller.dart";
+import "package:customer/feature_overlay.dart";
 import "package:customer/models/get_user_by_id.dart";
 import "package:customer/services/app_perm_service.dart";
 import "package:customer/services/app_storage_service.dart";
 import "package:customer/utils/app_assets_images.dart";
 import "package:customer/utils/app_constants.dart";
 import "package:customer/utils/app_intro_bottom_sheet.dart";
+import "package:feature_discovery/feature_discovery.dart";
 import "package:get/get.dart";
 import "package:permission_handler/permission_handler.dart";
 import "package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart";
@@ -71,6 +73,25 @@ class MainNavigationController extends GetxController {
         } else if (timerCurrent.value == list[2]) {
           timerCurrent(list[0]);
         } else {}
+      },
+    );
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+
+    FeatureDiscovery.discoverFeatures(
+      Get.key.currentState!.context,
+      <String>{
+        featureTopProfile,
+        featureTopWishList,
+        featureTopCartList,
+        featurBottomHome,
+        featurBottomCategory,
+        featurBottomBooking,
+        featurBottomLive,
+        featurBottomOrderHistory,
       },
     );
   }

@@ -17,7 +17,7 @@ class GetBookingTransactionDetails {
 
   bool? success;
   TransactionDetailsData? data;
-  int? statusCode;
+  num? statusCode;
   String? message;
 
   Map<String, dynamic> toJson() {
@@ -86,7 +86,7 @@ class TransactionDetailsData {
   num? fee;
   String? createdAt;
   String? updatedAt;
-  int? iV;
+  num? iV;
   PaymentDetails? paymentDetails;
   String? transactionTime;
 

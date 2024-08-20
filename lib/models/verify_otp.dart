@@ -10,7 +10,7 @@ class VerifyOTPModel {
   }
   bool? success;
   VerifyOTPModelData? data;
-  int? statusCode;
+  num? statusCode;
   String? message;
 
   Map<String, dynamic> toJson() {

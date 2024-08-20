@@ -17,7 +17,7 @@ class GetBookingMedicineDetails {
 
   bool? success;
   MedicineDetailsData? data;
-  int? statusCode;
+  num? statusCode;
   String? message;
 
   Map<String, dynamic> toJson() {
@@ -57,11 +57,11 @@ class MedicineDetailsData {
   }
 
   List<Medicines>? medicines;
-  int? totalMedicines;
-  int? totalMedicinePrice;
-  int? limit;
-  int? page;
-  int? totalcounts;
+  num? totalMedicines;
+  num? totalMedicinePrice;
+  num? limit;
+  num? page;
+  num? totalcounts;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -91,9 +91,9 @@ class Medicines {
 
   String? sId;
   Medicine? medicine;
-  int? quantity;
-  int? totalPrice;
-  int? iV;
+  num? quantity;
+  num? totalPrice;
+  num? iV;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

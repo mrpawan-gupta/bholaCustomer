@@ -10,7 +10,7 @@ class ProductDetails {
   }
   bool? success;
   ProductDetailsData? data;
-  int? statusCode;
+  num? statusCode;
   String? message;
 
   Map<String, dynamic> toJson() {
@@ -106,9 +106,9 @@ class ProductDetailsData {
   List<Reviews>? reviews;
   List<Ratings>? ratings;
   String? categoryName;
-  int? reviewCount;
-  int? ratingCount;
-  int? wishlistCount;
+  num? reviewCount;
+  num? ratingCount;
+  num? wishlistCount;
   String? unit;
   num? price;
   String? itemCode;

@@ -9,7 +9,7 @@ class BannerModel {
   }
   bool? success;
   BannerModelData? data;
-  int? statusCode;
+  num? statusCode;
   String? message;
 
   Map<String, dynamic> toJson() {
@@ -39,9 +39,9 @@ class BannerModelData {
     page = json["page"];
   }
   List<Banners>? banners;
-  int? totalcounts;
-  int? limit;
-  int? page;
+  num? totalcounts;
+  num? limit;
+  num? page;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -81,7 +81,7 @@ class Banners {
   String? url;
   String? data;
   String? type;
-  int? iV;
+  num? iV;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

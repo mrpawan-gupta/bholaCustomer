@@ -43,9 +43,9 @@ class AppConstants {
   final String appURLsTAndCCustomer = "https://www.bhola.org.in/customer/";
   final String appURLsTAndCVendor = "https://www.bhola.org.in/vendor/";
   final String appURLsShippingPolicy = "https://www.bhola.org.in/shipping/";
-
   final String appURLsInstagram = "www.instagram.com/bhola_ahinsa";
   final String appURLsYoutube = "www.youtube.com/@bholatutorials";
+  final String appURLsOfficeAddress = "maps.app.goo.gl/haoqFWgYBPMQmfNf8";
 
   final String pkgOfAdmin = "com.ahinsaaggregator.admin";
   final String pkgOfCustomer = "com.ahinsaaggregator.customer";

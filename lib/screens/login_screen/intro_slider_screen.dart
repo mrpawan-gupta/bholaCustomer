@@ -105,7 +105,11 @@ class IntroSliderScreen extends GetView<IntroSliderController> {
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text(
                   AppConstants().commonNote,
-                  style: Theme.of(Get.context!).textTheme.bodySmall,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.left,
                 ),
               ),
               const SizedBox(height: 16),

@@ -7,6 +7,7 @@ import "package:customer/utils/app_keyboard_manager.dart";
 import "package:customer/utils/app_loader.dart";
 import "package:customer/utils/app_routes.dart";
 import "package:customer/utils/localization/app_translations.dart";
+import "package:feature_discovery/feature_discovery.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
@@ -46,7 +47,11 @@ class MyApp extends StatelessWidget {
                 ),
                 showIgnore: false,
                 showLater: false,
-                child: flavorBanner(child: child ?? const SizedBox()),
+                child: FeatureDiscovery(
+                  child: flavorBanner(
+                    child: child ?? const SizedBox(),
+                  ),
+                ),
               ),
             ),
           ),

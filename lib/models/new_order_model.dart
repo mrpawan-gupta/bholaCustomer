@@ -11,7 +11,7 @@ class NewOrderModel {
 
   bool? success;
   NewOrderModelData? data;
-  int? statusCode;
+  num? statusCode;
   String? message;
 
   Map<String, dynamic> toJson() {
@@ -42,9 +42,9 @@ class NewOrderModelData {
   }
 
   List<Bookings>? bookings;
-  int? limit;
-  int? page;
-  int? totalcounts;
+  num? limit;
+  num? page;
+  num? totalcounts;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -140,7 +140,7 @@ class Bookings {
   Customer? vendor;
   String? createdAt;
   String? updatedAt;
-  int? iV;
+  num? iV;
   num? grossAmount;
   num? commissionAmount;
   num? discountAmount;

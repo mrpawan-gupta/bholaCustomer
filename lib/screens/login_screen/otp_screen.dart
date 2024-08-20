@@ -198,7 +198,11 @@ class OTPScreen extends GetView<OTPScreenController> {
                   const SizedBox(height: 32),
                   Text(
                     AppConstants().commonNote,
-                    style: Theme.of(Get.context!).textTheme.bodySmall,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.left,
                   ),
                   const SizedBox(height: 32),
                   const SizedBox(height: 32),

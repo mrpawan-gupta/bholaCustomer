@@ -10,7 +10,7 @@ class CouponListModel {
 
   bool? success;
   Data? data;
-  int? statusCode;
+  num? statusCode;
   String? message;
 
   Map<String, dynamic> toJson() {
@@ -41,9 +41,9 @@ class Data {
   }
 
   List<Coupons>? coupons;
-  int? totalcounts;
-  int? limit;
-  int? page;
+  num? totalcounts;
+  num? limit;
+  num? page;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

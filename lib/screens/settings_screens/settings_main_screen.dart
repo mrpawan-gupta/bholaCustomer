@@ -71,7 +71,17 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
                   const SizedBox(height: 16),
                   settingsItems(
                     itemName: "About Bhola",
+                    onTap: openAboutBholaWidget,
+                  ),
+                  const SizedBox(height: 16),
+                  settingsItems(
+                    itemName: "Legal Policies",
                     onTap: openLegalPoliciesWidget,
+                  ),
+                  const SizedBox(height: 16),
+                  settingsItems(
+                    itemName: "Terms & Conditions",
+                    onTap: openTermsAndConditionsWidget,
                   ),
                   const SizedBox(height: 16),
                   settingsItems(
@@ -440,12 +450,16 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Text(
         AppConstants().commonNote,
-        style: Theme.of(Get.context!).textTheme.bodySmall,
+        style: const TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.bold,
+        ),
+        textAlign: TextAlign.left,
       ),
     );
   }
 
-  Future<void> openLegalPoliciesWidget() async {
+  Future<void> openAboutBholaWidget() async {
     await Get.bottomSheet(
       Column(
         mainAxisSize: MainAxisSize.min,
@@ -486,6 +500,30 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
               );
             },
           ),
+          const SizedBox(height: 48),
+        ],
+      ),
+      backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
+      isScrollControlled: true,
+    );
+    return Future<void>.value();
+  }
+
+  Future<void> openLegalPoliciesWidget() async {
+    await Get.bottomSheet(
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          const SizedBox(height: 16),
+          const Text(
+            "Visit our websites",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 16),
           ListTile(
             dense: true,
             leading: const Icon(Icons.public),
@@ -515,6 +553,43 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
           ListTile(
             dense: true,
             leading: const Icon(Icons.public),
+            title: const Text("Shipping Policy"),
+            subtitle: Text(AppConstants().appURLsShippingPolicy),
+            trailing: const Icon(Icons.open_in_new),
+            onTap: () async {
+              AppNavService().pop();
+              await AppInAppBrowser().openInAppBrowser(
+                url: AppConstants().appURLsShippingPolicy,
+              );
+            },
+          ),
+          const SizedBox(height: 48),
+        ],
+      ),
+      backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
+      isScrollControlled: true,
+    );
+    return Future<void>.value();
+  }
+
+  Future<void> openTermsAndConditionsWidget() async {
+    await Get.bottomSheet(
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          const SizedBox(height: 16),
+          const Text(
+            "Visit our websites",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 16),
+          ListTile(
+            dense: true,
+            leading: const Icon(Icons.public),
             title: const Text("Terms & Conditions - Vendor"),
             subtitle: Text(AppConstants().appURLsTAndCVendor),
             trailing: const Icon(Icons.open_in_new),
@@ -535,19 +610,6 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
               AppNavService().pop();
               await AppInAppBrowser().openInAppBrowser(
                 url: AppConstants().appURLsTAndCCustomer,
-              );
-            },
-          ),
-          ListTile(
-            dense: true,
-            leading: const Icon(Icons.public),
-            title: const Text("Shipping Policy"),
-            subtitle: Text(AppConstants().appURLsShippingPolicy),
-            trailing: const Icon(Icons.open_in_new),
-            onTap: () async {
-              AppNavService().pop();
-              await AppInAppBrowser().openInAppBrowser(
-                url: AppConstants().appURLsShippingPolicy,
               );
             },
           ),

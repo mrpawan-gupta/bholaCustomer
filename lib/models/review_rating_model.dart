@@ -10,7 +10,7 @@ class ReviewRatingModel {
 
   bool? success;
   Data? data;
-  int? statusCode;
+  num? statusCode;
   String? message;
 
   Map<String, dynamic> toJson() {
@@ -41,9 +41,9 @@ class Data {
   }
 
   List<Reviews>? reviews;
-  int? totalReviews;
-  int? page;
-  int? limit;
+  num? totalReviews;
+  num? page;
+  num? limit;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

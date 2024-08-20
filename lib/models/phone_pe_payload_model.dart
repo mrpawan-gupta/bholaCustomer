@@ -15,7 +15,7 @@ class PhonePePayloadModel {
 
   bool? success;
   Data? data;
-  int? statusCode;
+  num? statusCode;
   String? message;
 
   Map<String, dynamic> toJson() {

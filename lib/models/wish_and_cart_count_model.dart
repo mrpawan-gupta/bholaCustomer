@@ -15,7 +15,7 @@ class WishAndCartCountModel {
 
   bool? success;
   Data? data;
-  int? statusCode;
+  num? statusCode;
   String? message;
 
   Map<String, dynamic> toJson() {
@@ -38,8 +38,8 @@ class Data {
     wishlistTotalCount = json["wishlistTotalCount"];
   }
 
-  int? cartTotalCount;
-  int? wishlistTotalCount;
+  num? cartTotalCount;
+  num? wishlistTotalCount;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

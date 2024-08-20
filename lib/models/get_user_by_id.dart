@@ -12,7 +12,7 @@ class GetUserById {
   }
   bool? success;
   GetUserByIdData? data;
-  int? statusCode;
+  num? statusCode;
   String? message;
 
   Map<String, dynamic> toJson() {
@@ -72,7 +72,7 @@ class GetUserByIdData {
   String? approvalStatus;
   String? createdAt;
   String? updatedAt;
-  int? iV;
+  num? iV;
   Profile? profile;
   String? deletedAt;
   String? language;
@@ -133,7 +133,7 @@ class Profile {
   String? user;
   String? createdAt;
   String? updatedAt;
-  int? iV;
+  num? iV;
   String? aadharCardNumber;
   String? aadharCardPhoto;
   String? panCardNumber;

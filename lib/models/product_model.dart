@@ -8,7 +8,7 @@ class ProductModel {
   }
   bool? success;
   Data? data;
-  int? statusCode;
+  num? statusCode;
   String? message;
 
   Map<String, dynamic> toJson() {
@@ -38,9 +38,9 @@ class Data {
     page = json["page"];
   }
   List<Products>? products;
-  int? totalcounts;
-  int? limit;
-  int? page;
+  num? totalcounts;
+  num? limit;
+  num? page;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -127,7 +127,7 @@ class Products {
   String? status;
   String? createdAt;
   String? updatedAt;
-  int? iV;
+  num? iV;
   num? discountPercent;
   num? discountedPrice;
   bool? isInPortfolio;

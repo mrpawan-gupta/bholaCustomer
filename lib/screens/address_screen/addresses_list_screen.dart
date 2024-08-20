@@ -95,10 +95,8 @@ class AddressesListScreen extends GetView<AddressesListController> {
         children: <Widget>[
           Text(
             "Tap on any address to make it as your primary address.",
-            style: TextStyle(fontWeight: FontWeight.bold),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.left,
           ),
         ],
       ),

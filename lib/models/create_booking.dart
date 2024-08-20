@@ -11,7 +11,7 @@ class CreateBooking {
 
   bool? success;
   CreateBookingData? data;
-  int? statusCode;
+  num? statusCode;
   String? message;
 
   Map<String, dynamic> toJson() {

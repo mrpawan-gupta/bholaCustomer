@@ -85,6 +85,18 @@ class SupportScreen extends GetView<SupportController> {
                   );
                 },
               ),
+              customListTile(
+                title: "Registered Office Address",
+                value:
+                    "Pushpa ratna rotary marg At. Dondaicha, Dhule 425408 (MH)",
+                iconData: Icons.location_city,
+                onTapOrPressed: () async {
+                  await AppURLLauncher().open(
+                    scheme: "https",
+                    path: AppConstants().appURLsOfficeAddress,
+                  );
+                },
+              ),
             ],
           ),
         ),
@@ -109,7 +121,7 @@ class SupportScreen extends GetView<SupportController> {
       subtitle: Text(
         value,
         style: Theme.of(Get.context!).textTheme.bodyLarge,
-        maxLines: 1,
+        maxLines: 5,
         overflow: TextOverflow.ellipsis,
       ),
       trailing: IconButton(

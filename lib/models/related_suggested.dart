@@ -13,7 +13,7 @@ class RelatedSuggested {
   }
   bool? success;
   RelatedSuggestedData? data;
-  int? statusCode;
+  num? statusCode;
   String? message;
 
   Map<String, dynamic> toJson() {
@@ -48,9 +48,9 @@ class RelatedSuggestedData {
     page = json["page"];
   }
   List<Products>? products;
-  int? totalcounts;
-  int? limit;
-  int? page;
+  num? totalcounts;
+  num? limit;
+  num? page;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

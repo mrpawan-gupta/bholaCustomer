@@ -11,7 +11,7 @@ class RatingSummary {
 
   bool? success;
   RatingSummaryData? data;
-  int? statusCode;
+  num? statusCode;
   String? message;
 
   Map<String, dynamic> toJson() {

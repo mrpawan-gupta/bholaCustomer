@@ -15,7 +15,7 @@ class GetAllMedicinesModel {
 
   bool? success;
   Data? data;
-  int? statusCode;
+  num? statusCode;
   String? message;
 
   Map<String, dynamic> toJson() {
@@ -46,9 +46,9 @@ class Data {
   }
 
   List<CropMedicines>? cropMedicines;
-  int? totalCounts;
-  int? limit;
-  int? page;
+  num? totalCounts;
+  num? limit;
+  num? page;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -114,7 +114,7 @@ class CropMedicines {
   bool? isDeleted;
   String? createdAt;
   String? updatedAt;
-  int? iV;
+  num? iV;
   bool? isAddedInBooking;
   num? bookingQty;
   String? bookingMedicineId;
