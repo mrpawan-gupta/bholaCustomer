@@ -49,11 +49,11 @@ class AppConstants {
 
   final String pkgOfAdmin = "com.ahinsaaggregator.admin";
   final String pkgOfCustomer = "com.ahinsaaggregator.customer";
-  final String pkgOfVendor = "com.ahinsaaggregator.vendor";
+  final String pkgOfPartner = "com.ahinsaaggregator.partner";
 
   final String idOfAdmin = "284882215";
   final String idOfCustomer = "284882215";
-  final String idOfVendor = "284882215";
+  final String idOfPartner = "284882215";
 
   // Customer:
   final String custNotificationLottie = AppAssetsLotties().lottieNotification;

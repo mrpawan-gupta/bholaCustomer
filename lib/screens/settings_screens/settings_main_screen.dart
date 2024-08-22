@@ -140,8 +140,8 @@ class SettingsMainScreen extends GetView<SettingsMainController> {
                   ),
                   const SizedBox(height: 16),
                   settingsItems1(
-                    itemName: "Try our Vendor App",
-                    onTap: AppOpenStore().openStoreForVendor,
+                    itemName: "Try our Partner App",
+                    onTap: AppOpenStore().openStoreForPartner,
                   ),
                   const SizedBox(height: 16),
                   Row(

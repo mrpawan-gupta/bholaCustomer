@@ -60,9 +60,9 @@ class AppOpenShare {
     return Future<void>.value();
   }
 
-  Future<void> openShareForVendor() async {
-    final String platformAnd = "$playStoreLink${AppConstants().pkgOfVendor}";
-    final String platformIOS = "$appStoreLink${AppConstants().pkgOfVendor}";
+  Future<void> openShareForPartner() async {
+    final String platformAnd = "$playStoreLink${AppConstants().pkgOfPartner}";
+    final String platformIOS = "$appStoreLink${AppConstants().pkgOfPartner}";
 
     String link = "";
     if (Platform.isAndroid) {

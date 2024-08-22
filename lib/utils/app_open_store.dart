@@ -70,9 +70,9 @@ class AppOpenStore {
     return Future<void>.value();
   }
 
-  Future<void> openStoreForVendor() async {
-    final String platformAnd = "$playStoreLink${AppConstants().pkgOfVendor}";
-    final String platformIOS = "$appStoreLink${AppConstants().idOfVendor}";
+  Future<void> openStoreForPartner() async {
+    final String platformAnd = "$playStoreLink${AppConstants().pkgOfPartner}";
+    final String platformIOS = "$appStoreLink${AppConstants().idOfPartner}";
 
     Uri link = Uri.parse("");
     if (Platform.isAndroid) {
