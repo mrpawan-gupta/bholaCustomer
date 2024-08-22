@@ -82,13 +82,13 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="http" android:host="dev.bhola.org.in" />
+                <!-- <data android:scheme="http" android:host="dev.bhola.org.in" /> -->
                 <data android:scheme="http" android:host="bhola.org.in" />
-                <data android:scheme="https" android:host="dev.bhola.org.in" />
+                <!-- <data android:scheme="https" android:host="dev.bhola.org.in" /> -->
                 <data android:scheme="https" android:host="bhola.org.in" />
-                <data android:scheme="http" android:host="www.dev.bhola.org.in" />
+                <!-- <data android:scheme="http" android:host="www.dev.bhola.org.in" /> -->
                 <data android:scheme="http" android:host="www.bhola.org.in" />
-                <data android:scheme="https" android:host="www.dev.bhola.org.in" />
+                <!-- <data android:scheme="https" android:host="www.dev.bhola.org.in" /> -->
                 <data android:scheme="https" android:host="www.bhola.org.in" />
             </intent-filter>
             <!-- Deep Link -->
@@ -96,9 +96,9 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="ahinsaaggregatorCustomer" android:host="dev.bhola.org.in" />
+                <!-- <data android:scheme="ahinsaaggregatorCustomer" android:host="dev.bhola.org.in" /> -->
                 <data android:scheme="ahinsaaggregatorCustomer" android:host="bhola.org.in" />
-                <data android:scheme="ahinsaaggregatorCustomer" android:host="www.dev.bhola.org.in" />
+                <!-- <data android:scheme="ahinsaaggregatorCustomer" android:host="www.dev.bhola.org.in" /> -->
                 <data android:scheme="ahinsaaggregatorCustomer" android:host="www.bhola.org.in" />
             </intent-filter>
         </activity>
