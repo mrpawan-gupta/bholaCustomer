@@ -114,8 +114,8 @@ class ProductDetailsData {
   String? itemCode;
   num? sold;
   num? sizePerQuantity;
-  String? saleAmount;
-  String? salePercent;
+  num? saleAmount;
+  num? salePercent;
   num? discountPercent;
   num? discountedPrice;
   bool? isAddedInCart;

@@ -23,7 +23,7 @@ class WishListScreen extends GetWidget<WishListController> {
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: const Text("Wish List"),
+            title: const Text("WishList"),
             surfaceTintColor: AppColors().appTransparentColor,
             actions: <Widget>[
               Row(
@@ -240,7 +240,7 @@ class WishListScreen extends GetWidget<WishListController> {
 
             controller.pagingControllerWishList.refresh();
           },
-          type: "wish list",
+          type: "wishlist",
         ),
       ],
     );

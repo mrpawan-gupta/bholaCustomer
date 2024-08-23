@@ -42,7 +42,7 @@ android {
     compileSdk 34
 
     // ndkVersion flutter.ndkVersion
-    ndkVersion "26.1.10909125"
+    ndkVersion "27.0.12077973"
 
     compileOptions {
         coreLibraryDesugaringEnabled true
@@ -104,7 +104,6 @@ android {
 
             firebaseCrashlytics {
                 mappingFileUploadEnabled true
-
                 nativeSymbolUploadEnabled true
                 
                 // strippedNativeLibsDir "build/app/intermediates/stripped_native_libs/release/out/lib"
@@ -151,4 +150,5 @@ dependencies {
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
 }
 
-android.defaultConfig.ndk.debugSymbolLevel 'FULL'
+android.defaultConfig.ndk.debugSymbolLevel = 'FULL'
+android.buildTypes.release.ndk.debugSymbolLevel = 'FULL'

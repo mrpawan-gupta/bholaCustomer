@@ -947,7 +947,7 @@ class ViewGenericProductDetailsScreen
               height: 50,
               width: double.infinity,
               child: AppElevatedButton(
-                text: isInWishList ? "Go to Wish List" : "Add to Wish List",
+                text: isInWishList ? "Go to WishList" : "Add to WishList",
                 onPressed: () async {
                   if (!isInWishList) {
                     await addToWishListAPICall(productId: data.sId ?? "");

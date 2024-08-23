@@ -67,7 +67,7 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       defaultTransition: Transition.cupertino,
-      transitionDuration: const Duration(seconds: 1),
+      transitionDuration: Get.defaultTransitionDuration,
     );
   }
 

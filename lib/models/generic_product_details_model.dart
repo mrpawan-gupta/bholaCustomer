@@ -129,8 +129,8 @@ class GenericProductData {
   num? reviewCount;
   num? ratingCount;
   num? wishlistCount;
-  String? salePercent;
-  String? saleAmount;
+  num? salePercent;
+  num? saleAmount;
   bool? isInPortfolio;
   bool? isInWishList;
   num? cartQty;

@@ -29,7 +29,7 @@ class FeatureDiscoveryOverlay extends StatelessWidget {
   Widget build(BuildContext context) {
     return DescribedFeatureOverlay(
       featureId: featureId,
-      tapTarget: tapTarget,
+      tapTarget: IgnorePointer(child: tapTarget),
       overflowMode: OverflowMode.extendBackground,
       title: Text(
         title(featureId),
@@ -99,7 +99,7 @@ String title(String featureId) {
   if (featureId == featureTopProfile) {
     returnString = "Profile";
   } else if (featureId == featureTopWishList) {
-    returnString = "Wish List";
+    returnString = "WishList";
   } else if (featureId == featureTopCartList) {
     returnString = "Cart List";
   } else if (featureId == featurBottomHome) {
@@ -121,21 +121,29 @@ String desc(String featureId) {
   String returnString = "";
 
   if (featureId == featureTopProfile) {
-    returnString = "";
+    returnString =
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.";
   } else if (featureId == featureTopWishList) {
-    returnString = "";
+    returnString =
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.";
   } else if (featureId == featureTopCartList) {
-    returnString = "";
+    returnString =
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.";
   } else if (featureId == featurBottomHome) {
-    returnString = "";
+    returnString =
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.";
   } else if (featureId == featurBottomCategory) {
-    returnString = "";
+    returnString =
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.";
   } else if (featureId == featurBottomBooking) {
-    returnString = "";
+    returnString =
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.";
   } else if (featureId == featurBottomLive) {
-    returnString = "";
+    returnString =
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.";
   } else if (featureId == featurBottomOrderHistory) {
-    returnString = "";
+    returnString =
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.";
   } else {}
 
   return returnString;
