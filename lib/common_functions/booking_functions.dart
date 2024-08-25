@@ -54,19 +54,19 @@ Color getBorderColor({required String status}) {
 
   switch (status) {
     case bookingCreated:
-      value = AppColors().appGrey;
+      value = AppColors().appPrimaryColor;
       break;
     case bookingConfirmed:
       value = AppColors().appPrimaryColor;
       break;
     case bookingPaymentDone:
-      value = AppColors().appGrey;
+      value = AppColors().appPrimaryColor;
       break;
     case bookingAccepted:
       value = AppColors().appPrimaryColor;
       break;
     case bookingWorkInProgress:
-      value = AppColors().appGrey;
+      value = AppColors().appPrimaryColor;
       break;
     case bookingCompleted:
       value = AppColors().appPrimaryColor;
@@ -147,3 +147,7 @@ const String statusPending = "Pending";
 
 const String statusActive = "Active";
 const String statusInactive = "Inactive";
+
+const String statusBankStatusPending = "Pending";
+const String statusBankStatusApproved = "Approved";
+const String statusBankStatusRejected = "Rejected";

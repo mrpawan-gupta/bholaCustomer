@@ -74,7 +74,11 @@ class AddressesListScreen extends GetView<AddressesListController> {
                     children: <Widget>[
                       noteWidget(),
                       const SizedBox(height: 16),
-                      Expanded(child: SingleChildScrollView(child: listView())),
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: listView(),
+                        ),
+                      ),
                       const SizedBox(height: 16),
                       button(),
                       const SizedBox(height: 16),
@@ -115,99 +119,135 @@ class AddressesListScreen extends GetView<AddressesListController> {
       },
       itemBuilder: (BuildContext context, int index) {
         final Address item = controller.rxAddressList[index];
-        return listAdapter(item);
+        final bool isLast = index == controller.rxAddressList.length - 1;
+        return Column(
+          children: <Widget>[
+            listAdapter(item),
+            SizedBox(height: isLast ? 16 : 16),
+          ],
+        );
       },
     );
   }
 
   Widget listAdapter(Address item) {
-    return InkWell(
-      onTap: () async {
-        await controller.updateAddressesAPI(id: item.sId ?? "");
-      },
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          const SizedBox(width: 8),
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              IconButton(
-                onPressed: () async {
-                  await controller.updateAddressesAPI(id: item.sId ?? "");
-                },
-                icon: Icon(
-                  (item.isPrimary ?? false)
-                      ? Icons.home_outlined
-                      : Icons.location_on_outlined,
-                  color: (item.isPrimary ?? false)
-                      ? AppColors().appPrimaryColor
-                      : AppColors().appBlackColor,
-                ),
+    return Row(
+      children: <Widget>[
+        const SizedBox(width: 16),
+        Expanded(
+          child: Card(
+            margin: EdgeInsets.zero,
+            elevation: 4,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12.0),
+              side: BorderSide(
+                color: AppColors().appPrimaryColor,
               ),
-            ],
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                const SizedBox(height: 16),
-                Text(
-                  (item.isPrimary ?? false) ? "Primary" : "Other",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: (item.isPrimary ?? false)
-                        ? AppColors().appPrimaryColor
-                        : AppColors().appBlackColor,
+            ),
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            surfaceTintColor: AppColors().appWhiteColor,
+            color: AppColors().appWhiteColor,
+            child: InkWell(
+              onTap: () async {
+                await controller.updateAddressesAPI(id: item.sId ?? "");
+              },
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  const SizedBox(width: 8),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      const SizedBox(height: 8),
+                      IconButton(
+                        onPressed: () async {
+                          await controller.updateAddressesAPI(
+                            id: item.sId ?? "",
+                          );
+                        },
+                        icon: Icon(
+                          (item.isPrimary ?? false)
+                              ? Icons.home_outlined
+                              : Icons.location_on_outlined,
+                          color: (item.isPrimary ?? false)
+                              ? AppColors().appPrimaryColor
+                              : AppColors().appBlackColor,
+                        ),
+                      ),
+                    ],
                   ),
-                  maxLines: 5,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 8),
-                ReadMoreText(
-                  "${item.street ?? ""} ${item.city ?? ""} ${item.country ?? ""} ${item.pinCode ?? ""}",
-                  numLines: 2,
-                  readMoreText: "Read more",
-                  readLessText: "Read less",
-                  readMoreAlign: Alignment.bottomLeft,
-                  readMoreIconColor: AppColors().appGreyColor,
-                  readMoreTextStyle: TextStyle(color: AppColors().appGreyColor),
-                  style: TextStyle(
-                    color: (item.isPrimary ?? false)
-                        ? AppColors().appPrimaryColor
-                        : AppColors().appBlackColor,
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        const SizedBox(height: 16),
+                        Text(
+                          (item.isPrimary ?? false) ? "Primary" : "Other",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: (item.isPrimary ?? false)
+                                ? AppColors().appPrimaryColor
+                                : AppColors().appBlackColor,
+                          ),
+                          maxLines: 5,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 8),
+                        ReadMoreText(
+                          "${item.street ?? ""} ${item.city ?? ""} ${item.country ?? ""} ${item.pinCode ?? ""}",
+                          numLines: 2,
+                          readMoreText: "Read more",
+                          readLessText: "Read less",
+                          readMoreAlign: Alignment.bottomLeft,
+                          readMoreIconColor: AppColors().appGreyColor,
+                          readMoreTextStyle:
+                              TextStyle(color: AppColors().appGreyColor),
+                          style: TextStyle(
+                            color: (item.isPrimary ?? false)
+                                ? AppColors().appPrimaryColor
+                                : AppColors().appBlackColor,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(height: 16),
-              ],
+                  const SizedBox(width: 8),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      const SizedBox(height: 8),
+                      IconButton(
+                        onPressed: () async {
+                          await openDeleteAddressItemWidget(
+                            item: item,
+                            onPressedDelete: (Address item) async {
+                              await controller.deleteAddressesAPI(
+                                id: item.sId ?? "",
+                              );
+                            },
+                          );
+                        },
+                        icon: Icon(
+                          Icons.delete_outline,
+                          color: AppColors().appRedColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(width: 8),
+                ],
+              ),
             ),
           ),
-          const SizedBox(width: 8),
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              IconButton(
-                onPressed: () async {
-                  await openDeleteAddressItemWidget(
-                    item: item,
-                    onPressedDelete: (Address item) async {
-                      await controller.deleteAddressesAPI(id: item.sId ?? "");
-                    },
-                  );
-                },
-                icon:
-                    Icon(Icons.delete_outline, color: AppColors().appRedColor),
-              ),
-            ],
-          ),
-          const SizedBox(width: 8),
-        ],
-      ),
+        ),
+        const SizedBox(width: 16),
+      ],
     );
   }
 
