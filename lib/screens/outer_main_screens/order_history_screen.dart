@@ -785,7 +785,7 @@ class OrderHistoryScreen extends GetView<OrderHistoryController> {
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
                                       const Text(
-                                        "Date",
+                                        "Booking Date",
                                         style: TextStyle(),
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
@@ -1310,7 +1310,7 @@ class OrderHistoryScreen extends GetView<OrderHistoryController> {
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
                                       const Text(
-                                        "Date",
+                                        "Booking Date",
                                         style: TextStyle(),
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,

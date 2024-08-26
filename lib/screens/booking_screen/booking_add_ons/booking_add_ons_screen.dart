@@ -1012,7 +1012,7 @@ class BookingAddOnsScreen extends GetWidget<BookingAddOnsController> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   const Text(
-                                    "Date",
+                                    "Booking Date",
                                     style: TextStyle(),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,

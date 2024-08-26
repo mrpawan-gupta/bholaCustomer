@@ -51,14 +51,18 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
                             constraints: BoxConstraints(
                               minHeight: constraints.maxHeight,
                             ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                cardWidget(),
-                                medicineInfoWidget(),
-                                transactionWidget(),
-                              ],
+                            child: Obx(
+                              () {
+                                return Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    cardWidget(),
+                                    medicineInfoWidget(),
+                                    transactionWidget(),
+                                  ],
+                                );
+                              },
                             ),
                           ),
                         ),
@@ -411,7 +415,7 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   const Text(
-                                    "Date",
+                                    "Booking Date",
                                     style: TextStyle(),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
@@ -1064,7 +1068,7 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
                                               ),
                                               const SizedBox(height: 4),
                                               Text(
-                                                transaction.transactionId ?? "",
+                                                transaction.transaction ?? "",
                                                 style: const TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                 ),
@@ -1084,7 +1088,7 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
                                 icon: const Icon(Icons.copy),
                                 onPressed: () async {
                                   final String id =
-                                      transaction.transactionId ?? "";
+                                      transaction.transaction ?? "";
 
                                   await Clipboard.setData(
                                     ClipboardData(text: id),

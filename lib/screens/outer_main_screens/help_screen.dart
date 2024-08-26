@@ -784,7 +784,7 @@ class HelpScreen extends GetView<HelpController> {
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
                                       const Text(
-                                        "Date",
+                                        "Booking Date",
                                         style: TextStyle(),
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
@@ -1309,7 +1309,7 @@ class HelpScreen extends GetView<HelpController> {
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
                                       const Text(
-                                        "Date",
+                                        "Booking Date",
                                         style: TextStyle(),
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
