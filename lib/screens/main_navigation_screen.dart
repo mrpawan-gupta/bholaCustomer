@@ -15,6 +15,7 @@ import "package:customer/utils/app_colors.dart";
 import "package:customer/utils/app_routes.dart";
 import "package:feature_discovery/feature_discovery.dart";
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 import "package:get/get.dart";
 import "package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart";
 import "package:transparent_image/transparent_image.dart";
@@ -146,14 +147,14 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
           ),
           body: PopScope(
             canPop: false,
-            onPopInvoked: (bool didPop) {
+            onPopInvoked: (bool didPop) async {
               if (didPop) {
                 return;
               } else {}
 
               final bool value = controller.getCurrentIndex() == 0;
 
-              value ? AppNavService().forcePop() : controller.jumpToTab(0);
+              value ? await SystemNavigator.pop() : controller.jumpToTab(0);
             },
             child: PersistentTabView(
               controller: controller.tabController,

@@ -61,17 +61,7 @@ class AppNavService extends GetxService {
 
   dynamic pop([Object? result]) {
     final NavigatorState? state = Get.key.currentState;
-    final bool canPop = state?.canPop() ?? false;
-    if (canPop) {
-      state?.pop(result);
-    } else {}
-    return;
-  }
-
-  dynamic forcePop([Object? result]) {
-    final NavigatorState? state = Get.key.currentState;
-    const bool canPop = 0 == 0;
-    if (canPop) {
+    if (canPop()) {
       state?.pop(result);
     } else {}
     return;
@@ -86,7 +76,7 @@ class AppNavService extends GetxService {
       AppLogger().info(
         message: "Current route:: screen: $currentRoute args: $args",
       );
-      
+
       await AppAnalyticsService().logScreenView(
         current: currentRoute,
         args: args,
