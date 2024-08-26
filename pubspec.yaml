@@ -1,7 +1,7 @@
 name: customer
 description: "A new Flutter project."
 publish_to: 'none'
-version: 1.0.21+22
+version: 1.0.22+23
 
 environment:
   sdk: '>=3.3.1 <4.0.0'
@@ -9,7 +9,7 @@ environment:
 
 dependencies:
   after_layout: ^1.2.0
-  app_links: ^6.2.0
+  app_links: ^6.3.0
   device_info_plus: ^10.1.2
   dotted_border: ^2.1.0
   dropdown_search: ^5.0.6
@@ -43,7 +43,7 @@ dependencies:
   google_fonts: ^6.2.1
   image_picker: ^1.1.2
   infinite_scroll_pagination: ^4.0.0
-  internet_connection_checker: ^2.0.0
+  internet_connection_checker: 1.0.0+1
   intl: ^0.18.1
   is_first_run: ^1.0.0
   like_button: ^2.0.5

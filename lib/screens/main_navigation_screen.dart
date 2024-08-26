@@ -1,5 +1,3 @@
-import "dart:async";
-
 import "package:customer/common_functions/cart_list_and_wish_list_functions.dart";
 import "package:customer/common_functions/order_booking_stream.dart";
 import "package:customer/common_widgets/common_image_widget.dart";
@@ -146,17 +144,16 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
               ),
             ),
           ),
-          // ignore: deprecated_member_use
-          body: WillPopScope(
-            onWillPop: () async {
-              bool value = false;
-              value = controller.getCurrentIndex() == 0;
-
-              if (!value) {
-                controller.jumpToTab(0);
+          body: PopScope(
+            canPop: false,
+            onPopInvoked: (bool didPop) {
+              if (didPop) {
+                return;
               } else {}
 
-              return Future<bool>.value(value);
+              final bool value = controller.getCurrentIndex() == 0;
+
+              value ? AppNavService().forcePop() : controller.jumpToTab(0);
             },
             child: PersistentTabView(
               controller: controller.tabController,

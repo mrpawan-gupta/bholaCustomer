@@ -19,7 +19,9 @@ class AppNavService extends GetxService {
     final NavigatorState? state = Get.key.currentState;
     final dynamic result = await state?.push<dynamic>(
       MaterialPageRoute<dynamic>(
-        builder: (BuildContext context) => destination,
+        builder: (BuildContext context) {
+          return destination;
+        },
       ),
     );
     return Future<dynamic>.value(result);
@@ -45,22 +47,34 @@ class AppNavService extends GetxService {
     final dynamic result = await state?.pushNamedAndRemoveUntil<dynamic>(
       destination,
       arguments: arguments,
-      (Route<dynamic> route) => false,
+      (Route<dynamic> route) {
+        return false;
+      },
     );
     return Future<dynamic>.value(result);
+  }
+
+  bool canPop() {
+    final NavigatorState? state = Get.key.currentState;
+    return state?.canPop() ?? false;
   }
 
   dynamic pop([Object? result]) {
     final NavigatorState? state = Get.key.currentState;
     final bool canPop = state?.canPop() ?? false;
     if (canPop) {
-      Get.key.currentState?.pop(result);
+      state?.pop(result);
     } else {}
     return;
   }
 
-  bool canPop() {
-    return Get.key.currentState?.canPop() ?? false;
+  dynamic forcePop([Object? result]) {
+    final NavigatorState? state = Get.key.currentState;
+    const bool canPop = 0 == 0;
+    if (canPop) {
+      state?.pop(result);
+    } else {}
+    return;
   }
 
   Future<void> observer(Routing? routing) async {
@@ -72,6 +86,7 @@ class AppNavService extends GetxService {
       AppLogger().info(
         message: "Current route:: screen: $currentRoute args: $args",
       );
+      
       await AppAnalyticsService().logScreenView(
         current: currentRoute,
         args: args,

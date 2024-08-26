@@ -34,11 +34,12 @@ class _PaymentScreenState extends State<PaymentScreen>
         surfaceTintColor: AppColors().appTransparentColor,
         leading: BackButton(onPressed: backDecision),
       ),
-      // ignore: deprecated_member_use
-      body: WillPopScope(
-        onWillPop: () async {
-          backDecision();
-          return Future<bool>.value(false);
+      body: PopScope(
+        canPop: false,
+        onPopInvoked: (bool didPop) {
+          if (didPop) {
+            return;
+          } else {}
         },
         child: SafeArea(
           child: Obx(
