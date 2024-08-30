@@ -14,8 +14,8 @@ String featurBottomBooking = "featurBottomBooking";
 String featurBottomLive = "featurBottomLive";
 String featurBottomOrderHistory = "featurBottomOrderHistory";
 
-class FeatureDiscoveryOverlay extends StatelessWidget {
-  const FeatureDiscoveryOverlay({
+class AppFeatureDiscoveryOverlay extends StatelessWidget {
+  const AppFeatureDiscoveryOverlay({
     required this.featureId,
     required this.tapTarget,
     required this.child,

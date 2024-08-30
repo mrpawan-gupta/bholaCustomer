@@ -2,7 +2,6 @@ import "package:customer/common_functions/cart_list_and_wish_list_functions.dart
 import "package:customer/common_functions/order_booking_stream.dart";
 import "package:customer/common_widgets/common_image_widget.dart";
 import "package:customer/controllers/main_navigation_controller.dart";
-import "package:customer/feature_overlay.dart";
 import "package:customer/models/get_user_by_id.dart";
 import "package:customer/screens/outer_main_screens/booking/booking_screen.dart";
 import "package:customer/screens/outer_main_screens/category/category_screen.dart";
@@ -12,6 +11,7 @@ import "package:customer/screens/outer_main_screens/order_history_screen.dart";
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/utils/app_assets_images.dart";
 import "package:customer/utils/app_colors.dart";
+import "package:customer/utils/app_feature_overlay.dart";
 import "package:customer/utils/app_routes.dart";
 import "package:feature_discovery/feature_discovery.dart";
 import "package:flutter/material.dart";
@@ -349,7 +349,7 @@ class MainNavigationScreen extends GetView<MainNavigationController> {
 }
 
 Widget featureDiscovery({required String featureId, required Widget child}) {
-  return FeatureDiscoveryOverlay(
+  return AppFeatureDiscoveryOverlay(
     featureId: featureId,
     tapTarget: child,
     child: child,

@@ -1,0 +1,44 @@
+[
+    {
+        "relation": [
+            "delegate_permission/common.handle_all_urls"
+        ],
+        "target": {
+            "namespace": "android_app",
+            "package_name": "com.ahinsaaggregator.admin",
+            "sha256_cert_fingerprints": [
+                "2E:FF:AA:A7:4D:C8:32:6C:03:ED:51:FE:DB:58:B1:3A:6D:32:56:4D:26:8D:A9:C9:B3:74:A5:57:72:9B:3E:D2",
+                "05:97:69:05:43:8C:54:AD:91:EF:BC:2E:06:C9:2C:91:50:24:A2:42:9D:DF:79:48:19:7C:90:DE:16:0D:E3:FA",
+                "FB:39:65:75:B0:C2:8D:F7:06:65:36:CC:C6:84:6B:53:15:35:DE:32:00:11:64:CA:B1:C8:70:1B:21:A4:96:D9"
+            ]
+        }
+    },
+    {
+        "relation": [
+            "delegate_permission/common.handle_all_urls"
+        ],
+        "target": {
+            "namespace": "android_app",
+            "package_name": "com.ahinsaaggregator.customer",
+            "sha256_cert_fingerprints": [
+                "2E:FF:AA:A7:4D:C8:32:6C:03:ED:51:FE:DB:58:B1:3A:6D:32:56:4D:26:8D:A9:C9:B3:74:A5:57:72:9B:3E:D2",
+                "64:C2:89:39:91:77:25:24:26:8F:81:C5:FC:93:1B:0C:9F:13:92:FF:64:96:F2:40:89:3E:FD:34:D4:B3:F7:35",
+                "96:7E:CB:C9:12:29:F6:24:95:74:9A:98:BA:52:05:E6:26:BB:EF:FA:EA:90:DF:7A:E1:67:D5:F3:16:33:0A:EC"
+            ]
+        }
+    },
+    {
+        "relation": [
+            "delegate_permission/common.handle_all_urls"
+        ],
+        "target": {
+            "namespace": "android_app",
+            "package_name": "com.ahinsaaggregator.partner",
+            "sha256_cert_fingerprints": [
+                "2E:FF:AA:A7:4D:C8:32:6C:03:ED:51:FE:DB:58:B1:3A:6D:32:56:4D:26:8D:A9:C9:B3:74:A5:57:72:9B:3E:D2",
+                "7A:30:7E:2D:99:CD:89:90:1D:19:1E:A3:39:0D:13:31:FD:1C:07:44:0C:89:42:6A:7C:8B:4F:30:BA:7D:92:DD",
+                "F7:AD:38:E2:FF:FA:88:58:C3:8D:F4:D4:4A:4E:41:0E:EA:38:EC:2C:AF:FD:2D:8C:C1:30:8B:55:5F:7D:50:15"
+            ]
+        }
+    }
+]
