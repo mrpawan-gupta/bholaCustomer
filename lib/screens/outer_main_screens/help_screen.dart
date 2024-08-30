@@ -1,6 +1,7 @@
 // ignore_for_file: lines_longer_than_80_chars
 
 import "package:customer/common_functions/booking_functions.dart";
+import "package:customer/common_functions/order_booking_stream.dart";
 import "package:customer/common_widgets/app_text_button.dart";
 import "package:customer/common_widgets/common_image_widget.dart";
 import "package:customer/controllers/main_navigation_controller.dart";
@@ -40,6 +41,8 @@ class HelpScreen extends GetView<HelpController> {
                   controller.pagingControllerCategories.refresh();
                   controller.pagingControllerServicesLive.refresh();
                   controller.pagingControllerCategoriesLive.refresh();
+
+                  OrderBookingStream().functionSinkAdd();
                 },
                 child: Obx(
                   () {

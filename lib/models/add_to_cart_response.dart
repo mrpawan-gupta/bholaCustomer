@@ -1,5 +1,10 @@
 class AddToCartResponse {
-  AddToCartResponse({this.success, this.data, this.statusCode, this.message});
+  AddToCartResponse({
+    this.success,
+    this.data,
+    this.statusCode,
+    this.message,
+  });
 
   AddToCartResponse.fromJson(Map<String, dynamic> json) {
     success = json["success"];
@@ -27,23 +32,22 @@ class AddToCartResponse {
 
 class Data {
   Data({
-    this.sId,
     this.user,
     this.items,
     this.totalItems,
-    this.totalPrice,
-    this.discountedprice,
+    this.grossAmount,
+    this.discountAmount,
+    this.coupon,
+    this.couponAmount,
+    this.netAmount,
     this.status,
+    this.sId,
     this.createdAt,
     this.updatedAt,
     this.iV,
-    this.discountedPrice,
-    this.maxamount,
-    this.coupon,
   });
 
   Data.fromJson(Map<String, dynamic> json) {
-    sId = json["_id"];
     user = json["user"];
     if (json["items"] != null) {
       items = <Items>[];
@@ -52,75 +56,94 @@ class Data {
       }
     }
     totalItems = json["totalItems"];
-    totalPrice = json["totalPrice"];
-    discountedprice = json["discountedprice"];
+    grossAmount = json["grossAmount"];
+    discountAmount = json["discountAmount"];
+    coupon = json["coupon"];
+    couponAmount = json["couponAmount"];
+    netAmount = json["netAmount"];
     status = json["status"];
+    sId = json["_id"];
     createdAt = json["createdAt"];
     updatedAt = json["updatedAt"];
     iV = json["__v"];
-    discountedPrice = json["discountedPrice"];
-    maxamount = json["maxamount"];
-    coupon = json["coupon"];
   }
 
-  String? sId;
   String? user;
   List<Items>? items;
   num? totalItems;
-  num? totalPrice;
-  num? discountedprice;
+  num? grossAmount;
+  num? discountAmount;
+  String? coupon;
+  num? couponAmount;
+  num? netAmount;
   String? status;
+  String? sId;
   String? createdAt;
   String? updatedAt;
   num? iV;
-  num? discountedPrice;
-  num? maxamount;
-  String? coupon;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data["_id"] = sId;
     data["user"] = user;
     if (items != null) {
       data["items"] = items!.map((Items v) => v.toJson()).toList();
     }
     data["totalItems"] = totalItems;
-    data["totalPrice"] = totalPrice;
-    data["discountedprice"] = discountedprice;
+    data["grossAmount"] = grossAmount;
+    data["discountAmount"] = discountAmount;
+    data["coupon"] = coupon;
+    data["couponAmount"] = couponAmount;
+    data["netAmount"] = netAmount;
     data["status"] = status;
+    data["_id"] = sId;
     data["createdAt"] = createdAt;
     data["updatedAt"] = updatedAt;
     data["__v"] = iV;
-    data["discountedPrice"] = discountedPrice;
-    data["maxamount"] = maxamount;
-    data["coupon"] = coupon;
     return data;
   }
 }
 
 class Items {
-  Items({this.sId, this.product, this.quantity, this.totalPrice, this.iV});
+  Items({
+    this.product,
+    this.quantity,
+    this.price,
+    this.discountedPrice,
+    this.discountPercent,
+    this.netAmount,
+    this.sId,
+    this.iV,
+  });
 
   Items.fromJson(Map<String, dynamic> json) {
-    sId = json["_id"];
     product = json["product"];
     quantity = json["quantity"];
-    totalPrice = json["totalPrice"];
+    price = json["price"];
+    discountedPrice = json["discountedPrice"];
+    discountPercent = json["discountPercent"];
+    netAmount = json["netAmount"];
+    sId = json["_id"];
     iV = json["__v"];
   }
 
-  String? sId;
   String? product;
   num? quantity;
-  num? totalPrice;
+  num? price;
+  num? discountedPrice;
+  num? discountPercent;
+  num? netAmount;
+  String? sId;
   num? iV;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data["_id"] = sId;
     data["product"] = product;
     data["quantity"] = quantity;
-    data["totalPrice"] = totalPrice;
+    data["price"] = price;
+    data["discountedPrice"] = discountedPrice;
+    data["discountPercent"] = discountPercent;
+    data["netAmount"] = netAmount;
+    data["_id"] = sId;
     data["__v"] = iV;
     return data;
   }

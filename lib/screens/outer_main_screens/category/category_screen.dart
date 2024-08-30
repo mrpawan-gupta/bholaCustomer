@@ -1,3 +1,4 @@
+import "package:customer/common_functions/order_booking_stream.dart";
 import "package:customer/common_functions/rental_booking_stream.dart";
 import "package:customer/common_widgets/app_elevated_button.dart";
 import "package:customer/common_widgets/app_text_button.dart";
@@ -35,6 +36,8 @@ class CategoryScreen extends GetView<CategoryController> {
                   controller
                     ..pagingControllerServices.refresh()
                     ..pagingControllerCategories.refresh();
+
+                  OrderBookingStream().functionSinkAdd();
                 },
                 child: SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),

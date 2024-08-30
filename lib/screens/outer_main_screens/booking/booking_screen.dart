@@ -1,6 +1,7 @@
 // ignore_for_file: lines_longer_than_80_chars
 
 import "package:customer/common_functions/booking_functions.dart";
+import "package:customer/common_functions/order_booking_stream.dart";
 import "package:customer/common_widgets/app_elevated_button.dart";
 import "package:customer/common_widgets/app_text_field.dart";
 import "package:customer/controllers/outer_main_controllers/booking_controller.dart";
@@ -22,6 +23,7 @@ import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:get/get.dart";
 import "package:intl/intl.dart";
+import "package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart";
 import "package:place_picker/place_picker.dart";
 import "package:syncfusion_flutter_sliders/sliders.dart";
 
@@ -32,33 +34,57 @@ class BookingScreen extends GetView<BookingController> {
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Expanded(
-          child: SingleChildScrollView(
-            child: Obx(
-              () {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    const SizedBox(height: 16),
-                    searchBarWidget(),
-                    categoryAndServiceWidget(),
-                    cropAndTimeWidget(),
-                    slotWidget(),
-                    timeDiffWidget(),
-                    farmAreaWidget(),
-                    clearAllFormDataButton(),
-                    const SizedBox(height: 16),
-                  ],
-                );
-              },
-            ),
+          child: LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              return LiquidPullToRefresh(
+                showChildOpacityTransition: false,
+                color: AppColors().appPrimaryColor,
+                backgroundColor: AppColors().appWhiteColor,
+                onRefresh: () async {
+                  controller.clearForm();
+                  await controller.getAddressesAPI();
+                  await controller.getCategoriesAPI();
+
+                  OrderBookingStream().functionSinkAdd();
+                },
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: constraints.maxHeight,
+                    ),
+                    child: Obx(
+                      () {
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            const SizedBox(height: 16),
+                            searchBarWidget(),
+                            categoryAndServiceWidget(),
+                            cropAndTimeWidget(),
+                            slotWidget(),
+                            timeDiffWidget(),
+                            farmAreaWidget(),
+                            clearAllFormDataButton(),
+                            const SizedBox(height: 16),
+                            getQuoteButtonWidget(context),
+                            const SizedBox(height: 16),
+                            viewAlreadyAddedQuotationsButton(),
+                            const SizedBox(height: 32),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              );
+            },
           ),
         ),
-        getQuoteButtonWidget(context),
-        const SizedBox(height: 16),
-        viewAlreadyAddedQuotationsButton(),
-        const SizedBox(height: 16),
       ],
     );
   }
@@ -746,7 +772,6 @@ class BookingScreen extends GetView<BookingController> {
             const SizedBox(width: 16),
           ],
         ),
-        const SizedBox(height: 16),
       ],
     );
   }
@@ -773,7 +798,6 @@ class BookingScreen extends GetView<BookingController> {
             const SizedBox(width: 16),
           ],
         ),
-        const SizedBox(height: 16),
       ],
     );
   }
@@ -989,7 +1013,8 @@ class BookingScreen extends GetView<BookingController> {
       if (condition) {
         final Categories category = controller.rxSelectedCategory.value;
         final String displayType = category.displayType ?? "";
-        final bool isMedicineSupported = displayType == displayTypeAreaWithMedicine;
+        final bool isMedicineSupported =
+            displayType == displayTypeAreaWithMedicine;
         isMedicineSupported
             ? await AppNavService().pushNamed(
                 destination: AppRoutes().bookingAddOnsScreen,

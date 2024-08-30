@@ -3,6 +3,7 @@
 import "dart:async";
 
 import "package:customer/common_functions/cart_list_and_wish_list_functions.dart";
+import "package:customer/common_functions/order_booking_stream.dart";
 import "package:customer/common_functions/rental_booking_stream.dart";
 import "package:customer/controllers/main_navigation_controller.dart";
 import "package:customer/controllers/outer_main_controllers/home_controller.dart";
@@ -45,6 +46,8 @@ class HomeScreen extends GetView<HomeController> {
                     ..pagingControllerBanners.refresh();
 
                   unawaited(controller.apiCallCategoriesWithoutPagination());
+
+                  OrderBookingStream().functionSinkAdd();
                 },
                 child: SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),

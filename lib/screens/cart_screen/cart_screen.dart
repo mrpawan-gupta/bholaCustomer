@@ -836,7 +836,7 @@ class CartScreen extends GetWidget<CartController> {
                   // unawaited(
                   //   controller.getAllCartsItemsAPICall(
                   //     needLoader: true,
-                  //     removeCoupon: true,
+                  //     removeCoupon: false,
                   //   ),
                   // );
                 },

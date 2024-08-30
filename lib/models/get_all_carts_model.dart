@@ -1,7 +1,10 @@
-import "package:customer/models/coupon_list_model.dart";
-
 class GetAllCartsModel {
-  GetAllCartsModel({this.success, this.data, this.statusCode, this.message});
+  GetAllCartsModel({
+    this.success,
+    this.data,
+    this.statusCode,
+    this.message,
+  });
 
   GetAllCartsModel.fromJson(Map<String, dynamic> json) {
     success = json["success"];
@@ -28,7 +31,12 @@ class GetAllCartsModel {
 }
 
 class Data {
-  Data({this.carts, this.totalcounts, this.limit, this.page});
+  Data({
+    this.carts,
+    this.totalcounts,
+    this.limit,
+    this.page,
+  });
 
   Data.fromJson(Map<String, dynamic> json) {
     if (json["carts"] != null) {
@@ -84,7 +92,7 @@ class Carts {
         items!.add(Items.fromJson(v));
       }
     }
-    coupon = json["coupon"] != null ? Coupons.fromJson(json["coupon"]) : null;
+    coupon = json["coupon"] != null ? Coupon.fromJson(json["coupon"]) : null;
     totalQuantity = json["totalQuantity"];
     totalItems = json["totalItems"];
     totalPriceWithDiscount = json["totalPriceWithDiscount"];
@@ -98,7 +106,7 @@ class Carts {
   String? sId;
   String? user;
   List<Items>? items;
-  Coupons? coupon;
+  Coupon? coupon;
   num? totalQuantity;
   num? totalItems;
   num? totalPriceWithDiscount;
@@ -176,6 +184,44 @@ class Items {
     data["price"] = price;
     data["quantity"] = quantity;
     data["total_price"] = totalPrice;
+    return data;
+  }
+}
+
+class Coupon {
+  Coupon({
+    this.code,
+    this.maxamount,
+    this.discountPercent,
+    this.sId,
+    this.couponType,
+    this.isActive,
+  });
+
+  Coupon.fromJson(Map<String, dynamic> json) {
+    code = json["code"];
+    maxamount = json["maxamount"];
+    discountPercent = json["discountPercent"];
+    sId = json["_id"];
+    couponType = json["couponType"];
+    isActive = json["isActive"];
+  }
+
+  String? code;
+  num? maxamount;
+  num? discountPercent;
+  String? sId;
+  String? couponType;
+  bool? isActive;
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data["code"] = code;
+    data["maxamount"] = maxamount;
+    data["discountPercent"] = discountPercent;
+    data["_id"] = sId;
+    data["couponType"] = couponType;
+    data["isActive"] = isActive;
     return data;
   }
 }
