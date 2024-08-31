@@ -110,7 +110,7 @@ class IntroSliderController extends GetxController {
       reason = await permissionValidateIndex0();
     } else if (rxInitialPage.value == 1) {
       reason = await permissionValidateIndex1();
-    } else if (rxInitialPage.value == 0) {
+    } else if (rxInitialPage.value == 2) {
       reason = await permissionValidateIndex2();
     } else {}
 
