@@ -2,7 +2,7 @@ import "dart:async";
 
 import "package:after_layout/after_layout.dart";
 import "package:customer/common_widgets/app_lottie_widget.dart";
-import "package:customer/controllers/payment_controller/payment_controller.dart";
+import "package:customer/controllers/payment_controller/rental_payment_controller.dart";
 import "package:customer/models/phone_pe_res_model.dart";
 import "package:customer/services/app_nav_service.dart";
 import "package:customer/services/phonepe_sdk_service.dart";
@@ -14,16 +14,16 @@ import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:lottie/lottie.dart";
 
-class PaymentScreen extends StatefulWidget {
-  const PaymentScreen({super.key});
+class RentalPaymentScreen extends StatefulWidget {
+  const RentalPaymentScreen({super.key});
 
   @override
-  State<PaymentScreen> createState() => _PaymentScreenState();
+  State<RentalPaymentScreen> createState() => _PaymentScreenState();
 }
 
-class _PaymentScreenState extends State<PaymentScreen>
-    with AfterLayoutMixin<PaymentScreen> {
-  final PaymentController controller = Get.find();
+class _PaymentScreenState extends State<RentalPaymentScreen>
+    with AfterLayoutMixin<RentalPaymentScreen> {
+  final RentalPaymentController controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -317,7 +317,7 @@ class _PaymentScreenState extends State<PaymentScreen>
     if (canGoBack) {
       final String route1 = AppRoutes().bookingDetailsScreen;
       final String route2 = AppRoutes().bookingAddOnsScreen;
-      final String route3 = AppRoutes().paymentScreen;
+      final String route3 = AppRoutes().rentalPaymentScreen;
 
       final bool cond1 = AppNavService().previousRoute == route1;
       final bool cond2 = AppNavService().previousRoute == route2;

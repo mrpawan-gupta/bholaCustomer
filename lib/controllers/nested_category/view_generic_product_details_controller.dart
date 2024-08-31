@@ -191,10 +191,7 @@ class ViewGenericProductDetailsController extends GetxController {
           },
         ).toList();
 
-        if (list.isEmpty) {
-        } else {
-          updateAddressInfo(list.first);
-        }
+        updateAddressInfo(list.isEmpty ? Address() : list.first);
       },
       failureCallback: (Map<String, dynamic> json) {
         AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);

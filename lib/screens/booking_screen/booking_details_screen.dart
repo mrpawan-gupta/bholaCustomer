@@ -1564,7 +1564,7 @@ class BookingDetailsScreen extends GetWidget<BookingDetailsController> {
     if (result != null) {
       if (result) {
         await AppNavService().pushNamed(
-          destination: AppRoutes().paymentScreen,
+          destination: AppRoutes().rentalPaymentScreen,
           arguments: <String, dynamic>{"id": id},
         );
       } else {}

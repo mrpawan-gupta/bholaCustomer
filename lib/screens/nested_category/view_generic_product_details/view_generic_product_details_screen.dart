@@ -150,8 +150,8 @@ class ViewGenericProductDetailsScreen
                             const SizedBox(height: 16),
                             descriptionWidget(),
                             const SizedBox(height: 16),
-                            advanceInfoWidget(),
-                            const SizedBox(height: 0),
+                            addressWidget(),
+                            const SizedBox(height: 16),
                             policyInfoWidget(),
                             const SizedBox(height: 16),
                             suggestedWidget(),
@@ -384,136 +384,75 @@ class ViewGenericProductDetailsScreen
     );
   }
 
-  Widget advanceInfoWidget() {
-    return controller.getAddressOrAddressPlaceholder() == "-"
-        ? const SizedBox()
-        : Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                CommonGenericProductTitleBar(
-                  title: "Delivery Address",
-                  onTapViewAll: () {},
-                  isViewAllNeeded: false,
-                ),
-                const SizedBox(height: 8),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Card(
-                      margin: EdgeInsets.zero,
-                      elevation: 4,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                        side: BorderSide(color: AppColors().appPrimaryColor),
-                      ),
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      surfaceTintColor: AppColors().appWhiteColor,
-                      color: AppColors().appWhiteColor,
-                      child: ListTile(
-                        dense: true,
-                        title: Text(
-                          controller.getFullName(),
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        subtitle: Text(
-                          controller.getAddressOrAddressPlaceholder(),
-                          style: const TextStyle(),
-                          maxLines: 5,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        leading: Icon(
-                          Icons.home_outlined,
-                          color: AppColors().appPrimaryColor,
-                        ),
-                        trailing: ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(12),
-                            onTap: () async {
-                              await AppNavService().pushNamed(
-                                destination: AppRoutes().addressesListScreen,
-                                arguments: <String, dynamic>{},
-                              );
-
-                              unawaited(controller.getAddressesAPI());
-                            },
-                            child: ColoredBox(
-                              color:
-                                  AppColors().appPrimaryColor.withOpacity(0.16),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Icon(
-                                  Icons.edit_outlined,
-                                  color: AppColors().appPrimaryColor,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        onTap: () async {
-                          await AppNavService().pushNamed(
-                            destination: AppRoutes().addressesListScreen,
-                            arguments: <String, dynamic>{},
-                          );
-
-                          unawaited(controller.getAddressesAPI());
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                // const SizedBox(height: 16),
-                // Column(
-                //   mainAxisSize: MainAxisSize.min,
-                //   crossAxisAlignment: CrossAxisAlignment.start,
-                //   children: <Widget>[
-                //     Card(
-                //       clipBehavior: Clip.antiAliasWithSaveLayer,
-                //       elevation: 4,
-                //       margin: EdgeInsets.zero,
-                //       color: AppColors().appWhiteColor,
-                //       surfaceTintColor: AppColors().appWhiteColor,
-                //       color: AppColors().appWhiteColor,
-                //       child: ListTile(
-                //         dense: true,
-                //         title: Text(
-                //           "FREE Delivery",
-                //           style: TextStyle(
-                //             color: AppColors().appPrimaryColor,
-                //             fontWeight: FontWeight.bold,
-                //           ),
-                //           maxLines: 2,
-                //           overflow: TextOverflow.ellipsis,
-                //         ),
-                //         subtitle: const Text(
-                //           "Delivery By 6th April 2024",
-                //           style: TextStyle(),
-                //           maxLines: 2,
-                //           overflow: TextOverflow.ellipsis,
-                //         ),
-                //         leading: Icon(
-                //           Icons.emoji_transportation,
-                //           color: AppColors().appPrimaryColor,
-                //         ),
-                //         trailing: Icon(
-                //           Icons.calendar_month,
-                //           color: AppColors().appPrimaryColor,
-                //         ),
-                //         onTap: () {},
-                //       ),
-                //     ),
-                //   ],
-                // ),
-              ],
+  Widget addressWidget() {
+    final bool hasAddress = controller.getAddressOrAddressPlaceholder() != "-";
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          CommonGenericProductTitleBar(
+            title: "Delivery Address",
+            onTapViewAll: () {},
+            isViewAllNeeded: false,
+          ),
+          const SizedBox(height: 8),
+          Card(
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            elevation: 0,
+            margin: EdgeInsets.zero,
+            color: AppColors().appTransparentColor,
+            surfaceTintColor: AppColors().appTransparentColor,
+            shape: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(
+                color: hasAddress
+                    ? AppColors().appPrimaryColor
+                    : AppColors().appBlackColor,
+              ),
             ),
-          );
+            child: ListTile(
+              dense: true,
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+              leading: Icon(
+                Icons.home_outlined,
+                color: hasAddress
+                    ? AppColors().appPrimaryColor
+                    : AppColors().appBlackColor,
+              ),
+              title: Text(
+                hasAddress
+                    ? controller.getAddressOrAddressPlaceholder()
+                    : "Tap here to add address",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: hasAddress
+                      ? AppColors().appPrimaryColor
+                      : AppColors().appBlackColor,
+                ),
+                maxLines: 5,
+                overflow: TextOverflow.ellipsis,
+              ),
+              trailing: Icon(
+                Icons.arrow_forward_ios,
+                color: hasAddress
+                    ? AppColors().appPrimaryColor
+                    : AppColors().appBlackColor,
+              ),
+              onTap: () async {
+                await AppNavService().pushNamed(
+                  destination: AppRoutes().addressesListScreen,
+                  arguments: <String, dynamic>{},
+                );
+
+                unawaited(controller.getAddressesAPI());
+              },
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget policyInfoWidget() {

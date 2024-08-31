@@ -13,7 +13,7 @@ import "package:get/get.dart";
 
 enum PaymentState { notStarted, started, processing, success, failure }
 
-class PaymentController extends GetxController {
+class RentalPaymentController extends GetxController {
   final RxString rxBookingId = "".obs;
   final Rx<PhonePePayloadModel> rxPhonePePayload = PhonePePayloadModel().obs;
   final Rx<PhonePeResModel> rxPhonePeResModel = PhonePeResModel().obs;

@@ -18,7 +18,8 @@ import "package:customer/bindings/outer_main_bindings/category_binding.dart";
 import "package:customer/bindings/outer_main_bindings/help_binding.dart";
 import "package:customer/bindings/outer_main_bindings/home_binding.dart";
 import "package:customer/bindings/outer_main_bindings/order_history_binding.dart";
-import "package:customer/bindings/payment_binding/payment_binding.dart";
+import "package:customer/bindings/payment_binding/ecom_payment_binding.dart";
+import "package:customer/bindings/payment_binding/rental_payment_binding.dart";
 import "package:customer/bindings/review_rating_binding/review_rating_binding.dart";
 import "package:customer/bindings/settings_bindings/app_info_binding.dart";
 import "package:customer/bindings/settings_bindings/change_language_binding.dart";
@@ -46,7 +47,8 @@ import "package:customer/screens/outer_main_screens/category/category_screen.dar
 import "package:customer/screens/outer_main_screens/help_screen.dart";
 import "package:customer/screens/outer_main_screens/home/home_screen.dart";
 import "package:customer/screens/outer_main_screens/order_history_screen.dart";
-import "package:customer/screens/payment_screen/payment_screen.dart";
+import "package:customer/screens/payment_screen/ecom_payment_screen.dart";
+import "package:customer/screens/payment_screen/rental_payment_screen.dart";
 import "package:customer/screens/review_rating_screen/review_rating_screen.dart";
 import "package:customer/screens/settings_screens/app_info_screen.dart";
 import "package:customer/screens/settings_screens/change_language_screen.dart";
@@ -76,7 +78,9 @@ class AppRoutes {
   final String helpScreen = "/helpScreen";
   final String orderHistoryScreen = "/orderHistoryScreen";
 
-  final String paymentScreen = "/paymentScreen";
+  final String rentalPaymentScreen = "/rentalPaymentScreen";
+  final String ecomPaymentScreen = "/ecomPaymentScreen";
+
   final String bookingDetailsScreen = "/bookingDetailsScreen";
   final String addedQuotesScreen = "/addedQuotesScreen";
 
@@ -153,11 +157,17 @@ class AppRoutes {
       binding: OrderHistoryBinding(),
     );
 
-    final GetPage<dynamic> paymentRoute = GetPage<dynamic>(
-      name: paymentScreen,
-      page: PaymentScreen.new,
-      binding: PaymentBinding(),
+    final GetPage<dynamic> rentalPaymentRoute = GetPage<dynamic>(
+      name: rentalPaymentScreen,
+      page: RentalPaymentScreen.new,
+      binding: RentalPaymentBinding(),
     );
+    final GetPage<dynamic> ecomPaymentRoute = GetPage<dynamic>(
+      name: ecomPaymentScreen,
+      page: EcomPaymentScreen.new,
+      binding: EcomPaymentBinding(),
+    );
+
     final GetPage<dynamic> bookingDetailsRoute = GetPage<dynamic>(
       name: bookingDetailsScreen,
       page: BookingDetailsScreen.new,
@@ -271,7 +281,8 @@ class AppRoutes {
       productListingRoute,
       editProfileRoute,
       bookingDetailsRoute,
-      paymentRoute,
+      rentalPaymentRoute,
+      ecomPaymentRoute,
       viewGenericProductDetailsRoute,
       addedQuotesRoute,
       wishListRoute,

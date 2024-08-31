@@ -1,5 +1,6 @@
 import "dart:async";
 
+import "package:customer/models/create_order.dart";
 import "package:customer/models/get_addresses_model.dart";
 import "package:customer/models/get_all_carts_model.dart";
 import "package:customer/models/get_user_by_id.dart";
@@ -13,7 +14,6 @@ import "package:get/get.dart";
 class CartController extends GetxController {
   final Rx<GetUserByIdData> rxUserInfo = GetUserByIdData().obs;
   final Rx<Address> rxAddressInfo = Address().obs;
-
   final Rx<Carts> rxCart = Carts().obs;
   final RxList<Items> rxItemsList = <Items>[].obs;
 
@@ -95,10 +95,7 @@ class CartController extends GetxController {
           },
         ).toList();
 
-        if (list.isEmpty) {
-        } else {
-          updateAddressInfo(list.first);
-        }
+        updateAddressInfo(list.isEmpty ? Address() : list.first);
       },
       failureCallback: (Map<String, dynamic> json) {
         AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
@@ -115,7 +112,7 @@ class CartController extends GetxController {
     await AppAPIService().functionGet(
       types: Types.order,
       endPoint: "cart",
-      query: <String, dynamic>{"page": 1, "limit": 1000},
+      query: <String, dynamic>{"page": 1, "limit": 1000, "status": "Pending"},
       successCallback: (Map<String, dynamic> json) async {
         AppLogger().info(message: json["message"]);
 
@@ -193,6 +190,35 @@ class CartController extends GetxController {
       needLoader: false,
     );
 
+    return completer.future;
+  }
+
+  Future<CreateOrderData> createOrderAPI() async {
+    final Completer<CreateOrderData> completer = Completer<CreateOrderData>();
+
+    final Map<String, dynamic> body = <String, dynamic>{
+      "cart": rxCart.value.sId ?? "",
+      "deliveryAddress": rxAddressInfo.value.sId ?? "",
+    };
+
+    await AppAPIService().functionPost(
+      types: Types.order,
+      endPoint: "order",
+      body: body,
+      successCallback: (Map<String, dynamic> json) {
+        AppSnackbar().snackbarSuccess(title: "Yay!", message: json["message"]);
+
+        CreateOrder model = CreateOrder();
+        model = CreateOrder.fromJson(json);
+
+        completer.complete(model.data ?? CreateOrderData());
+      },
+      failureCallback: (Map<String, dynamic> json) {
+        AppSnackbar().snackbarFailure(title: "Oops", message: json["message"]);
+
+        completer.complete(CreateOrderData());
+      },
+    );
     return completer.future;
   }
 }
