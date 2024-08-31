@@ -10,7 +10,7 @@ class CreateOrder {
 
   bool? success;
   CreateOrderData? data;
-  int? statusCode;
+  num? statusCode;
   String? message;
 
   Map<String, dynamic> toJson() {
